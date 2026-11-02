@@ -1,0 +1,2705 @@
+{
+  "version": 3,
+  "sections": [
+    {
+      "id": "launch",
+      "title": "Estação de lançamento",
+      "problems": [
+        {
+          "id": "equations-01",
+          "sectorId": "launch",
+          "title": "Adição · exercício 1",
+          "objective": "Calcular operações com números naturais",
+          "skill": "Apoio à EF07MA18",
+          "prompt": "A nave tem 2 cristais e Luma encontra mais 3 na estação. Quantos cristais estão prontos para a viagem?",
+          "kind": "choice",
+          "expression": {
+            "type": "operation",
+            "operation": "add",
+            "left": {
+              "type": "constant",
+              "value": 2
+            },
+            "right": {
+              "type": "constant",
+              "value": 3
+            }
+          },
+          "variable": 0,
+          "formula": "2 + 3",
+          "choices": [
+            {
+              "label": "5",
+              "value": "5"
+            },
+            {
+              "label": "6",
+              "value": "6"
+            },
+            {
+              "label": "4",
+              "value": "4"
+            }
+          ],
+          "correctChoice": "5",
+          "hints": [
+            "Faça primeiro as multiplicações e divisões. Para operações de mesma prioridade, siga da esquerda para a direita.",
+            "Observe a conta 2 + 3. Resolva uma operação de cada vez.",
+            "2 + 3 = 5. Escolha esse resultado."
+          ],
+          "explanation": "2 + 3 = 5. O resultado é 5.",
+          "visual": {
+            "groups": 1,
+            "perGroup": 5,
+            "extra": 0,
+            "label": "unidades do resultado"
+          }
+        },
+        {
+          "id": "equations-02",
+          "sectorId": "launch",
+          "title": "Adição · exercício 2",
+          "objective": "Calcular operações com números naturais",
+          "skill": "Apoio à EF07MA18",
+          "prompt": "A equipe separou 6 peças para a nave e recebeu mais 4. Quantas peças pode levar ao todo?",
+          "kind": "choice",
+          "expression": {
+            "type": "operation",
+            "operation": "add",
+            "left": {
+              "type": "constant",
+              "value": 6
+            },
+            "right": {
+              "type": "constant",
+              "value": 4
+            }
+          },
+          "variable": 0,
+          "formula": "6 + 4",
+          "choices": [
+            {
+              "label": "11",
+              "value": "11"
+            },
+            {
+              "label": "9",
+              "value": "9"
+            },
+            {
+              "label": "10",
+              "value": "10"
+            }
+          ],
+          "correctChoice": "10",
+          "hints": [
+            "Faça primeiro as multiplicações e divisões. Para operações de mesma prioridade, siga da esquerda para a direita.",
+            "Observe a conta 6 + 4. Resolva uma operação de cada vez.",
+            "6 + 4 = 10. Escolha esse resultado."
+          ],
+          "explanation": "6 + 4 = 10. O resultado é 10.",
+          "visual": {
+            "groups": 1,
+            "perGroup": 10,
+            "extra": 0,
+            "label": "unidades do resultado"
+          }
+        },
+        {
+          "id": "equations-03",
+          "sectorId": "launch",
+          "title": "Subtração · exercício 3",
+          "objective": "Calcular operações com números naturais",
+          "skill": "Apoio à EF07MA18",
+          "prompt": "Na estação, havia 8 baterias e 3 foram usadas na nave. Quantas baterias sobraram?",
+          "kind": "choice",
+          "expression": {
+            "type": "operation",
+            "operation": "subtract",
+            "left": {
+              "type": "constant",
+              "value": 8
+            },
+            "right": {
+              "type": "constant",
+              "value": 3
+            }
+          },
+          "variable": 0,
+          "formula": "8 − 3",
+          "choices": [
+            {
+              "label": "4",
+              "value": "4"
+            },
+            {
+              "label": "5",
+              "value": "5"
+            },
+            {
+              "label": "6",
+              "value": "6"
+            }
+          ],
+          "correctChoice": "5",
+          "hints": [
+            "Faça primeiro as multiplicações e divisões. Para operações de mesma prioridade, siga da esquerda para a direita.",
+            "Observe a conta 8 − 3. Resolva uma operação de cada vez.",
+            "8 − 3 = 5. Escolha esse resultado."
+          ],
+          "explanation": "8 − 3 = 5. O resultado é 5.",
+          "visual": {
+            "groups": 1,
+            "perGroup": 5,
+            "extra": 0,
+            "label": "unidades do resultado"
+          }
+        },
+        {
+          "id": "equations-04",
+          "sectorId": "launch",
+          "title": "Subtração · exercício 4",
+          "objective": "Calcular operações com números naturais",
+          "skill": "Apoio à EF07MA18",
+          "prompt": "A nave trouxe 15 cristais e entregou 7 na estação. Quantos cristais ficaram a bordo?",
+          "kind": "choice",
+          "expression": {
+            "type": "operation",
+            "operation": "subtract",
+            "left": {
+              "type": "constant",
+              "value": 15
+            },
+            "right": {
+              "type": "constant",
+              "value": 7
+            }
+          },
+          "variable": 0,
+          "formula": "15 − 7",
+          "choices": [
+            {
+              "label": "8",
+              "value": "8"
+            },
+            {
+              "label": "9",
+              "value": "9"
+            },
+            {
+              "label": "7",
+              "value": "7"
+            }
+          ],
+          "correctChoice": "8",
+          "hints": [
+            "Faça primeiro as multiplicações e divisões. Para operações de mesma prioridade, siga da esquerda para a direita.",
+            "Observe a conta 15 − 7. Resolva uma operação de cada vez.",
+            "15 − 7 = 8. Escolha esse resultado."
+          ],
+          "explanation": "15 − 7 = 8. O resultado é 8.",
+          "visual": {
+            "groups": 1,
+            "perGroup": 8,
+            "extra": 0,
+            "label": "unidades do resultado"
+          }
+        },
+        {
+          "id": "equations-05",
+          "sectorId": "launch",
+          "title": "Multiplicação · exercício 5",
+          "objective": "Calcular operações com números naturais",
+          "skill": "Apoio à EF07MA18",
+          "prompt": "Dois robôs vão embarcar com 4 baterias cada. Quantas baterias precisamos separar?",
+          "kind": "choice",
+          "expression": {
+            "type": "operation",
+            "operation": "multiply",
+            "left": {
+              "type": "constant",
+              "value": 2
+            },
+            "right": {
+              "type": "constant",
+              "value": 4
+            }
+          },
+          "variable": 0,
+          "formula": "2 × 4",
+          "choices": [
+            {
+              "label": "9",
+              "value": "9"
+            },
+            {
+              "label": "7",
+              "value": "7"
+            },
+            {
+              "label": "8",
+              "value": "8"
+            }
+          ],
+          "correctChoice": "8",
+          "hints": [
+            "Faça primeiro as multiplicações e divisões. Para operações de mesma prioridade, siga da esquerda para a direita.",
+            "Observe a conta 2 × 4. Resolva uma operação de cada vez.",
+            "2 × 4 = 8. Escolha esse resultado."
+          ],
+          "explanation": "2 × 4 = 8. O resultado é 8.",
+          "visual": {
+            "groups": 1,
+            "perGroup": 8,
+            "extra": 0,
+            "label": "unidades do resultado"
+          }
+        },
+        {
+          "id": "equations-06",
+          "sectorId": "launch",
+          "title": "Multiplicação · exercício 6",
+          "objective": "Calcular operações com números naturais",
+          "skill": "Apoio à EF07MA18",
+          "prompt": "A equipe carrega 3 caixas com 5 peças em cada uma. Quantas peças vão viajar na nave?",
+          "kind": "choice",
+          "expression": {
+            "type": "operation",
+            "operation": "multiply",
+            "left": {
+              "type": "constant",
+              "value": 3
+            },
+            "right": {
+              "type": "constant",
+              "value": 5
+            }
+          },
+          "variable": 0,
+          "formula": "3 × 5",
+          "choices": [
+            {
+              "label": "14",
+              "value": "14"
+            },
+            {
+              "label": "15",
+              "value": "15"
+            },
+            {
+              "label": "16",
+              "value": "16"
+            }
+          ],
+          "correctChoice": "15",
+          "hints": [
+            "Faça primeiro as multiplicações e divisões. Para operações de mesma prioridade, siga da esquerda para a direita.",
+            "Observe a conta 3 × 5. Resolva uma operação de cada vez.",
+            "3 × 5 = 15. Escolha esse resultado."
+          ],
+          "explanation": "3 × 5 = 15. O resultado é 15.",
+          "visual": {
+            "groups": 1,
+            "perGroup": 15,
+            "extra": 0,
+            "label": "unidades do resultado"
+          }
+        },
+        {
+          "id": "equations-07",
+          "sectorId": "launch",
+          "title": "Divisão · exercício 7",
+          "objective": "Calcular operações com números naturais",
+          "skill": "Apoio à EF07MA18",
+          "prompt": "A estação divide 12 baterias igualmente entre 2 robôs. Quantas baterias cada robô recebe?",
+          "kind": "choice",
+          "expression": {
+            "type": "operation",
+            "operation": "divide",
+            "left": {
+              "type": "constant",
+              "value": 12
+            },
+            "right": {
+              "type": "constant",
+              "value": 2
+            }
+          },
+          "variable": 0,
+          "formula": "12 ÷ 2",
+          "choices": [
+            {
+              "label": "6",
+              "value": "6"
+            },
+            {
+              "label": "7",
+              "value": "7"
+            },
+            {
+              "label": "5",
+              "value": "5"
+            }
+          ],
+          "correctChoice": "6",
+          "hints": [
+            "Faça primeiro as multiplicações e divisões. Para operações de mesma prioridade, siga da esquerda para a direita.",
+            "Observe a conta 12 ÷ 2. Resolva uma operação de cada vez.",
+            "12 ÷ 2 = 6. Escolha esse resultado."
+          ],
+          "explanation": "12 ÷ 2 = 6. O resultado é 6.",
+          "visual": {
+            "groups": 1,
+            "perGroup": 6,
+            "extra": 0,
+            "label": "unidades do resultado"
+          }
+        },
+        {
+          "id": "equations-08",
+          "sectorId": "launch",
+          "title": "Divisão · exercício 8",
+          "objective": "Calcular operações com números naturais",
+          "skill": "Apoio à EF07MA18",
+          "prompt": "Prepare 4 kits iguais com as 20 peças da estação. Quantas peças vão em cada kit?",
+          "kind": "choice",
+          "expression": {
+            "type": "operation",
+            "operation": "divide",
+            "left": {
+              "type": "constant",
+              "value": 20
+            },
+            "right": {
+              "type": "constant",
+              "value": 4
+            }
+          },
+          "variable": 0,
+          "formula": "20 ÷ 4",
+          "choices": [
+            {
+              "label": "6",
+              "value": "6"
+            },
+            {
+              "label": "4",
+              "value": "4"
+            },
+            {
+              "label": "5",
+              "value": "5"
+            }
+          ],
+          "correctChoice": "5",
+          "hints": [
+            "Faça primeiro as multiplicações e divisões. Para operações de mesma prioridade, siga da esquerda para a direita.",
+            "Observe a conta 20 ÷ 4. Resolva uma operação de cada vez.",
+            "20 ÷ 4 = 5. Escolha esse resultado."
+          ],
+          "explanation": "20 ÷ 4 = 5. O resultado é 5.",
+          "visual": {
+            "groups": 1,
+            "perGroup": 5,
+            "extra": 0,
+            "label": "unidades do resultado"
+          }
+        },
+        {
+          "id": "equations-09",
+          "sectorId": "launch",
+          "title": "Subtração · exercício 9",
+          "objective": "Respeitar a ordem das operações",
+          "skill": "Apoio à EF07MA18",
+          "prompt": "A estação tinha 5 cristais, recebeu mais 3 e enviou 2 para a nave. Quantos cristais ficaram?",
+          "kind": "choice",
+          "expression": {
+            "type": "operation",
+            "operation": "subtract",
+            "left": {
+              "type": "operation",
+              "operation": "add",
+              "left": {
+                "type": "constant",
+                "value": 5
+              },
+              "right": {
+                "type": "constant",
+                "value": 3
+              }
+            },
+            "right": {
+              "type": "constant",
+              "value": 2
+            }
+          },
+          "variable": 0,
+          "formula": "5 + 3 − 2",
+          "choices": [
+            {
+              "label": "5",
+              "value": "5"
+            },
+            {
+              "label": "6",
+              "value": "6"
+            },
+            {
+              "label": "7",
+              "value": "7"
+            }
+          ],
+          "correctChoice": "6",
+          "hints": [
+            "Faça primeiro as multiplicações e divisões. Para operações de mesma prioridade, siga da esquerda para a direita.",
+            "Observe a conta 5 + 3 − 2. Resolva uma operação de cada vez.",
+            "5 + 3 − 2 = 6. Escolha esse resultado."
+          ],
+          "explanation": "5 + 3 = 8. 8 − 2 = 6. O resultado é 6.",
+          "visual": {
+            "groups": 1,
+            "perGroup": 6,
+            "extra": 0,
+            "label": "unidades do resultado"
+          }
+        },
+        {
+          "id": "equations-10",
+          "sectorId": "launch",
+          "title": "Adição · exercício 10",
+          "objective": "Respeitar a ordem das operações",
+          "skill": "Apoio à EF07MA18",
+          "prompt": "A equipe tinha 12 placas, usou 4 na nave e encontrou mais 6. Quantas placas tem agora?",
+          "kind": "choice",
+          "expression": {
+            "type": "operation",
+            "operation": "add",
+            "left": {
+              "type": "operation",
+              "operation": "subtract",
+              "left": {
+                "type": "constant",
+                "value": 12
+              },
+              "right": {
+                "type": "constant",
+                "value": 4
+              }
+            },
+            "right": {
+              "type": "constant",
+              "value": 6
+            }
+          },
+          "variable": 0,
+          "formula": "12 − 4 + 6",
+          "choices": [
+            {
+              "label": "14",
+              "value": "14"
+            },
+            {
+              "label": "15",
+              "value": "15"
+            },
+            {
+              "label": "13",
+              "value": "13"
+            }
+          ],
+          "correctChoice": "14",
+          "hints": [
+            "Faça primeiro as multiplicações e divisões. Para operações de mesma prioridade, siga da esquerda para a direita.",
+            "Observe a conta 12 − 4 + 6. Resolva uma operação de cada vez.",
+            "12 − 4 + 6 = 14. Escolha esse resultado."
+          ],
+          "explanation": "12 − 4 = 8. 8 + 6 = 14. O resultado é 14.",
+          "visual": {
+            "groups": 1,
+            "perGroup": 14,
+            "extra": 0,
+            "label": "unidades do resultado"
+          }
+        },
+        {
+          "id": "equations-11",
+          "sectorId": "launch",
+          "title": "Adição · exercício 11",
+          "objective": "Respeitar a ordem das operações",
+          "skill": "Apoio à EF07MA18",
+          "prompt": "A nave leva 2 caixas com 3 baterias cada e mais 4 baterias avulsas. Quantas baterias vão a bordo?",
+          "kind": "choice",
+          "expression": {
+            "type": "operation",
+            "operation": "add",
+            "left": {
+              "type": "operation",
+              "operation": "multiply",
+              "left": {
+                "type": "constant",
+                "value": 2
+              },
+              "right": {
+                "type": "constant",
+                "value": 3
+              }
+            },
+            "right": {
+              "type": "constant",
+              "value": 4
+            }
+          },
+          "variable": 0,
+          "formula": "2 × 3 + 4",
+          "choices": [
+            {
+              "label": "11",
+              "value": "11"
+            },
+            {
+              "label": "9",
+              "value": "9"
+            },
+            {
+              "label": "10",
+              "value": "10"
+            }
+          ],
+          "correctChoice": "10",
+          "hints": [
+            "Faça primeiro as multiplicações e divisões. Para operações de mesma prioridade, siga da esquerda para a direita.",
+            "Observe a conta 2 × 3 + 4. Resolva uma operação de cada vez.",
+            "2 × 3 + 4 = 10. Escolha esse resultado."
+          ],
+          "explanation": "2 × 3 = 6. 6 + 4 = 10. O resultado é 10.",
+          "visual": {
+            "groups": 1,
+            "perGroup": 10,
+            "extra": 0,
+            "label": "unidades do resultado"
+          }
+        },
+        {
+          "id": "equations-12",
+          "sectorId": "launch",
+          "title": "Subtração · exercício 12",
+          "objective": "Respeitar a ordem das operações",
+          "skill": "Apoio à EF07MA18",
+          "prompt": "A estação divide 18 cristais igualmente entre 3 robôs, e cada robô usa 2. Quantos cristais sobram com cada um?",
+          "kind": "choice",
+          "expression": {
+            "type": "operation",
+            "operation": "subtract",
+            "left": {
+              "type": "operation",
+              "operation": "divide",
+              "left": {
+                "type": "constant",
+                "value": 18
+              },
+              "right": {
+                "type": "constant",
+                "value": 3
+              }
+            },
+            "right": {
+              "type": "constant",
+              "value": 2
+            }
+          },
+          "variable": 0,
+          "formula": "18 ÷ 3 − 2",
+          "choices": [
+            {
+              "label": "3",
+              "value": "3"
+            },
+            {
+              "label": "4",
+              "value": "4"
+            },
+            {
+              "label": "5",
+              "value": "5"
+            }
+          ],
+          "correctChoice": "4",
+          "hints": [
+            "Faça primeiro as multiplicações e divisões. Para operações de mesma prioridade, siga da esquerda para a direita.",
+            "Observe a conta 18 ÷ 3 − 2. Resolva uma operação de cada vez.",
+            "18 ÷ 3 − 2 = 4. Escolha esse resultado."
+          ],
+          "explanation": "18 ÷ 3 = 6. 6 − 2 = 4. O resultado é 4.",
+          "visual": {
+            "groups": 1,
+            "perGroup": 4,
+            "extra": 0,
+            "label": "unidades do resultado"
+          }
+        },
+        {
+          "id": "equations-13",
+          "sectorId": "launch",
+          "title": "Número que falta · exercício 13",
+          "objective": "Encontrar o número que completa a igualdade",
+          "skill": "EF07MA18",
+          "prompt": "A nave recebeu 3 baterias e ficou com 8 ao todo. Quantas baterias havia antes da entrega?",
+          "kind": "choice",
+          "expression": {
+            "type": "operation",
+            "operation": "add",
+            "left": {
+              "type": "variable"
+            },
+            "right": {
+              "type": "constant",
+              "value": 3
+            }
+          },
+          "variable": 5,
+          "formula": "□ + 3 = 8",
+          "choices": [
+            {
+              "label": "5",
+              "value": "5"
+            },
+            {
+              "label": "6",
+              "value": "6"
+            },
+            {
+              "label": "4",
+              "value": "4"
+            }
+          ],
+          "correctChoice": "5",
+          "hints": [
+            "□ representa um número que deixa os dois lados da igualdade com o mesmo valor.",
+            "Faça as mesmas operações nos dois lados para reunir os termos. Uma equação equivalente é 1 × □ = 5.",
+            "Divida os dois lados por 1: □ = 5. Confira esse valor na igualdade original."
+          ],
+          "explanation": "A equação equivale a 1 × □ = 5. Dividindo os dois lados por 1, obtemos □ = 5. Na igualdade original, os dois lados valem 8.",
+          "visual": {
+            "groups": 1,
+            "perGroup": 5,
+            "extra": 0,
+            "label": "unidades do valor de □"
+          }
+        },
+        {
+          "id": "equations-14",
+          "sectorId": "launch",
+          "title": "Número que falta · exercício 14",
+          "objective": "Encontrar o número que completa a igualdade",
+          "skill": "EF07MA18",
+          "prompt": "A equipe usou 4 peças da reserva e ainda restaram 6. Quantas peças havia na reserva antes do reparo?",
+          "kind": "choice",
+          "expression": {
+            "type": "operation",
+            "operation": "subtract",
+            "left": {
+              "type": "variable"
+            },
+            "right": {
+              "type": "constant",
+              "value": 4
+            }
+          },
+          "variable": 10,
+          "formula": "□ − 4 = 6",
+          "choices": [
+            {
+              "label": "11",
+              "value": "11"
+            },
+            {
+              "label": "9",
+              "value": "9"
+            },
+            {
+              "label": "10",
+              "value": "10"
+            }
+          ],
+          "correctChoice": "10",
+          "hints": [
+            "□ representa um número que deixa os dois lados da igualdade com o mesmo valor.",
+            "Faça as mesmas operações nos dois lados para reunir os termos. Uma equação equivalente é 1 × □ = 10.",
+            "Divida os dois lados por 1: □ = 10. Confira esse valor na igualdade original."
+          ],
+          "explanation": "A equação equivale a 1 × □ = 10. Dividindo os dois lados por 1, obtemos □ = 10. Na igualdade original, os dois lados valem 6.",
+          "visual": {
+            "groups": 1,
+            "perGroup": 10,
+            "extra": 0,
+            "label": "unidades do valor de □"
+          }
+        },
+        {
+          "id": "equations-15",
+          "sectorId": "launch",
+          "title": "Número que falta · exercício 15",
+          "objective": "Encontrar o número que completa a igualdade",
+          "skill": "EF07MA18",
+          "prompt": "Três robôs recebem a mesma quantidade de baterias, usando 15 ao todo. Quantas baterias cada robô recebe?",
+          "kind": "choice",
+          "expression": {
+            "type": "operation",
+            "operation": "multiply",
+            "left": {
+              "type": "constant",
+              "value": 3
+            },
+            "right": {
+              "type": "variable"
+            }
+          },
+          "variable": 5,
+          "formula": "3 × □ = 15",
+          "choices": [
+            {
+              "label": "4",
+              "value": "4"
+            },
+            {
+              "label": "5",
+              "value": "5"
+            },
+            {
+              "label": "6",
+              "value": "6"
+            }
+          ],
+          "correctChoice": "5",
+          "hints": [
+            "□ representa um número que deixa os dois lados da igualdade com o mesmo valor.",
+            "Faça as mesmas operações nos dois lados para reunir os termos. Uma equação equivalente é 3 × □ = 15.",
+            "Divida os dois lados por 3: □ = 5. Confira esse valor na igualdade original."
+          ],
+          "explanation": "A equação equivale a 3 × □ = 15. Dividindo os dois lados por 3, obtemos □ = 5. Na igualdade original, os dois lados valem 15.",
+          "visual": {
+            "groups": 1,
+            "perGroup": 5,
+            "extra": 0,
+            "label": "unidades do valor de □"
+          }
+        },
+        {
+          "id": "equations-16",
+          "sectorId": "launch",
+          "title": "Número que falta · exercício 16",
+          "objective": "Encontrar o número que completa a igualdade",
+          "skill": "EF07MA18",
+          "prompt": "As baterias da nave foram divididas igualmente entre 2 robôs, que receberam 7 cada. Quantas baterias havia ao todo?",
+          "kind": "choice",
+          "expression": {
+            "type": "operation",
+            "operation": "divide",
+            "left": {
+              "type": "variable"
+            },
+            "right": {
+              "type": "constant",
+              "value": 2
+            }
+          },
+          "variable": 14,
+          "formula": "□ ÷ 2 = 7",
+          "choices": [
+            {
+              "label": "14",
+              "value": "14"
+            },
+            {
+              "label": "15",
+              "value": "15"
+            },
+            {
+              "label": "13",
+              "value": "13"
+            }
+          ],
+          "correctChoice": "14",
+          "hints": [
+            "□ representa um número que deixa os dois lados da igualdade com o mesmo valor.",
+            "Faça as mesmas operações nos dois lados para reunir os termos. Uma equação equivalente é 1 × □ = 14.",
+            "Divida os dois lados por 1: □ = 14. Confira esse valor na igualdade original."
+          ],
+          "explanation": "A equação equivale a 1 × □ = 14. Dividindo os dois lados por 1, obtemos □ = 14. Na igualdade original, os dois lados valem 7.",
+          "visual": {
+            "groups": 1,
+            "perGroup": 14,
+            "extra": 0,
+            "label": "unidades do valor de □"
+          }
+        },
+        {
+          "id": "equations-17",
+          "sectorId": "launch",
+          "title": "Número que falta · exercício 17",
+          "objective": "Encontrar o número que completa a igualdade",
+          "skill": "EF07MA18",
+          "prompt": "Duas caixas iguais e 1 cristal avulso somam 9 cristais na nave. Quantos cristais há em cada caixa?",
+          "kind": "choice",
+          "expression": {
+            "type": "operation",
+            "operation": "add",
+            "left": {
+              "type": "operation",
+              "operation": "multiply",
+              "left": {
+                "type": "constant",
+                "value": 2
+              },
+              "right": {
+                "type": "variable"
+              }
+            },
+            "right": {
+              "type": "constant",
+              "value": 1
+            }
+          },
+          "variable": 4,
+          "formula": "2 × □ + 1 = 9",
+          "choices": [
+            {
+              "label": "5",
+              "value": "5"
+            },
+            {
+              "label": "3",
+              "value": "3"
+            },
+            {
+              "label": "4",
+              "value": "4"
+            }
+          ],
+          "correctChoice": "4",
+          "hints": [
+            "□ representa um número que deixa os dois lados da igualdade com o mesmo valor.",
+            "Faça as mesmas operações nos dois lados para reunir os termos. Uma equação equivalente é 2 × □ = 8.",
+            "Divida os dois lados por 2: □ = 4. Confira esse valor na igualdade original."
+          ],
+          "explanation": "A equação equivale a 2 × □ = 8. Dividindo os dois lados por 2, obtemos □ = 4. Na igualdade original, os dois lados valem 9.",
+          "visual": {
+            "groups": 1,
+            "perGroup": 4,
+            "extra": 0,
+            "label": "unidades do valor de □"
+          }
+        },
+        {
+          "id": "launch-1",
+          "sectorId": "launch",
+          "title": "Energia para decolar",
+          "objective": "Contar grupos iguais",
+          "skill": "Apoio à EF08MA06",
+          "prompt": "Dois robôs precisam de 3 baterias cada. Quantas baterias vamos levar?",
+          "kind": "choice",
+          "expression": {
+            "type": "operation",
+            "operation": "multiply",
+            "left": {
+              "type": "constant",
+              "value": 3
+            },
+            "right": {
+              "type": "variable"
+            }
+          },
+          "variable": 2,
+          "formula": "3 × 2",
+          "choices": [
+            {
+              "label": "5 baterias",
+              "value": "5"
+            },
+            {
+              "label": "6 baterias",
+              "value": "6"
+            },
+            {
+              "label": "3 baterias",
+              "value": "3"
+            }
+          ],
+          "hints": [
+            "Cada robô recebe um grupo de 3 baterias.",
+            "São 2 grupos: 3 + 3.",
+            "3 × 2 = 6. Leve 6 baterias."
+          ],
+          "explanation": "3 baterias para cada um dos 2 robôs: 3 + 3 = 3 × 2 = 6.",
+          "visual": {
+            "groups": 2,
+            "perGroup": 3,
+            "extra": 0,
+            "label": "baterias"
+          }
+        },
+        {
+          "id": "launch-2",
+          "sectorId": "launch",
+          "title": "Mais um tripulante",
+          "objective": "Perceber uma regra",
+          "skill": "EF07MA13 · apoio à EF08MA06",
+          "prompt": "Agora são 3 robôs, com 3 baterias cada. Quantas baterias precisamos?",
+          "kind": "number",
+          "expression": {
+            "type": "operation",
+            "operation": "multiply",
+            "left": {
+              "type": "constant",
+              "value": 3
+            },
+            "right": {
+              "type": "variable"
+            }
+          },
+          "variable": 3,
+          "formula": "3 × 3",
+          "hints": [
+            "A quantidade de robôs mudou. Cada um ainda recebe 3 baterias.",
+            "Some 3 + 3 + 3.",
+            "3 × 3 = 9 baterias."
+          ],
+          "explanation": "O total muda com o número de robôs. Para 3 robôs, 3 × 3 = 9.",
+          "visual": {
+            "groups": 3,
+            "perGroup": 3,
+            "extra": 0,
+            "label": "baterias"
+          }
+        },
+        {
+          "id": "launch-3",
+          "sectorId": "launch",
+          "title": "Uma letra na equipe",
+          "objective": "Reconhecer uma variável",
+          "skill": "EF07MA13 · apoio à EF08MA06",
+          "prompt": "Em 3 × x, a letra x representa a quantidade de robôs. O que pode mudar?",
+          "kind": "choice",
+          "expression": {
+            "type": "operation",
+            "operation": "multiply",
+            "left": {
+              "type": "constant",
+              "value": 3
+            },
+            "right": {
+              "type": "variable"
+            }
+          },
+          "variable": 2,
+          "formula": "3 × x",
+          "choices": [
+            {
+              "label": "A quantidade de robôs",
+              "value": "robots"
+            },
+            {
+              "label": "As 3 baterias por robô",
+              "value": "batteries"
+            },
+            {
+              "label": "O sinal de multiplicação",
+              "value": "sign"
+            }
+          ],
+          "correctChoice": "robots",
+          "hints": [
+            "A letra representa uma quantidade que pode variar.",
+            "Cada robô sempre usa 3 baterias. Podemos enviar 2, 3 ou mais robôs.",
+            "x é a quantidade de robôs. Essa quantidade pode mudar."
+          ],
+          "explanation": "x é uma variável: pode representar diferentes quantidades de robôs. O número 3 continua sendo as baterias por robô.",
+          "visual": {
+            "groups": 2,
+            "perGroup": 3,
+            "extra": 0,
+            "label": "baterias"
+          }
+        },
+        {
+          "id": "launch-4",
+          "sectorId": "launch",
+          "title": "Monte o plano",
+          "objective": "Representar uma situação",
+          "skill": "EF07MA13 · apoio à EF08MA06",
+          "prompt": "Cada robô usa 3 baterias e x é a quantidade de robôs. Monte a expressão do total.",
+          "kind": "build",
+          "expression": {
+            "type": "operation",
+            "operation": "multiply",
+            "left": {
+              "type": "constant",
+              "value": 3
+            },
+            "right": {
+              "type": "variable"
+            }
+          },
+          "variable": 2,
+          "formula": "3 × x",
+          "tokens": ["x", "3", "+", "×"],
+          "expectedTokens": ["3", "×", "x"],
+          "equivalentTokens": [["x", "×", "3"]],
+          "hints": [
+            "Precisamos repetir o grupo de 3 para cada robô.",
+            "Use 3, o sinal de multiplicação e a letra x.",
+            "A expressão é 3 × x. Você também pode encontrar a escrita 3x: significa a mesma multiplicação."
+          ],
+          "explanation": "3 × x representa 3 baterias para cada robô. A forma abreviada 3x significa 3 × x.",
+          "visual": {
+            "groups": 2,
+            "perGroup": 3,
+            "extra": 0,
+            "label": "baterias"
+          }
+        },
+        {
+          "id": "launch-5",
+          "sectorId": "launch",
+          "title": "Prontos para partir",
+          "objective": "Substituir a variável",
+          "skill": "EF08MA06",
+          "prompt": "O plano é 3 × x baterias. Se x = 4 robôs, qual é o total?",
+          "kind": "number",
+          "expression": {
+            "type": "operation",
+            "operation": "multiply",
+            "left": {
+              "type": "constant",
+              "value": 3
+            },
+            "right": {
+              "type": "variable"
+            }
+          },
+          "variable": 4,
+          "formula": "3 × x, com x = 4",
+          "hints": [
+            "Troque a letra x pelo número de robôs: 4.",
+            "A expressão fica 3 × 4.",
+            "3 + 3 + 3 + 3 = 12 baterias."
+          ],
+          "explanation": "Substituímos x por 4: 3 × 4 = 12. Esse é o valor numérico da expressão.",
+          "visual": {
+            "groups": 4,
+            "perGroup": 3,
+            "extra": 0,
+            "label": "baterias"
+          }
+        }
+      ],
+      "sources": ["src/content/missions.ts", "docs/Equacoes_do_primeiro_grau.docx"]
+    },
+    {
+      "id": "workshop",
+      "title": "Oficina orbital",
+      "problems": [
+        {
+          "id": "equations-18",
+          "sectorId": "workshop",
+          "title": "Equação · exercício 18",
+          "objective": "Resolver uma equação com x",
+          "skill": "EF07MA18",
+          "prompt": "A oficina tinha x peças e recebeu mais 5, ficando com 12. Quantas peças havia antes da entrega?",
+          "kind": "choice",
+          "expression": {
+            "type": "operation",
+            "operation": "add",
+            "left": {
+              "type": "variable"
+            },
+            "right": {
+              "type": "constant",
+              "value": 5
+            }
+          },
+          "variable": 7,
+          "formula": "x + 5 = 12",
+          "choices": [
+            {
+              "label": "6",
+              "value": "6"
+            },
+            {
+              "label": "7",
+              "value": "7"
+            },
+            {
+              "label": "8",
+              "value": "8"
+            }
+          ],
+          "correctChoice": "7",
+          "hints": [
+            "x representa um número que deixa os dois lados da igualdade com o mesmo valor.",
+            "Faça as mesmas operações nos dois lados para reunir os termos. Uma equação equivalente é 1 × x = 7.",
+            "Divida os dois lados por 1: x = 7. Confira esse valor na igualdade original."
+          ],
+          "explanation": "A equação equivale a 1 × x = 7. Dividindo os dois lados por 1, obtemos x = 7. Na igualdade original, os dois lados valem 12.",
+          "visual": {
+            "groups": 1,
+            "perGroup": 7,
+            "extra": 0,
+            "label": "unidades do valor de x"
+          }
+        },
+        {
+          "id": "equations-19",
+          "sectorId": "workshop",
+          "title": "Equação · exercício 19",
+          "objective": "Resolver uma equação com x",
+          "skill": "EF07MA18",
+          "prompt": "A oficina usou 6 peças de um estoque de x e ainda tem 9. Qual era o estoque antes do reparo?",
+          "kind": "choice",
+          "expression": {
+            "type": "operation",
+            "operation": "subtract",
+            "left": {
+              "type": "variable"
+            },
+            "right": {
+              "type": "constant",
+              "value": 6
+            }
+          },
+          "variable": 15,
+          "formula": "x − 6 = 9",
+          "choices": [
+            {
+              "label": "15",
+              "value": "15"
+            },
+            {
+              "label": "16",
+              "value": "16"
+            },
+            {
+              "label": "14",
+              "value": "14"
+            }
+          ],
+          "correctChoice": "15",
+          "hints": [
+            "x representa um número que deixa os dois lados da igualdade com o mesmo valor.",
+            "Faça as mesmas operações nos dois lados para reunir os termos. Uma equação equivalente é 1 × x = 15.",
+            "Divida os dois lados por 1: x = 15. Confira esse valor na igualdade original."
+          ],
+          "explanation": "A equação equivale a 1 × x = 15. Dividindo os dois lados por 1, obtemos x = 15. Na igualdade original, os dois lados valem 9.",
+          "visual": {
+            "groups": 1,
+            "perGroup": 15,
+            "extra": 0,
+            "label": "unidades do valor de x"
+          }
+        },
+        {
+          "id": "equations-20",
+          "sectorId": "workshop",
+          "title": "Equação · exercício 20",
+          "objective": "Resolver uma equação com x",
+          "skill": "EF07MA18",
+          "prompt": "Quatro motores recebem x cristais cada, usando 20 ao todo. Quantos cristais cada motor recebe?",
+          "kind": "choice",
+          "expression": {
+            "type": "operation",
+            "operation": "multiply",
+            "left": {
+              "type": "constant",
+              "value": 4
+            },
+            "right": {
+              "type": "variable"
+            }
+          },
+          "variable": 5,
+          "formula": "4x = 20",
+          "choices": [
+            {
+              "label": "6",
+              "value": "6"
+            },
+            {
+              "label": "4",
+              "value": "4"
+            },
+            {
+              "label": "5",
+              "value": "5"
+            }
+          ],
+          "correctChoice": "5",
+          "hints": [
+            "x representa um número que deixa os dois lados da igualdade com o mesmo valor.",
+            "Faça as mesmas operações nos dois lados para reunir os termos. Uma equação equivalente é 4 × x = 20.",
+            "Divida os dois lados por 4: x = 5. Confira esse valor na igualdade original."
+          ],
+          "explanation": "A equação equivale a 4 × x = 20. Dividindo os dois lados por 4, obtemos x = 5. Na igualdade original, os dois lados valem 20.",
+          "visual": {
+            "groups": 1,
+            "perGroup": 5,
+            "extra": 0,
+            "label": "unidades do valor de x"
+          }
+        },
+        {
+          "id": "equations-21",
+          "sectorId": "workshop",
+          "title": "Equação · exercício 21",
+          "objective": "Resolver uma equação com x",
+          "skill": "EF07MA18",
+          "prompt": "A oficina divide x baterias igualmente entre 3 robôs, com 6 para cada um. Quantas baterias havia ao todo?",
+          "kind": "choice",
+          "expression": {
+            "type": "operation",
+            "operation": "divide",
+            "left": {
+              "type": "variable"
+            },
+            "right": {
+              "type": "constant",
+              "value": 3
+            }
+          },
+          "variable": 18,
+          "formula": "x/3 = 6",
+          "choices": [
+            {
+              "label": "17",
+              "value": "17"
+            },
+            {
+              "label": "18",
+              "value": "18"
+            },
+            {
+              "label": "19",
+              "value": "19"
+            }
+          ],
+          "correctChoice": "18",
+          "hints": [
+            "x representa um número que deixa os dois lados da igualdade com o mesmo valor.",
+            "Faça as mesmas operações nos dois lados para reunir os termos. Uma equação equivalente é 1 × x = 18.",
+            "Divida os dois lados por 1: x = 18. Confira esse valor na igualdade original."
+          ],
+          "explanation": "A equação equivale a 1 × x = 18. Dividindo os dois lados por 1, obtemos x = 18. Na igualdade original, os dois lados valem 6.",
+          "visual": {
+            "groups": 1,
+            "perGroup": 18,
+            "extra": 0,
+            "label": "unidades do valor de x"
+          }
+        },
+        {
+          "id": "equations-22",
+          "sectorId": "workshop",
+          "title": "Equação · exercício 22",
+          "objective": "Resolver uma equação com x",
+          "skill": "EF07MA18",
+          "prompt": "A oficina tinha x cristais e recebeu 8, ficando com 8 ao todo. Quantos cristais havia antes?",
+          "kind": "choice",
+          "expression": {
+            "type": "operation",
+            "operation": "add",
+            "left": {
+              "type": "variable"
+            },
+            "right": {
+              "type": "constant",
+              "value": 8
+            }
+          },
+          "variable": 0,
+          "formula": "x + 8 = 8",
+          "choices": [
+            {
+              "label": "0",
+              "value": "0"
+            },
+            {
+              "label": "1",
+              "value": "1"
+            },
+            {
+              "label": "-1",
+              "value": "-1"
+            }
+          ],
+          "correctChoice": "0",
+          "hints": [
+            "x representa um número que deixa os dois lados da igualdade com o mesmo valor.",
+            "Faça as mesmas operações nos dois lados para reunir os termos. Uma equação equivalente é 1 × x = 0.",
+            "Divida os dois lados por 1: x = 0. Confira esse valor na igualdade original."
+          ],
+          "explanation": "A equação equivale a 1 × x = 0. Dividindo os dois lados por 1, obtemos x = 0. Na igualdade original, os dois lados valem 8.",
+          "visual": {
+            "groups": 1,
+            "perGroup": 0,
+            "extra": 0,
+            "label": "unidades; um grupo vazio representa zero"
+          }
+        },
+        {
+          "id": "equations-23",
+          "sectorId": "workshop",
+          "title": "Equação · exercício 23",
+          "objective": "Resolver equações com duas operações",
+          "skill": "EF07MA18",
+          "prompt": "Dois kits têm x peças cada, e a oficina acrescenta 3 peças avulsas para completar 13. Quantas peças há em cada kit?",
+          "kind": "choice",
+          "expression": {
+            "type": "operation",
+            "operation": "add",
+            "left": {
+              "type": "operation",
+              "operation": "multiply",
+              "left": {
+                "type": "constant",
+                "value": 2
+              },
+              "right": {
+                "type": "variable"
+              }
+            },
+            "right": {
+              "type": "constant",
+              "value": 3
+            }
+          },
+          "variable": 5,
+          "formula": "2x + 3 = 13",
+          "choices": [
+            {
+              "label": "6",
+              "value": "6"
+            },
+            {
+              "label": "4",
+              "value": "4"
+            },
+            {
+              "label": "5",
+              "value": "5"
+            }
+          ],
+          "correctChoice": "5",
+          "hints": [
+            "x representa um número que deixa os dois lados da igualdade com o mesmo valor.",
+            "Faça as mesmas operações nos dois lados para reunir os termos. Uma equação equivalente é 2 × x = 10.",
+            "Divida os dois lados por 2: x = 5. Confira esse valor na igualdade original."
+          ],
+          "explanation": "A equação equivale a 2 × x = 10. Dividindo os dois lados por 2, obtemos x = 5. Na igualdade original, os dois lados valem 13.",
+          "visual": {
+            "groups": 1,
+            "perGroup": 5,
+            "extra": 0,
+            "label": "unidades do valor de x"
+          }
+        },
+        {
+          "id": "equations-24",
+          "sectorId": "workshop",
+          "title": "Equação · exercício 24",
+          "objective": "Resolver equações com duas operações",
+          "skill": "EF07MA18",
+          "prompt": "A oficina abre 3 caixas com x peças cada e usa 4 peças, restando 17. Quantas peças havia em cada caixa?",
+          "kind": "choice",
+          "expression": {
+            "type": "operation",
+            "operation": "subtract",
+            "left": {
+              "type": "operation",
+              "operation": "multiply",
+              "left": {
+                "type": "constant",
+                "value": 3
+              },
+              "right": {
+                "type": "variable"
+              }
+            },
+            "right": {
+              "type": "constant",
+              "value": 4
+            }
+          },
+          "variable": 7,
+          "formula": "3x − 4 = 17",
+          "choices": [
+            {
+              "label": "6",
+              "value": "6"
+            },
+            {
+              "label": "7",
+              "value": "7"
+            },
+            {
+              "label": "8",
+              "value": "8"
+            }
+          ],
+          "correctChoice": "7",
+          "hints": [
+            "x representa um número que deixa os dois lados da igualdade com o mesmo valor.",
+            "Faça as mesmas operações nos dois lados para reunir os termos. Uma equação equivalente é 3 × x = 21.",
+            "Divida os dois lados por 3: x = 7. Confira esse valor na igualdade original."
+          ],
+          "explanation": "A equação equivale a 3 × x = 21. Dividindo os dois lados por 3, obtemos x = 7. Na igualdade original, os dois lados valem 17.",
+          "visual": {
+            "groups": 1,
+            "perGroup": 7,
+            "extra": 0,
+            "label": "unidades do valor de x"
+          }
+        },
+        {
+          "id": "equations-25",
+          "sectorId": "workshop",
+          "title": "Equação · exercício 25",
+          "objective": "Resolver equações com duas operações",
+          "skill": "EF07MA18",
+          "prompt": "Cinco antenas usam x cristais cada, e a oficina separa mais 2 de reserva, totalizando 32. Quantos cristais cada antena usa?",
+          "kind": "choice",
+          "expression": {
+            "type": "operation",
+            "operation": "add",
+            "left": {
+              "type": "operation",
+              "operation": "multiply",
+              "left": {
+                "type": "constant",
+                "value": 5
+              },
+              "right": {
+                "type": "variable"
+              }
+            },
+            "right": {
+              "type": "constant",
+              "value": 2
+            }
+          },
+          "variable": 6,
+          "formula": "5x + 2 = 32",
+          "choices": [
+            {
+              "label": "6",
+              "value": "6"
+            },
+            {
+              "label": "7",
+              "value": "7"
+            },
+            {
+              "label": "5",
+              "value": "5"
+            }
+          ],
+          "correctChoice": "6",
+          "hints": [
+            "x representa um número que deixa os dois lados da igualdade com o mesmo valor.",
+            "Faça as mesmas operações nos dois lados para reunir os termos. Uma equação equivalente é 5 × x = 30.",
+            "Divida os dois lados por 5: x = 6. Confira esse valor na igualdade original."
+          ],
+          "explanation": "A equação equivale a 5 × x = 30. Dividindo os dois lados por 5, obtemos x = 6. Na igualdade original, os dois lados valem 32.",
+          "visual": {
+            "groups": 1,
+            "perGroup": 6,
+            "extra": 0,
+            "label": "unidades do valor de x"
+          }
+        },
+        {
+          "id": "equations-26",
+          "sectorId": "workshop",
+          "title": "Equação · exercício 26",
+          "objective": "Resolver equações com duas operações",
+          "skill": "EF07MA18",
+          "prompt": "Um motor recebe metade do estoque de x cristais e mais 4 cristais, ficando com 10. Qual era o estoque da oficina?",
+          "kind": "choice",
+          "expression": {
+            "type": "operation",
+            "operation": "add",
+            "left": {
+              "type": "operation",
+              "operation": "divide",
+              "left": {
+                "type": "variable"
+              },
+              "right": {
+                "type": "constant",
+                "value": 2
+              }
+            },
+            "right": {
+              "type": "constant",
+              "value": 4
+            }
+          },
+          "variable": 12,
+          "formula": "x/2 + 4 = 10",
+          "choices": [
+            {
+              "label": "13",
+              "value": "13"
+            },
+            {
+              "label": "11",
+              "value": "11"
+            },
+            {
+              "label": "12",
+              "value": "12"
+            }
+          ],
+          "correctChoice": "12",
+          "hints": [
+            "x representa um número que deixa os dois lados da igualdade com o mesmo valor.",
+            "Faça as mesmas operações nos dois lados para reunir os termos. Uma equação equivalente é 1 × x = 12.",
+            "Divida os dois lados por 1: x = 12. Confira esse valor na igualdade original."
+          ],
+          "explanation": "A equação equivale a 1 × x = 12. Dividindo os dois lados por 1, obtemos x = 12. Na igualdade original, os dois lados valem 10.",
+          "visual": {
+            "groups": 1,
+            "perGroup": 12,
+            "extra": 0,
+            "label": "unidades do valor de x"
+          }
+        },
+        {
+          "id": "equations-27",
+          "sectorId": "workshop",
+          "title": "Equação · exercício 27",
+          "objective": "Resolver equações com duas operações",
+          "skill": "EF07MA18",
+          "prompt": "O sensor da oficina parte de 7 °C e subtrai duas vezes um ajuste x, que pode ser negativo, chegando a 15 °C. Qual é x?",
+          "kind": "choice",
+          "expression": {
+            "type": "operation",
+            "operation": "subtract",
+            "left": {
+              "type": "constant",
+              "value": 7
+            },
+            "right": {
+              "type": "operation",
+              "operation": "multiply",
+              "left": {
+                "type": "constant",
+                "value": 2
+              },
+              "right": {
+                "type": "variable"
+              }
+            }
+          },
+          "variable": -4,
+          "formula": "7 − 2x = 15",
+          "choices": [
+            {
+              "label": "-5",
+              "value": "-5"
+            },
+            {
+              "label": "-4",
+              "value": "-4"
+            },
+            {
+              "label": "-3",
+              "value": "-3"
+            }
+          ],
+          "correctChoice": "-4",
+          "hints": [
+            "x representa um número que deixa os dois lados da igualdade com o mesmo valor.",
+            "Faça as mesmas operações nos dois lados para reunir os termos. Uma equação equivalente é -2 × x = 8.",
+            "Divida os dois lados por -2: x = -4. Confira esse valor na igualdade original."
+          ],
+          "explanation": "A equação equivale a -2 × x = 8. Dividindo os dois lados por -2, obtemos x = -4. Na igualdade original, os dois lados valem 15.",
+          "visual": {
+            "groups": 1,
+            "perGroup": 4,
+            "extra": 0,
+            "label": "unidades negativas; cada objeto representa −1"
+          }
+        },
+        {
+          "id": "workshop-1",
+          "sectorId": "workshop",
+          "title": "Reserva de energia",
+          "objective": "Calcular uma soma com variável",
+          "skill": "EF08MA06",
+          "prompt": "A nave tem x cristais e encontra mais 4. Se x = 3, quantos cristais terá?",
+          "kind": "choice",
+          "expression": {
+            "type": "operation",
+            "operation": "add",
+            "left": {
+              "type": "variable"
+            },
+            "right": {
+              "type": "constant",
+              "value": 4
+            }
+          },
+          "variable": 3,
+          "formula": "x + 4, com x = 3",
+          "choices": [
+            {
+              "label": "12 cristais",
+              "value": "12"
+            },
+            {
+              "label": "7 cristais",
+              "value": "7"
+            },
+            {
+              "label": "4 cristais",
+              "value": "4"
+            }
+          ],
+          "hints": [
+            "x representa os 3 cristais que a nave já tem.",
+            "Troque x por 3: 3 + 4.",
+            "3 + 4 = 7 cristais."
+          ],
+          "explanation": "O valor de x + 4 para x = 3 é 3 + 4 = 7.",
+          "visual": {
+            "groups": 1,
+            "perGroup": 3,
+            "extra": 4,
+            "label": "cristais"
+          }
+        },
+        {
+          "id": "workshop-2",
+          "sectorId": "workshop",
+          "title": "Motores em dobro",
+          "objective": "Ler multiplicação abreviada",
+          "skill": "EF08MA06",
+          "prompt": "O motor usa 2x cristais: isso significa 2 × x. Se x = 4, quantos cristais ele usa?",
+          "kind": "number",
+          "expression": {
+            "type": "operation",
+            "operation": "multiply",
+            "left": {
+              "type": "constant",
+              "value": 2
+            },
+            "right": {
+              "type": "variable"
+            }
+          },
+          "variable": 4,
+          "formula": "2x = 2 × x, com x = 4",
+          "hints": [
+            "2x significa 2 vezes o valor de x.",
+            "Substitua x por 4: 2 × 4.",
+            "2 × 4 = 8 cristais."
+          ],
+          "explanation": "O número junto da letra indica multiplicação: 2x = 2 × 4 = 8.",
+          "visual": {
+            "groups": 2,
+            "perGroup": 4,
+            "extra": 0,
+            "label": "cristais"
+          }
+        },
+        {
+          "id": "workshop-3",
+          "sectorId": "workshop",
+          "title": "Carga extra",
+          "objective": "Multiplicar antes de somar",
+          "skill": "EF08MA06",
+          "prompt": "Cada um dos x robôs leva 2 peças, e a nave leva 3 extras. Para x = 3, quantas peças são?",
+          "kind": "number",
+          "expression": {
+            "type": "operation",
+            "operation": "add",
+            "left": {
+              "type": "operation",
+              "operation": "multiply",
+              "left": {
+                "type": "constant",
+                "value": 2
+              },
+              "right": {
+                "type": "variable"
+              }
+            },
+            "right": {
+              "type": "constant",
+              "value": 3
+            }
+          },
+          "variable": 3,
+          "formula": "2x + 3, com x = 3",
+          "hints": [
+            "Conte as peças dos robôs antes de juntar as extras.",
+            "Primeiro 2 × 3 = 6. Depois some 3.",
+            "6 + 3 = 9 peças."
+          ],
+          "explanation": "Em 2 × 3 + 3, fazemos a multiplicação primeiro: 6 + 3 = 9.",
+          "visual": {
+            "groups": 3,
+            "perGroup": 2,
+            "extra": 3,
+            "label": "peças"
+          }
+        },
+        {
+          "id": "workshop-4",
+          "sectorId": "workshop",
+          "title": "Kits de reparo",
+          "objective": "Resolver os parênteses primeiro",
+          "skill": "EF08MA06",
+          "prompt": "Cada kit tem x peças e 2 reservas. Dois kits, com x = 3: quantas peças ao todo?",
+          "kind": "choice",
+          "expression": {
+            "type": "operation",
+            "operation": "multiply",
+            "left": {
+              "type": "constant",
+              "value": 2
+            },
+            "right": {
+              "type": "operation",
+              "operation": "add",
+              "left": {
+                "type": "variable"
+              },
+              "right": {
+                "type": "constant",
+                "value": 2
+              }
+            }
+          },
+          "variable": 3,
+          "formula": "2 × (x + 2), com x = 3",
+          "choices": [
+            {
+              "label": "8 peças",
+              "value": "8"
+            },
+            {
+              "label": "7 peças",
+              "value": "7"
+            },
+            {
+              "label": "10 peças",
+              "value": "10"
+            }
+          ],
+          "hints": [
+            "Os parênteses mostram o que vai dentro de cada kit.",
+            "Primeiro 3 + 2 = 5 peças por kit.",
+            "Depois 2 × 5 = 10 peças."
+          ],
+          "explanation": "Resolvemos os parênteses: 2 × (3 + 2) = 2 × 5 = 10.",
+          "visual": {
+            "groups": 2,
+            "perGroup": 5,
+            "extra": 0,
+            "label": "peças"
+          }
+        },
+        {
+          "id": "workshop-5",
+          "sectorId": "workshop",
+          "title": "Sinal restaurado",
+          "objective": "Combinar substituição e operações",
+          "skill": "EF08MA06",
+          "prompt": "A antena precisa de 3x + 2 cristais. Para x = 4, quantos cristais vamos separar?",
+          "kind": "number",
+          "expression": {
+            "type": "operation",
+            "operation": "add",
+            "left": {
+              "type": "operation",
+              "operation": "multiply",
+              "left": {
+                "type": "constant",
+                "value": 3
+              },
+              "right": {
+                "type": "variable"
+              }
+            },
+            "right": {
+              "type": "constant",
+              "value": 2
+            }
+          },
+          "variable": 4,
+          "formula": "3x + 2, com x = 4",
+          "hints": [
+            "Troque x por 4.",
+            "Calcule 3 × 4 = 12, antes de somar.",
+            "12 + 2 = 14 cristais."
+          ],
+          "explanation": "3x + 2 = 3 × 4 + 2 = 12 + 2 = 14. A antena pode voltar a funcionar!",
+          "visual": {
+            "groups": 4,
+            "perGroup": 3,
+            "extra": 2,
+            "label": "cristais"
+          }
+        }
+      ],
+      "sources": ["src/content/missions.ts", "docs/Equacoes_do_primeiro_grau.docx"]
+    },
+    {
+      "id": "base",
+      "title": "Base de exploração",
+      "problems": [
+        {
+          "id": "equations-28",
+          "sectorId": "base",
+          "title": "Equação · exercício 28",
+          "objective": "Resolver equações com incógnita nos dois lados",
+          "skill": "EF07MA18",
+          "prompt": "Na base, 3 caixas iguais mais 2 cristais têm o mesmo total que 1 caixa mais 10 cristais. Quantos cristais há em cada caixa (x)?",
+          "kind": "choice",
+          "expression": {
+            "type": "operation",
+            "operation": "add",
+            "left": {
+              "type": "operation",
+              "operation": "multiply",
+              "left": {
+                "type": "constant",
+                "value": 3
+              },
+              "right": {
+                "type": "variable"
+              }
+            },
+            "right": {
+              "type": "constant",
+              "value": 2
+            }
+          },
+          "variable": 4,
+          "formula": "3x + 2 = x + 10",
+          "choices": [
+            {
+              "label": "4",
+              "value": "4"
+            },
+            {
+              "label": "5",
+              "value": "5"
+            },
+            {
+              "label": "3",
+              "value": "3"
+            }
+          ],
+          "correctChoice": "4",
+          "hints": [
+            "x representa um número que deixa os dois lados da igualdade com o mesmo valor.",
+            "Faça as mesmas operações nos dois lados para reunir os termos. Uma equação equivalente é 2 × x = 8.",
+            "Divida os dois lados por 2: x = 4. Confira esse valor na igualdade original."
+          ],
+          "explanation": "A equação equivale a 2 × x = 8. Dividindo os dois lados por 2, obtemos x = 4. Na igualdade original, os dois lados valem 14.",
+          "visual": {
+            "groups": 1,
+            "perGroup": 4,
+            "extra": 0,
+            "label": "unidades do valor de x"
+          }
+        },
+        {
+          "id": "equations-29",
+          "sectorId": "base",
+          "title": "Equação · exercício 29",
+          "objective": "Resolver equações com incógnita nos dois lados",
+          "skill": "EF07MA18",
+          "prompt": "Retire 3 peças do total de 5 kits iguais: sobram tantas peças quanto em 2 kits mais 12 peças. Quantas peças há em cada kit (x)?",
+          "kind": "choice",
+          "expression": {
+            "type": "operation",
+            "operation": "subtract",
+            "left": {
+              "type": "operation",
+              "operation": "multiply",
+              "left": {
+                "type": "constant",
+                "value": 5
+              },
+              "right": {
+                "type": "variable"
+              }
+            },
+            "right": {
+              "type": "constant",
+              "value": 3
+            }
+          },
+          "variable": 5,
+          "formula": "5x − 3 = 2x + 12",
+          "choices": [
+            {
+              "label": "6",
+              "value": "6"
+            },
+            {
+              "label": "4",
+              "value": "4"
+            },
+            {
+              "label": "5",
+              "value": "5"
+            }
+          ],
+          "correctChoice": "5",
+          "hints": [
+            "x representa um número que deixa os dois lados da igualdade com o mesmo valor.",
+            "Faça as mesmas operações nos dois lados para reunir os termos. Uma equação equivalente é 3 × x = 15.",
+            "Divida os dois lados por 3: x = 5. Confira esse valor na igualdade original."
+          ],
+          "explanation": "A equação equivale a 3 × x = 15. Dividindo os dois lados por 3, obtemos x = 5. Na igualdade original, os dois lados valem 22.",
+          "visual": {
+            "groups": 1,
+            "perGroup": 5,
+            "extra": 0,
+            "label": "unidades do valor de x"
+          }
+        },
+        {
+          "id": "equations-30",
+          "sectorId": "base",
+          "title": "Equação · exercício 30",
+          "objective": "Resolver equações com incógnita nos dois lados",
+          "skill": "EF07MA18",
+          "prompt": "Na base, 7 caixas iguais mais 4 cristais têm o mesmo total que 3 caixas mais 20 cristais. Quantos cristais há em cada caixa (x)?",
+          "kind": "choice",
+          "expression": {
+            "type": "operation",
+            "operation": "add",
+            "left": {
+              "type": "operation",
+              "operation": "multiply",
+              "left": {
+                "type": "constant",
+                "value": 7
+              },
+              "right": {
+                "type": "variable"
+              }
+            },
+            "right": {
+              "type": "constant",
+              "value": 4
+            }
+          },
+          "variable": 4,
+          "formula": "7x + 4 = 3x + 20",
+          "choices": [
+            {
+              "label": "3",
+              "value": "3"
+            },
+            {
+              "label": "4",
+              "value": "4"
+            },
+            {
+              "label": "5",
+              "value": "5"
+            }
+          ],
+          "correctChoice": "4",
+          "hints": [
+            "x representa um número que deixa os dois lados da igualdade com o mesmo valor.",
+            "Faça as mesmas operações nos dois lados para reunir os termos. Uma equação equivalente é 4 × x = 16.",
+            "Divida os dois lados por 4: x = 4. Confira esse valor na igualdade original."
+          ],
+          "explanation": "A equação equivale a 4 × x = 16. Dividindo os dois lados por 4, obtemos x = 4. Na igualdade original, os dois lados valem 32.",
+          "visual": {
+            "groups": 1,
+            "perGroup": 4,
+            "extra": 0,
+            "label": "unidades do valor de x"
+          }
+        },
+        {
+          "id": "equations-31",
+          "sectorId": "base",
+          "title": "Equação · exercício 31",
+          "objective": "Resolver equações com incógnita nos dois lados",
+          "skill": "EF07MA18",
+          "prompt": "Se a base usar 8 cristais de 6 caixas iguais, restará o mesmo total que em 2 caixas mais 4 cristais. Quantos cristais há em cada caixa (x)?",
+          "kind": "choice",
+          "expression": {
+            "type": "operation",
+            "operation": "subtract",
+            "left": {
+              "type": "operation",
+              "operation": "multiply",
+              "left": {
+                "type": "constant",
+                "value": 6
+              },
+              "right": {
+                "type": "variable"
+              }
+            },
+            "right": {
+              "type": "constant",
+              "value": 8
+            }
+          },
+          "variable": 3,
+          "formula": "6x − 8 = 2x + 4",
+          "choices": [
+            {
+              "label": "3",
+              "value": "3"
+            },
+            {
+              "label": "4",
+              "value": "4"
+            },
+            {
+              "label": "2",
+              "value": "2"
+            }
+          ],
+          "correctChoice": "3",
+          "hints": [
+            "x representa um número que deixa os dois lados da igualdade com o mesmo valor.",
+            "Faça as mesmas operações nos dois lados para reunir os termos. Uma equação equivalente é 4 × x = 12.",
+            "Divida os dois lados por 4: x = 3. Confira esse valor na igualdade original."
+          ],
+          "explanation": "A equação equivale a 4 × x = 12. Dividindo os dois lados por 4, obtemos x = 3. Na igualdade original, os dois lados valem 10.",
+          "visual": {
+            "groups": 1,
+            "perGroup": 3,
+            "extra": 0,
+            "label": "unidades do valor de x"
+          }
+        },
+        {
+          "id": "equations-32",
+          "sectorId": "base",
+          "title": "Equação · exercício 32",
+          "objective": "Resolver equações com incógnita nos dois lados",
+          "skill": "EF07MA18",
+          "prompt": "Na base, um sensor soma 9 ao dobro de x; outro soma 18 a cinco vezes x. Qual ajuste x faz os dois mostrarem a mesma temperatura?",
+          "kind": "choice",
+          "expression": {
+            "type": "operation",
+            "operation": "add",
+            "left": {
+              "type": "operation",
+              "operation": "multiply",
+              "left": {
+                "type": "constant",
+                "value": 2
+              },
+              "right": {
+                "type": "variable"
+              }
+            },
+            "right": {
+              "type": "constant",
+              "value": 9
+            }
+          },
+          "variable": -3,
+          "formula": "2x + 9 = 5x + 18",
+          "choices": [
+            {
+              "label": "-2",
+              "value": "-2"
+            },
+            {
+              "label": "-4",
+              "value": "-4"
+            },
+            {
+              "label": "-3",
+              "value": "-3"
+            }
+          ],
+          "correctChoice": "-3",
+          "hints": [
+            "x representa um número que deixa os dois lados da igualdade com o mesmo valor.",
+            "Faça as mesmas operações nos dois lados para reunir os termos. Uma equação equivalente é -3 × x = 9.",
+            "Divida os dois lados por -3: x = -3. Confira esse valor na igualdade original."
+          ],
+          "explanation": "A equação equivale a -3 × x = 9. Dividindo os dois lados por -3, obtemos x = -3. Na igualdade original, os dois lados valem 3.",
+          "visual": {
+            "groups": 1,
+            "perGroup": 3,
+            "extra": 0,
+            "label": "unidades negativas; cada objeto representa −1"
+          }
+        },
+        {
+          "id": "equations-33",
+          "sectorId": "base",
+          "title": "Equação · exercício 33",
+          "objective": "Resolver equações com parênteses e frações",
+          "skill": "EF07MA18",
+          "prompt": "Dois kits da base têm x peças e 3 reservas cada, somando 18 peças. Quantas peças há em cada kit sem as reservas?",
+          "kind": "choice",
+          "expression": {
+            "type": "operation",
+            "operation": "multiply",
+            "left": {
+              "type": "constant",
+              "value": 2
+            },
+            "right": {
+              "type": "operation",
+              "operation": "add",
+              "left": {
+                "type": "variable"
+              },
+              "right": {
+                "type": "constant",
+                "value": 3
+              }
+            }
+          },
+          "variable": 6,
+          "formula": "2(x + 3) = 18",
+          "choices": [
+            {
+              "label": "5",
+              "value": "5"
+            },
+            {
+              "label": "6",
+              "value": "6"
+            },
+            {
+              "label": "7",
+              "value": "7"
+            }
+          ],
+          "correctChoice": "6",
+          "hints": [
+            "x representa um número que deixa os dois lados da igualdade com o mesmo valor.",
+            "Faça as mesmas operações nos dois lados para reunir os termos. Uma equação equivalente é 2 × x = 12.",
+            "Divida os dois lados por 2: x = 6. Confira esse valor na igualdade original."
+          ],
+          "explanation": "A equação equivale a 2 × x = 12. Dividindo os dois lados por 2, obtemos x = 6. Na igualdade original, os dois lados valem 18.",
+          "visual": {
+            "groups": 1,
+            "perGroup": 6,
+            "extra": 0,
+            "label": "unidades do valor de x"
+          }
+        },
+        {
+          "id": "equations-34",
+          "sectorId": "base",
+          "title": "Equação · exercício 34",
+          "objective": "Resolver equações com parênteses e frações",
+          "skill": "EF07MA18",
+          "prompt": "A base retira 2 peças de cada uma de 3 caixas iguais e junta mais 4 peças, ficando com 19. Quantas peças havia em cada caixa (x)?",
+          "kind": "choice",
+          "expression": {
+            "type": "operation",
+            "operation": "add",
+            "left": {
+              "type": "operation",
+              "operation": "multiply",
+              "left": {
+                "type": "constant",
+                "value": 3
+              },
+              "right": {
+                "type": "operation",
+                "operation": "subtract",
+                "left": {
+                  "type": "variable"
+                },
+                "right": {
+                  "type": "constant",
+                  "value": 2
+                }
+              }
+            },
+            "right": {
+              "type": "constant",
+              "value": 4
+            }
+          },
+          "variable": 7,
+          "formula": "3(x − 2) + 4 = 19",
+          "choices": [
+            {
+              "label": "7",
+              "value": "7"
+            },
+            {
+              "label": "8",
+              "value": "8"
+            },
+            {
+              "label": "6",
+              "value": "6"
+            }
+          ],
+          "correctChoice": "7",
+          "hints": [
+            "x representa um número que deixa os dois lados da igualdade com o mesmo valor.",
+            "Faça as mesmas operações nos dois lados para reunir os termos. Uma equação equivalente é 3 × x = 21.",
+            "Divida os dois lados por 3: x = 7. Confira esse valor na igualdade original."
+          ],
+          "explanation": "A equação equivale a 3 × x = 21. Dividindo os dois lados por 3, obtemos x = 7. Na igualdade original, os dois lados valem 19.",
+          "visual": {
+            "groups": 1,
+            "perGroup": 7,
+            "extra": 0,
+            "label": "unidades do valor de x"
+          }
+        },
+        {
+          "id": "equations-35",
+          "sectorId": "base",
+          "title": "Equação · exercício 35",
+          "objective": "Resolver equações com parênteses e frações",
+          "skill": "EF07MA18",
+          "prompt": "Na base, 4 kits com uma peça extra cada equivalem a 2 kits sem extras mais 18 peças. Quantas peças tem cada kit sem extras (x)?",
+          "kind": "choice",
+          "expression": {
+            "type": "operation",
+            "operation": "multiply",
+            "left": {
+              "type": "constant",
+              "value": 4
+            },
+            "right": {
+              "type": "operation",
+              "operation": "add",
+              "left": {
+                "type": "variable"
+              },
+              "right": {
+                "type": "constant",
+                "value": 1
+              }
+            }
+          },
+          "variable": 7,
+          "formula": "4(x + 1) = 2x + 18",
+          "choices": [
+            {
+              "label": "8",
+              "value": "8"
+            },
+            {
+              "label": "6",
+              "value": "6"
+            },
+            {
+              "label": "7",
+              "value": "7"
+            }
+          ],
+          "correctChoice": "7",
+          "hints": [
+            "x representa um número que deixa os dois lados da igualdade com o mesmo valor.",
+            "Faça as mesmas operações nos dois lados para reunir os termos. Uma equação equivalente é 2 × x = 14.",
+            "Divida os dois lados por 2: x = 7. Confira esse valor na igualdade original."
+          ],
+          "explanation": "A equação equivale a 2 × x = 14. Dividindo os dois lados por 2, obtemos x = 7. Na igualdade original, os dois lados valem 32.",
+          "visual": {
+            "groups": 1,
+            "perGroup": 7,
+            "extra": 0,
+            "label": "unidades do valor de x"
+          }
+        },
+        {
+          "id": "equations-36",
+          "sectorId": "base",
+          "title": "Equação · exercício 36",
+          "objective": "Resolver equações com parênteses e frações",
+          "skill": "EF07MA18",
+          "prompt": "A base encontra mais 2 litros de combustível e divide todo o estoque entre 3 robôs, com 5 litros para cada um. Quantos litros havia antes (x)?",
+          "kind": "choice",
+          "expression": {
+            "type": "operation",
+            "operation": "divide",
+            "left": {
+              "type": "operation",
+              "operation": "add",
+              "left": {
+                "type": "variable"
+              },
+              "right": {
+                "type": "constant",
+                "value": 2
+              }
+            },
+            "right": {
+              "type": "constant",
+              "value": 3
+            }
+          },
+          "variable": 13,
+          "formula": "(x + 2)/3 = 5",
+          "choices": [
+            {
+              "label": "12",
+              "value": "12"
+            },
+            {
+              "label": "13",
+              "value": "13"
+            },
+            {
+              "label": "14",
+              "value": "14"
+            }
+          ],
+          "correctChoice": "13",
+          "hints": [
+            "x representa um número que deixa os dois lados da igualdade com o mesmo valor.",
+            "Faça as mesmas operações nos dois lados para reunir os termos. Uma equação equivalente é 1 × x = 13.",
+            "Divida os dois lados por 1: x = 13. Confira esse valor na igualdade original."
+          ],
+          "explanation": "A equação equivale a 1 × x = 13. Dividindo os dois lados por 1, obtemos x = 13. Na igualdade original, os dois lados valem 5.",
+          "visual": {
+            "groups": 1,
+            "perGroup": 13,
+            "extra": 0,
+            "label": "unidades do valor de x"
+          }
+        },
+        {
+          "id": "equations-37",
+          "sectorId": "base",
+          "title": "Equação · exercício 37",
+          "objective": "Resolver equações com parênteses e frações",
+          "skill": "EF07MA18",
+          "prompt": "Uma máquina da base mistura metade de (x − 1) litros com um terço de (x + 2) litros e produz 6 litros. Qual volume x foi usado na regra?",
+          "kind": "choice",
+          "expression": {
+            "type": "operation",
+            "operation": "add",
+            "left": {
+              "type": "operation",
+              "operation": "divide",
+              "left": {
+                "type": "operation",
+                "operation": "subtract",
+                "left": {
+                  "type": "variable"
+                },
+                "right": {
+                  "type": "constant",
+                  "value": 1
+                }
+              },
+              "right": {
+                "type": "constant",
+                "value": 2
+              }
+            },
+            "right": {
+              "type": "operation",
+              "operation": "divide",
+              "left": {
+                "type": "operation",
+                "operation": "add",
+                "left": {
+                  "type": "variable"
+                },
+                "right": {
+                  "type": "constant",
+                  "value": 2
+                }
+              },
+              "right": {
+                "type": "constant",
+                "value": 3
+              }
+            }
+          },
+          "variable": 7,
+          "formula": "(x − 1)/2 + (x + 2)/3 = 6",
+          "choices": [
+            {
+              "label": "7",
+              "value": "7"
+            },
+            {
+              "label": "8",
+              "value": "8"
+            },
+            {
+              "label": "6",
+              "value": "6"
+            }
+          ],
+          "correctChoice": "7",
+          "hints": [
+            "x representa um número que deixa os dois lados da igualdade com o mesmo valor.",
+            "Faça as mesmas operações nos dois lados para reunir os termos. Uma equação equivalente é 5 × x = 35.",
+            "Divida os dois lados por 5: x = 7. Confira esse valor na igualdade original."
+          ],
+          "explanation": "A equação equivale a 5 × x = 35. Dividindo os dois lados por 5, obtemos x = 7. Na igualdade original, os dois lados valem 6.",
+          "visual": {
+            "groups": 1,
+            "perGroup": 7,
+            "extra": 0,
+            "label": "unidades do valor de x"
+          }
+        },
+        {
+          "id": "base-1",
+          "sectorId": "base",
+          "title": "Rotas equivalentes",
+          "objective": "Reconhecer a propriedade comutativa",
+          "skill": "EF08MA06",
+          "prompt": "O painel mostra x + 4 cristais. Qual expressão dá o mesmo total para qualquer valor de x?",
+          "kind": "choice",
+          "expression": {
+            "type": "operation",
+            "operation": "add",
+            "left": {
+              "type": "variable"
+            },
+            "right": {
+              "type": "constant",
+              "value": 4
+            }
+          },
+          "variable": 3,
+          "formula": "x + 4",
+          "choices": [
+            {
+              "label": "4 × x",
+              "value": "multiply"
+            },
+            {
+              "label": "4 + x",
+              "value": "commute"
+            },
+            {
+              "label": "x + x",
+              "value": "double"
+            }
+          ],
+          "correctChoice": "commute",
+          "hints": [
+            "Na adição, podemos trocar a ordem das parcelas.",
+            "Com x = 3, 3 + 4 e 4 + 3 dão 7.",
+            "A expressão equivalente é 4 + x. A soma não muda ao trocar a ordem."
+          ],
+          "explanation": "x + 4 = 4 + x para qualquer valor de x. Essa é a propriedade comutativa da adição.",
+          "visual": {
+            "groups": 1,
+            "perGroup": 3,
+            "extra": 4,
+            "label": "cristais"
+          }
+        },
+        {
+          "id": "base-2",
+          "sectorId": "base",
+          "title": "Distribua os recursos",
+          "objective": "Explorar a propriedade distributiva",
+          "skill": "EF08MA06",
+          "prompt": "Dois kits levam x peças e 2 reservas cada. Qual expressão equivale a 2 × (x + 2)?",
+          "kind": "choice",
+          "expression": {
+            "type": "operation",
+            "operation": "multiply",
+            "left": {
+              "type": "constant",
+              "value": 2
+            },
+            "right": {
+              "type": "operation",
+              "operation": "add",
+              "left": {
+                "type": "variable"
+              },
+              "right": {
+                "type": "constant",
+                "value": 2
+              }
+            }
+          },
+          "variable": 3,
+          "formula": "2 × (x + 2)",
+          "choices": [
+            {
+              "label": "2x + 2",
+              "value": "partial"
+            },
+            {
+              "label": "x + 4",
+              "value": "single"
+            },
+            {
+              "label": "2x + 4",
+              "value": "distribute"
+            }
+          ],
+          "correctChoice": "distribute",
+          "hints": [
+            "Cada parte do kit aparece duas vezes.",
+            "Multiplique x por 2 e também as 2 reservas por 2.",
+            "2 × x + 2 × 2 = 2x + 4."
+          ],
+          "explanation": "Distribuímos o 2 pelas duas parcelas: 2 × (x + 2) = 2x + 4.",
+          "visual": {
+            "groups": 2,
+            "perGroup": 5,
+            "extra": 0,
+            "label": "peças"
+          }
+        },
+        {
+          "id": "base-3",
+          "sectorId": "base",
+          "title": "Confirme a descoberta",
+          "objective": "Calcular usando uma equivalência",
+          "skill": "EF08MA06",
+          "prompt": "Use 2x + 4 para contar as peças dos kits. Se x = 4, qual é o total?",
+          "kind": "number",
+          "expression": {
+            "type": "operation",
+            "operation": "add",
+            "left": {
+              "type": "operation",
+              "operation": "multiply",
+              "left": {
+                "type": "constant",
+                "value": 2
+              },
+              "right": {
+                "type": "variable"
+              }
+            },
+            "right": {
+              "type": "constant",
+              "value": 4
+            }
+          },
+          "variable": 4,
+          "formula": "2x + 4, com x = 4",
+          "hints": [
+            "Use a regra descoberta: 2 vezes x, mais 4.",
+            "2 × 4 = 8.",
+            "8 + 4 = 12. Também temos 2 × (4 + 2) = 12."
+          ],
+          "explanation": "2 × 4 + 4 = 12. A forma distribuída e a forma com parênteses dão o mesmo total.",
+          "visual": {
+            "groups": 2,
+            "perGroup": 4,
+            "extra": 4,
+            "label": "peças"
+          }
+        },
+        {
+          "id": "base-4",
+          "sectorId": "base",
+          "title": "A regra da base",
+          "objective": "Construir uma expressão com duas operações",
+          "skill": "EF08MA06",
+          "prompt": "Cada robô leva 2 cristais e a base guarda mais 4. Monte o total para x robôs.",
+          "kind": "build",
+          "expression": {
+            "type": "operation",
+            "operation": "add",
+            "left": {
+              "type": "operation",
+              "operation": "multiply",
+              "left": {
+                "type": "constant",
+                "value": 2
+              },
+              "right": {
+                "type": "variable"
+              }
+            },
+            "right": {
+              "type": "constant",
+              "value": 4
+            }
+          },
+          "variable": 3,
+          "formula": "2 × x + 4",
+          "tokens": ["4", "×", "x", "+", "2"],
+          "expectedTokens": ["2", "×", "x", "+", "4"],
+          "equivalentTokens": [
+            ["x", "×", "2", "+", "4"],
+            ["4", "+", "2", "×", "x"],
+            ["4", "+", "x", "×", "2"]
+          ],
+          "hints": [
+            "Primeiro represente os cristais dos robôs.",
+            "Use 2 × x e depois acrescente + 4.",
+            "Monte 2 × x + 4. A multiplicação vem antes da soma."
+          ],
+          "explanation": "2 × x conta os cristais dos robôs; + 4 acrescenta a reserva da base.",
+          "visual": {
+            "groups": 3,
+            "perGroup": 2,
+            "extra": 4,
+            "label": "cristais"
+          }
+        },
+        {
+          "id": "base-5",
+          "sectorId": "base",
+          "title": "Sua própria missão",
+          "objective": "Elaborar e resolver um problema",
+          "skill": "EF08MA06",
+          "prompt": "Crie um problema para a equipe: escolha a carga e a quantidade de robôs. Depois descubra o total!",
+          "kind": "create",
+          "expression": {
+            "type": "operation",
+            "operation": "add",
+            "left": {
+              "type": "operation",
+              "operation": "multiply",
+              "left": {
+                "type": "constant",
+                "value": 2
+              },
+              "right": {
+                "type": "variable"
+              }
+            },
+            "right": {
+              "type": "constant",
+              "value": 4
+            }
+          },
+          "variable": 3,
+          "formula": "2 × x + 4",
+          "hints": [
+            "Cada robô leva 2 unidades da carga escolhida. A base guarda mais 4.",
+            "Troque x pela quantidade de robôs que você escolheu. Multiplique por 2.",
+            "Some 4 ao resultado da multiplicação. Veja a solução do seu problema abaixo."
+          ],
+          "explanation": "Você criou um contexto, escolheu um valor para x e calculou 2 × x + 4. Essa regra funciona para outras quantidades de robôs também!",
+          "visual": {
+            "groups": 3,
+            "perGroup": 2,
+            "extra": 4,
+            "label": "cristais"
+          }
+        }
+      ],
+      "sources": ["src/content/missions.ts", "docs/Equacoes_do_primeiro_grau.docx"]
+    }
+  ]
+}

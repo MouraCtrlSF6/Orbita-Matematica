@@ -1,0 +1,9 @@
+node_modules/
+dist/
+.agents/
+.playwright-mcp/
+playwright-report/
+test-results/
+*.pdf
+*.docx
+skills-lock.json

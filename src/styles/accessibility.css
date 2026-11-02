@@ -1,0 +1,49 @@
+.large-text {
+  --text-scale: 1.18;
+}
+.large-text main {
+  zoom: var(--text-scale);
+}
+.large-text .settings-dialog {
+  font-size: 18px;
+}
+.large-text .settings-dialog p,
+.large-text .setting-row small {
+  font-size: 15px;
+}
+.reduce-motion * {
+  animation: none !important;
+  transition: none !important;
+  scroll-behavior: auto !important;
+}
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+    scroll-behavior: auto !important;
+  }
+}
+@media (max-width: 1000px) {
+  .large-text .sector-card {
+    display: block;
+  }
+  .large-text .mission-heading {
+    flex-wrap: wrap;
+  }
+}
+@media (max-width: 700px) {
+  .large-text main {
+    zoom: 1.12;
+  }
+  .large-text .sector-card {
+    display: block;
+  }
+  .large-text .space-art {
+    display: none;
+  }
+  .large-text .hero-copy h2 {
+    font-size: 29px;
+  }
+}

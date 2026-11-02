@@ -1,0 +1,16 @@
+export enum IconName {
+  Orbit = 'orbit',
+  Map = 'map',
+  Flag = 'flag',
+  Book = 'book',
+  Settings = 'settings',
+  Arrow = 'arrow',
+  Star = 'star',
+  Lock = 'lock',
+  Check = 'check',
+  Sound = 'sound',
+  Bulb = 'bulb',
+  Back = 'back',
+  Close = 'close',
+  Rocket = 'rocket',
+}

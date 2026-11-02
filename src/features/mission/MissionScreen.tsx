@@ -46,7 +46,7 @@ export function MissionScreen({ mission, onComplete, onNext, onBack }: MissionSc
     <div className="mission-screen">
       <button className="text-button back-link" onClick={onBack}>
         <Icon name={IconName.Back} size={18} />
-        Voltar ao mapa
+        Voltar ao setor
       </button>
       <div className="mission-heading">
         <div>
@@ -151,7 +151,7 @@ export function MissionScreen({ mission, onComplete, onNext, onBack }: MissionSc
                       </p>
                     ) : null}
                     <button className="button primary" onClick={onNext}>
-                      Continuar
+                      Continuar exploração
                       <Icon name={IconName.Arrow} size={18} />
                     </button>
                   </>

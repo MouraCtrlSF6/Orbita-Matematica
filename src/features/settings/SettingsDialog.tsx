@@ -50,7 +50,7 @@ export function SettingsDialog({
       <label className="setting-row">
         <span>
           <strong>Reduzir movimentos</strong>
-          <small>Mantém as ilustrações paradas.</small>
+          <small>Reduz efeitos visuais. Você também pode visitar pela lista de destinos.</small>
         </span>
         <input
           type="checkbox"

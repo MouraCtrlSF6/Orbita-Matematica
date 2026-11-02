@@ -25,7 +25,7 @@ describe('mission interactions', () => {
     expect(onComplete).toHaveBeenCalledWith(
       expect.objectContaining({ attempts: 2, guided: false }),
     );
-    expect(screen.getByRole('button', { name: 'Continuar' })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Continuar exploração' })).toBeInTheDocument();
   });
   it('records requested hints, visualization and assisted completion', async () => {
     const onComplete = vi.fn();

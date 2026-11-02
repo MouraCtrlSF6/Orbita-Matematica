@@ -2,6 +2,16 @@
 
 Jogo educativo em React para explorar expressões algébricas no 8º ano. A expedição espacial contém tutorial interativo, três setores e 52 missões, com enunciados curtos, objetos visuais, pistas progressivas e criação guiada de um problema.
 
+## Explorar com a nave
+
+O mapa do universo apresenta os três setores. Use as **setas ou WASD** com a área de pilotagem focada para mover a nave; ao soltar, ela para. Aproxime-se de um setor e pressione **Enter** ou o botão **Entrar**. Dentro dele, visite planetas, luas e asteroides: cada destino representa uma missão do catálogo. A câmera acompanha a nave, o radar mostra os destinos e sua posição, e uma seta indica a próxima missão.
+
+Concluir uma missão libera a seguinte. **Continuar exploração** e **Voltar ao setor** devolvem a nave à posição da visita, sem abrir automaticamente outra pergunta. Ao concluir o setor, volte ao universo para visitar o próximo. Setores e desafios bloqueados continuam identificados no mapa; é possível voar livremente dentro do setor liberado e revisitar missões concluídas.
+
+Em telas de toque, mantenha pressionados os botões de direção e use **Entrar**. A opção **Destinos em lista** oferece acesso direto aos destinos liberados sem exigir pilotagem. Tab sai da área de voo. Abrir ajustes, mudar de tela ou perder foco interrompe o movimento. O tutorial inclui uma prática opcional de pilotagem antes da introdução à álgebra.
+
+As posições ficam somente em memória durante a sessão. Recarregar abre o universo; **Retomar exploração** leva ao setor e às proximidades da próxima missão pendente. O progresso anterior continua compatível com `orbita-matematica:v1` e `SavedGame.version: 1`. Reiniciar a expedição também limpa as posições da sessão.
+
 ## Executar localmente
 
 Requer Node.js **20.19+ ou 22.12+** e npm. Na pasta do projeto:
@@ -64,6 +74,8 @@ Nas equações, `formula` preserva a igualdade original, `expression` representa
 O levantamento da professora Heidi orientou o foco em **valor numérico de expressões algébricas, EF08MA06**. A introdução recupera a ideia de variável da EF07MA13. Os documentos originais estão preservados em `docs/`. Veja `docs/pedagogia.md` para a sequência e a validação pedagógica pendente.
 
 Todos podem usar teclado, objetos visuais, dicas, texto ampliado e movimento reduzido. Não há cronômetro, perda de vidas ou competição. A leitura opcional utiliza vozes em português disponíveis no navegador; sua ausência não impede jogar. A disponibilidade de vozes e seu eventual processamento remoto dependem do navegador e do sistema.
+
+O voo tem controle direto, sem inércia ou obstáculos punitivos. A preferência de movimento reduzido, nos ajustes ou no sistema, remove brilhos dos destinos e da nave; a câmera acompanha sem suavização. A lista de destinos permite navegar sem deslocamento contínuo. O cenário é desenhado com HTML, CSS e SVG, sem dependências adicionais de motor de jogo.
 
 O progresso guarda conclusões, apoios e preferências no `localStorage` deste navegador. Não há cadastro, coleta de nomes ou diagnósticos, sincronização ou backend. Em computadores compartilhados, outro usuário verá o mesmo progresso. Os ajustes permitem reiniciá-lo com confirmação. Armazenamento bloqueado permite continuar em memória, com aviso de que o progresso não será mantido. Limpar os dados do navegador também apaga o diário. Ao ampliar o catálogo, conclusões válidas continuam associadas aos mesmos IDs, mesmo se novos problemas forem inseridos antes deles. As novas missões ficam pendentes e o desbloqueio exige concluir todas as anteriores.
 

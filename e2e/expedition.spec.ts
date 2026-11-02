@@ -1,19 +1,46 @@
-import { expect, test } from '@playwright/test';
+import { expect, test, type Page } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
 import { missions } from '../src/content/missions';
+import { sectors } from '../src/content/sectors';
+import type { Mission } from '../src/game/types';
+
+async function visitDestination(page: Page, label: string) {
+  const list = page.locator('.flight-destinations');
+  if (!(await list.evaluate((element) => (element as HTMLDetailsElement).open)))
+    await list.getByText('Destinos em lista', { exact: true }).click();
+  await list
+    .getByRole('button')
+    .filter({ has: page.getByText(label, { exact: true }) })
+    .click();
+}
+
+async function openMission(page: Page, mission: Mission) {
+  const sector = sectors.find((item) => item.id === mission.sectorId)!;
+  if (!(await page.getByRole('heading', { name: sector.name, exact: true }).isVisible())) {
+    await page.getByRole('button', { name: 'Mapa da expedição', exact: true }).click();
+    await visitDestination(page, sector.name);
+  }
+  await visitDestination(page, mission.title);
+}
+
+async function finishTutorial(page: Page) {
+  await page.getByRole('button', { name: 'Vamos explorar', exact: true }).click();
+  await page.getByRole('button', { name: 'Pular prática de pilotagem' }).click();
+  await page.getByRole('button', { name: 'Conhecer uma variável' }).click();
+  await page.getByRole('button', { name: 'Agora é sua vez' }).click();
+  await page.getByRole('radio', { name: '4 cristais', exact: true }).check();
+  await page.getByRole('button', { name: 'Pronto para explorar' }).click();
+  await page.getByRole('button', { name: 'Retomar exploração' }).click();
+}
 
 test('completes tutorial, all 52 catalog missions, authors a problem and restores progress', async ({
   page,
 }) => {
   test.setTimeout(90000);
   await page.goto('/');
-  await page.getByRole('button', { name: 'Vamos explorar' }).click();
-  await page.getByRole('button', { name: 'Conhecer uma variável' }).click();
-  await page.getByRole('button', { name: 'Agora é sua vez' }).click();
-  await page.getByRole('radio', { name: '4 cristais', exact: true }).check();
-  await page.getByRole('button', { name: 'Pronto para explorar' }).click();
-  await page.getByRole('button', { name: 'Vamos explorar' }).click();
+  await finishTutorial(page);
   for (let index = 0; index < missions.length - 1; index++) {
+    await openMission(page, missions[index]);
     if (index === 0) {
       await page.getByRole('radio', { name: '5', exact: true }).check();
       await page.getByRole('button', { name: 'Conferir resposta' }).click();
@@ -23,21 +50,28 @@ test('completes tutorial, all 52 catalog missions, authors a problem and restore
       await page.getByRole('button', { name: 'Próximo passo' }).click();
       await page.getByRole('button', { name: 'Entendi, concluir com apoio' }).click();
     }
-    await page.getByRole('button', { name: 'Continuar', exact: true }).click();
+    await page.getByRole('button', { name: 'Continuar exploração', exact: true }).click();
+    if (missions[index + 1].sectorId !== missions[index].sectorId) {
+      await expect(page.locator('.sector-celebration')).toContainText('Setor concluído!');
+      await expect(page.locator('.sector-celebration')).toContainText('está disponível');
+    }
   }
+  await openMission(page, missions[missions.length - 1]);
   await page.getByLabel('Carga da missão').selectOption('peças');
   await page.getByLabel('Quantidade de robôs (x)').selectOption('4');
   await page.getByRole('textbox', { name: 'Qual é o total?', exact: true }).fill('12');
   await page.getByRole('button', { name: 'Conferir resposta' }).click();
-  await page.getByRole('button', { name: 'Continuar', exact: true }).click();
+  await page.getByRole('button', { name: 'Continuar exploração', exact: true }).click();
+  await expect(page.locator('.sector-celebration')).toContainText('Você concluiu toda a expedição');
+  await page.getByRole('button', { name: /Minhas descobertas/ }).click();
   await expect(page.getByRole('heading', { name: 'Um universo de descobertas!' })).toBeVisible();
   await expect(page.getByText(/Seu problema: 4 robôs levam 2 peças/)).toBeVisible();
   await page.reload();
   await page.getByRole('button', { name: /Minhas descobertas/ }).click();
   await expect(page.getByRole('heading', { name: 'Um universo de descobertas!' })).toBeVisible();
   await page.getByRole('button', { name: 'Voltar ao mapa' }).click();
-  await expect(page.getByRole('button', { name: 'Revisitar setor' })).toHaveCount(3);
-  await page.getByRole('button', { name: 'Revisitar setor' }).first().click();
+  await visitDestination(page, sectors[0].name);
+  await visitDestination(page, missions[0].title);
   await expect(page.getByRole('heading', { name: missions[0].title })).toBeVisible();
 });
 
@@ -54,7 +88,8 @@ test('supports keyboard, preferences, reduced motion and confirmed reset', async
   await page.keyboard.press('Escape');
   await expect(page.getByRole('dialog')).toHaveCount(0);
   await expect(page.locator('.app-shell')).toHaveClass(/large-text/);
-  await expect(page.locator('.space-art')).toHaveCSS('animation-name', 'none');
+  await expect(page.locator('.flight')).toHaveClass(/flight-reduced/);
+  await expect(page.locator('.player-ship')).toHaveCSS('filter', 'none');
   await page.reload();
   await expect(page.locator('.app-shell')).toHaveClass(/large-text/);
   await page.getByRole('button', { name: 'Ajustes da expedição' }).click();
@@ -77,17 +112,15 @@ test('remains playable without storage or a speech API', async ({ page }) => {
   });
   await page.goto('/');
   await expect(page.getByText(/O navegador não permitiu salvar/)).toBeVisible();
-  await page.getByRole('button', { name: 'Vamos explorar' }).click();
-  await page.getByRole('button', { name: 'Conhecer uma variável' }).click();
-  await page.getByRole('button', { name: 'Agora é sua vez' }).click();
-  await page.getByRole('radio', { name: '4 cristais', exact: true }).check();
-  await page.getByRole('button', { name: 'Pronto para explorar' }).click();
-  await page.getByRole('button', { name: 'Vamos explorar' }).click();
+  await finishTutorial(page);
+  await openMission(page, missions[0]);
   await page.getByRole('button', { name: 'Ouvir enunciado' }).click();
   await expect(page.getByText(/Leitura em voz alta indisponível/)).toBeVisible();
   await page.getByRole('radio', { name: '5', exact: true }).check();
   await page.getByRole('button', { name: 'Conferir resposta' }).click();
-  await expect(page.getByRole('button', { name: 'Continuar', exact: true })).toBeVisible();
+  await expect(
+    page.getByRole('button', { name: 'Continuar exploração', exact: true }),
+  ).toBeVisible();
 });
 
 test('accepts the correct independent answers throughout all 52 missions', async ({ page }) => {
@@ -105,7 +138,7 @@ test('accepts the correct independent answers throughout all 52 missions', async
     ),
   );
   await page.goto('/');
-  await page.getByRole('button', { name: 'Vamos explorar' }).click();
+  await page.getByRole('button', { name: 'Retomar exploração' }).click();
   interface Response {
     radio?: string;
     number?: string;
@@ -133,6 +166,7 @@ test('accepts the correct independent answers throughout all 52 missions', async
     4, 3, -3, 6, 7, 7, 13, 7,
   ];
   for (const mission of missions) {
+    await openMission(page, mission);
     const response = mission.id.startsWith('equations-')
       ? { radio: String(importedAnswers[Number(mission.id.split('-')[1]) - 1]) }
       : responses[mission.id];
@@ -146,8 +180,9 @@ test('accepts the correct independent answers throughout all 52 missions', async
       for (const token of response.tokens)
         await page.getByRole('button', { name: token, exact: true }).click();
     await page.getByRole('button', { name: 'Conferir resposta' }).click();
-    await page.getByRole('button', { name: 'Continuar', exact: true }).click();
+    await page.getByRole('button', { name: 'Continuar exploração', exact: true }).click();
   }
+  await page.getByRole('button', { name: /Minhas descobertas/ }).click();
   await expect(page.getByRole('heading', { name: 'Um universo de descobertas!' })).toBeVisible();
 });
 
@@ -171,11 +206,16 @@ test('has accessible structure and contrast across the main screens', async ({ p
   await page.keyboard.press('Escape');
   await page.getByRole('button', { name: 'Vamos explorar' }).click();
   await audit();
+  await page.getByRole('button', { name: 'Pular prática de pilotagem' }).click();
+  await audit();
   await page.getByRole('button', { name: 'Conhecer uma variável' }).click();
   await page.getByRole('button', { name: 'Agora é sua vez' }).click();
   await page.getByRole('radio', { name: '4 cristais', exact: true }).check();
   await page.getByRole('button', { name: 'Pronto para explorar' }).click();
-  await page.getByRole('button', { name: 'Vamos explorar' }).click();
+  await audit();
+  await page.getByRole('button', { name: 'Retomar exploração' }).click();
+  await audit();
+  await openMission(page, missions[0]);
   await page.getByRole('button', { name: 'Ver com objetos' }).click();
   await page.getByRole('button', { name: 'Quero uma pista' }).click();
   await audit();
@@ -191,12 +231,9 @@ test('reflows at an effective 200 percent desktop zoom and smaller windows', asy
     expect(
       await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth),
     ).toBe(true);
-    await page.getByRole('button', { name: 'Vamos explorar' }).click();
-    await page.getByRole('button', { name: 'Conhecer uma variável' }).click();
-    await page.getByRole('button', { name: 'Agora é sua vez' }).click();
-    await page.getByRole('radio', { name: '4 cristais', exact: true }).check();
-    await page.getByRole('button', { name: 'Pronto para explorar' }).click();
-    await page.getByRole('button', { name: 'Vamos explorar' }).click();
+    await finishTutorial(page);
+    await expect(page.getByRole('region', { name: 'Área de pilotagem' })).toBeVisible();
+    await openMission(page, missions[0]);
     await expect(page.getByRole('button', { name: 'Conferir resposta' })).toBeVisible();
     expect(
       await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth),

@@ -2,6 +2,7 @@
 @import './app/layout.css';
 @import './components/SpaceArt.css';
 @import './features/map/map.css';
+@import './features/map/exploration.css';
 @import './features/mission/mission.css';
 @import './features/tutorial/tutorial.css';
 @import './features/progress/progress.css';

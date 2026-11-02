@@ -1,8 +1,9 @@
 import { useEffect, useRef, useState } from 'react';
 import { Icon } from '../components/Icon';
 import { IconName } from '../components/icon-names';
-import { missionById, missions } from '../content/missions';
+import { missionById } from '../content/missions';
 import { Screen } from '../game/reducer';
+import type { Point } from '../game/space';
 import { ExpeditionMap } from '../features/map/ExpeditionMap';
 import { MissionScreen } from '../features/mission/MissionScreen';
 import { Tutorial } from '../features/tutorial/Tutorial';
@@ -14,6 +15,10 @@ export function App() {
   const { state, dispatch, storageAvailable } = useGame();
   const [settingsOpen, setSettingsOpen] = useState(false);
   const mainRef = useRef<HTMLElement>(null);
+  const [flightSession, setFlightSession] = useState(() => ({
+    positions: new Map<string, Point>(),
+    id: 0,
+  }));
   const previousPage = useRef(`${state.screen}:${state.missionId}`);
   const mission = state.missionId ? missionById.get(state.missionId) : undefined;
   const total = Object.keys(state.save.completed).length;
@@ -25,7 +30,8 @@ export function App() {
     const page = `${state.screen}:${state.missionId}`;
     if (previousPage.current === page) return;
     previousPage.current = page;
-    mainRef.current?.focus();
+    const flight = mainRef.current?.querySelector<HTMLElement>('.flight-viewport');
+    (flight ?? mainRef.current)?.focus();
     window.scrollTo({ top: 0, behavior: 'instant' });
   }, [state.screen, state.missionId]);
 
@@ -34,15 +40,11 @@ export function App() {
     else dispatch({ type: 'start', id });
   }
 
-  function advance() {
-    const index = missions.findIndex((item) => item.id === state.missionId);
-    if (index < missions.length - 1) dispatch({ type: 'start', id: missions[index + 1].id });
-    else summary();
-  }
+  const returnToSector = () => dispatch({ type: 'return-sector' });
 
   return (
     <div
-      className={`app-shell ${state.save.preferences.largeText ? 'large-text' : ''} ${state.save.preferences.reducedMotion ? 'reduce-motion' : ''}`}
+      className={`app-shell ${state.screen === Screen.Map || state.screen === Screen.Sector ? 'exploration-shell' : ''} ${state.save.preferences.largeText ? 'large-text' : ''} ${state.save.preferences.reducedMotion ? 'reduce-motion' : ''}`}
     >
       <a className="skip-link" href="#main">
         Pular para o conteúdo
@@ -59,9 +61,13 @@ export function App() {
         <div className="sidebar-caption">SUA JORNADA</div>
         <nav aria-label="Navegação principal">
           <button
-            className={`nav-item ${state.screen === Screen.Map || state.screen === Screen.Mission ? 'active' : ''}`}
+            className={`nav-item ${state.screen === Screen.Map || state.screen === Screen.Sector || state.screen === Screen.Mission ? 'active' : ''}`}
             aria-current={
-              state.screen === Screen.Map || state.screen === Screen.Mission ? 'page' : undefined
+              state.screen === Screen.Map ||
+              state.screen === Screen.Sector ||
+              state.screen === Screen.Mission
+                ? 'page'
+                : undefined
             }
             onClick={map}
           >
@@ -116,7 +122,9 @@ export function App() {
                   ? 'Como jogar'
                   : state.screen === Screen.Mission
                     ? 'Missão em andamento'
-                    : 'Mapa do universo'}
+                    : state.screen === Screen.Sector
+                      ? 'Exploração do setor'
+                      : 'Mapa do universo'}
             </strong>
           </div>
           <div className="topbar-right">
@@ -135,9 +143,15 @@ export function App() {
               perdido ao fechar ou recarregar.
             </p>
           ) : null}
-          {state.screen === Screen.Map ? (
+          {state.screen === Screen.Map || state.screen === Screen.Sector ? (
             <ExpeditionMap
+              key={flightSession.id}
               save={state.save}
+              sectorId={state.screen === Screen.Sector ? state.sectorId : null}
+              positions={flightSession.positions}
+              paused={settingsOpen}
+              onSector={(id) => dispatch({ type: 'enter-sector', id })}
+              onUniverse={map}
               onStart={start}
               onTutorial={tutorial}
               onSummary={summary}
@@ -145,6 +159,8 @@ export function App() {
           ) : null}
           {state.screen === Screen.Tutorial ? (
             <Tutorial
+              reducedMotion={state.save.preferences.reducedMotion}
+              paused={settingsOpen}
               onBack={map}
               onFinish={() => {
                 dispatch({ type: 'tutorial-done' });
@@ -155,9 +171,9 @@ export function App() {
             <MissionScreen
               key={mission.id}
               mission={mission}
-              onBack={map}
+              onBack={returnToSector}
               onComplete={(result) => dispatch({ type: 'complete', result })}
-              onNext={advance}
+              onNext={returnToSector}
             />
           ) : null}
           {state.screen === Screen.Summary ? <Summary save={state.save} onBack={map} /> : null}
@@ -173,7 +189,10 @@ export function App() {
         <SettingsDialog
           preferences={state.save.preferences}
           onPreference={(key, value) => dispatch({ type: 'preference', key, value })}
-          onReset={() => dispatch({ type: 'reset' })}
+          onReset={() => {
+            setFlightSession((session) => ({ positions: new Map(), id: session.id + 1 }));
+            dispatch({ type: 'reset' });
+          }}
           onClose={() => setSettingsOpen(false)}
         />
       ) : null}

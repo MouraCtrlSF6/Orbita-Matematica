@@ -7,7 +7,7 @@ export const initialSave = (): SavedGame => ({
   completed: {},
   tutorialDone: false,
   lastMissionId: null,
-  preferences: { largeText: false, reducedMotion: false },
+  preferences: { largeText: false, reducedMotion: false, soundEnabled: true },
 });
 
 export function isSectorUnlocked(sectorId: string, completed: SavedGame['completed']): boolean {

@@ -3,6 +3,7 @@ import type { Sector } from '../game/types';
 export const sectors: Sector[] = [
   {
     id: 'launch',
+    hintLimit: 1,
     number: '01',
     name: 'Estação de lançamento',
     subtitle: 'Primeiros sinais',
@@ -12,6 +13,7 @@ export const sectors: Sector[] = [
   },
   {
     id: 'workshop',
+    hintLimit: 1,
     number: '02',
     name: 'Oficina orbital',
     subtitle: 'Conexões em órbita',
@@ -21,6 +23,7 @@ export const sectors: Sector[] = [
   },
   {
     id: 'base',
+    hintLimit: 2,
     number: '03',
     name: 'Base de exploração',
     subtitle: 'Novas descobertas',

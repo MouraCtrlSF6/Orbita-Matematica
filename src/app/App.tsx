@@ -1,182 +1,62 @@
-import { useEffect, useRef, useState } from 'react';
-import { Icon } from '../components/Icon';
-import { IconName } from '../components/icon-names';
-import { missionById, missions } from '../content/missions';
-import { Screen } from '../game/reducer';
-import { ExpeditionMap } from '../features/map/ExpeditionMap';
-import { MissionScreen } from '../features/mission/MissionScreen';
-import { Tutorial } from '../features/tutorial/Tutorial';
-import { Summary } from '../features/progress/Summary';
-import { SettingsDialog } from '../features/settings/SettingsDialog';
+import { useRef, useState } from 'react';
 import { useGame } from './useGame';
-
-export function App() {
-  const { state, dispatch, storageAvailable } = useGame();
-  const [settingsOpen, setSettingsOpen] = useState(false);
+import { useSoundShortcut } from './useSoundShortcut';
+import { useMainFocus } from './useMainFocus';
+import { AppNavigation, appClassName, type FlightSession } from './app-navigation';
+import { AppSidebar } from './AppSidebar';
+import { AppWorkspace, PageFooter, StorageWarning } from './AppLayout';
+import { AppScreen, SettingsOverlay, type AppScreenProps } from './AppScreens';
+interface AppContentProps extends AppScreenProps {
+  storageAvailable: boolean;
+}
+function AppContent(props: AppContentProps) {
   const mainRef = useRef<HTMLElement>(null);
-  const previousPage = useRef(`${state.screen}:${state.missionId}`);
-  const mission = state.missionId ? missionById.get(state.missionId) : undefined;
-  const total = Object.keys(state.save.completed).length;
-  const map = () => dispatch({ type: 'navigate', screen: Screen.Map });
-  const tutorial = () => dispatch({ type: 'navigate', screen: Screen.Tutorial });
-  const summary = () => dispatch({ type: 'navigate', screen: Screen.Summary });
-
-  useEffect(() => {
-    const page = `${state.screen}:${state.missionId}`;
-    if (previousPage.current === page) return;
-    previousPage.current = page;
-    mainRef.current?.focus();
-    window.scrollTo({ top: 0, behavior: 'instant' });
-  }, [state.screen, state.missionId]);
-
-  function start(id: string) {
-    if (!state.save.tutorialDone) tutorial();
-    else dispatch({ type: 'start', id });
-  }
-
-  function advance() {
-    const index = missions.findIndex((item) => item.id === state.missionId);
-    if (index < missions.length - 1) dispatch({ type: 'start', id: missions[index + 1].id });
-    else summary();
-  }
-
+  useMainFocus(props.state, mainRef);
   return (
-    <div
-      className={`app-shell ${state.save.preferences.largeText ? 'large-text' : ''} ${state.save.preferences.reducedMotion ? 'reduce-motion' : ''}`}
-    >
-      <a className="skip-link" href="#main">
-        Pular para o conteúdo
-      </a>
-      <aside className="sidebar">
-        <a href="#main" className="brand" onClick={map} aria-label="Órbita Matemática, início">
-          <span className="brand-symbol">
-            <Icon name={IconName.Orbit} size={32} />
-          </span>
-          <span>
-            órbita<span className="brand-subtitle">MATEMÁTICA</span>
-          </span>
-        </a>
-        <div className="sidebar-caption">SUA JORNADA</div>
-        <nav aria-label="Navegação principal">
-          <button
-            className={`nav-item ${state.screen === Screen.Map || state.screen === Screen.Mission ? 'active' : ''}`}
-            aria-current={
-              state.screen === Screen.Map || state.screen === Screen.Mission ? 'page' : undefined
-            }
-            onClick={map}
-          >
-            <Icon name={IconName.Map} />
-            Mapa da expedição
-          </button>
-          <button
-            className={`nav-item ${state.screen === Screen.Summary ? 'active' : ''}`}
-            aria-current={state.screen === Screen.Summary ? 'page' : undefined}
-            onClick={summary}
-          >
-            <Icon name={IconName.Flag} />
-            Minhas descobertas<span className="nav-count">{total}</span>
-          </button>
-          <button
-            className={`nav-item ${state.screen === Screen.Tutorial ? 'active' : ''}`}
-            aria-current={state.screen === Screen.Tutorial ? 'page' : undefined}
-            onClick={tutorial}
-          >
-            <Icon name={IconName.Book} />
-            Como jogar
-          </button>
-        </nav>
-        <div className="sidebar-bottom">
-          <div className="sidebar-message">
-            <span aria-hidden="true">✧</span>
-            <p>
-              Aprender é uma jornada.
-              <br />
-              <strong>O ritmo é seu.</strong>
-            </p>
-            <div className="tiny-orbit" aria-hidden="true" />
-          </div>
-          <button className="nav-item" onClick={() => setSettingsOpen(true)}>
-            <Icon name={IconName.Settings} />
-            Ajustes da expedição
-          </button>
-          <div className="sidebar-footer">
-            <span className="live-dot" /> FEITO PARA TODOS EXPLORAREM
-          </div>
-        </div>
-      </aside>
-      <div className="workspace">
-        <header className="topbar">
-          <div className="breadcrumb">
-            <span>EXPEDIÇÃO</span>
-            <span>/</span>
-            <strong>
-              {state.screen === Screen.Summary
-                ? 'Minhas descobertas'
-                : state.screen === Screen.Tutorial
-                  ? 'Como jogar'
-                  : state.screen === Screen.Mission
-                    ? 'Missão em andamento'
-                    : 'Mapa do universo'}
-            </strong>
-          </div>
-          <div className="topbar-right">
-            <span className="learning-label">
-              <span className="live-dot" /> APRENDER. EXPLORAR. DESCOBRIR.
-            </span>
-            <span className="explorer-avatar" role="img" aria-label="Explorador">
-              <Icon name={IconName.Rocket} size={22} />
-            </span>
-          </div>
-        </header>
-        <main id="main" ref={mainRef} tabIndex={-1}>
-          {!storageAvailable ? (
-            <p className="storage-warning" role="status">
-              O navegador não permitiu salvar. Você pode continuar jogando, mas o progresso será
-              perdido ao fechar ou recarregar.
-            </p>
-          ) : null}
-          {state.screen === Screen.Map ? (
-            <ExpeditionMap
-              save={state.save}
-              onStart={start}
-              onTutorial={tutorial}
-              onSummary={summary}
-            />
-          ) : null}
-          {state.screen === Screen.Tutorial ? (
-            <Tutorial
-              onBack={map}
-              onFinish={() => {
-                dispatch({ type: 'tutorial-done' });
-              }}
-            />
-          ) : null}
-          {state.screen === Screen.Mission && mission ? (
-            <MissionScreen
-              key={mission.id}
-              mission={mission}
-              onBack={map}
-              onComplete={(result) => dispatch({ type: 'complete', result })}
-              onNext={advance}
-            />
-          ) : null}
-          {state.screen === Screen.Summary ? <Summary save={state.save} onBack={map} /> : null}
-          <footer className="page-footer">
-            <span>Um novo jeito de olhar para a matemática.</span>
-            <span>
-              Sem pressa, a descoberta acontece. <span aria-hidden="true">✦</span>
-            </span>
-          </footer>
-        </main>
-      </div>
-      {settingsOpen ? (
-        <SettingsDialog
-          preferences={state.save.preferences}
-          onPreference={(key, value) => dispatch({ type: 'preference', key, value })}
-          onReset={() => dispatch({ type: 'reset' })}
-          onClose={() => setSettingsOpen(false)}
-        />
-      ) : null}
+    <main id="main" ref={mainRef} tabIndex={-1}>
+      <StorageWarning available={props.storageAvailable} />
+      <AppScreen {...props} />
+      <PageFooter />
+    </main>
+  );
+}
+const skipLink = (
+  <a className="skip-link" href="#main">
+    Pular para o conteúdo
+  </a>
+);
+function AppShell(props: AppContentProps) {
+  return (
+    <div className={appClassName(props.state)}>
+      {skipLink}
+      <AppSidebar state={props.state} navigation={props.navigation} />
+      <AppWorkspace screen={props.state.screen}>
+        <AppContent {...props} />
+      </AppWorkspace>
+      <SettingsOverlay {...props} />
     </div>
+  );
+}
+export function App() {
+  const game = useGame();
+  const [settingsOpen, setSettingsOpen] = useState(false);
+  const [flightSession, setFlightSession] = useState<FlightSession>(() => ({
+    positions: new Map(),
+    id: 0,
+  }));
+  useSoundShortcut(game.dispatch);
+  const navigation = new AppNavigation(
+    game.dispatch,
+    game.state,
+    setSettingsOpen,
+    setFlightSession,
+  );
+  return (
+    <AppShell
+      {...game}
+      navigation={navigation}
+      settingsOpen={settingsOpen}
+      flightSession={flightSession}
+    />
   );
 }

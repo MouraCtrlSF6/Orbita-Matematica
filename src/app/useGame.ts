@@ -8,6 +8,7 @@ export function useGame() {
     save: repository.read(),
     screen: Screen.Map,
     missionId: null,
+    sectorId: null,
   }));
   const storageAvailable = useSyncExternalStore(repository.subscribe, repository.getStatus);
   useEffect(() => {

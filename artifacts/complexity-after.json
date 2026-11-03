@@ -1,0 +1,2823 @@
+{
+  "extension": "1.26.1",
+  "limit": 7,
+  "units": 469,
+  "overLimit": 0,
+  "maximum": 7,
+  "results": [
+    {
+      "file": "src/app/App.tsx",
+      "line": 28,
+      "complexity": 7,
+      "function": "function AppShell(props: AppContentProps) {"
+    },
+    {
+      "file": "src/app/AppSidebar.tsx",
+      "line": 12,
+      "complexity": 7,
+      "function": "function Brand({ onMap }: BrandProps) {"
+    },
+    {
+      "file": "src/app/AppSidebar.tsx",
+      "line": 35,
+      "complexity": 7,
+      "function": "function NavigationItem({ active, icon, label, onClick, count }: Navig..."
+    },
+    {
+      "file": "src/app/AppSidebar.tsx",
+      "line": 106,
+      "complexity": 7,
+      "function": "export function AppSidebar(props: AppSidebarProps) {"
+    },
+    {
+      "file": "src/app/useSoundShortcut.ts",
+      "line": 17,
+      "complexity": 7,
+      "function": "function isSoundShortcut(event: KeyboardEvent): boolean {"
+    },
+    {
+      "file": "src/content/mission-catalog.ts",
+      "line": 18,
+      "complexity": 7,
+      "function": "function isExpression(value: unknown): value is Expression {"
+    },
+    {
+      "file": "src/content/mission-catalog.ts",
+      "line": 124,
+      "complexity": 7,
+      "function": "function parseProblem(problem: unknown, sectorId: string, ids: Set<str..."
+    },
+    {
+      "file": "src/game/math.ts",
+      "line": 41,
+      "complexity": 7,
+      "function": "export function isCorrect(mission: Mission, answer: string, value = mi..."
+    },
+    {
+      "file": "src/game/progress.ts",
+      "line": 13,
+      "complexity": 7,
+      "function": "export function isSectorUnlocked(sectorId: string, completed: SavedGam..."
+    },
+    {
+      "file": "src/game/progress.ts",
+      "line": 27,
+      "complexity": 7,
+      "function": "export function nextMission(save: SavedGame): string {"
+    },
+    {
+      "file": "src/infrastructure/storage.ts",
+      "line": 86,
+      "complexity": 7,
+      "function": "export function parseSave(raw: string | null): SavedGame {"
+    },
+    {
+      "file": "src/features/map/ExpeditionHeader.tsx",
+      "line": 6,
+      "complexity": 7,
+      "function": "function ExpeditionTitle({ expedition }: ExpeditionViewProps) {"
+    },
+    {
+      "file": "src/features/map/ExpeditionHeader.tsx",
+      "line": 69,
+      "complexity": 7,
+      "function": "export function SectorCelebration({ expedition }: ExpeditionViewProps)..."
+    },
+    {
+      "file": "src/features/map/ExpeditionMap.tsx",
+      "line": 34,
+      "complexity": 7,
+      "function": "export function ExpeditionMap(props: ExpeditionMapProps) {"
+    },
+    {
+      "file": "src/features/map/FlightPanels.tsx",
+      "line": 40,
+      "complexity": 7,
+      "function": "function FlightGuidance({ world, nextId }: FlightViewProps) {"
+    },
+    {
+      "file": "src/features/map/FlightPanels.tsx",
+      "line": 92,
+      "complexity": 7,
+      "function": "function DestinationLink({ destination, status, controller, paused }:..."
+    },
+    {
+      "file": "src/features/map/FlightScene.tsx",
+      "line": 36,
+      "complexity": 7,
+      "function": "function DestinationMarker({ destination, status, index, nextId }: Des..."
+    },
+    {
+      "file": "src/features/map/FlightScene.tsx",
+      "line": 112,
+      "complexity": 7,
+      "function": "function Radar({ world, nextId }: FlightViewProps) {"
+    },
+    {
+      "file": "src/features/map/FlightScene.tsx",
+      "line": 146,
+      "complexity": 7,
+      "function": "function SoundToggle({ controller, soundEnabled, onSoundChange, paused..."
+    },
+    {
+      "file": "src/features/map/FlightScene.tsx",
+      "line": 168,
+      "complexity": 7,
+      "function": "export function FlightViewport({ viewportRef, helpId, ...props }: View..."
+    },
+    {
+      "file": "src/features/map/SpaceFlight.tsx",
+      "line": 30,
+      "complexity": 7,
+      "function": "export function SpaceFlight(props: SpaceFlightProps) {"
+    },
+    {
+      "file": "src/features/mission/AnswerInput.tsx",
+      "line": 23,
+      "complexity": 7,
+      "function": "function ChoiceOption({ choice, index, answer, onChange, disabled }: C..."
+    },
+    {
+      "file": "src/features/mission/MissionFeedback.tsx",
+      "line": 23,
+      "complexity": 7,
+      "function": "function SuccessDetails(props: MissionFeedbackProps) {"
+    },
+    {
+      "file": "src/features/mission/MissionForm.tsx",
+      "line": 37,
+      "complexity": 7,
+      "function": "export function MissionForm(props: MissionViewProps) {"
+    },
+    {
+      "file": "src/features/mission/MissionHeading.tsx",
+      "line": 57,
+      "complexity": 7,
+      "function": "export function MissionHeading({ mission, done, onBack }: MissionHeadi..."
+    },
+    {
+      "file": "src/features/mission/MissionScreen.tsx",
+      "line": 47,
+      "complexity": 7,
+      "function": "function MissionChallenge(props: ChallengeProps) {"
+    },
+    {
+      "file": "src/features/mission/ObjectModel.tsx",
+      "line": 22,
+      "complexity": 7,
+      "function": "function ObjectGroup({"
+    },
+    {
+      "file": "src/features/mission/ObjectModel.tsx",
+      "line": 40,
+      "complexity": 7,
+      "function": "function ObjectGroups({ model }: ObjectModelProps) {"
+    },
+    {
+      "file": "src/features/mission/useNarration.ts",
+      "line": 12,
+      "complexity": 7,
+      "function": "function prepareUtterance(text: string): SpeechSynthesisUtterance | st..."
+    },
+    {
+      "file": "src/features/progress/Summary.tsx",
+      "line": 27,
+      "complexity": 7,
+      "function": "function SummaryTotal({ count }: { count: number }) {"
+    },
+    {
+      "file": "src/features/settings/SettingsDialog.tsx",
+      "line": 17,
+      "complexity": 7,
+      "function": "function SettingRow({ title, description, checked, onChange }: Setting..."
+    },
+    {
+      "file": "src/features/settings/SettingsDialog.tsx",
+      "line": 123,
+      "complexity": 7,
+      "function": "function ResetSection({ onReset, onClose }: SettingsDialogProps) {"
+    },
+    {
+      "file": "src/app/App.tsx",
+      "line": 12,
+      "complexity": 6,
+      "function": "function AppContent(props: AppContentProps) {"
+    },
+    {
+      "file": "src/app/AppLayout.tsx",
+      "line": 12,
+      "complexity": 6,
+      "function": "function Breadcrumb({ screen }: { screen: Screen }) {"
+    },
+    {
+      "file": "src/app/AppLayout.tsx",
+      "line": 42,
+      "complexity": 6,
+      "function": "export function PageFooter() {"
+    },
+    {
+      "file": "src/app/AppSidebar.tsx",
+      "line": 48,
+      "complexity": 6,
+      "function": "function MainNavigation({ state, navigation }: AppSidebarProps) {"
+    },
+    {
+      "file": "src/content/mission-catalog.ts",
+      "line": 59,
+      "complexity": 6,
+      "function": "function hasCorrectChoice(value: Record<string, unknown>): boolean {..."
+    },
+    {
+      "file": "src/game/math.ts",
+      "line": 18,
+      "complexity": 6,
+      "function": "export function evaluate(expression: Expression, value: number): numbe..."
+    },
+    {
+      "file": "src/game/reducer.ts",
+      "line": 53,
+      "complexity": 6,
+      "function": "function completeMission(state: GameState, action: ActionOf<'complete'..."
+    },
+    {
+      "file": "src/features/map/expedition.ts",
+      "line": 22,
+      "complexity": 6,
+      "function": "export function mapWorld(sectorId: string | null): SpaceWorld {"
+    },
+    {
+      "file": "src/features/map/ExpeditionHeader.tsx",
+      "line": 29,
+      "complexity": 6,
+      "function": "function TravelButton({ expedition }: ExpeditionViewProps) {"
+    },
+    {
+      "file": "src/features/map/ExpeditionHeader.tsx",
+      "line": 42,
+      "complexity": 6,
+      "function": "export function ExpeditionToolbar({ expedition }: ExpeditionViewProps)..."
+    },
+    {
+      "file": "src/features/map/flightController.ts",
+      "line": 191,
+      "complexity": 6,
+      "function": "export function attachFlight("
+    },
+    {
+      "file": "src/features/map/FlightPanels.tsx",
+      "line": 6,
+      "complexity": 6,
+      "function": "function FlightContact({"
+    },
+    {
+      "file": "src/features/map/FlightPanels.tsx",
+      "line": 24,
+      "complexity": 6,
+      "function": "function FlightHud(props: FlightPanelsProps) {"
+    },
+    {
+      "file": "src/features/map/FlightPanels.tsx",
+      "line": 103,
+      "complexity": 6,
+      "function": "function DestinationLinks({ world, statuses, controller, paused }: Fli..."
+    },
+    {
+      "file": "src/features/map/FlightPanels.tsx",
+      "line": 119,
+      "complexity": 6,
+      "function": "function DestinationList(props: FlightViewProps) {"
+    },
+    {
+      "file": "src/features/map/FlightScene.tsx",
+      "line": 74,
+      "complexity": 6,
+      "function": "function PlayerShip() {"
+    },
+    {
+      "file": "src/features/map/FlightScene.tsx",
+      "line": 84,
+      "complexity": 6,
+      "function": "function Scene(props: FlightViewProps) {"
+    },
+    {
+      "file": "src/features/map/FlightScene.tsx",
+      "line": 123,
+      "complexity": 6,
+      "function": "function SoundWaves({ enabled }: { enabled: boolean }) {"
+    },
+    {
+      "file": "src/features/map/thrusterSound.ts",
+      "line": 11,
+      "complexity": 6,
+      "function": "function createGraph(): ThrusterGraph {"
+    },
+    {
+      "file": "src/features/mission/AnswerInput.tsx",
+      "line": 99,
+      "complexity": 6,
+      "function": "function TokenRow(props: AnswerInputProps) {"
+    },
+    {
+      "file": "src/features/mission/AnswerInput.tsx",
+      "line": 121,
+      "complexity": 6,
+      "function": "function BuildAnswer(props: AnswerInputProps) {"
+    },
+    {
+      "file": "src/features/mission/AnswerInput.tsx",
+      "line": 136,
+      "complexity": 6,
+      "function": "function NumberAnswer({ answer, onChange, disabled }: AnswerInputProps..."
+    },
+    {
+      "file": "src/features/mission/CreationFields.tsx",
+      "line": 34,
+      "complexity": 6,
+      "function": "function CreationSelect({ label, value, options, onChange }: CreationS..."
+    },
+    {
+      "file": "src/features/mission/CreationFields.tsx",
+      "line": 44,
+      "complexity": 6,
+      "function": "function CreationChoices(props: CreationFieldsProps) {"
+    },
+    {
+      "file": "src/features/mission/CreationFields.tsx",
+      "line": 62,
+      "complexity": 6,
+      "function": "function CreatedStory({ context, variable }: CreationFieldsProps) {..."
+    },
+    {
+      "file": "src/features/mission/CreationFields.tsx",
+      "line": 74,
+      "complexity": 6,
+      "function": "export function CreationFields(props: CreationFieldsProps) {"
+    },
+    {
+      "file": "src/features/mission/MissionFeedback.tsx",
+      "line": 33,
+      "complexity": 6,
+      "function": "function FeedbackContent(props: MissionFeedbackProps) {"
+    },
+    {
+      "file": "src/features/mission/MissionForm.tsx",
+      "line": 20,
+      "complexity": 6,
+      "function": "function SubmitAnswer({ session }: MissionViewProps) {"
+    },
+    {
+      "file": "src/features/mission/MissionScreen.tsx",
+      "line": 20,
+      "complexity": 6,
+      "function": "function ChallengeTop({ mission }: MissionViewProps) {"
+    },
+    {
+      "file": "src/features/mission/MissionScreen.tsx",
+      "line": 30,
+      "complexity": 6,
+      "function": "function MissionFormula({ mission, session }: MissionViewProps) {"
+    },
+    {
+      "file": "src/features/mission/MissionSupport.tsx",
+      "line": 29,
+      "complexity": 6,
+      "function": "function MissionVisual({ mission, session }: MissionViewProps) {"
+    },
+    {
+      "file": "src/features/mission/ObjectModel.tsx",
+      "line": 50,
+      "complexity": 6,
+      "function": "export function ObjectModel(props: ObjectModelProps) {"
+    },
+    {
+      "file": "src/features/progress/Summary.tsx",
+      "line": 39,
+      "complexity": 6,
+      "function": "function resultDescription(result?: MissionResult): string {"
+    },
+    {
+      "file": "src/features/progress/Summary.tsx",
+      "line": 56,
+      "complexity": 6,
+      "function": "function DiscoveryDetails({ mission, result }: DiscoveryProps) {"
+    },
+    {
+      "file": "src/features/progress/Summary.tsx",
+      "line": 65,
+      "complexity": 6,
+      "function": "function MissionDiscovery(props: DiscoveryProps) {"
+    },
+    {
+      "file": "src/features/progress/Summary.tsx",
+      "line": 82,
+      "complexity": 6,
+      "function": "function SectorDiscoveries({ sector, save }: { sector: Sector; save: S..."
+    },
+    {
+      "file": "src/features/progress/Summary.tsx",
+      "line": 123,
+      "complexity": 6,
+      "function": "export function Summary({ save, onBack }: SummaryProps) {"
+    },
+    {
+      "file": "src/features/settings/SettingsDialog.tsx",
+      "line": 73,
+      "complexity": 6,
+      "function": "function DialogHeader({ onClose }: { onClose: SettingsDialogProps['onC..."
+    },
+    {
+      "file": "src/features/settings/SettingsDialog.tsx",
+      "line": 97,
+      "complexity": 6,
+      "function": "function ResetButtons({ onReset, onClose, onCancel }: ResetButtonsProp..."
+    },
+    {
+      "file": "src/features/settings/SettingsDialog.tsx",
+      "line": 140,
+      "complexity": 6,
+      "function": "export function SettingsDialog(props: SettingsDialogProps) {"
+    },
+    {
+      "file": "src/features/tutorial/AlgebraTutorial.tsx",
+      "line": 87,
+      "complexity": 6,
+      "function": "function PracticeOption({"
+    },
+    {
+      "file": "src/features/tutorial/AlgebraTutorial.tsx",
+      "line": 109,
+      "complexity": 6,
+      "function": "function PracticeChoices(props: TutorialPageProps) {"
+    },
+    {
+      "file": "src/features/tutorial/AlgebraTutorial.tsx",
+      "line": 124,
+      "complexity": 6,
+      "function": "function PracticeFeedback({ answer }: TutorialPageProps) {"
+    },
+    {
+      "file": "src/features/tutorial/Tutorial.tsx",
+      "line": 7,
+      "complexity": 6,
+      "function": "function useTutorial() {"
+    },
+    {
+      "file": "src/features/tutorial/Tutorial.tsx",
+      "line": 43,
+      "complexity": 6,
+      "function": "export function Tutorial(props: TutorialProps) {"
+    },
+    {
+      "file": "src/features/tutorial/TutorialPractice.tsx",
+      "line": 24,
+      "complexity": 6,
+      "function": "export function TutorialPractice(props: TutorialPageProps) {"
+    },
+    {
+      "file": "src/app/AppLayout.tsx",
+      "line": 31,
+      "complexity": 5,
+      "function": "export function AppWorkspace({ screen, children }: { screen: Screen; c..."
+    },
+    {
+      "file": "src/app/AppLayout.tsx",
+      "line": 52,
+      "complexity": 5,
+      "function": "export function StorageWarning({ available }: { available: boolean })..."
+    },
+    {
+      "file": "src/app/AppScreens.tsx",
+      "line": 44,
+      "complexity": 5,
+      "function": "function ActiveMissionScreen({ state, navigation }: AppScreenProps) {..."
+    },
+    {
+      "file": "src/app/AppScreens.tsx",
+      "line": 71,
+      "complexity": 5,
+      "function": "export function SettingsOverlay({ state, navigation, settingsOpen }: A..."
+    },
+    {
+      "file": "src/app/AppSidebar.tsx",
+      "line": 31,
+      "complexity": 5,
+      "function": "function NavigationBadge({ count }: { count?: number }) {"
+    },
+    {
+      "file": "src/app/AppSidebar.tsx",
+      "line": 94,
+      "complexity": 5,
+      "function": "function SidebarBottom({ navigation }: { navigation: AppNavigation })..."
+    },
+    {
+      "file": "src/app/useSoundShortcut.ts",
+      "line": 6,
+      "complexity": 5,
+      "function": "function isEditing(target: EventTarget | null): boolean {"
+    },
+    {
+      "file": "src/app/useSoundShortcut.ts",
+      "line": 27,
+      "complexity": 5,
+      "function": "function soundListener(dispatch: Dispatch<GameAction>) {"
+    },
+    {
+      "file": "src/content/mission-catalog.ts",
+      "line": 54,
+      "complexity": 5,
+      "function": "function hasChoice(choices: unknown, correct: string): boolean {"
+    },
+    {
+      "file": "src/content/mission-catalog.ts",
+      "line": 64,
+      "complexity": 5,
+      "function": "function hasChoiceFormat(value: Record<string, unknown>): boolean {..."
+    },
+    {
+      "file": "src/content/mission-catalog.ts",
+      "line": 68,
+      "complexity": 5,
+      "function": "function hasBuildFormat(value: Record<string, unknown>): boolean {"
+    },
+    {
+      "file": "src/game/progress.ts",
+      "line": 20,
+      "complexity": 5,
+      "function": "export function isMissionUnlocked(id: string, completed: SavedGame['co..."
+    },
+    {
+      "file": "src/game/reducer.ts",
+      "line": 38,
+      "complexity": 5,
+      "function": "function enterSector(state: GameState, action: ActionOf<'enter-sector'..."
+    },
+    {
+      "file": "src/game/reducer.ts",
+      "line": 42,
+      "complexity": 5,
+      "function": "function startMission(state: GameState, action: ActionOf<'start'>): Ga..."
+    },
+    {
+      "file": "src/game/space.ts",
+      "line": 16,
+      "complexity": 5,
+      "function": "export function createWorld(items: { id: string; label: string }[]): S..."
+    },
+    {
+      "file": "src/infrastructure/gameStorage.ts",
+      "line": 5,
+      "complexity": 5,
+      "function": "function writeToBrowser(save: SavedGame): boolean {"
+    },
+    {
+      "file": "src/infrastructure/gameStorage.ts",
+      "line": 12,
+      "complexity": 5,
+      "function": "class BrowserGameStorage {"
+    },
+    {
+      "file": "src/infrastructure/gameStorage.ts",
+      "line": 15,
+      "complexity": 5,
+      "function": "read() {"
+    },
+    {
+      "file": "src/infrastructure/storage.ts",
+      "line": 18,
+      "complexity": 5,
+      "function": "function isCreation(value: unknown): boolean {"
+    },
+    {
+      "file": "src/infrastructure/storage.ts",
+      "line": 27,
+      "complexity": 5,
+      "function": "function isResult(value: unknown): value is MissionResult {"
+    },
+    {
+      "file": "src/infrastructure/storage.ts",
+      "line": 71,
+      "complexity": 5,
+      "function": "function restoreSave(data: unknown): SavedGame {"
+    },
+    {
+      "file": "src/infrastructure/storage.ts",
+      "line": 95,
+      "complexity": 5,
+      "function": "export function loadGame(storage: StoragePort): SavedGame {"
+    },
+    {
+      "file": "src/infrastructure/storage.ts",
+      "line": 103,
+      "complexity": 5,
+      "function": "export function saveGame(storage: StoragePort, save: SavedGame): boole..."
+    },
+    {
+      "file": "src/features/map/expedition.ts",
+      "line": 35,
+      "complexity": 5,
+      "function": "function sectorStatus(id: string, save: SavedGame): DestinationStatus..."
+    },
+    {
+      "file": "src/features/map/expedition.ts",
+      "line": 43,
+      "complexity": 5,
+      "function": "export class Expedition {"
+    },
+    {
+      "file": "src/features/map/expedition.ts",
+      "line": 76,
+      "complexity": 5,
+      "function": "get nextId() {"
+    },
+    {
+      "file": "src/features/map/ExpeditionHeader.tsx",
+      "line": 19,
+      "complexity": 5,
+      "function": "export function ExpeditionHeader({ expedition }: ExpeditionViewProps)..."
+    },
+    {
+      "file": "src/features/map/ExpeditionHeader.tsx",
+      "line": 55,
+      "complexity": 5,
+      "function": "function CompletionActions({ expedition }: ExpeditionViewProps) {"
+    },
+    {
+      "file": "src/features/map/ExpeditionMap.tsx",
+      "line": 23,
+      "complexity": 5,
+      "function": "function ExpeditionJourney({ expedition }: { expedition: Expedition })..."
+    },
+    {
+      "file": "src/features/map/flightController.ts",
+      "line": 46,
+      "complexity": 5,
+      "function": "function isPilotEvent(event: KeyboardEvent): boolean {"
+    },
+    {
+      "file": "src/features/map/flightController.ts",
+      "line": 52,
+      "complexity": 5,
+      "function": "export class FlightController {"
+    },
+    {
+      "file": "src/features/map/flightController.ts",
+      "line": 87,
+      "complexity": 5,
+      "function": "private move(time: number): Point {"
+    },
+    {
+      "file": "src/features/map/flightController.ts",
+      "line": 122,
+      "complexity": 5,
+      "function": "private renderGuidance() {"
+    },
+    {
+      "file": "src/features/map/flightController.ts",
+      "line": 178,
+      "complexity": 5,
+      "function": "() => {"
+    },
+    {
+      "file": "src/features/map/FlightPanels.tsx",
+      "line": 60,
+      "complexity": 5,
+      "function": "function FlightControl({ control: [key, symbol, label], controller, pa..."
+    },
+    {
+      "file": "src/features/map/FlightPanels.tsx",
+      "line": 77,
+      "complexity": 5,
+      "function": "function FlightControls({ controller, paused }: FlightViewProps) {"
+    },
+    {
+      "file": "src/features/map/FlightPanels.tsx",
+      "line": 136,
+      "complexity": 5,
+      "function": "export function FlightPanels(props: FlightPanelsProps) {"
+    },
+    {
+      "file": "src/features/map/FlightScene.tsx",
+      "line": 18,
+      "complexity": 5,
+      "function": "function destinationState(status?: DestinationStatus): string {"
+    },
+    {
+      "file": "src/features/map/FlightScene.tsx",
+      "line": 67,
+      "complexity": 5,
+      "function": "function FlightRoute({ world }: { world: SpaceWorld }) {"
+    },
+    {
+      "file": "src/features/map/FlightScene.tsx",
+      "line": 97,
+      "complexity": 5,
+      "function": "function RadarDots({ world, nextId }: { world: SpaceWorld; nextId?: st..."
+    },
+    {
+      "file": "src/features/map/FlightScene.tsx",
+      "line": 127,
+      "complexity": 5,
+      "function": "function SoundIcon({ enabled }: { enabled: boolean }) {"
+    },
+    {
+      "file": "src/features/map/thrusterSound.ts",
+      "line": 39,
+      "complexity": 5,
+      "function": "class ThrusterSound {"
+    },
+    {
+      "file": "src/features/map/thrusterSound.ts",
+      "line": 65,
+      "complexity": 5,
+      "function": "unlock() {"
+    },
+    {
+      "file": "src/features/map/useSpaceFlight.ts",
+      "line": 4,
+      "complexity": 5,
+      "function": "export function useSpaceFlight("
+    },
+    {
+      "file": "src/features/map/useSpaceFlight.ts",
+      "line": 16,
+      "complexity": 5,
+      "function": "function subscribeToMotion(update: (value: boolean) => void) {"
+    },
+    {
+      "file": "src/features/mission/AnswerInput.tsx",
+      "line": 47,
+      "complexity": 5,
+      "function": "function ChoiceAnswer(props: AnswerInputProps) {"
+    },
+    {
+      "file": "src/features/mission/AnswerInput.tsx",
+      "line": 75,
+      "complexity": 5,
+      "function": "function TokenButton({ token, answer, disabled, onChange }: TokenProps..."
+    },
+    {
+      "file": "src/features/mission/AnswerInput.tsx",
+      "line": 87,
+      "complexity": 5,
+      "function": "function UndoButton({ answer, disabled, onChange }: AnswerInputProps)..."
+    },
+    {
+      "file": "src/features/mission/MissionFeedback.tsx",
+      "line": 7,
+      "complexity": 5,
+      "function": "function CreatedResult({ session }: MissionViewProps) {"
+    },
+    {
+      "file": "src/features/mission/MissionFeedback.tsx",
+      "line": 15,
+      "complexity": 5,
+      "function": "function NextMission({ onNext }: { onNext: () => void }) {"
+    },
+    {
+      "file": "src/features/mission/MissionFeedback.tsx",
+      "line": 42,
+      "complexity": 5,
+      "function": "function feedbackClass(feedback: string, done: boolean): string {"
+    },
+    {
+      "file": "src/features/mission/MissionForm.tsx",
+      "line": 8,
+      "complexity": 5,
+      "function": "function OptionalCreation({ session }: MissionViewProps) {"
+    },
+    {
+      "file": "src/features/mission/MissionGuide.tsx",
+      "line": 25,
+      "complexity": 5,
+      "function": "function hintLabel(openHints: number, limit: number): string {"
+    },
+    {
+      "file": "src/features/mission/MissionGuide.tsx",
+      "line": 29,
+      "complexity": 5,
+      "function": "function HintButton({ hints, openHints, done, onHint }: MissionGuidePr..."
+    },
+    {
+      "file": "src/features/mission/MissionGuide.tsx",
+      "line": 41,
+      "complexity": 5,
+      "function": "function Hint({ text, index }: { text: string; index: number }) {"
+    },
+    {
+      "file": "src/features/mission/MissionGuide.tsx",
+      "line": 49,
+      "complexity": 5,
+      "function": "function HintList({ hints, openHints }: MissionGuideProps) {"
+    },
+    {
+      "file": "src/features/mission/MissionGuide.tsx",
+      "line": 58,
+      "complexity": 5,
+      "function": "export function MissionGuide(props: MissionGuideProps) {"
+    },
+    {
+      "file": "src/features/mission/MissionHeading.tsx",
+      "line": 11,
+      "complexity": 5,
+      "function": "function MissionBack({ onBack }: { onBack: () => void }) {"
+    },
+    {
+      "file": "src/features/mission/MissionHeading.tsx",
+      "line": 19,
+      "complexity": 5,
+      "function": "function MissionTitle({ sector, mission }: { sector: Sector; mission:..."
+    },
+    {
+      "file": "src/features/mission/MissionHeading.tsx",
+      "line": 36,
+      "complexity": 5,
+      "function": "function MissionTitleRow({"
+    },
+    {
+      "file": "src/features/mission/MissionScreen.tsx",
+      "line": 38,
+      "complexity": 5,
+      "function": "function ChallengeIntro(props: MissionViewProps) {"
+    },
+    {
+      "file": "src/features/mission/MissionScreen.tsx",
+      "line": 57,
+      "complexity": 5,
+      "function": "function MissionLayout(props: ChallengeProps) {"
+    },
+    {
+      "file": "src/features/mission/MissionScreen.tsx",
+      "line": 70,
+      "complexity": 5,
+      "function": "export function MissionScreen({ mission, onComplete, onNext, onBack }:..."
+    },
+    {
+      "file": "src/features/mission/MissionSupport.tsx",
+      "line": 5,
+      "complexity": 5,
+      "function": "function NarrationButton({ session }: MissionViewProps) {"
+    },
+    {
+      "file": "src/features/mission/MissionSupport.tsx",
+      "line": 13,
+      "complexity": 5,
+      "function": "function VisualButton({ session }: MissionViewProps) {"
+    },
+    {
+      "file": "src/features/mission/MissionSupport.tsx",
+      "line": 21,
+      "complexity": 5,
+      "function": "function SupportButtons(props: MissionViewProps) {"
+    },
+    {
+      "file": "src/features/mission/MissionSupport.tsx",
+      "line": 36,
+      "complexity": 5,
+      "function": "export function MissionSupport(props: MissionViewProps) {"
+    },
+    {
+      "file": "src/features/mission/ObjectModel.tsx",
+      "line": 5,
+      "complexity": 5,
+      "function": "function ObjectDescription({ model }: ObjectModelProps) {"
+    },
+    {
+      "file": "src/features/mission/useMission.ts",
+      "line": 44,
+      "complexity": 5,
+      "function": "function narrationDetail(mission: Mission, state: MissionState): strin..."
+    },
+    {
+      "file": "src/features/mission/useMission.ts",
+      "line": 55,
+      "complexity": 5,
+      "function": "class MissionActions {"
+    },
+    {
+      "file": "src/features/mission/useMission.ts",
+      "line": 82,
+      "complexity": 5,
+      "function": "() => {"
+    },
+    {
+      "file": "src/features/mission/useMission.ts",
+      "line": 101,
+      "complexity": 5,
+      "function": "export function useMission(mission: Mission, onComplete: (result: Miss..."
+    },
+    {
+      "file": "src/features/progress/Summary.tsx",
+      "line": 18,
+      "complexity": 5,
+      "function": "function SummaryHeading({ count }: { count: number }) {"
+    },
+    {
+      "file": "src/features/progress/Summary.tsx",
+      "line": 43,
+      "complexity": 5,
+      "function": "function AuthoredProblem({ creation }: { creation?: MissionResult['cre..."
+    },
+    {
+      "file": "src/features/progress/Summary.tsx",
+      "line": 73,
+      "complexity": 5,
+      "function": "function DiscoveryList({ items, save }: { items: Mission[]; save: Save..."
+    },
+    {
+      "file": "src/features/progress/Summary.tsx",
+      "line": 91,
+      "complexity": 5,
+      "function": "function SummarySectors({ save }: { save: SavedGame }) {"
+    },
+    {
+      "file": "src/features/progress/Summary.tsx",
+      "line": 106,
+      "complexity": 5,
+      "function": "function BackToMap({ onBack }: { onBack: () => void }) {"
+    },
+    {
+      "file": "src/features/settings/SettingsDialog.tsx",
+      "line": 115,
+      "complexity": 5,
+      "function": "function ResetConfirmation(props: ResetButtonsProps) {"
+    },
+    {
+      "file": "src/features/tutorial/AlgebraTutorial.tsx",
+      "line": 147,
+      "complexity": 5,
+      "function": "function AlgebraPractice(props: TutorialPageProps) {"
+    },
+    {
+      "file": "src/features/tutorial/Tutorial.tsx",
+      "line": 31,
+      "complexity": 5,
+      "function": "function TutorialHeading({ step }: { step: number }) {"
+    },
+    {
+      "file": "src/app/App.tsx",
+      "line": 40,
+      "complexity": 4,
+      "function": "export function App() {"
+    },
+    {
+      "file": "src/app/AppScreens.tsx",
+      "line": 16,
+      "complexity": 4,
+      "function": "function ExplorationScreen({ state, navigation, flightSession, setting..."
+    },
+    {
+      "file": "src/app/useGame.ts",
+      "line": 5,
+      "complexity": 4,
+      "function": "export function useGame() {"
+    },
+    {
+      "file": "src/app/useMainFocus.ts",
+      "line": 8,
+      "complexity": 4,
+      "function": "export function useMainFocus(state: GameState, main: RefObject<HTMLEle..."
+    },
+    {
+      "file": "src/app/useSoundShortcut.ts",
+      "line": 3,
+      "complexity": 4,
+      "function": "function hasModifier(event: KeyboardEvent): boolean {"
+    },
+    {
+      "file": "src/app/useSoundShortcut.ts",
+      "line": 34,
+      "complexity": 4,
+      "function": "export function useSoundShortcut(dispatch: Dispatch<GameAction>) {"
+    },
+    {
+      "file": "src/components/Icon.tsx",
+      "line": 26,
+      "complexity": 4,
+      "function": "export function Icon({ name, size = 22 }: IconProps) {"
+    },
+    {
+      "file": "src/content/mission-catalog.ts",
+      "line": 11,
+      "complexity": 4,
+      "function": "function isOperation(value: Record<string, unknown>): boolean {"
+    },
+    {
+      "file": "src/content/mission-catalog.ts",
+      "line": 28,
+      "complexity": 4,
+      "function": "function isQuantity(value: unknown): boolean {"
+    },
+    {
+      "file": "src/content/mission-catalog.ts",
+      "line": 94,
+      "complexity": 4,
+      "function": "function isMission(value: unknown): value is Mission {"
+    },
+    {
+      "file": "src/content/mission-catalog.ts",
+      "line": 97,
+      "complexity": 4,
+      "function": "function hasMissionFormat(value: Record<string, unknown>): boolean {..."
+    },
+    {
+      "file": "src/content/mission-catalog.ts",
+      "line": 103,
+      "complexity": 4,
+      "function": "function catalogSections(value: unknown, count: number): unknown[] {..."
+    },
+    {
+      "file": "src/content/mission-catalog.ts",
+      "line": 131,
+      "complexity": 4,
+      "function": "export function parseMissionCatalog(value: unknown, sectorIds: readonl..."
+    },
+    {
+      "file": "src/game/math.ts",
+      "line": 25,
+      "complexity": 4,
+      "function": "function divide(left: number, right: number): number {"
+    },
+    {
+      "file": "src/game/space.ts",
+      "line": 34,
+      "complexity": 4,
+      "function": "export function moveShip("
+    },
+    {
+      "file": "src/game/validation.ts",
+      "line": 2,
+      "complexity": 4,
+      "function": "export function isRecord(value: unknown): value is Record<string, unkn..."
+    },
+    {
+      "file": "src/game/validation.ts",
+      "line": 20,
+      "complexity": 4,
+      "function": "export function optional(validate: Validator): Validator {"
+    },
+    {
+      "file": "src/infrastructure/gameStorage.ts",
+      "line": 22,
+      "complexity": 4,
+      "function": "write(save: SavedGame) {"
+    },
+    {
+      "file": "src/infrastructure/gameStorage.ts",
+      "line": 29,
+      "complexity": 4,
+      "function": "(listener: () => void) => {"
+    },
+    {
+      "file": "src/infrastructure/storage.ts",
+      "line": 15,
+      "complexity": 4,
+      "function": "function isIntegerBetween(value: unknown, min: number, max: number): b..."
+    },
+    {
+      "file": "src/infrastructure/storage.ts",
+      "line": 50,
+      "complexity": 4,
+      "function": "function isSavedData(value: unknown): value is SavedData {"
+    },
+    {
+      "file": "src/infrastructure/storage.ts",
+      "line": 61,
+      "complexity": 4,
+      "function": "function validMissionId(value: unknown): string | null {"
+    },
+    {
+      "file": "src/test/mission.ts",
+      "line": 3,
+      "complexity": 4,
+      "function": "export function mission(id: string) {"
+    },
+    {
+      "file": "src/features/map/expedition.ts",
+      "line": 29,
+      "complexity": 4,
+      "function": "function missionStatus(id: string, save: SavedGame): DestinationStatus..."
+    },
+    {
+      "file": "src/features/map/expedition.ts",
+      "line": 72,
+      "complexity": 4,
+      "function": "get nextSector() {"
+    },
+    {
+      "file": "src/features/map/expedition.ts",
+      "line": 82,
+      "complexity": 4,
+      "function": "get resumeLabel() {"
+    },
+    {
+      "file": "src/features/map/expedition.ts",
+      "line": 86,
+      "complexity": 4,
+      "function": "private ensurePosition() {"
+    },
+    {
+      "file": "src/features/map/flightController.ts",
+      "line": 37,
+      "complexity": 4,
+      "function": "function keyDirection(keys: Set<string>): Point {"
+    },
+    {
+      "file": "src/features/map/flightController.ts",
+      "line": 101,
+      "complexity": 4,
+      "function": "private renderCamera() {"
+    },
+    {
+      "file": "src/features/map/flightController.ts",
+      "line": 110,
+      "complexity": 4,
+      "function": "private renderShip(direction: Point) {"
+    },
+    {
+      "file": "src/features/map/flightController.ts",
+      "line": 146,
+      "complexity": 4,
+      "function": "private press(key: string, event: KeyboardEvent) {"
+    },
+    {
+      "file": "src/features/map/flightController.ts",
+      "line": 157,
+      "complexity": 4,
+      "function": "(event: KeyboardEvent<HTMLDivElement>) => {"
+    },
+    {
+      "file": "src/features/map/flightController.ts",
+      "line": 208,
+      "complexity": 4,
+      "function": "function animateFlight(controller: FlightController) {"
+    },
+    {
+      "file": "src/features/map/FlightPanels.tsx",
+      "line": 21,
+      "complexity": 4,
+      "function": "function visitDisabled(near: SpaceDestination | undefined, props: Flig..."
+    },
+    {
+      "file": "src/features/map/FlightPanels.tsx",
+      "line": 128,
+      "complexity": 4,
+      "function": "function PilotActions(props: FlightViewProps) {"
+    },
+    {
+      "file": "src/features/map/FlightScene.tsx",
+      "line": 52,
+      "complexity": 4,
+      "function": "function DestinationMarkers({ world, statuses, nextId }: FlightViewPro..."
+    },
+    {
+      "file": "src/features/map/SpaceFlight.tsx",
+      "line": 22,
+      "complexity": 4,
+      "function": "function ScenePanel(props: Parameters<typeof FlightViewport>[0]) {"
+    },
+    {
+      "file": "src/features/map/thrusterSound.ts",
+      "line": 44,
+      "complexity": 4,
+      "function": "private shouldPlay(moving: boolean): boolean {"
+    },
+    {
+      "file": "src/features/map/thrusterSound.ts",
+      "line": 47,
+      "complexity": 4,
+      "function": "setMoving(moving: boolean) {"
+    },
+    {
+      "file": "src/features/map/thrusterSound.ts",
+      "line": 58,
+      "complexity": 4,
+      "function": "private prepare() {"
+    },
+    {
+      "file": "src/features/mission/AnswerInput.tsx",
+      "line": 13,
+      "complexity": 4,
+      "function": "function ChoiceLabel({ choice, index }: { choice: Choice; index: numbe..."
+    },
+    {
+      "file": "src/features/mission/AnswerInput.tsx",
+      "line": 38,
+      "complexity": 4,
+      "function": "function Choices(props: AnswerInputProps) {"
+    },
+    {
+      "file": "src/features/mission/AnswerInput.tsx",
+      "line": 109,
+      "complexity": 4,
+      "function": "function ExpressionSlots({ answer }: { answer: string }) {"
+    },
+    {
+      "file": "src/features/mission/CreationFields.tsx",
+      "line": 23,
+      "complexity": 4,
+      "function": "function SelectOptions({ options }: { options: SelectOption[] }) {"
+    },
+    {
+      "file": "src/features/mission/MissionFeedback.tsx",
+      "line": 46,
+      "complexity": 4,
+      "function": "export function MissionFeedback({ session, ...props }: MissionFeedback..."
+    },
+    {
+      "file": "src/features/mission/MissionHeading.tsx",
+      "line": 29,
+      "complexity": 4,
+      "function": "function MissionCounter({ number, total }: { number: number; total: nu..."
+    },
+    {
+      "file": "src/features/mission/ObjectModel.tsx",
+      "line": 13,
+      "complexity": 4,
+      "function": "function ObjectItems({ count }: { count: number }) {"
+    },
+    {
+      "file": "src/features/mission/useMission.ts",
+      "line": 68,
+      "complexity": 4,
+      "function": "private complete() {"
+    },
+    {
+      "file": "src/features/mission/useNarration.ts",
+      "line": 26,
+      "complexity": 4,
+      "function": "function bindUtterance("
+    },
+    {
+      "file": "src/features/progress/Summary.tsx",
+      "line": 114,
+      "complexity": 4,
+      "function": "function SummaryProgress({ count, save }: { count: number; save: Saved..."
+    },
+    {
+      "file": "src/features/settings/SettingsDialog.tsx",
+      "line": 46,
+      "complexity": 4,
+      "function": "function PreferenceSetting({"
+    },
+    {
+      "file": "src/features/settings/SettingsDialog.tsx",
+      "line": 64,
+      "complexity": 4,
+      "function": "function SettingsPreferences(props: SettingsDialogProps) {"
+    },
+    {
+      "file": "src/features/tutorial/AlgebraTutorial.tsx",
+      "line": 27,
+      "complexity": 4,
+      "function": "function NextStep({"
+    },
+    {
+      "file": "src/features/tutorial/AlgebraTutorial.tsx",
+      "line": 77,
+      "complexity": 4,
+      "function": "function VariableLesson(props: TutorialPageProps) {"
+    },
+    {
+      "file": "src/features/tutorial/AlgebraTutorial.tsx",
+      "line": 133,
+      "complexity": 4,
+      "function": "function FinishTutorial({ answer, onFinish }: TutorialPageProps) {"
+    },
+    {
+      "file": "src/features/tutorial/AlgebraTutorial.tsx",
+      "line": 158,
+      "complexity": 4,
+      "function": "export function AlgebraTutorial(props: TutorialPageProps) {"
+    },
+    {
+      "file": "src/features/tutorial/Tutorial.tsx",
+      "line": 23,
+      "complexity": 4,
+      "function": "function TutorialBack({ onBack }: { onBack: TutorialProps['onBack'] })..."
+    },
+    {
+      "file": "src/features/tutorial/Tutorial.tsx",
+      "line": 39,
+      "complexity": 4,
+      "function": "function TutorialPage(props: TutorialPageProps) {"
+    },
+    {
+      "file": "src/app/app-navigation.ts",
+      "line": 40,
+      "complexity": 3,
+      "function": "export function appClassName(state: GameState): string {"
+    },
+    {
+      "file": "src/app/AppScreens.tsx",
+      "line": 33,
+      "complexity": 3,
+      "function": "function TutorialScreen({ state, navigation, settingsOpen }: AppScreen..."
+    },
+    {
+      "file": "src/app/AppScreens.tsx",
+      "line": 57,
+      "complexity": 3,
+      "function": "function SummaryScreen({ state, navigation }: AppScreenProps) {"
+    },
+    {
+      "file": "src/app/AppScreens.tsx",
+      "line": 67,
+      "complexity": 3,
+      "function": "export function AppScreen(props: AppScreenProps) {"
+    },
+    {
+      "file": "src/app/useMainFocus.ts",
+      "line": 11,
+      "complexity": 3,
+      "function": "() => {"
+    },
+    {
+      "file": "src/app/useSoundShortcut.ts",
+      "line": 28,
+      "complexity": 3,
+      "function": "(event: KeyboardEvent) => {"
+    },
+    {
+      "file": "src/app/useSoundShortcut.ts",
+      "line": 35,
+      "complexity": 3,
+      "function": "() => {"
+    },
+    {
+      "file": "src/components/SpaceArt.tsx",
+      "line": 16,
+      "complexity": 3,
+      "function": "export function Planet({ variant }: PlanetProps) {"
+    },
+    {
+      "file": "src/content/mission-catalog.ts",
+      "line": 31,
+      "complexity": 3,
+      "function": "function isVisual(value: unknown): boolean {"
+    },
+    {
+      "file": "src/content/mission-catalog.ts",
+      "line": 42,
+      "complexity": 3,
+      "function": "function isHints(value: unknown): boolean {"
+    },
+    {
+      "file": "src/content/mission-catalog.ts",
+      "line": 45,
+      "complexity": 3,
+      "function": "function isChoice(value: unknown): boolean {"
+    },
+    {
+      "file": "src/content/mission-catalog.ts",
+      "line": 48,
+      "complexity": 3,
+      "function": "function isChoices(value: unknown): boolean {"
+    },
+    {
+      "file": "src/content/mission-catalog.ts",
+      "line": 51,
+      "complexity": 3,
+      "function": "function isTokenOrders(value: unknown): boolean {"
+    },
+    {
+      "file": "src/content/mission-catalog.ts",
+      "line": 72,
+      "complexity": 3,
+      "function": "function hasTokens(value: unknown): boolean {"
+    },
+    {
+      "file": "src/content/mission-catalog.ts",
+      "line": 100,
+      "complexity": 3,
+      "function": "function requireValid(condition: unknown, message: string): asserts co..."
+    },
+    {
+      "file": "src/content/mission-catalog.ts",
+      "line": 115,
+      "complexity": 3,
+      "function": "function sectionProblems(section: unknown, id: string, index: number):..."
+    },
+    {
+      "file": "src/game/math.ts",
+      "line": 35,
+      "complexity": 3,
+      "function": "function hasEquivalentAnswer(mission: Mission, answer: string): boolea..."
+    },
+    {
+      "file": "src/game/reducer.ts",
+      "line": 90,
+      "complexity": 3,
+      "function": "export function gameReducer(state: GameState, action: GameAction): Gam..."
+    },
+    {
+      "file": "src/game/space.ts",
+      "line": 21,
+      "complexity": 3,
+      "function": "(item, index) => {"
+    },
+    {
+      "file": "src/game/space.ts",
+      "line": 54,
+      "complexity": 3,
+      "function": "export function nearbyDestination("
+    },
+    {
+      "file": "src/game/space.ts",
+      "line": 63,
+      "complexity": 3,
+      "function": "export function approach(destination?: Point): Point {"
+    },
+    {
+      "file": "src/game/validation.ts",
+      "line": 5,
+      "complexity": 3,
+      "function": "export function matchesFields("
+    },
+    {
+      "file": "src/game/validation.ts",
+      "line": 11,
+      "complexity": 3,
+      "function": "export function isFiniteNumber(value: unknown): value is number {"
+    },
+    {
+      "file": "src/game/validation.ts",
+      "line": 14,
+      "complexity": 3,
+      "function": "export function isText(value: unknown): value is string {"
+    },
+    {
+      "file": "src/game/validation.ts",
+      "line": 17,
+      "complexity": 3,
+      "function": "export function isTextArray(value: unknown): value is string[] {"
+    },
+    {
+      "file": "src/infrastructure/storage.ts",
+      "line": 45,
+      "complexity": 3,
+      "function": "function isPreferences(value: unknown): boolean {"
+    },
+    {
+      "file": "src/infrastructure/storage.ts",
+      "line": 64,
+      "complexity": 3,
+      "function": "function resultEntry(id: string, completed: Record<string, unknown>):..."
+    },
+    {
+      "file": "src/infrastructure/storage.ts",
+      "line": 68,
+      "complexity": 3,
+      "function": "function validResults(completed: Record<string, unknown>): SavedGame['..."
+    },
+    {
+      "file": "src/features/map/expedition.ts",
+      "line": 19,
+      "complexity": 3,
+      "function": "function sectorMissions(id: string) {"
+    },
+    {
+      "file": "src/features/map/expedition.ts",
+      "line": 57,
+      "complexity": 3,
+      "function": "get sectorComplete() {"
+    },
+    {
+      "file": "src/features/map/expedition.ts",
+      "line": 66,
+      "complexity": 3,
+      "function": "get statuses(): Record<string, DestinationStatus> {"
+    },
+    {
+      "file": "src/features/map/expedition.ts",
+      "line": 95,
+      "complexity": 3,
+      "function": "() => {"
+    },
+    {
+      "file": "src/features/map/expedition.ts",
+      "line": 103,
+      "complexity": 3,
+      "function": "(id: string) => {"
+    },
+    {
+      "file": "src/features/map/ExpeditionHeader.tsx",
+      "line": 63,
+      "complexity": 3,
+      "function": "function completionMessage(expedition: Expedition): string {"
+    },
+    {
+      "file": "src/features/map/ExpeditionMap.tsx",
+      "line": 5,
+      "complexity": 3,
+      "function": "function ExpeditionFlight({ expedition }: { expedition: Expedition })..."
+    },
+    {
+      "file": "src/features/map/flightController.ts",
+      "line": 34,
+      "complexity": 3,
+      "function": "function normalizeKey(key: string): string {"
+    },
+    {
+      "file": "src/features/map/flightController.ts",
+      "line": 49,
+      "complexity": 3,
+      "function": "function hasMoved(before: Point, after: Point): boolean {"
+    },
+    {
+      "file": "src/features/map/flightController.ts",
+      "line": 171,
+      "complexity": 3,
+      "function": "controlKeyDown(key: string, event: KeyboardEvent<HTMLButtonElement>) {..."
+    },
+    {
+      "file": "src/features/map/FlightPanels.tsx",
+      "line": 106,
+      "complexity": 3,
+      "function": "(destination) => ("
+    },
+    {
+      "file": "src/features/map/FlightScene.tsx",
+      "line": 33,
+      "complexity": 3,
+      "function": "function nextMarkerClass(nextId: string | undefined, id: string): stri..."
+    },
+    {
+      "file": "src/features/map/FlightScene.tsx",
+      "line": 100,
+      "complexity": 3,
+      "function": "(item) => ("
+    },
+    {
+      "file": "src/features/map/FlightScene.tsx",
+      "line": 143,
+      "complexity": 3,
+      "function": "function soundTitle(enabled: boolean): string {"
+    },
+    {
+      "file": "src/features/map/SpaceBody.tsx",
+      "line": 29,
+      "complexity": 3,
+      "function": "export function SpaceBody({ kind }: SpaceBodyProps) {"
+    },
+    {
+      "file": "src/features/map/SpaceFlight.tsx",
+      "line": 14,
+      "complexity": 3,
+      "function": "function FlightInstructions({ id }: { id: string }) {"
+    },
+    {
+      "file": "src/features/map/thrusterSound.ts",
+      "line": 5,
+      "complexity": 3,
+      "function": "function createNoise(context: AudioContext): AudioBuffer {"
+    },
+    {
+      "file": "src/features/map/thrusterSound.ts",
+      "line": 53,
+      "complexity": 3,
+      "function": "dispose() {"
+    },
+    {
+      "file": "src/features/map/thrusterSound.ts",
+      "line": 62,
+      "complexity": 3,
+      "function": "private resume() {"
+    },
+    {
+      "file": "src/features/map/thrusterSound.ts",
+      "line": 75,
+      "complexity": 3,
+      "function": "setEnabled(value: boolean) {"
+    },
+    {
+      "file": "src/features/map/useSpaceFlight.ts",
+      "line": 23,
+      "complexity": 3,
+      "function": "export function useSystemReducedMotion() {"
+    },
+    {
+      "file": "src/features/mission/AnswerInput.tsx",
+      "line": 69,
+      "complexity": 3,
+      "function": "function selectedTokens(answer: string): string[] {"
+    },
+    {
+      "file": "src/features/mission/AnswerInput.tsx",
+      "line": 162,
+      "complexity": 3,
+      "function": "export function AnswerInput(props: AnswerInputProps) {"
+    },
+    {
+      "file": "src/features/mission/MissionForm.tsx",
+      "line": 33,
+      "complexity": 3,
+      "function": "function submitAnswer(event: FormEvent, session: MissionSession) {"
+    },
+    {
+      "file": "src/features/mission/MissionHeading.tsx",
+      "line": 54,
+      "complexity": 3,
+      "function": "function sectorForMission(mission: Mission) {"
+    },
+    {
+      "file": "src/features/mission/useMission.ts",
+      "line": 30,
+      "complexity": 3,
+      "function": "function retryMessage(mission: Mission): string {"
+    },
+    {
+      "file": "src/features/mission/useMission.ts",
+      "line": 35,
+      "complexity": 3,
+      "function": "function missionResult(state: MissionState, creation: boolean): Missio..."
+    },
+    {
+      "file": "src/features/mission/useMission.ts",
+      "line": 92,
+      "complexity": 3,
+      "function": "() => {"
+    },
+    {
+      "file": "src/features/mission/useNarration.ts",
+      "line": 9,
+      "complexity": 3,
+      "function": "function hasNarration(): boolean {"
+    },
+    {
+      "file": "src/features/mission/useNarration.ts",
+      "line": 37,
+      "complexity": 3,
+      "function": "class NarrationActions {"
+    },
+    {
+      "file": "src/features/mission/useNarration.ts",
+      "line": 45,
+      "complexity": 3,
+      "function": "(text: string) => {"
+    },
+    {
+      "file": "src/features/mission/useNarration.ts",
+      "line": 57,
+      "complexity": 3,
+      "function": "export function useNarration() {"
+    },
+    {
+      "file": "src/features/progress/Summary.tsx",
+      "line": 10,
+      "complexity": 3,
+      "function": "function summaryTitle(count: number): string {"
+    },
+    {
+      "file": "src/features/progress/Summary.tsx",
+      "line": 13,
+      "complexity": 3,
+      "function": "function summaryDescription(count: number): string {"
+    },
+    {
+      "file": "src/features/settings/SettingsDialog.tsx",
+      "line": 133,
+      "complexity": 3,
+      "function": "function useDialog() {"
+    },
+    {
+      "file": "src/features/tutorial/AlgebraTutorial.tsx",
+      "line": 11,
+      "complexity": 3,
+      "function": "function TutorialCard({"
+    },
+    {
+      "file": "src/features/tutorial/AlgebraTutorial.tsx",
+      "line": 55,
+      "complexity": 3,
+      "function": "function LumaIntroduction(props: TutorialPageProps) {"
+    },
+    {
+      "file": "src/features/tutorial/AlgebraTutorial.tsx",
+      "line": 119,
+      "complexity": 3,
+      "function": "function practiceMessage(answer: string): string {"
+    },
+    {
+      "file": "src/app/app-navigation.ts",
+      "line": 9,
+      "complexity": 2,
+      "function": "export class AppNavigation {"
+    },
+    {
+      "file": "src/app/app-navigation.ts",
+      "line": 28,
+      "complexity": 2,
+      "function": "(id: string) => {"
+    },
+    {
+      "file": "src/app/app-navigation.ts",
+      "line": 32,
+      "complexity": 2,
+      "function": "() => {"
+    },
+    {
+      "file": "src/app/app-navigation.ts",
+      "line": 37,
+      "complexity": 2,
+      "function": "export function isExploration(screen: Screen): boolean {"
+    },
+    {
+      "file": "src/app/AppSidebar.tsx",
+      "line": 72,
+      "complexity": 2,
+      "function": "(item) => ("
+    },
+    {
+      "file": "src/components/SpaceArt.tsx",
+      "line": 131,
+      "complexity": 2,
+      "function": "export function SpaceArt() {"
+    },
+    {
+      "file": "src/content/mission-catalog.ts",
+      "line": 56,
+      "complexity": 2,
+      "function": "(choice) => isRecord(choice) && choice.value === correct"
+    },
+    {
+      "file": "src/content/mission-catalog.ts",
+      "line": 133,
+      "complexity": 2,
+      "function": "(section, index) =>"
+    },
+    {
+      "file": "src/game/reducer.ts",
+      "line": 35,
+      "complexity": 2,
+      "function": "function navigate(state: GameState, action: ActionOf<'navigate'>): Gam..."
+    },
+    {
+      "file": "src/game/reducer.ts",
+      "line": 64,
+      "complexity": 2,
+      "function": "(state) => ({"
+    },
+    {
+      "file": "src/game/space.ts",
+      "line": 67,
+      "complexity": 2,
+      "function": "export function cameraPosition(position: Point, world: SpaceWorld, vie..."
+    },
+    {
+      "file": "src/game/validation.ts",
+      "line": 21,
+      "complexity": 2,
+      "function": "(value) => value === undefined || validate(value)"
+    },
+    {
+      "file": "src/infrastructure/gameStorage.ts",
+      "line": 36,
+      "complexity": 2,
+      "function": "export function createBrowserGameStorage() {"
+    },
+    {
+      "file": "src/infrastructure/storage.ts",
+      "line": 12,
+      "complexity": 2,
+      "function": "function isBoolean(value: unknown): boolean {"
+    },
+    {
+      "file": "src/features/map/expedition.ts",
+      "line": 48,
+      "complexity": 2,
+      "function": "get sector() {"
+    },
+    {
+      "file": "src/features/map/expedition.ts",
+      "line": 54,
+      "complexity": 2,
+      "function": "get allComplete() {"
+    },
+    {
+      "file": "src/features/map/flightController.ts",
+      "line": 39,
+      "complexity": 2,
+      "function": "(sum, key) => {"
+    },
+    {
+      "file": "src/features/map/flightController.ts",
+      "line": 68,
+      "complexity": 2,
+      "function": "configure(options: FlightOptions) {"
+    },
+    {
+      "file": "src/features/map/flightController.ts",
+      "line": 73,
+      "complexity": 2,
+      "function": "connect(viewport: HTMLDivElement, onNearby: (id?: string) => void) {..."
+    },
+    {
+      "file": "src/features/map/flightController.ts",
+      "line": 130,
+      "complexity": 2,
+      "function": "private notifyPosition() {"
+    },
+    {
+      "file": "src/features/map/flightController.ts",
+      "line": 161,
+      "complexity": 2,
+      "function": "(event: KeyboardEvent<HTMLDivElement>) => {"
+    },
+    {
+      "file": "src/features/map/flightController.ts",
+      "line": 184,
+      "complexity": 2,
+      "function": "visitDirect(id: string) {"
+    },
+    {
+      "file": "src/features/map/FlightPanels.tsx",
+      "line": 80,
+      "complexity": 2,
+      "function": "(control) => ("
+    },
+    {
+      "file": "src/features/map/FlightScene.tsx",
+      "line": 55,
+      "complexity": 2,
+      "function": "(destination, index) => ("
+    },
+    {
+      "file": "src/features/map/thrusterSound.ts",
+      "line": 20,
+      "complexity": 2,
+      "function": "function connectGraph(context: AudioContext): ThrusterGraph {"
+    },
+    {
+      "file": "src/features/map/thrusterSound.ts",
+      "line": 35,
+      "complexity": 2,
+      "function": "function setVolume(graph: ThrusterGraph, playing: boolean) {"
+    },
+    {
+      "file": "src/features/map/thrusterSound.ts",
+      "line": 82,
+      "complexity": 2,
+      "function": "export function createThrusterSound() {"
+    },
+    {
+      "file": "src/features/mission/AnswerInput.tsx",
+      "line": 41,
+      "complexity": 2,
+      "function": "(choice, index) => ("
+    },
+    {
+      "file": "src/features/mission/AnswerInput.tsx",
+      "line": 102,
+      "complexity": 2,
+      "function": "(token) => ("
+    },
+    {
+      "file": "src/features/mission/CreationFields.tsx",
+      "line": 26,
+      "complexity": 2,
+      "function": "(option) => ("
+    },
+    {
+      "file": "src/features/mission/MissionGuide.tsx",
+      "line": 52,
+      "complexity": 2,
+      "function": "(hint, index) => ("
+    },
+    {
+      "file": "src/features/mission/ObjectModel.tsx",
+      "line": 16,
+      "complexity": 2,
+      "function": "(_, item) => ("
+    },
+    {
+      "file": "src/features/mission/ObjectModel.tsx",
+      "line": 43,
+      "complexity": 2,
+      "function": "(_, group) => ("
+    },
+    {
+      "file": "src/features/mission/useMission.ts",
+      "line": 17,
+      "complexity": 2,
+      "function": "function initialMission(mission: Mission): MissionState {"
+    },
+    {
+      "file": "src/features/mission/useMission.ts",
+      "line": 49,
+      "complexity": 2,
+      "function": "function narrationText(mission: Mission, state: MissionState): string..."
+    },
+    {
+      "file": "src/features/mission/useMission.ts",
+      "line": 56,
+      "complexity": 2,
+      "function": "constructor("
+    },
+    {
+      "file": "src/features/mission/useMission.ts",
+      "line": 65,
+      "complexity": 2,
+      "function": "private update(patch: Partial<MissionState>) {"
+    },
+    {
+      "file": "src/features/mission/useMission.ts",
+      "line": 75,
+      "complexity": 2,
+      "function": "private retry() {"
+    },
+    {
+      "file": "src/features/mission/useMission.ts",
+      "line": 90,
+      "complexity": 2,
+      "function": "() =>"
+    },
+    {
+      "file": "src/features/mission/useMission.ts",
+      "line": 96,
+      "complexity": 2,
+      "function": "() => {"
+    },
+    {
+      "file": "src/features/mission/useNarration.ts",
+      "line": 6,
+      "complexity": 2,
+      "function": "function cancelNarration() {"
+    },
+    {
+      "file": "src/features/mission/useNarration.ts",
+      "line": 39,
+      "complexity": 2,
+      "function": "(patch: Partial<NarrationState>) =>"
+    },
+    {
+      "file": "src/features/progress/Summary.tsx",
+      "line": 76,
+      "complexity": 2,
+      "function": "(mission) => ("
+    },
+    {
+      "file": "src/features/progress/Summary.tsx",
+      "line": 94,
+      "complexity": 2,
+      "function": "(sector) => ("
+    },
+    {
+      "file": "src/features/settings/SettingsDialog.tsx",
+      "line": 67,
+      "complexity": 2,
+      "function": "(definition) => ("
+    },
+    {
+      "file": "src/features/tutorial/AlgebraTutorial.tsx",
+      "line": 113,
+      "complexity": 2,
+      "function": "(value) => ("
+    },
+    {
+      "file": "src/features/tutorial/Tutorial.tsx",
+      "line": 11,
+      "complexity": 2,
+      "function": "() => {"
+    },
+    {
+      "file": "src/app/app-navigation.ts",
+      "line": 10,
+      "complexity": 1,
+      "function": "constructor("
+    },
+    {
+      "file": "src/app/app-navigation.ts",
+      "line": 16,
+      "complexity": 1,
+      "function": "() => this.dispatch({ type: 'navigate', screen: Screen.Map })"
+    },
+    {
+      "file": "src/app/app-navigation.ts",
+      "line": 17,
+      "complexity": 1,
+      "function": "() => this.dispatch({ type: 'navigate', screen: Screen.Tutorial })"
+    },
+    {
+      "file": "src/app/app-navigation.ts",
+      "line": 18,
+      "complexity": 1,
+      "function": "() => this.dispatch({ type: 'navigate', screen: Screen.Summary })"
+    },
+    {
+      "file": "src/app/app-navigation.ts",
+      "line": 19,
+      "complexity": 1,
+      "function": "() => this.dispatch({ type: 'return-sector' })"
+    },
+    {
+      "file": "src/app/app-navigation.ts",
+      "line": 20,
+      "complexity": 1,
+      "function": "(id: string) => this.dispatch({ type: 'enter-sector', id })"
+    },
+    {
+      "file": "src/app/app-navigation.ts",
+      "line": 21,
+      "complexity": 1,
+      "function": "(result: MissionResult) => this.dispatch({ type: 'complete', result })"
+    },
+    {
+      "file": "src/app/app-navigation.ts",
+      "line": 22,
+      "complexity": 1,
+      "function": "() => this.dispatch({ type: 'tutorial-done' })"
+    },
+    {
+      "file": "src/app/app-navigation.ts",
+      "line": 23,
+      "complexity": 1,
+      "function": "(key: keyof SavedGame['preferences'], value: boolean) =>"
+    },
+    {
+      "file": "src/app/app-navigation.ts",
+      "line": 25,
+      "complexity": 1,
+      "function": "(value: boolean) => this.preference('soundEnabled', value)"
+    },
+    {
+      "file": "src/app/app-navigation.ts",
+      "line": 26,
+      "complexity": 1,
+      "function": "() => this.settings(true)"
+    },
+    {
+      "file": "src/app/app-navigation.ts",
+      "line": 27,
+      "complexity": 1,
+      "function": "() => this.settings(false)"
+    },
+    {
+      "file": "src/app/app-navigation.ts",
+      "line": 33,
+      "complexity": 1,
+      "function": "(session) => ({ positions: new Map(), id: session.id + 1 })"
+    },
+    {
+      "file": "src/app/app-navigation.ts",
+      "line": 48,
+      "complexity": 1,
+      "function": "(key) => flags[key as keyof typeof flags]"
+    },
+    {
+      "file": "src/app/App.tsx",
+      "line": 43,
+      "complexity": 1,
+      "function": "() => ({"
+    },
+    {
+      "file": "src/app/useGame.ts",
+      "line": 7,
+      "complexity": 1,
+      "function": "() => ({"
+    },
+    {
+      "file": "src/app/useGame.ts",
+      "line": 14,
+      "complexity": 1,
+      "function": "() => {"
+    },
+    {
+      "file": "src/app/useMainFocus.ts",
+      "line": 3,
+      "complexity": 1,
+      "function": "function focusPage(main: HTMLElement | null) {"
+    },
+    {
+      "file": "src/app/useSoundShortcut.ts",
+      "line": 38,
+      "complexity": 1,
+      "function": "() => window.removeEventListener('keydown', listener)"
+    },
+    {
+      "file": "src/components/icon-names.ts",
+      "line": 1,
+      "complexity": 1,
+      "function": "export enum IconName {"
+    },
+    {
+      "file": "src/content/mission-catalog.ts",
+      "line": 24,
+      "complexity": 1,
+      "function": "(value) => isFiniteNumber(value.value)"
+    },
+    {
+      "file": "src/content/mission-catalog.ts",
+      "line": 25,
+      "complexity": 1,
+      "function": "() => true"
+    },
+    {
+      "file": "src/content/mission-catalog.ts",
+      "line": 86,
+      "complexity": 1,
+      "function": "(value: unknown) => Object.values(ChallengeKind).includes(value as Cha..."
+    },
+    {
+      "file": "src/content/mission-catalog.ts",
+      "line": 134,
+      "complexity": 1,
+      "function": "(problem) =>"
+    },
+    {
+      "file": "src/content/missions.ts",
+      "line": 7,
+      "complexity": 1,
+      "function": "(sector) => sector.id"
+    },
+    {
+      "file": "src/content/missions.ts",
+      "line": 10,
+      "complexity": 1,
+      "function": "(mission) => [mission.id, mission]"
+    },
+    {
+      "file": "src/game/math.ts",
+      "line": 3,
+      "complexity": 1,
+      "function": "(value: number): Expression => ({ type: 'constant', value })"
+    },
+    {
+      "file": "src/game/math.ts",
+      "line": 5,
+      "complexity": 1,
+      "function": "(left: Expression, right: Expression): Expression => ({"
+    },
+    {
+      "file": "src/game/math.ts",
+      "line": 11,
+      "complexity": 1,
+      "function": "(left: Expression, right: Expression): Expression => ({"
+    },
+    {
+      "file": "src/game/math.ts",
+      "line": 30,
+      "complexity": 1,
+      "function": "(left, right) => left + right"
+    },
+    {
+      "file": "src/game/math.ts",
+      "line": 31,
+      "complexity": 1,
+      "function": "(left, right) => left - right"
+    },
+    {
+      "file": "src/game/math.ts",
+      "line": 32,
+      "complexity": 1,
+      "function": "(left, right) => left * right"
+    },
+    {
+      "file": "src/game/math.ts",
+      "line": 37,
+      "complexity": 1,
+      "function": "(tokens) => answer === tokens.join(' ')"
+    },
+    {
+      "file": "src/game/progress.ts",
+      "line": 5,
+      "complexity": 1,
+      "function": "(): SavedGame => ({"
+    },
+    {
+      "file": "src/game/progress.ts",
+      "line": 14,
+      "complexity": 1,
+      "function": "(sector) => sector.id === sectorId"
+    },
+    {
+      "file": "src/game/progress.ts",
+      "line": 16,
+      "complexity": 1,
+      "function": "(mission) => mission.sectorId === sectorId"
+    },
+    {
+      "file": "src/game/progress.ts",
+      "line": 21,
+      "complexity": 1,
+      "function": "(mission) => mission.id === id"
+    },
+    {
+      "file": "src/game/progress.ts",
+      "line": 23,
+      "complexity": 1,
+      "function": "(mission) => completed[mission.id] !== undefined"
+    },
+    {
+      "file": "src/game/progress.ts",
+      "line": 34,
+      "complexity": 1,
+      "function": "(mission) => !save.completed[mission.id]"
+    },
+    {
+      "file": "src/game/reducer.ts",
+      "line": 5,
+      "complexity": 1,
+      "function": "export enum Screen {"
+    },
+    {
+      "file": "src/game/reducer.ts",
+      "line": 56,
+      "complexity": 1,
+      "function": "(mission) => !completed[mission.id]"
+    },
+    {
+      "file": "src/game/reducer.ts",
+      "line": 69,
+      "complexity": 1,
+      "function": "(state) => ({"
+    },
+    {
+      "file": "src/game/reducer.ts",
+      "line": 74,
+      "complexity": 1,
+      "function": "(state) => ({"
+    },
+    {
+      "file": "src/game/reducer.ts",
+      "line": 84,
+      "complexity": 1,
+      "function": "(state, action) => ({"
+    },
+    {
+      "file": "src/game/reducer.ts",
+      "line": 88,
+      "complexity": 1,
+      "function": "() => ({ save: initialSave(), screen: Screen.Map, missionId: null, sec..."
+    },
+    {
+      "file": "src/game/space.ts",
+      "line": 59,
+      "complexity": 1,
+      "function": "(destination) => Math.hypot(destination.x - position.x, destination.y..."
+    },
+    {
+      "file": "src/game/types.ts",
+      "line": 1,
+      "complexity": 1,
+      "function": "export enum ChallengeKind {"
+    },
+    {
+      "file": "src/game/types.ts",
+      "line": 8,
+      "complexity": 1,
+      "function": "export enum Operation {"
+    },
+    {
+      "file": "src/game/validation.ts",
+      "line": 9,
+      "complexity": 1,
+      "function": "([field, validate]) => validate(value[field])"
+    },
+    {
+      "file": "src/infrastructure/gameStorage.ts",
+      "line": 26,
+      "complexity": 1,
+      "function": "(listener) => listener()"
+    },
+    {
+      "file": "src/infrastructure/gameStorage.ts",
+      "line": 28,
+      "complexity": 1,
+      "function": "() => this.available"
+    },
+    {
+      "file": "src/infrastructure/gameStorage.ts",
+      "line": 31,
+      "complexity": 1,
+      "function": "() => {"
+    },
+    {
+      "file": "src/infrastructure/storage.ts",
+      "line": 22,
+      "complexity": 1,
+      "function": "(context) => ['cristais', 'peças'].includes(context as string)"
+    },
+    {
+      "file": "src/infrastructure/storage.ts",
+      "line": 23,
+      "complexity": 1,
+      "function": "(variable) => [2, 3, 4].includes(variable as number)"
+    },
+    {
+      "file": "src/infrastructure/storage.ts",
+      "line": 31,
+      "complexity": 1,
+      "function": "(hints) => isIntegerBetween(hints, 0, 3)"
+    },
+    {
+      "file": "src/infrastructure/storage.ts",
+      "line": 34,
+      "complexity": 1,
+      "function": "(attempts) => isIntegerBetween(attempts, 0, Infinity)"
+    },
+    {
+      "file": "src/infrastructure/storage.ts",
+      "line": 54,
+      "complexity": 1,
+      "function": "(version) => version === 1"
+    },
+    {
+      "file": "src/infrastructure/storage.ts",
+      "line": 69,
+      "complexity": 1,
+      "function": "(mission) => resultEntry(mission.id, completed)"
+    },
+    {
+      "file": "src/features/map/expedition.ts",
+      "line": 20,
+      "complexity": 1,
+      "function": "(item) => item.sectorId === id"
+    },
+    {
+      "file": "src/features/map/expedition.ts",
+      "line": 25,
+      "complexity": 1,
+      "function": "(item) => ({ id: item.id, label: item.title })"
+    },
+    {
+      "file": "src/features/map/expedition.ts",
+      "line": 27,
+      "complexity": 1,
+      "function": "(item) => ({ id: item.id, label: item.name })"
+    },
+    {
+      "file": "src/features/map/expedition.ts",
+      "line": 37,
+      "complexity": 1,
+      "function": "(item) => save.completed[item.id]"
+    },
+    {
+      "file": "src/features/map/expedition.ts",
+      "line": 44,
+      "complexity": 1,
+      "function": "constructor("
+    },
+    {
+      "file": "src/features/map/expedition.ts",
+      "line": 49,
+      "complexity": 1,
+      "function": "(item) => item.id === this.props.sectorId"
+    },
+    {
+      "file": "src/features/map/expedition.ts",
+      "line": 51,
+      "complexity": 1,
+      "function": "get nextMission() {"
+    },
+    {
+      "file": "src/features/map/expedition.ts",
+      "line": 55,
+      "complexity": 1,
+      "function": "(item) => this.props.save.completed[item.id]"
+    },
+    {
+      "file": "src/features/map/expedition.ts",
+      "line": 60,
+      "complexity": 1,
+      "function": "(item) => this.props.save.completed[item.id]"
+    },
+    {
+      "file": "src/features/map/expedition.ts",
+      "line": 63,
+      "complexity": 1,
+      "function": "get mapKey() {"
+    },
+    {
+      "file": "src/features/map/expedition.ts",
+      "line": 69,
+      "complexity": 1,
+      "function": "(item) => [item.id, status(item.id, this.props.save)]"
+    },
+    {
+      "file": "src/features/map/expedition.ts",
+      "line": 74,
+      "complexity": 1,
+      "function": "(item) => item.id === this.sector!.id"
+    },
+    {
+      "file": "src/features/map/expedition.ts",
+      "line": 78,
+      "complexity": 1,
+      "function": "(item) => !this.props.save.completed[item.id]"
+    },
+    {
+      "file": "src/features/map/expedition.ts",
+      "line": 92,
+      "complexity": 1,
+      "function": "(item) => item.id === next.id"
+    },
+    {
+      "file": "src/features/map/expedition.ts",
+      "line": 108,
+      "complexity": 1,
+      "function": "(position: Point) => this.props.positions.set(this.mapKey, position)"
+    },
+    {
+      "file": "src/features/map/ExpeditionMap.tsx",
+      "line": 35,
+      "complexity": 1,
+      "function": "() => mapWorld(props.sectorId)"
+    },
+    {
+      "file": "src/features/map/flightController.ts",
+      "line": 59,
+      "complexity": 1,
+      "function": "() => {}"
+    },
+    {
+      "file": "src/features/map/flightController.ts",
+      "line": 60,
+      "complexity": 1,
+      "function": "() => {}"
+    },
+    {
+      "file": "src/features/map/flightController.ts",
+      "line": 62,
+      "complexity": 1,
+      "function": "constructor("
+    },
+    {
+      "file": "src/features/map/flightController.ts",
+      "line": 78,
+      "complexity": 1,
+      "function": "() => {"
+    },
+    {
+      "file": "src/features/map/flightController.ts",
+      "line": 82,
+      "complexity": 1,
+      "function": "dispose() {"
+    },
+    {
+      "file": "src/features/map/flightController.ts",
+      "line": 117,
+      "complexity": 1,
+      "function": "private renderRadar() {"
+    },
+    {
+      "file": "src/features/map/flightController.ts",
+      "line": 123,
+      "complexity": 1,
+      "function": "(item) => item.id === this.options.nextId"
+    },
+    {
+      "file": "src/features/map/flightController.ts",
+      "line": 138,
+      "complexity": 1,
+      "function": "tick(time: number) {"
+    },
+    {
+      "file": "src/features/map/flightController.ts",
+      "line": 165,
+      "complexity": 1,
+      "function": "pointerDown(key: string, event: PointerEvent<HTMLButtonElement>) {..."
+    },
+    {
+      "file": "src/features/map/flightController.ts",
+      "line": 185,
+      "complexity": 1,
+      "function": "(item) => item.id === id"
+    },
+    {
+      "file": "src/features/map/flightController.ts",
+      "line": 201,
+      "complexity": 1,
+      "function": "() => {"
+    },
+    {
+      "file": "src/features/map/flightController.ts",
+      "line": 210,
+      "complexity": 1,
+      "function": "(time: number) => {"
+    },
+    {
+      "file": "src/features/map/flightController.ts",
+      "line": 215,
+      "complexity": 1,
+      "function": "() => cancelAnimationFrame(frame)"
+    },
+    {
+      "file": "src/features/map/FlightPanels.tsx",
+      "line": 25,
+      "complexity": 1,
+      "function": "(item) => item.id === props.nearId"
+    },
+    {
+      "file": "src/features/map/FlightPanels.tsx",
+      "line": 41,
+      "complexity": 1,
+      "function": "(item) => item.id === nextId"
+    },
+    {
+      "file": "src/features/map/FlightPanels.tsx",
+      "line": 65,
+      "complexity": 1,
+      "function": "(event) => controller.pointerDown(key, event)"
+    },
+    {
+      "file": "src/features/map/FlightPanels.tsx",
+      "line": 70,
+      "complexity": 1,
+      "function": "(event) => controller.controlKeyDown(key, event)"
+    },
+    {
+      "file": "src/features/map/FlightPanels.tsx",
+      "line": 96,
+      "complexity": 1,
+      "function": "() => controller.visitDirect(destination.id)"
+    },
+    {
+      "file": "src/features/map/FlightScene.tsx",
+      "line": 70,
+      "complexity": 1,
+      "function": "(item) => `${item.x},${item.y}`"
+    },
+    {
+      "file": "src/features/map/FlightScene.tsx",
+      "line": 157,
+      "complexity": 1,
+      "function": "() => {"
+    },
+    {
+      "file": "src/features/map/thrusterSound.ts",
+      "line": 16,
+      "complexity": 1,
+      "function": "() => {}"
+    },
+    {
+      "file": "src/features/map/thrusterSound.ts",
+      "line": 55,
+      "complexity": 1,
+      "function": "() => {}"
+    },
+    {
+      "file": "src/features/map/thrusterSound.ts",
+      "line": 63,
+      "complexity": 1,
+      "function": "() => {}"
+    },
+    {
+      "file": "src/features/map/useSpaceFlight.ts",
+      "line": 9,
+      "complexity": 1,
+      "function": "() => new FlightController(world, initialPosition)"
+    },
+    {
+      "file": "src/features/map/useSpaceFlight.ts",
+      "line": 12,
+      "complexity": 1,
+      "function": "() => controller.configure(options)"
+    },
+    {
+      "file": "src/features/map/useSpaceFlight.ts",
+      "line": 13,
+      "complexity": 1,
+      "function": "() => attachFlight(controller, viewportRef.current, setNearId)"
+    },
+    {
+      "file": "src/features/map/useSpaceFlight.ts",
+      "line": 18,
+      "complexity": 1,
+      "function": "() => update(media.matches)"
+    },
+    {
+      "file": "src/features/map/useSpaceFlight.ts",
+      "line": 21,
+      "complexity": 1,
+      "function": "() => media.removeEventListener('change', changed)"
+    },
+    {
+      "file": "src/features/map/useSpaceFlight.ts",
+      "line": 25,
+      "complexity": 1,
+      "function": "() => subscribeToMotion(setReduced)"
+    },
+    {
+      "file": "src/features/mission/AnswerInput.tsx",
+      "line": 31,
+      "complexity": 1,
+      "function": "() => onChange(choice.value)"
+    },
+    {
+      "file": "src/features/mission/AnswerInput.tsx",
+      "line": 81,
+      "complexity": 1,
+      "function": "() => onChange([...selected, token].join(' '))"
+    },
+    {
+      "file": "src/features/mission/AnswerInput.tsx",
+      "line": 92,
+      "complexity": 1,
+      "function": "() => onChange(selectedTokens(answer).slice(0, -1).join(' '))"
+    },
+    {
+      "file": "src/features/mission/AnswerInput.tsx",
+      "line": 146,
+      "complexity": 1,
+      "function": "(event) => onChange(event.target.value)"
+    },
+    {
+      "file": "src/features/mission/CreationFields.tsx",
+      "line": 22,
+      "complexity": 1,
+      "function": "(value) => ({ value, label: `${value} robôs` })"
+    },
+    {
+      "file": "src/features/mission/CreationFields.tsx",
+      "line": 38,
+      "complexity": 1,
+      "function": "(event) => onChange(event.target.value)"
+    },
+    {
+      "file": "src/features/mission/CreationFields.tsx",
+      "line": 57,
+      "complexity": 1,
+      "function": "(value) => props.onVariableChange(Number(value))"
+    },
+    {
+      "file": "src/features/mission/MissionForm.tsx",
+      "line": 39,
+      "complexity": 1,
+      "function": "(event) => submitAnswer(event, props.session)"
+    },
+    {
+      "file": "src/features/mission/MissionHeading.tsx",
+      "line": 55,
+      "complexity": 1,
+      "function": "(item) => item.id === mission.sectorId"
+    },
+    {
+      "file": "src/features/mission/MissionHeading.tsx",
+      "line": 59,
+      "complexity": 1,
+      "function": "(item) => item.sectorId === mission.sectorId"
+    },
+    {
+      "file": "src/features/mission/MissionHeading.tsx",
+      "line": 60,
+      "complexity": 1,
+      "function": "(item) => item.id === mission.id"
+    },
+    {
+      "file": "src/features/mission/useMission.ts",
+      "line": 66,
+      "complexity": 1,
+      "function": "(state) => ({ ...state, ...patch })"
+    },
+    {
+      "file": "src/features/mission/useMission.ts",
+      "line": 73,
+      "complexity": 1,
+      "function": "() => this.feedbackRef.current?.focus()"
+    },
+    {
+      "file": "src/features/mission/useMission.ts",
+      "line": 76,
+      "complexity": 1,
+      "function": "(state) => ({"
+    },
+    {
+      "file": "src/features/mission/useMission.ts",
+      "line": 87,
+      "complexity": 1,
+      "function": "(answer: string) => this.update({ answer, feedback: '' })"
+    },
+    {
+      "file": "src/features/mission/useMission.ts",
+      "line": 88,
+      "complexity": 1,
+      "function": "(context: string) => this.update({ context, answer: '', feedback: '' }..."
+    },
+    {
+      "file": "src/features/mission/useMission.ts",
+      "line": 89,
+      "complexity": 1,
+      "function": "(variable: number) => this.update({ variable, answer: '', feedback: ''..."
+    },
+    {
+      "file": "src/features/mission/useMission.ts",
+      "line": 91,
+      "complexity": 1,
+      "function": "(state) => ({ ...state, visual: !state.visual, visualUsed: true })"
+    },
+    {
+      "file": "src/features/mission/useMission.ts",
+      "line": 94,
+      "complexity": 1,
+      "function": "(state) => ({ ...state, hints: Math.min(this.hintLimit, state.hints +..."
+    },
+    {
+      "file": "src/features/mission/useMission.ts",
+      "line": 102,
+      "complexity": 1,
+      "function": "() => initialMission(mission)"
+    },
+    {
+      "file": "src/features/mission/useMission.ts",
+      "line": 103,
+      "complexity": 1,
+      "function": "(sector) => sector.id === mission.sectorId"
+    },
+    {
+      "file": "src/features/mission/useNarration.ts",
+      "line": 17,
+      "complexity": 1,
+      "function": "(item) => item.lang.toLowerCase().startsWith('pt')"
+    },
+    {
+      "file": "src/features/mission/useNarration.ts",
+      "line": 30,
+      "complexity": 1,
+      "function": "() => update({ speaking: false })"
+    },
+    {
+      "file": "src/features/mission/useNarration.ts",
+      "line": 31,
+      "complexity": 1,
+      "function": "() =>"
+    },
+    {
+      "file": "src/features/mission/useNarration.ts",
+      "line": 38,
+      "complexity": 1,
+      "function": "constructor(private setState: Dispatch<SetStateAction<NarrationState>>..."
+    },
+    {
+      "file": "src/features/mission/useNarration.ts",
+      "line": 40,
+      "complexity": 1,
+      "function": "(state) => ({ ...state, ...patch })"
+    },
+    {
+      "file": "src/features/mission/useNarration.ts",
+      "line": 41,
+      "complexity": 1,
+      "function": "() => {"
+    },
+    {
+      "file": "src/features/mission/useNarration.ts",
+      "line": 59,
+      "complexity": 1,
+      "function": "() => cancelNarration"
+    },
+    {
+      "file": "src/features/progress/Summary.tsx",
+      "line": 83,
+      "complexity": 1,
+      "function": "(item) => item.sectorId === sector.id"
+    },
+    {
+      "file": "src/features/settings/SettingsDialog.tsx",
+      "line": 60,
+      "complexity": 1,
+      "function": "(event) => onPreference(definition.key, event.target.checked)"
+    },
+    {
+      "file": "src/features/settings/SettingsDialog.tsx",
+      "line": 102,
+      "complexity": 1,
+      "function": "() => {"
+    },
+    {
+      "file": "src/features/settings/SettingsDialog.tsx",
+      "line": 126,
+      "complexity": 1,
+      "function": "() => setConfirm(false)"
+    },
+    {
+      "file": "src/features/settings/SettingsDialog.tsx",
+      "line": 128,
+      "complexity": 1,
+      "function": "() => setConfirm(true)"
+    },
+    {
+      "file": "src/features/settings/SettingsDialog.tsx",
+      "line": 135,
+      "complexity": 1,
+      "function": "() => {"
+    },
+    {
+      "file": "src/features/tutorial/AlgebraTutorial.tsx",
+      "line": 103,
+      "complexity": 1,
+      "function": "() => onAnswer(value)"
+    },
+    {
+      "file": "src/features/tutorial/Tutorial.tsx",
+      "line": 19,
+      "complexity": 1,
+      "function": "() => setStep(step + 1)"
+    },
+    {
+      "file": "src/features/tutorial/Tutorial.tsx",
+      "line": 20,
+      "complexity": 1,
+      "function": "() => setStep(0)"
+    }
+  ]
+}

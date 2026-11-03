@@ -8,6 +8,23 @@ O percurso atual contém tutorial interativo e 52 missões em três setores: Est
 
 O aplicativo funciona inteiramente no navegador, sem backend, cadastro ou sincronização. O progresso e as preferências ficam no `localStorage`. A entrega é um build estático; destino de hospedagem e implantação ainda precisam ser definidos.
 
+## Exploração espacial e fluxo do jogo
+
+A experiência atual permite pilotar uma nave pelo universo, entrar nos setores e visitar planetas, luas e asteroides que representam as missões. Preservar a exploração como parte do percurso, com câmera acompanhando a nave, radar e indicação da próxima missão.
+
+- Usar setas ou WASD com a área de pilotagem focada; soltar as teclas interrompe o movimento. A entrada em um destino próximo exige Enter ou o botão Entrar.
+- Em dispositivos de toque, oferecer botões de direção que respondem enquanto pressionados. Manter a opção Destinos em lista para acessar destinos liberados sem pilotagem e permitir sair da área de voo com Tab.
+- Interromper movimento e som ao perder foco, ocultar a aba, abrir ajustes ou mudar de tela. O voo tem controle direto, sem inércia ou obstáculos punitivos.
+- Concluir uma missão libera a seguinte. Continuar exploração e Voltar ao setor restauram a posição da visita, sem abrir automaticamente outra pergunta. Ao concluir o setor, o aluno pode voltar ao universo e visitar o próximo.
+- Manter destinos bloqueados identificados, voo livre no setor liberado e revisita às missões concluídas. O tutorial inclui prática opcional de pilotagem antes da introdução à álgebra.
+- Posições da nave são transitórias e ficam em memória durante a sessão. Recarregar abre o universo; Retomar exploração leva ao setor e às proximidades da próxima missão pendente. Reiniciar também limpa as posições da sessão.
+
+## Som e controles
+
+O som de propulsão é gerado localmente pela Web Audio API após uma interação de pilotagem, sem baixar arquivos de áudio. Vem ligado por padrão e deve tocar somente durante o movimento. A ausência ou o bloqueio de áudio não pode impedir o voo.
+
+O botão na área de pilotagem, o ajuste Som da nave e o atalho M compartilham a preferência persistida `soundEnabled`. O atalho deve ignorar edição de campos, composição de texto, repetição de tecla e combinações com Ctrl, Alt ou Meta. Encerrar os recursos de áudio ao desmontar o controle de voo.
+
 ## Estrutura e responsabilidades
 
 - `src/content/problems.json`: fonte única das missões jogáveis, organizada em seções na versão 3 do catálogo.
@@ -15,9 +32,12 @@ O aplicativo funciona inteiramente no navegador, sem backend, cadastro ou sincro
 - `src/content/missions.ts`: carrega o JSON por meio do validador e exporta `missions` e `missionById`.
 - `src/content/sectors.ts`: define os setores e sua ordem no percurso.
 - `src/game/`: tipos, avaliação matemática, progressão e reducer; manter as regras independentes de React e APIs do navegador.
+- `src/game/space.ts`: geometria do mundo, deslocamento, proximidade dos destinos e câmera, com funções puras. `validation.ts` reúne auxiliares de validação.
 - `src/infrastructure/`: validação e persistência do progresso; `storage.ts` usa uma porta de armazenamento e `gameStorage.ts` adapta o navegador e informa falhas.
 - `src/features/`: componentes, hooks e estilos por funcionalidade: mapa, tutorial, missões, descobertas e ajustes.
+- `src/features/map/`: cena, destinos, radar e painéis; `flightController.ts` controla a simulação e os eventos, `useSpaceFlight.ts` conecta o ciclo de vida React e `thrusterSound.ts` adapta o áudio. Manter posições transitórias fora do estado de renderização React.
 - `src/app/`: composição das telas, estado do jogo e conexão com a persistência.
+- `src/app/useMainFocus.ts`, `app-navigation.ts` e `useSoundShortcut.ts`: foco, navegação e atalho de som, separados da composição visual.
 - `src/components/`: ícones e ilustrações SVG compartilhados. Estilos globais ficam em `src/styles.css` e `src/styles/`.
 - `src/test/`: configuração e auxiliares de teste; testes de comportamento ficam próximos do código correspondente.
 - `public/`: arquivos estáticos; fontes são empacotadas localmente por dependências npm.
@@ -36,8 +56,11 @@ Usar Node.js 20.19+ na linha 20 ou 22.12+ e npm de forma consistente. Instalar c
 - `npm test`: executar Vitest e Testing Library; `npm run test:watch` mantém os testes em observação.
 - `npm test -- src/game/game.test.ts`: exemplo de execução direcionada.
 - `npm run test:e2e`: executar Playwright em Chromium. Instalar antes com `npx playwright install chromium`.
+- `npm run metrics`: medir a complexidade do código de produção com o motor da extensão CodeMetrics do VS Code; `npm run metrics:check` verifica o limite de 7 por unidade visível. `npm run metrics -- --json` exporta os valores.
 
 O Playwright inicia o servidor de desenvolvimento na porta 5173 e pode reutilizar um servidor existente fora de CI. Para instalar o navegador e dependências em CI, usar `npx playwright install --with-deps chromium`. O Vite usa `base: './'` para permitir publicação em subdiretórios; preservar esse comportamento.
+
+As métricas exigem a extensão `kisstkondoros.vscode-codemetrics` em `~/.vscode/extensions` ou seu diretório em `CODEMETRICS_EXTENSION`. Preservar os pesos e ajustes reais da extensão; não reduzir pesos nem excluir unidades para cumprir o limite. Essa medição inclui JSX e funções internas e difere da complexidade ciclomática do ESLint. Consultar `docs/complexidade.md` para o escopo e as decisões da refatoração.
 
 ## Estilo e organização do código
 
@@ -50,6 +73,7 @@ Manter componentes e hooks específicos junto de sua funcionalidade. Importar m�
 - Adicionar missões em `problems.json`, na lista `problems` do setor correspondente. A ordem das seções e dos problemas define o percurso; o desbloqueio exige concluir todas as missões anteriores.
 - Preservar IDs existentes, numeração original dos exercícios importados, referências curriculares e metadados de origem. Novos setores precisam constar em `sectors.ts` e no catálogo na mesma ordem.
 - Seguir o contrato `Mission` de `src/game/types.ts`: objetivo, habilidade, enunciado, expressão, variável, fórmula, representação visual, três dicas e explicação, além dos campos específicos do formato.
+- Preservar as três dicas no catálogo, mas respeitar `Sector.hintLimit` na interface: lançamento e oficina exibem somente a primeira; a base exibe as duas primeiras. Não oferecer botão para revelar a solução ou concluir sem acertar. Apresentar a explicação após a resposta correta.
 - Representar expressões por nós `constant`, `variable` e `operation`. As operações são `add`, `subtract`, `multiply` e `divide`; a árvore deve preservar parênteses e prioridade. Nunca usar `eval` para calcular texto.
 - Nas equações importadas, `formula` preserva a igualdade e `expression` representa o lado esquerdo. `variable` contém a solução, mas a resposta é conferida por `correctChoice`; o valor do lado esquerdo não é necessariamente x.
 - Alternativas devem ter uma única resposta correta. Montagens devem registrar as ordens matematicamente equivalentes em `equivalentTokens`.
@@ -62,7 +86,9 @@ Manter componentes e hooks específicos junto de sua funcionalidade. Importar m�
 
 Manter textos para o aluno em português, curtos e adequados à idade. Preservar navegação por teclado, foco visível, rótulos acessíveis, texto ampliado, movimento reduzido e adaptação a telas menores.
 
-Objetos visuais, três dicas progressivas e conclusão guiada são apoios sem penalização. Não introduzir cronômetro, perda de vidas ou competição. O diário registra conclusões e apoios; concluir com ajuda não comprova domínio independente da habilidade.
+Objetos visuais e dicas dentro do limite do setor são apoios sem penalização. Não introduzir cronômetro, perda de vidas ou competição. O diário registra conclusões e apoios e preserva registros históricos de solução guiada, embora novas conclusões exijam resposta correta. Concluir com ajuda não comprova domínio independente da habilidade.
+
+Respeitar movimento reduzido dos ajustes ou do sistema, removendo brilhos animados; a câmera acompanha sem suavização. Preservar o acesso por lista para quem prefere evitar deslocamento contínuo. O cenário usa HTML, CSS e SVG, sem motor de jogo adicional.
 
 A leitura opcional usa `speechSynthesis` e vozes em português disponíveis no navegador. O jogo deve continuar utilizável quando a API ou as vozes não estiverem disponíveis. O eventual processamento remoto da voz depende do navegador e do sistema; não prometer funcionamento totalmente offline.
 
@@ -72,6 +98,8 @@ O foco pedagógico usa EF08MA06, com introdução à variável pela EF07MA13 e e
 
 O armazenamento atual usa a chave `orbita-matematica:v1` e `SavedGame.version: 1`, independentes da versão 3 do catálogo. Salvar apenas conclusões, apoios, tentativas, criação guiada, estado do tutorial, última missão e preferências. Nunca armazenar nomes, diagnósticos ou credenciais.
 
+As preferências incluem `largeText`, `reducedMotion` e `soundEnabled`. Saves anteriores sem a preferência de som continuam válidos e recebem `soundEnabled: true`. Manter compatibilidade com registros históricos de até três dicas e com `guided`, sem reativar a conclusão guiada na interface atual.
+
 Preservar conclusões válidas por ID quando o catálogo crescer, mesmo que novas missões sejam inseridas antes delas; novas missões ficam pendentes e respeitam o desbloqueio sequencial. Mudanças incompatíveis no formato salvo exigem nova versão e migração explícita.
 
 Falhas ou bloqueio do armazenamento devem permitir continuar em memória, com aviso de que o progresso não será mantido. Reiniciar a expedição exige confirmação na interface. Em computadores compartilhados, o progresso pertence ao navegador e pode ser visto por outras pessoas; limpar os dados do navegador apaga o registro local.
@@ -80,7 +108,9 @@ Falhas ou bloqueio do armazenamento devem permitir continuar em memória, com av
 
 Colocar `*.test.ts` e `*.test.tsx` junto do comportamento coberto. Testar resultados matemáticos independentes, expressões equivalentes, catálogo inválido, desbloqueio, retomada, persistência corrompida ou indisponível e interações acessíveis. Não há percentual obrigatório de cobertura; os testes devem demonstrar comportamento relevante.
 
-Para alterações de código ou conteúdo, executar os testes afetados, `npm run lint` e `npm run build`. Para mudanças de interface, navegação, acessibilidade ou persistência, executar também os percursos pertinentes de Playwright. Os percursos existentes cobrem as 52 missões, retomada, teclado, ajustes, reinício confirmado, ausência de armazenamento ou voz, auditoria axe e telas menores. Uma auditoria automatizada não substitui avaliação manual ou pedagógica.
+Para alterações de código ou conteúdo, executar os testes afetados, `npm run lint` e `npm run build`. Em alterações de código de produção, executar também `npm run metrics:check` quando a extensão estiver disponível e informar sua ausência caso impeça a verificação.
+
+Para mudanças de interface, navegação, acessibilidade ou persistência, executar os percursos pertinentes de Playwright. Os percursos existentes cobrem as 52 missões, retomada, teclado, toque, câmera, radar, retorno à posição visitada, interrupções do voo, som, atalho M, ajustes, reinício confirmado, ausência de armazenamento, voz ou áudio, auditoria axe e telas menores. No retorno de missão, comparar a posição efetiva anterior à entrada com a posição restaurada. Uma auditoria automatizada não substitui avaliação manual ou pedagógica.
 
 Em alterações apenas de documentação, verificar os caminhos, comandos e afirmações contra os arquivos atuais e conferir a formatação dos arquivos modificados. Informar verificações executadas e limitações reais, sem afirmar que testes não executados passaram.
 

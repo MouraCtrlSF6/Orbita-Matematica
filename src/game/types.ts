@@ -51,6 +51,7 @@ export interface Mission {
 }
 
 export interface Sector {
+  hintLimit: 1 | 2;
   id: string;
   number: string;
   name: string;
@@ -73,5 +74,5 @@ export interface SavedGame {
   completed: Record<string, MissionResult>;
   tutorialDone: boolean;
   lastMissionId: string | null;
-  preferences: { largeText: boolean; reducedMotion: boolean };
+  preferences: { largeText: boolean; reducedMotion: boolean; soundEnabled: boolean };
 }

@@ -33,6 +33,46 @@ async function finishTutorial(page: Page) {
   await page.getByRole('button', { name: 'Retomar exploração' }).click();
 }
 
+interface Response {
+  radio?: string;
+  number?: string;
+  tokens?: string[];
+}
+const responses: Record<string, Response> = {
+  'launch-1': { radio: '6 baterias' },
+  'launch-2': { number: '9' },
+  'launch-3': { radio: 'A quantidade de robôs' },
+  'launch-4': { tokens: ['x', 'Multiplicação', '3'] },
+  'launch-5': { number: '12' },
+  'workshop-1': { radio: '7 cristais' },
+  'workshop-2': { number: '8' },
+  'workshop-3': { number: '9' },
+  'workshop-4': { radio: '10 peças' },
+  'workshop-5': { number: '14' },
+  'base-1': { radio: '4 + x' },
+  'base-2': { radio: '2x + 4' },
+  'base-3': { number: '12' },
+  'base-4': { tokens: ['4', 'Adição', 'x', 'Multiplicação', '2'] },
+  'base-5': { number: '10' },
+};
+const importedAnswers = [
+  5, 10, 5, 8, 8, 15, 6, 5, 6, 14, 10, 4, 5, 10, 5, 14, 4, 7, 15, 5, 18, 0, 5, 7, 6, 12, -4, 4, 5,
+  4, 3, -3, 6, 7, 7, 13, 7,
+];
+
+async function answerMission(page: Page, mission: Mission) {
+  const response = mission.id.startsWith('equations-')
+    ? { radio: String(importedAnswers[Number(mission.id.split('-')[1]) - 1]) }
+    : responses[mission.id];
+  if (response.radio) await page.getByRole('radio', { name: response.radio, exact: true }).check();
+  if (response.number)
+    await page.getByRole('textbox', { name: 'Qual é o total?', exact: true }).fill(response.number);
+  if (response.tokens)
+    for (const token of response.tokens)
+      await page.getByRole('button', { name: token, exact: true }).click();
+  await page.getByRole('button', { name: 'Conferir resposta' }).click();
+}
+
 test('completes tutorial, all 52 catalog missions, authors a problem and restores progress', async ({
   page,
 }) => {
@@ -41,15 +81,20 @@ test('completes tutorial, all 52 catalog missions, authors a problem and restore
   await finishTutorial(page);
   for (let index = 0; index < missions.length - 1; index++) {
     await openMission(page, missions[index]);
-    if (index === 0) {
-      await page.getByRole('radio', { name: '5', exact: true }).check();
-      await page.getByRole('button', { name: 'Conferir resposta' }).click();
-    } else {
-      await page.getByRole('button', { name: 'Quero uma pista' }).click();
-      await page.getByRole('button', { name: 'Próximo passo' }).click();
-      await page.getByRole('button', { name: 'Próximo passo' }).click();
-      await page.getByRole('button', { name: 'Entendi, concluir com apoio' }).click();
-    }
+    const limit = missions[index].sectorId === 'base' ? 2 : 1;
+    await page.getByRole('button', { name: 'Quero uma pista' }).click();
+    if (limit === 2) await page.getByRole('button', { name: 'Próximo passo' }).click();
+    await expect(page.locator('.hints-list li')).toHaveCount(limit);
+    await expect(page.getByRole('button', { name: 'Todas as dicas abertas' })).toBeDisabled();
+    await expect(page.getByRole('button', { name: 'Ver solução com apoio' })).toHaveCount(0);
+    await expect(page.getByRole('button', { name: 'Entendi, concluir com apoio' })).toHaveCount(0);
+    await answerMission(page, missions[index]);
+    expect(
+      await page.evaluate(
+        (id) => JSON.parse(localStorage.getItem('orbita-matematica:v1')!).completed[id].hints,
+        missions[index].id,
+      ),
+    ).toBe(limit);
     await page.getByRole('button', { name: 'Continuar exploração', exact: true }).click();
     if (missions[index + 1].sectorId !== missions[index].sectorId) {
       await expect(page.locator('.sector-celebration')).toContainText('Setor concluído!');
@@ -139,47 +184,9 @@ test('accepts the correct independent answers throughout all 52 missions', async
   );
   await page.goto('/');
   await page.getByRole('button', { name: 'Retomar exploração' }).click();
-  interface Response {
-    radio?: string;
-    number?: string;
-    tokens?: string[];
-  }
-  const responses: Record<string, Response> = {
-    'launch-1': { radio: '6 baterias' },
-    'launch-2': { number: '9' },
-    'launch-3': { radio: 'A quantidade de robôs' },
-    'launch-4': { tokens: ['x', 'Multiplicação', '3'] },
-    'launch-5': { number: '12' },
-    'workshop-1': { radio: '7 cristais' },
-    'workshop-2': { number: '8' },
-    'workshop-3': { number: '9' },
-    'workshop-4': { radio: '10 peças' },
-    'workshop-5': { number: '14' },
-    'base-1': { radio: '4 + x' },
-    'base-2': { radio: '2x + 4' },
-    'base-3': { number: '12' },
-    'base-4': { tokens: ['4', 'Adição', 'x', 'Multiplicação', '2'] },
-    'base-5': { number: '10' },
-  };
-  const importedAnswers = [
-    5, 10, 5, 8, 8, 15, 6, 5, 6, 14, 10, 4, 5, 10, 5, 14, 4, 7, 15, 5, 18, 0, 5, 7, 6, 12, -4, 4, 5,
-    4, 3, -3, 6, 7, 7, 13, 7,
-  ];
   for (const mission of missions) {
     await openMission(page, mission);
-    const response = mission.id.startsWith('equations-')
-      ? { radio: String(importedAnswers[Number(mission.id.split('-')[1]) - 1]) }
-      : responses[mission.id];
-    if (response.radio)
-      await page.getByRole('radio', { name: response.radio, exact: true }).check();
-    if (response.number)
-      await page
-        .getByRole('textbox', { name: 'Qual é o total?', exact: true })
-        .fill(response.number);
-    if (response.tokens)
-      for (const token of response.tokens)
-        await page.getByRole('button', { name: token, exact: true }).click();
-    await page.getByRole('button', { name: 'Conferir resposta' }).click();
+    await answerMission(page, mission);
     await page.getByRole('button', { name: 'Continuar exploração', exact: true }).click();
   }
   await page.getByRole('button', { name: /Minhas descobertas/ }).click();

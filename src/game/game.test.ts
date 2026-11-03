@@ -117,6 +117,13 @@ describe('mission content', () => {
 });
 
 describe('progression', () => {
+  it('toggles the sound preference without changing progress', () => {
+    const state = initial();
+    const muted = gameReducer(state, { type: 'toggle-sound' });
+    expect(muted.save.preferences.soundEnabled).toBe(false);
+    expect(muted.save.completed).toBe(state.save.completed);
+    expect(gameReducer(muted, { type: 'toggle-sound' })).toEqual(state);
+  });
   it('gates sectors and returns to the visited sector without starting another mission', () => {
     expect(gameReducer(initial(), { type: 'enter-sector', id: 'launch' })).toEqual(initial());
     let state = gameReducer(initial(), { type: 'tutorial-done' });

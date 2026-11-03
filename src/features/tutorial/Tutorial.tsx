@@ -11,12 +11,14 @@ interface TutorialProps {
   onFinish: () => void;
   onBack: () => void;
   reducedMotion?: boolean;
+  soundEnabled?: boolean;
   paused?: boolean;
 }
 export function Tutorial({
   onFinish,
   onBack,
   reducedMotion = false,
+  soundEnabled = true,
   paused = false,
 }: TutorialProps) {
   const [step, setStep] = useState(-1);
@@ -57,6 +59,7 @@ export function Tutorial({
             nextId="beacon"
             initialPosition={{ x: 260, y: 470 }}
             reducedMotion={reducedMotion}
+            soundEnabled={soundEnabled}
             paused={paused}
             onVisit={() => setStep(0)}
           />

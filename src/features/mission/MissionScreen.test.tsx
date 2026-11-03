@@ -1,8 +1,9 @@
-import { fireEvent, render, screen } from '@testing-library/react';
+import { act, fireEvent, render, renderHook, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { describe, expect, it, vi } from 'vitest';
 import { mission } from '../../test/mission';
 import { MissionScreen } from './MissionScreen';
+import { useMission } from './useMission';
 
 describe('mission interactions', () => {
   it('offers retry feedback and completes only once a correct answer is submitted', async () => {
@@ -27,26 +28,59 @@ describe('mission interactions', () => {
     );
     expect(screen.getByRole('button', { name: 'Continuar exploração' })).toBeInTheDocument();
   });
-  it('records requested hints, visualization and assisted completion', async () => {
+  it.each([
+    ['launch-1', 1],
+    ['workshop-1', 1],
+    ['base-1', 2],
+  ] as const)(
+    'limits %s to its first %i hints and requires a correct answer',
+    async (id, limit) => {
+      const onComplete = vi.fn();
+      const user = userEvent.setup();
+      render(
+        <MissionScreen
+          mission={mission(id)}
+          onComplete={onComplete}
+          onNext={vi.fn()}
+          onBack={vi.fn()}
+        />,
+      );
+      await user.click(screen.getByRole('button', { name: 'Ver com objetos' }));
+      expect(screen.getByLabelText('Representação com objetos')).toBeInTheDocument();
+      await user.click(screen.getByRole('button', { name: 'Quero uma pista' }));
+      if (limit === 2) await user.click(screen.getByRole('button', { name: 'Próximo passo' }));
+      expect(document.querySelectorAll('.hints-list li')).toHaveLength(limit);
+      mission(id)
+        .hints.slice(0, limit)
+        .forEach((hint) => expect(screen.getByText(hint)).toBeInTheDocument());
+      expect(screen.getByRole('button', { name: 'Todas as dicas abertas' })).toBeDisabled();
+      expect(screen.queryByRole('button', { name: /Entendi/ })).not.toBeInTheDocument();
+      await user.click(screen.getByRole('button', { name: 'Todas as dicas abertas' }));
+      expect(document.querySelectorAll('.hints-list li')).toHaveLength(limit);
+      expect(
+        screen.queryByRole('button', { name: 'Ver solução com apoio' }),
+      ).not.toBeInTheDocument();
+      expect(onComplete).not.toHaveBeenCalled();
+      const answers = { 'launch-1': '6 baterias', 'workshop-1': '7 cristais', 'base-1': '4 + x' };
+      await user.click(screen.getByRole('radio', { name: answers[id] }));
+      await user.click(screen.getByRole('button', { name: 'Conferir resposta' }));
+      expect(onComplete).toHaveBeenCalledWith(
+        expect.objectContaining({ hints: limit, visual: true, guided: false }),
+      );
+    },
+  );
+  it.each([
+    ['launch-1', 1],
+    ['workshop-1', 1],
+    ['base-1', 2],
+  ] as const)('caps repeated hint requests for %s at %i', (id, limit) => {
     const onComplete = vi.fn();
-    const user = userEvent.setup();
-    render(
-      <MissionScreen
-        mission={mission('launch-1')}
-        onComplete={onComplete}
-        onNext={vi.fn()}
-        onBack={vi.fn()}
-      />,
-    );
-    await user.click(screen.getByRole('button', { name: 'Ver com objetos' }));
-    expect(screen.getByLabelText('Representação com objetos')).toBeInTheDocument();
-    await user.click(screen.getByRole('button', { name: 'Quero uma pista' }));
-    await user.click(screen.getByRole('button', { name: 'Próximo passo' }));
-    await user.click(screen.getByRole('button', { name: 'Próximo passo' }));
-    await user.click(screen.getByRole('button', { name: /Entendi/ }));
-    expect(onComplete).toHaveBeenCalledWith(
-      expect.objectContaining({ hints: 3, visual: true, guided: true }),
-    );
+    const { result } = renderHook(() => useMission(mission(id), onComplete));
+    act(() => {
+      for (let index = 0; index < 5; index++) result.current.requestHint();
+    });
+    expect(result.current.hints).toBe(limit);
+    expect(onComplete).not.toHaveBeenCalled();
   });
   it('supports creating a different problem and clears stale answers when choices change', async () => {
     const onComplete = vi.fn();

@@ -4,6 +4,17 @@ import { missions } from '../content/missions';
 import { loadGame, parseSave, saveGame, STORAGE_KEY, type StoragePort } from './storage';
 
 describe('local persistence', () => {
+  it('loads saves from before sound preferences and preserves a saved mute setting', () => {
+    const data = initialSave();
+    data.completed['launch-1'] = { hints: 1, visual: true, attempts: 2, guided: false };
+    const legacy = { ...data, preferences: { largeText: true, reducedMotion: false } };
+    expect(parseSave(JSON.stringify(legacy))).toEqual({
+      ...data,
+      preferences: { ...legacy.preferences, soundEnabled: true },
+    });
+    data.preferences.soundEnabled = false;
+    expect(parseSave(JSON.stringify(data))).toEqual(data);
+  });
   it('preserves the authored context and variable after the complete journey', () => {
     const data = initialSave();
     missions.forEach((mission) => {

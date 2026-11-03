@@ -58,6 +58,17 @@ export function SettingsDialog({
           onChange={(event) => onPreference('reducedMotion', event.target.checked)}
         />
       </label>
+      <label className="setting-row">
+        <span>
+          <strong>Som da nave</strong>
+          <small>Reproduz um som suave de propulsão ao movimentar a nave.</small>
+        </span>
+        <input
+          type="checkbox"
+          checked={preferences.soundEnabled}
+          onChange={(event) => onPreference('soundEnabled', event.target.checked)}
+        />
+      </label>
       <div className="settings-privacy">
         <h3>Seu progresso, neste navegador</h3>
         <p>

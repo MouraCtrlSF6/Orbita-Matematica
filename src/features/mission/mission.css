@@ -171,16 +171,6 @@
 .aside-note svg {
   flex-shrink: 0;
 }
-.guided-solution {
-  border-top: 1px solid #d8cde5;
-  margin-top: 16px;
-  padding-top: 14px;
-  font-size: 12px;
-}
-.guided-solution .text-button {
-  text-align: left;
-  font-size: 11px;
-}
 .feedback {
   border-radius: 9px;
   margin-top: 23px;

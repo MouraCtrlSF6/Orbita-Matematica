@@ -1,4 +1,4 @@
-import { useEffect, useId, useRef, useState } from 'react';
+import { useCallback, useEffect, useId, useRef, useState } from 'react';
 import {
   approach,
   cameraPosition,
@@ -8,6 +8,7 @@ import {
   type SpaceWorld,
 } from '../../game/space';
 import { SpaceBody } from './SpaceBody';
+import { createThrusterSound } from './thrusterSound';
 
 export interface DestinationStatus {
   unlocked: boolean;
@@ -20,6 +21,8 @@ interface SpaceFlightProps {
   nextId?: string;
   initialPosition?: Point;
   reducedMotion: boolean;
+  soundEnabled: boolean;
+  onSoundChange?: (enabled: boolean) => void;
   paused?: boolean;
   onPosition?: (position: Point) => void;
   onVisit: (id: string) => void;
@@ -42,6 +45,8 @@ export function SpaceFlight({
   nextId,
   initialPosition,
   reducedMotion,
+  soundEnabled,
+  onSoundChange,
   paused = false,
   onPosition,
   onVisit,
@@ -54,6 +59,15 @@ export function SpaceFlight({
   const heading = useRef(0);
   const position = useRef(initialPosition ?? approach(world.destinations[0]));
   const keys = useRef(new Set<string>());
+  const [thruster] = useState(createThrusterSound);
+  const stopMoving = useCallback(() => {
+    keys.current.clear();
+    thruster.setMoving(false);
+  }, [thruster]);
+  useEffect(() => {
+    thruster.setEnabled(soundEnabled);
+  }, [thruster, soundEnabled]);
+  useEffect(() => () => thruster.dispose(), [thruster]);
   const [nearId, setNearId] = useState<string>();
   const [systemReduced, setSystemReduced] = useState(false);
   const helpId = useId();
@@ -74,7 +88,7 @@ export function SpaceFlight({
     let frame = 0;
     let lastTime = 0;
     let previousNear: string | undefined;
-    const stop = () => keys.current.clear();
+    const stop = stopMoving;
     const tick = (time: number) => {
       const direction = [...keys.current].reduce(
         (sum, key) => {
@@ -83,6 +97,7 @@ export function SpaceFlight({
         },
         { x: 0, y: 0 },
       );
+      const previous = position.current;
       if (!paused && !document.hidden)
         position.current = moveShip(
           position.current,
@@ -90,6 +105,7 @@ export function SpaceFlight({
           lastTime ? (time - lastTime) / 1000 : 0,
           world,
         );
+      thruster.setMoving(position.current.x !== previous.x || position.current.y !== previous.y);
       lastTime = time;
       const viewport = viewportRef.current;
       if (viewport) {
@@ -129,17 +145,18 @@ export function SpaceFlight({
       window.removeEventListener('blur', stop);
       document.removeEventListener('visibilitychange', stop);
     };
-  }, [world, paused]);
+  }, [world, paused, thruster, stopMoving]);
 
   const near = world.destinations.find((item) => item.id === nearId);
   const target = world.destinations.find((item) => item.id === nextId);
   const visit = () => {
     if (near && statuses[near.id]?.unlocked && !paused) {
-      keys.current.clear();
+      stopMoving();
       onVisit(near.id);
     }
   };
   const setTouch = (key: string) => (event: React.PointerEvent<HTMLButtonElement>) => {
+    thruster.unlock();
     event.currentTarget.setPointerCapture(event.pointerId);
     keys.current.clear();
     keys.current.add(key);
@@ -158,7 +175,7 @@ export function SpaceFlight({
         role="region"
         aria-label="Área de pilotagem"
         aria-describedby={helpId}
-        onBlur={() => keys.current.clear()}
+        onBlur={stopMoving}
         onKeyDown={(event) => {
           if (
             event.target !== event.currentTarget ||
@@ -171,6 +188,7 @@ export function SpaceFlight({
           const key = event.key.length === 1 ? event.key.toLowerCase() : event.key;
           if (directions[key]) {
             event.preventDefault();
+            thruster.unlock();
             keys.current.add(key);
           }
           if (key === 'Enter' && !event.repeat) {
@@ -178,9 +196,10 @@ export function SpaceFlight({
             visit();
           }
         }}
-        onKeyUp={(event) =>
-          keys.current.delete(event.key.length === 1 ? event.key.toLowerCase() : event.key)
-        }
+        onKeyUp={(event) => {
+          keys.current.delete(event.key.length === 1 ? event.key.toLowerCase() : event.key);
+          if (!keys.current.size) thruster.setMoving(false);
+        }}
       >
         <div
           className="flight-scene"
@@ -232,6 +251,42 @@ export function SpaceFlight({
             <circle className="radar-ship" ref={markerRef} r="28" />
           </svg>
         </div>
+        {onSoundChange ? (
+          <button
+            type="button"
+            className="flight-sound-toggle"
+            aria-label="Som da nave"
+            aria-pressed={soundEnabled}
+            aria-keyshortcuts="m"
+            title={soundEnabled ? 'Desligar som (M)' : 'Ligar som (M)'}
+            disabled={paused}
+            onClick={() => {
+              stopMoving();
+              onSoundChange(!soundEnabled);
+            }}
+          >
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.8"
+              aria-hidden="true"
+            >
+              <path d="M11 5 6 9H3v6h3l5 4Z" />
+              {soundEnabled ? (
+                <>
+                  <path d="M15 8a6 6 0 0 1 0 8M18 5a10 10 0 0 1 0 14" />
+                </>
+              ) : (
+                <path d="m16 9 6 6m0-6-6 6" />
+              )}
+            </svg>
+            {soundEnabled ? 'Som ligado' : 'Som desligado'}
+            <kbd>M</kbd>
+          </button>
+        ) : null}
       </div>
       <div className="flight-hud">
         <div className="flight-contact" role="status">
@@ -275,23 +330,24 @@ export function SpaceFlight({
             aria-label={label}
             disabled={paused}
             onPointerDown={setTouch(key)}
-            onPointerUp={() => keys.current.clear()}
-            onPointerCancel={() => keys.current.clear()}
-            onLostPointerCapture={() => keys.current.clear()}
-            onBlur={() => keys.current.clear()}
+            onPointerUp={stopMoving}
+            onPointerCancel={stopMoving}
+            onLostPointerCapture={stopMoving}
+            onBlur={stopMoving}
             onKeyDown={(event) => {
               if (event.key === ' ' || event.key === 'Enter') {
                 event.preventDefault();
+                thruster.unlock();
                 keys.current.add(key);
               }
             }}
-            onKeyUp={() => keys.current.clear()}
+            onKeyUp={stopMoving}
           >
             {symbol}
           </button>
         ))}
       </div>
-      <details className="flight-destinations" onToggle={() => keys.current.clear()}>
+      <details className="flight-destinations" onToggle={stopMoving}>
         <summary>Destinos em lista</summary>
         <p>Você também pode visitar os destinos diretamente pelos botões.</p>
         <ol>

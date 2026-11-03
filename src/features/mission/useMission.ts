@@ -2,8 +2,10 @@ import { useRef, useState } from 'react';
 import { evaluate, isCorrect } from '../../game/math';
 import { ChallengeKind, type Mission, type MissionResult } from '../../game/types';
 import { useNarration } from './useNarration';
+import { sectors } from '../../content/sectors';
 
 export function useMission(mission: Mission, onComplete: (result: MissionResult) => void) {
+  const hintLimit = sectors.find((sector) => sector.id === mission.sectorId)!.hintLimit;
   const [answer, setAnswer] = useState('');
   const [hints, setHints] = useState(0);
   const [visual, setVisual] = useState(false);
@@ -18,20 +20,16 @@ export function useMission(mission: Mission, onComplete: (result: MissionResult)
   const creation = mission.kind === ChallengeKind.Create;
   const expected = evaluate(mission.expression, variable);
 
-  function complete(guided: boolean) {
+  function complete() {
     if (done) return;
     narration.stop();
     setDone(true);
-    setFeedback(
-      guided
-        ? 'Missão concluída com apoio. Vamos guardar essa descoberta!'
-        : 'Boa descoberta! Você concluiu a missão.',
-    );
+    setFeedback('Boa descoberta! Você concluiu a missão.');
     onComplete({
       hints,
       visual: visualUsed,
-      attempts: attempts + (guided ? 0 : 1),
-      guided,
+      attempts: attempts + 1,
+      guided: false,
       ...(creation ? { creation: { context, variable } } : {}),
     });
     requestAnimationFrame(() => feedbackRef.current?.focus());
@@ -39,7 +37,7 @@ export function useMission(mission: Mission, onComplete: (result: MissionResult)
 
   function checkAnswer() {
     if (!answer.trim() || done) return;
-    if (isCorrect(mission, answer, variable)) complete(false);
+    if (isCorrect(mission, answer, variable)) complete();
     else {
       setAttempts((value) => value + 1);
       setFeedback(
@@ -67,7 +65,7 @@ export function useMission(mission: Mission, onComplete: (result: MissionResult)
     setVisualUsed(true);
   }
   function requestHint() {
-    setHints((value) => Math.min(3, value + 1));
+    if (!done) setHints((value) => Math.min(hintLimit, value + 1));
   }
   function toggleNarration() {
     if (narration.speaking) {
@@ -90,6 +88,7 @@ export function useMission(mission: Mission, onComplete: (result: MissionResult)
   return {
     answer,
     hints,
+    hintLimit,
     visual,
     feedback,
     done,
@@ -99,7 +98,6 @@ export function useMission(mission: Mission, onComplete: (result: MissionResult)
     expected,
     feedbackRef,
     narration,
-    complete,
     checkAnswer,
     changeAnswer,
     changeContext,

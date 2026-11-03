@@ -233,6 +233,36 @@
   text-align: center;
   letter-spacing: 1px;
 }
+.flight-sound-toggle {
+  position: absolute;
+  right: 14px;
+  bottom: 14px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 10px 14px;
+  border: 1px solid #8ce7d0;
+  border-radius: 9px;
+  background: #102e32;
+  color: #c8ffee;
+  font-size: 12px;
+  font-weight: 600;
+}
+.flight-sound-toggle[aria-pressed='false'] {
+  border-color: #7586a4;
+  background: #17233d;
+  color: #e0e9ff;
+}
+.flight-sound-toggle:hover {
+  background: #26445a;
+}
+.flight-sound-toggle kbd {
+  border: 1px solid currentColor;
+  border-radius: 4px;
+  padding: 1px 4px;
+  font-size: 10px;
+}
 .flight-map svg {
   display: block;
   width: 100%;

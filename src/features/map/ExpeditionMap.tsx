@@ -16,6 +16,7 @@ interface ExpeditionMapProps {
   onUniverse: () => void;
   onTutorial: () => void;
   onSummary: () => void;
+  onSoundChange: (enabled: boolean) => void;
 }
 
 export function ExpeditionMap({
@@ -28,6 +29,7 @@ export function ExpeditionMap({
   onUniverse,
   onTutorial,
   onSummary,
+  onSoundChange,
 }: ExpeditionMapProps) {
   const sector = sectors.find((item) => item.id === sectorId);
   const sectorMissions = missions.filter((item) => item.sectorId === sectorId);
@@ -162,6 +164,8 @@ export function ExpeditionMap({
         nextId={nextId}
         initialPosition={positions.get(mapKey)}
         reducedMotion={save.preferences.reducedMotion}
+        soundEnabled={save.preferences.soundEnabled}
+        onSoundChange={onSoundChange}
         paused={paused}
         onPosition={(position) => positions.set(mapKey, position)}
         onVisit={(id) => {

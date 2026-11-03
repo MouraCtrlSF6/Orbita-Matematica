@@ -27,6 +27,34 @@ export function App() {
   const summary = () => dispatch({ type: 'navigate', screen: Screen.Summary });
 
   useEffect(() => {
+    function toggleSound(event: KeyboardEvent) {
+      if (
+        event.key.toLowerCase() !== 'm' ||
+        event.repeat ||
+        event.isComposing ||
+        event.defaultPrevented ||
+        event.ctrlKey ||
+        event.altKey ||
+        event.metaKey
+      )
+        return;
+      const target = event.target;
+      if (
+        target instanceof HTMLElement &&
+        (target.isContentEditable ||
+          target.closest(
+            'input, textarea, select, [contenteditable]:not([contenteditable="false"]), [role="textbox"], [role="combobox"]',
+          ))
+      )
+        return;
+      event.preventDefault();
+      dispatch({ type: 'toggle-sound' });
+    }
+    window.addEventListener('keydown', toggleSound);
+    return () => window.removeEventListener('keydown', toggleSound);
+  }, [dispatch]);
+
+  useEffect(() => {
     const page = `${state.screen}:${state.missionId}`;
     if (previousPage.current === page) return;
     previousPage.current = page;
@@ -155,11 +183,15 @@ export function App() {
               onStart={start}
               onTutorial={tutorial}
               onSummary={summary}
+              onSoundChange={(value) =>
+                dispatch({ type: 'preference', key: 'soundEnabled', value })
+              }
             />
           ) : null}
           {state.screen === Screen.Tutorial ? (
             <Tutorial
               reducedMotion={state.save.preferences.reducedMotion}
+              soundEnabled={state.save.preferences.soundEnabled}
               paused={settingsOpen}
               onBack={map}
               onFinish={() => {

@@ -20,6 +20,7 @@ export function MissionScreen({ mission, onComplete, onNext, onBack }: MissionSc
   const {
     answer,
     hints,
+    hintLimit,
     visual,
     feedback,
     done,
@@ -29,7 +30,6 @@ export function MissionScreen({ mission, onComplete, onNext, onBack }: MissionSc
     expected,
     feedbackRef,
     narration,
-    complete,
     checkAnswer,
     changeAnswer,
     changeContext,
@@ -161,14 +161,10 @@ export function MissionScreen({ mission, onComplete, onNext, onBack }: MissionSc
           </div>
         </section>
         <MissionGuide
-          hints={mission.hints}
+          hints={mission.hints.slice(0, hintLimit)}
           openHints={hints}
           done={done}
-          solution={
-            creation ? `2 × ${variable} + 4 = ${expected} ${context}.` : mission.explanation
-          }
           onHint={requestHint}
-          onGuidedComplete={() => complete(true)}
         />
       </div>
     </div>

@@ -63,6 +63,8 @@ export function parseSave(raw: string | null): SavedGame {
       preferences: {
         largeText: data.preferences.largeText,
         reducedMotion: data.preferences.reducedMotion,
+        soundEnabled:
+          typeof data.preferences.soundEnabled === 'boolean' ? data.preferences.soundEnabled : true,
       },
     };
   } catch {

@@ -25,6 +25,7 @@ export type GameAction =
   | { type: 'complete'; result: MissionResult }
   | { type: 'tutorial-done' }
   | { type: 'preference'; key: keyof SavedGame['preferences']; value: boolean }
+  | { type: 'toggle-sound' }
   | { type: 'reset' };
 
 export function gameReducer(state: GameState, action: GameAction): GameState {
@@ -56,6 +57,17 @@ export function gameReducer(state: GameState, action: GameAction): GameState {
     }
     case 'tutorial-done':
       return { ...state, screen: Screen.Map, save: { ...state.save, tutorialDone: true } };
+    case 'toggle-sound':
+      return {
+        ...state,
+        save: {
+          ...state.save,
+          preferences: {
+            ...state.save.preferences,
+            soundEnabled: !state.save.preferences.soundEnabled,
+          },
+        },
+      };
     case 'preference':
       return {
         ...state,

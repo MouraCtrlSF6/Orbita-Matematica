@@ -1,131 +1,138 @@
 import { ChallengeKind, Operation, type Expression, type Mission } from '../game/types';
+import {
+  isRecord,
+  matchesFields,
+  isFiniteNumber,
+  isText,
+  isTextArray,
+  optional,
+} from '../game/validation';
 
-function isRecord(value: unknown): value is Record<string, unknown> {
-  return typeof value === 'object' && value !== null && !Array.isArray(value);
-}
-
-function isText(value: unknown): value is string {
-  return typeof value === 'string' && value.trim().length > 0;
-}
-
-function isTextArray(value: unknown): value is string[] {
-  return Array.isArray(value) && value.every(isText);
-}
-
-function isExpression(value: unknown): value is Expression {
-  if (!isRecord(value)) return false;
-  if (value.type === 'constant')
-    return typeof value.value === 'number' && Number.isFinite(value.value);
-  if (value.type === 'variable') return true;
+function isOperation(value: Record<string, unknown>): boolean {
   return (
-    value.type === 'operation' &&
-    Object.values(Operation).some((operation) => operation === value.operation) &&
+    Object.values(Operation).includes(value.operation as Operation) &&
     isExpression(value.left) &&
     isExpression(value.right)
   );
 }
-
-function isMission(value: unknown): value is Mission {
+function isExpression(value: unknown): value is Expression {
   if (!isRecord(value)) return false;
-  const textFields = [
-    'id',
-    'sectorId',
-    'title',
-    'objective',
-    'skill',
-    'prompt',
-    'formula',
-    'explanation',
-  ];
-  if (
-    !textFields.every((field) => isText(value[field])) ||
-    !Object.values(ChallengeKind).some((kind) => kind === value.kind) ||
-    !isExpression(value.expression) ||
-    typeof value.variable !== 'number' ||
-    !Number.isFinite(value.variable) ||
-    !isTextArray(value.hints) ||
-    value.hints.length !== 3 ||
-    !isRecord(value.visual)
-  )
-    return false;
-  const visual = value.visual;
-  if (
-    !isText(visual.label) ||
-    !['groups', 'perGroup', 'extra'].every(
-      (field) =>
-        typeof visual[field] === 'number' && Number.isInteger(visual[field]) && visual[field] >= 0,
-    )
-  )
-    return false;
-  if (
-    value.choices !== undefined &&
-    (!Array.isArray(value.choices) ||
-      !value.choices.every(
-        (choice: unknown) => isRecord(choice) && isText(choice.label) && isText(choice.value),
-      ))
-  )
-    return false;
-  if (
-    value.kind === ChallengeKind.Choice &&
-    (!Array.isArray(value.choices) || value.choices.length < 2)
-  )
-    return false;
-  if (
-    value.correctChoice !== undefined &&
-    (!isText(value.correctChoice) ||
-      !Array.isArray(value.choices) ||
-      !value.choices.some(
-        (choice: unknown) => isRecord(choice) && choice.value === value.correctChoice,
-      ))
-  )
-    return false;
-  if (value.tokens !== undefined && !isTextArray(value.tokens)) return false;
-  if (value.expectedTokens !== undefined && !isTextArray(value.expectedTokens)) return false;
-  if (
-    value.equivalentTokens !== undefined &&
-    (!Array.isArray(value.equivalentTokens) || !value.equivalentTokens.every(isTextArray))
-  )
-    return false;
-  if (
-    value.kind === ChallengeKind.Build &&
-    (!isTextArray(value.tokens) ||
-      !value.tokens.length ||
-      !isTextArray(value.expectedTokens) ||
-      !value.expectedTokens.length)
-  )
-    return false;
-  return true;
+  if (typeof value.type !== 'string') return false;
+  return Object.hasOwn(expressionValidators, value.type) && expressionValidators[value.type](value);
 }
-
+const expressionValidators: Record<string, (value: Record<string, unknown>) => boolean> = {
+  constant: (value) => isFiniteNumber(value.value),
+  variable: () => true,
+  operation: isOperation,
+};
+function isQuantity(value: unknown): boolean {
+  return typeof value === 'number' && Number.isInteger(value) && value >= 0;
+}
+function isVisual(value: unknown): boolean {
+  return (
+    isRecord(value) &&
+    matchesFields(value, {
+      label: isText,
+      groups: isQuantity,
+      perGroup: isQuantity,
+      extra: isQuantity,
+    })
+  );
+}
+function isHints(value: unknown): boolean {
+  return isTextArray(value) && value.length === 3;
+}
+function isChoice(value: unknown): boolean {
+  return isRecord(value) && matchesFields(value, { label: isText, value: isText });
+}
+function isChoices(value: unknown): boolean {
+  return Array.isArray(value) && value.every(isChoice);
+}
+function isTokenOrders(value: unknown): boolean {
+  return Array.isArray(value) && value.every(isTextArray);
+}
+function hasChoice(choices: unknown, correct: string): boolean {
+  return (
+    Array.isArray(choices) && choices.some((choice) => isRecord(choice) && choice.value === correct)
+  );
+}
+function hasCorrectChoice(value: Record<string, unknown>): boolean {
+  if (value.correctChoice === undefined) return true;
+  if (!isText(value.correctChoice)) return false;
+  return hasChoice(value.choices, value.correctChoice);
+}
+function hasChoiceFormat(value: Record<string, unknown>): boolean {
+  if (value.kind !== ChallengeKind.Choice) return true;
+  return Array.isArray(value.choices) && value.choices.length >= 2;
+}
+function hasBuildFormat(value: Record<string, unknown>): boolean {
+  if (value.kind !== ChallengeKind.Build) return true;
+  return hasTokens(value.tokens) && hasTokens(value.expectedTokens);
+}
+function hasTokens(value: unknown): boolean {
+  return isTextArray(value) && value.length > 0;
+}
+const missionFields = {
+  id: isText,
+  sectorId: isText,
+  title: isText,
+  objective: isText,
+  skill: isText,
+  prompt: isText,
+  formula: isText,
+  explanation: isText,
+  expression: isExpression,
+  variable: isFiniteNumber,
+  kind: (value: unknown) => Object.values(ChallengeKind).includes(value as ChallengeKind),
+  hints: isHints,
+  visual: isVisual,
+  choices: optional(isChoices),
+  tokens: optional(isTextArray),
+  expectedTokens: optional(isTextArray),
+  equivalentTokens: optional(isTokenOrders),
+};
+function isMission(value: unknown): value is Mission {
+  return isRecord(value) && matchesFields(value, missionFields) && hasMissionFormat(value);
+}
+function hasMissionFormat(value: Record<string, unknown>): boolean {
+  return hasCorrectChoice(value) && hasChoiceFormat(value) && hasBuildFormat(value);
+}
+function requireValid(condition: unknown, message: string): asserts condition {
+  if (!condition) throw new Error(message);
+}
+function catalogSections(value: unknown, count: number): unknown[] {
+  requireValid(isRecord(value), 'Catálogo de problemas inválido: versão ou setores incompatíveis.');
+  requireValid(
+    value.version === 3 && Array.isArray(value.sections),
+    'Catálogo de problemas inválido: versão ou setores incompatíveis.',
+  );
+  requireValid(
+    value.sections.length > 0 && value.sections.length === count,
+    'Catálogo de problemas inválido: versão ou setores incompatíveis.',
+  );
+  return value.sections;
+}
+function sectionProblems(section: unknown, id: string, index: number): unknown[] {
+  requireValid(isRecord(section), `Setor inválido na posição ${index + 1} do catálogo.`);
+  requireValid(
+    section.id === id && Array.isArray(section.problems),
+    `Setor inválido na posição ${index + 1} do catálogo.`,
+  );
+  requireValid(section.problems.length > 0, `Setor inválido na posição ${index + 1} do catálogo.`);
+  return section.problems;
+}
+function parseProblem(problem: unknown, sectorId: string, ids: Set<string>): Mission {
+  if (!isMission(problem) || problem.sectorId !== sectorId)
+    throw new Error(`Problema inválido no setor ${sectorId}.`);
+  if (ids.has(problem.id)) throw new Error(`Identificador de problema duplicado: ${problem.id}.`);
+  ids.add(problem.id);
+  return problem;
+}
 export function parseMissionCatalog(value: unknown, sectorIds: readonly string[]): Mission[] {
-  if (
-    !isRecord(value) ||
-    value.version !== 3 ||
-    !Array.isArray(value.sections) ||
-    !value.sections.length ||
-    value.sections.length !== sectorIds.length
-  ) {
-    throw new Error('Catálogo de problemas inválido: versão ou setores incompatíveis.');
-  }
-  const missions: Mission[] = [];
   const ids = new Set<string>();
-  value.sections.forEach((section: unknown, index: number) => {
-    if (
-      !isRecord(section) ||
-      section.id !== sectorIds[index] ||
-      !Array.isArray(section.problems) ||
-      !section.problems.length
-    )
-      throw new Error(`Setor inválido na posição ${index + 1} do catálogo.`);
-    section.problems.forEach((problem: unknown) => {
-      if (!isMission(problem) || problem.sectorId !== section.id) {
-        throw new Error(`Problema inválido no setor ${section.id}.`);
-      }
-      if (ids.has(problem.id))
-        throw new Error(`Identificador de problema duplicado: ${problem.id}.`);
-      ids.add(problem.id);
-      missions.push(problem);
-    });
-  });
-  return missions;
+  return catalogSections(value, sectorIds.length).flatMap((section, index) =>
+    sectionProblems(section, sectorIds[index], index).map((problem) =>
+      parseProblem(problem, sectorIds[index], ids),
+    ),
+  );
 }

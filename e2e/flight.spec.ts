@@ -75,10 +75,11 @@ test('pilots between destinations, requires confirmation, preserves position and
   await expect(page.locator(`[data-destination="${missions[0].id}"]`)).toHaveClass(/complete/);
   await expect(page.locator(`[data-destination="${missions[1].id}"]`)).toHaveClass(/next/);
   await flyToX(page, 610);
+  const secondLanding = await position(page);
   await page.keyboard.press('Enter');
   await expect(page.getByRole('heading', { name: missions[1].title, exact: true })).toBeVisible();
   await page.getByRole('button', { name: 'Voltar ao setor', exact: true }).click();
-  expect(Math.abs((await position(page)).x - 610)).toBeLessThan(25);
+  expect((await position(page)).x).toBeCloseTo(secondLanding.x, 0);
 });
 
 test('stops on release, blur, hidden tab and settings, and moves the camera and radar', async ({

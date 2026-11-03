@@ -1,0 +1,1245 @@
+{
+  "extension": "1.26.1",
+  "limit": 7,
+  "functions": 206,
+  "overLimit": 40,
+  "maximum": 125,
+  "results": [
+    {
+      "file": "src/features/map/SpaceFlight.tsx",
+      "line": 42,
+      "complexity": 125,
+      "function": "export function SpaceFlight({"
+    },
+    {
+      "file": "src/app/App.tsx",
+      "line": 14,
+      "complexity": 115,
+      "function": "export function App() {"
+    },
+    {
+      "file": "src/features/map/ExpeditionMap.tsx",
+      "line": 22,
+      "complexity": 66,
+      "function": "export function ExpeditionMap({"
+    },
+    {
+      "file": "src/features/tutorial/Tutorial.tsx",
+      "line": 17,
+      "complexity": 60,
+      "function": "export function Tutorial({"
+    },
+    {
+      "file": "src/features/mission/MissionScreen.tsx",
+      "line": 19,
+      "complexity": 59,
+      "function": "export function MissionScreen({ mission, onComplete, onNext, onBack }:..."
+    },
+    {
+      "file": "src/content/mission-catalog.ts",
+      "line": 28,
+      "complexity": 55,
+      "function": "function isMission(value: unknown): value is Mission {"
+    },
+    {
+      "file": "src/components/SpaceArt.tsx",
+      "line": 19,
+      "complexity": 46,
+      "function": "export function SpaceArt() {"
+    },
+    {
+      "file": "src/features/mission/AnswerInput.tsx",
+      "line": 10,
+      "complexity": 40,
+      "function": "export function AnswerInput({ mission, answer, onChange, disabled }: A..."
+    },
+    {
+      "file": "src/features/settings/SettingsDialog.tsx",
+      "line": 13,
+      "complexity": 40,
+      "function": "export function SettingsDialog({"
+    },
+    {
+      "file": "src/features/progress/Summary.tsx",
+      "line": 11,
+      "complexity": 35,
+      "function": "export function Summary({ save, onBack }: SummaryProps) {"
+    },
+    {
+      "file": "src/game/reducer.ts",
+      "line": 31,
+      "complexity": 31,
+      "function": "export function gameReducer(state: GameState, action: GameAction): Gam..."
+    },
+    {
+      "file": "src/features/mission/useMission.ts",
+      "line": 7,
+      "complexity": 29,
+      "function": "export function useMission(mission: Mission, onComplete: (result: Miss..."
+    },
+    {
+      "file": "src/features/map/thrusterSound.ts",
+      "line": 2,
+      "complexity": 27,
+      "function": "export function createThrusterSound() {"
+    },
+    {
+      "file": "src/infrastructure/storage.ts",
+      "line": 35,
+      "complexity": 21,
+      "function": "export function parseSave(raw: string | null): SavedGame {"
+    },
+    {
+      "file": "src/content/mission-catalog.ts",
+      "line": 100,
+      "complexity": 20,
+      "function": "export function parseMissionCatalog(value: unknown, sectorIds: readonl..."
+    },
+    {
+      "file": "src/features/map/SpaceFlight.tsx",
+      "line": 87,
+      "complexity": 20,
+      "function": "() => {"
+    },
+    {
+      "file": "src/features/mission/MissionGuide.tsx",
+      "line": 11,
+      "complexity": 20,
+      "function": "export function MissionGuide({ hints, openHints, done, onHint }: Missi..."
+    },
+    {
+      "file": "src/features/mission/ObjectModel.tsx",
+      "line": 6,
+      "complexity": 20,
+      "function": "export function ObjectModel({ model }: ObjectModelProps) {"
+    },
+    {
+      "file": "src/features/mission/CreationFields.tsx",
+      "line": 9,
+      "complexity": 19,
+      "function": "export function CreationFields({"
+    },
+    {
+      "file": "src/infrastructure/gameStorage.ts",
+      "line": 5,
+      "complexity": 18,
+      "function": "export function createBrowserGameStorage() {"
+    },
+    {
+      "file": "src/features/progress/Summary.tsx",
+      "line": 35,
+      "complexity": 18,
+      "function": "(sector) => ("
+    },
+    {
+      "file": "src/features/map/SpaceFlight.tsx",
+      "line": 92,
+      "complexity": 17,
+      "function": "(time: number) => {"
+    },
+    {
+      "file": "src/app/App.tsx",
+      "line": 29,
+      "complexity": 16,
+      "function": "() => {"
+    },
+    {
+      "file": "src/game/math.ts",
+      "line": 18,
+      "complexity": 16,
+      "function": "export function evaluate(expression: Expression, value: number): numbe..."
+    },
+    {
+      "file": "src/infrastructure/storage.ts",
+      "line": 15,
+      "complexity": 16,
+      "function": "function isResult(value: unknown): value is MissionResult {"
+    },
+    {
+      "file": "src/features/map/SpaceBody.tsx",
+      "line": 5,
+      "complexity": 16,
+      "function": "export function SpaceBody({ kind }: SpaceBodyProps) {"
+    },
+    {
+      "file": "src/features/mission/useNarration.ts",
+      "line": 3,
+      "complexity": 16,
+      "function": "export function useNarration() {"
+    },
+    {
+      "file": "src/app/App.tsx",
+      "line": 30,
+      "complexity": 13,
+      "function": "function toggleSound(event: KeyboardEvent) {"
+    },
+    {
+      "file": "src/content/mission-catalog.ts",
+      "line": 15,
+      "complexity": 13,
+      "function": "function isExpression(value: unknown): value is Expression {"
+    },
+    {
+      "file": "src/features/progress/Summary.tsx",
+      "line": 41,
+      "complexity": 13,
+      "function": "(mission) => {"
+    },
+    {
+      "file": "src/content/mission-catalog.ts",
+      "line": 112,
+      "complexity": 12,
+      "function": "(section: unknown, index: number) => {"
+    },
+    {
+      "file": "src/features/map/ExpeditionMap.tsx",
+      "line": 49,
+      "complexity": 12,
+      "function": "(item) => {"
+    },
+    {
+      "file": "src/features/map/SpaceFlight.tsx",
+      "line": 179,
+      "complexity": 11,
+      "function": "(event) => {"
+    },
+    {
+      "file": "src/features/map/SpaceFlight.tsx",
+      "line": 213,
+      "complexity": 11,
+      "function": "(item, index) => ("
+    },
+    {
+      "file": "src/features/map/thrusterSound.ts",
+      "line": 24,
+      "complexity": 11,
+      "function": "function unlock() {"
+    },
+    {
+      "file": "src/components/SpaceArt.tsx",
+      "line": 4,
+      "complexity": 10,
+      "function": "export function Planet({ variant }: PlanetProps) {"
+    },
+    {
+      "file": "src/features/mission/AnswerInput.tsx",
+      "line": 45,
+      "complexity": 10,
+      "function": "(token) => ("
+    },
+    {
+      "file": "src/features/mission/useNarration.ts",
+      "line": 18,
+      "complexity": 9,
+      "function": "function speak(text: string) {"
+    },
+    {
+      "file": "src/game/math.ts",
+      "line": 36,
+      "complexity": 8,
+      "function": "export function isCorrect(mission: Mission, answer: string, value = mi..."
+    },
+    {
+      "file": "src/features/map/thrusterSound.ts",
+      "line": 9,
+      "complexity": 8,
+      "function": "function setMoving(moving: boolean) {"
+    },
+    {
+      "file": "src/game/progress.ts",
+      "line": 13,
+      "complexity": 7,
+      "function": "export function isSectorUnlocked(sectorId: string, completed: SavedGam..."
+    },
+    {
+      "file": "src/game/progress.ts",
+      "line": 27,
+      "complexity": 7,
+      "function": "export function nextMission(save: SavedGame): string {"
+    },
+    {
+      "file": "src/features/map/ExpeditionMap.tsx",
+      "line": 87,
+      "complexity": 7,
+      "function": "function resume() {"
+    },
+    {
+      "file": "src/features/map/SpaceFlight.tsx",
+      "line": 354,
+      "complexity": 7,
+      "function": "(item) => ("
+    },
+    {
+      "file": "src/features/mission/AnswerInput.tsx",
+      "line": 15,
+      "complexity": 7,
+      "function": "(choice, index) => ("
+    },
+    {
+      "file": "src/features/mission/useMission.ts",
+      "line": 38,
+      "complexity": 7,
+      "function": "function checkAnswer() {"
+    },
+    {
+      "file": "src/content/mission-catalog.ts",
+      "line": 120,
+      "complexity": 6,
+      "function": "(problem: unknown) => {"
+    },
+    {
+      "file": "src/features/mission/ObjectModel.tsx",
+      "line": 15,
+      "complexity": 6,
+      "function": "(_, group) => ("
+    },
+    {
+      "file": "src/game/progress.ts",
+      "line": 20,
+      "complexity": 5,
+      "function": "export function isMissionUnlocked(id: string, completed: SavedGame['co..."
+    },
+    {
+      "file": "src/game/space.ts",
+      "line": 16,
+      "complexity": 5,
+      "function": "export function createWorld(items: { id: string; label: string }[]): S..."
+    },
+    {
+      "file": "src/infrastructure/gameStorage.ts",
+      "line": 9,
+      "complexity": 5,
+      "function": "read() {"
+    },
+    {
+      "file": "src/infrastructure/gameStorage.ts",
+      "line": 16,
+      "complexity": 5,
+      "function": "write(save: SavedGame) {"
+    },
+    {
+      "file": "src/infrastructure/storage.ts",
+      "line": 75,
+      "complexity": 5,
+      "function": "export function loadGame(storage: StoragePort): SavedGame {"
+    },
+    {
+      "file": "src/infrastructure/storage.ts",
+      "line": 83,
+      "complexity": 5,
+      "function": "export function saveGame(storage: StoragePort, save: SavedGame): boole..."
+    },
+    {
+      "file": "src/features/map/ExpeditionMap.tsx",
+      "line": 38,
+      "complexity": 5,
+      "function": "() =>"
+    },
+    {
+      "file": "src/features/map/SpaceFlight.tsx",
+      "line": 327,
+      "complexity": 5,
+      "function": "([key, symbol, label]) => ("
+    },
+    {
+      "file": "src/features/mission/useMission.ts",
+      "line": 23,
+      "complexity": 5,
+      "function": "function complete() {"
+    },
+    {
+      "file": "src/features/mission/useMission.ts",
+      "line": 70,
+      "complexity": 5,
+      "function": "function toggleNarration() {"
+    },
+    {
+      "file": "src/features/tutorial/Tutorial.tsx",
+      "line": 119,
+      "complexity": 5,
+      "function": "(value) => ("
+    },
+    {
+      "file": "src/app/useGame.ts",
+      "line": 5,
+      "complexity": 4,
+      "function": "export function useGame() {"
+    },
+    {
+      "file": "src/components/Icon.tsx",
+      "line": 26,
+      "complexity": 4,
+      "function": "export function Icon({ name, size = 22 }: IconProps) {"
+    },
+    {
+      "file": "src/content/mission-catalog.ts",
+      "line": 3,
+      "complexity": 4,
+      "function": "function isRecord(value: unknown): value is Record<string, unknown> {..."
+    },
+    {
+      "file": "src/game/space.ts",
+      "line": 34,
+      "complexity": 4,
+      "function": "export function moveShip("
+    },
+    {
+      "file": "src/infrastructure/gameStorage.ts",
+      "line": 29,
+      "complexity": 4,
+      "function": "subscribe(listener: () => void) {"
+    },
+    {
+      "file": "src/infrastructure/storage.ts",
+      "line": 11,
+      "complexity": 4,
+      "function": "function isRecord(value: unknown): value is Record<string, unknown> {..."
+    },
+    {
+      "file": "src/test/mission.ts",
+      "line": 3,
+      "complexity": 4,
+      "function": "export function mission(id: string) {"
+    },
+    {
+      "file": "src/features/map/SpaceFlight.tsx",
+      "line": 79,
+      "complexity": 4,
+      "function": "() => {"
+    },
+    {
+      "file": "src/features/map/SpaceFlight.tsx",
+      "line": 152,
+      "complexity": 4,
+      "function": "() => {"
+    },
+    {
+      "file": "src/features/mission/MissionGuide.tsx",
+      "line": 32,
+      "complexity": 4,
+      "function": "(hint, index) => ("
+    },
+    {
+      "file": "src/app/App.tsx",
+      "line": 57,
+      "complexity": 3,
+      "function": "() => {"
+    },
+    {
+      "file": "src/content/mission-catalog.ts",
+      "line": 7,
+      "complexity": 3,
+      "function": "function isText(value: unknown): value is string {"
+    },
+    {
+      "file": "src/content/mission-catalog.ts",
+      "line": 11,
+      "complexity": 3,
+      "function": "function isTextArray(value: unknown): value is string[] {"
+    },
+    {
+      "file": "src/content/mission-catalog.ts",
+      "line": 55,
+      "complexity": 3,
+      "function": "(field) =>"
+    },
+    {
+      "file": "src/content/mission-catalog.ts",
+      "line": 64,
+      "complexity": 3,
+      "function": "(choice: unknown) => isRecord(choice) && isText(choice.label) && isTex..."
+    },
+    {
+      "file": "src/game/space.ts",
+      "line": 21,
+      "complexity": 3,
+      "function": "(item, index) => {"
+    },
+    {
+      "file": "src/game/space.ts",
+      "line": 54,
+      "complexity": 3,
+      "function": "export function nearbyDestination("
+    },
+    {
+      "file": "src/game/space.ts",
+      "line": 63,
+      "complexity": 3,
+      "function": "export function approach(destination?: Point): Point {"
+    },
+    {
+      "file": "src/features/map/ExpeditionMap.tsx",
+      "line": 171,
+      "complexity": 3,
+      "function": "(id) => {"
+    },
+    {
+      "file": "src/features/map/SpaceFlight.tsx",
+      "line": 94,
+      "complexity": 3,
+      "function": "(sum, key) => {"
+    },
+    {
+      "file": "src/features/map/SpaceFlight.tsx",
+      "line": 199,
+      "complexity": 3,
+      "function": "(event) => {"
+    },
+    {
+      "file": "src/features/map/SpaceFlight.tsx",
+      "line": 242,
+      "complexity": 3,
+      "function": "(item) => ("
+    },
+    {
+      "file": "src/features/map/SpaceFlight.tsx",
+      "line": 337,
+      "complexity": 3,
+      "function": "(event) => {"
+    },
+    {
+      "file": "src/features/map/thrusterSound.ts",
+      "line": 17,
+      "complexity": 3,
+      "function": "function dispose() {"
+    },
+    {
+      "file": "src/features/map/thrusterSound.ts",
+      "line": 58,
+      "complexity": 3,
+      "function": "setEnabled(value: boolean) {"
+    },
+    {
+      "file": "src/features/mission/MissionScreen.tsx",
+      "line": 105,
+      "complexity": 3,
+      "function": "(event) => {"
+    },
+    {
+      "file": "src/features/mission/useMission.ts",
+      "line": 67,
+      "complexity": 3,
+      "function": "function requestHint() {"
+    },
+    {
+      "file": "src/features/mission/useNarration.ts",
+      "line": 7,
+      "complexity": 3,
+      "function": "() => () => {"
+    },
+    {
+      "file": "src/app/App.tsx",
+      "line": 66,
+      "complexity": 2,
+      "function": "function start(id: string) {"
+    },
+    {
+      "file": "src/app/App.tsx",
+      "line": 224,
+      "complexity": 2,
+      "function": "() => {"
+    },
+    {
+      "file": "src/content/mission-catalog.ts",
+      "line": 78,
+      "complexity": 2,
+      "function": "(choice: unknown) => isRecord(choice) && choice.value === value.correc..."
+    },
+    {
+      "file": "src/game/space.ts",
+      "line": 67,
+      "complexity": 2,
+      "function": "export function cameraPosition(position: Point, world: SpaceWorld, vie..."
+    },
+    {
+      "file": "src/features/map/SpaceFlight.tsx",
+      "line": 70,
+      "complexity": 2,
+      "function": "() => () => thruster.dispose()"
+    },
+    {
+      "file": "src/features/map/SpaceFlight.tsx",
+      "line": 158,
+      "complexity": 2,
+      "function": "(key: string) => (event: React.PointerEvent<HTMLButtonElement>) => {..."
+    },
+    {
+      "file": "src/features/mission/CreationFields.tsx",
+      "line": 33,
+      "complexity": 2,
+      "function": "(value) => ("
+    },
+    {
+      "file": "src/features/mission/ObjectModel.tsx",
+      "line": 19,
+      "complexity": 2,
+      "function": "(_, item) => ("
+    },
+    {
+      "file": "src/features/mission/ObjectModel.tsx",
+      "line": 29,
+      "complexity": 2,
+      "function": "(_, item) => ("
+    },
+    {
+      "file": "src/features/mission/useMission.ts",
+      "line": 63,
+      "complexity": 2,
+      "function": "function toggleVisual() {"
+    },
+    {
+      "file": "src/features/mission/useNarration.ts",
+      "line": 7,
+      "complexity": 2,
+      "function": "() => {"
+    },
+    {
+      "file": "src/features/mission/useNarration.ts",
+      "line": 13,
+      "complexity": 2,
+      "function": "function stop() {"
+    },
+    {
+      "file": "src/features/tutorial/Tutorial.tsx",
+      "line": 28,
+      "complexity": 2,
+      "function": "() => {"
+    },
+    {
+      "file": "src/app/App.tsx",
+      "line": 18,
+      "complexity": 1,
+      "function": "() => ({"
+    },
+    {
+      "file": "src/app/App.tsx",
+      "line": 25,
+      "complexity": 1,
+      "function": "() => dispatch({ type: 'navigate', screen: Screen.Map })"
+    },
+    {
+      "file": "src/app/App.tsx",
+      "line": 26,
+      "complexity": 1,
+      "function": "() => dispatch({ type: 'navigate', screen: Screen.Tutorial })"
+    },
+    {
+      "file": "src/app/App.tsx",
+      "line": 27,
+      "complexity": 1,
+      "function": "() => dispatch({ type: 'navigate', screen: Screen.Summary })"
+    },
+    {
+      "file": "src/app/App.tsx",
+      "line": 54,
+      "complexity": 1,
+      "function": "() => window.removeEventListener('keydown', toggleSound)"
+    },
+    {
+      "file": "src/app/App.tsx",
+      "line": 71,
+      "complexity": 1,
+      "function": "() => dispatch({ type: 'return-sector' })"
+    },
+    {
+      "file": "src/app/App.tsx",
+      "line": 132,
+      "complexity": 1,
+      "function": "() => setSettingsOpen(true)"
+    },
+    {
+      "file": "src/app/App.tsx",
+      "line": 181,
+      "complexity": 1,
+      "function": "(id) => dispatch({ type: 'enter-sector', id })"
+    },
+    {
+      "file": "src/app/App.tsx",
+      "line": 186,
+      "complexity": 1,
+      "function": "(value) =>"
+    },
+    {
+      "file": "src/app/App.tsx",
+      "line": 197,
+      "complexity": 1,
+      "function": "() => {"
+    },
+    {
+      "file": "src/app/App.tsx",
+      "line": 207,
+      "complexity": 1,
+      "function": "(result) => dispatch({ type: 'complete', result })"
+    },
+    {
+      "file": "src/app/App.tsx",
+      "line": 223,
+      "complexity": 1,
+      "function": "(key, value) => dispatch({ type: 'preference', key, value })"
+    },
+    {
+      "file": "src/app/App.tsx",
+      "line": 225,
+      "complexity": 1,
+      "function": "(session) => ({ positions: new Map(), id: session.id + 1 })"
+    },
+    {
+      "file": "src/app/App.tsx",
+      "line": 228,
+      "complexity": 1,
+      "function": "() => setSettingsOpen(false)"
+    },
+    {
+      "file": "src/app/useGame.ts",
+      "line": 7,
+      "complexity": 1,
+      "function": "() => ({"
+    },
+    {
+      "file": "src/app/useGame.ts",
+      "line": 14,
+      "complexity": 1,
+      "function": "() => {"
+    },
+    {
+      "file": "src/components/icon-names.ts",
+      "line": 1,
+      "complexity": 1,
+      "function": "export enum IconName {"
+    },
+    {
+      "file": "src/content/mission-catalog.ts",
+      "line": 22,
+      "complexity": 1,
+      "function": "(operation) => operation === value.operation"
+    },
+    {
+      "file": "src/content/mission-catalog.ts",
+      "line": 41,
+      "complexity": 1,
+      "function": "(field) => isText(value[field])"
+    },
+    {
+      "file": "src/content/mission-catalog.ts",
+      "line": 42,
+      "complexity": 1,
+      "function": "(kind) => kind === value.kind"
+    },
+    {
+      "file": "src/content/missions.ts",
+      "line": 7,
+      "complexity": 1,
+      "function": "(sector) => sector.id"
+    },
+    {
+      "file": "src/content/missions.ts",
+      "line": 10,
+      "complexity": 1,
+      "function": "(mission) => [mission.id, mission]"
+    },
+    {
+      "file": "src/game/math.ts",
+      "line": 3,
+      "complexity": 1,
+      "function": "(value: number): Expression => ({ type: 'constant', value })"
+    },
+    {
+      "file": "src/game/math.ts",
+      "line": 5,
+      "complexity": 1,
+      "function": "(left: Expression, right: Expression): Expression => ({"
+    },
+    {
+      "file": "src/game/math.ts",
+      "line": 11,
+      "complexity": 1,
+      "function": "(left: Expression, right: Expression): Expression => ({"
+    },
+    {
+      "file": "src/game/math.ts",
+      "line": 40,
+      "complexity": 1,
+      "function": "(tokens) => answer === tokens.join(' ')"
+    },
+    {
+      "file": "src/game/progress.ts",
+      "line": 5,
+      "complexity": 1,
+      "function": "(): SavedGame => ({"
+    },
+    {
+      "file": "src/game/progress.ts",
+      "line": 14,
+      "complexity": 1,
+      "function": "(sector) => sector.id === sectorId"
+    },
+    {
+      "file": "src/game/progress.ts",
+      "line": 16,
+      "complexity": 1,
+      "function": "(mission) => mission.sectorId === sectorId"
+    },
+    {
+      "file": "src/game/progress.ts",
+      "line": 21,
+      "complexity": 1,
+      "function": "(mission) => mission.id === id"
+    },
+    {
+      "file": "src/game/progress.ts",
+      "line": 23,
+      "complexity": 1,
+      "function": "(mission) => completed[mission.id] !== undefined"
+    },
+    {
+      "file": "src/game/progress.ts",
+      "line": 34,
+      "complexity": 1,
+      "function": "(mission) => !save.completed[mission.id]"
+    },
+    {
+      "file": "src/game/reducer.ts",
+      "line": 5,
+      "complexity": 1,
+      "function": "export enum Screen {"
+    },
+    {
+      "file": "src/game/reducer.ts",
+      "line": 55,
+      "complexity": 1,
+      "function": "(mission) => !completed[mission.id]"
+    },
+    {
+      "file": "src/game/space.ts",
+      "line": 59,
+      "complexity": 1,
+      "function": "(destination) => Math.hypot(destination.x - position.x, destination.y..."
+    },
+    {
+      "file": "src/game/types.ts",
+      "line": 1,
+      "complexity": 1,
+      "function": "export enum ChallengeKind {"
+    },
+    {
+      "file": "src/game/types.ts",
+      "line": 8,
+      "complexity": 1,
+      "function": "export enum Operation {"
+    },
+    {
+      "file": "src/infrastructure/gameStorage.ts",
+      "line": 25,
+      "complexity": 1,
+      "function": "(listener) => listener()"
+    },
+    {
+      "file": "src/infrastructure/gameStorage.ts",
+      "line": 28,
+      "complexity": 1,
+      "function": "() => available"
+    },
+    {
+      "file": "src/infrastructure/gameStorage.ts",
+      "line": 31,
+      "complexity": 1,
+      "function": "() => {"
+    },
+    {
+      "file": "src/features/map/ExpeditionMap.tsx",
+      "line": 34,
+      "complexity": 1,
+      "function": "(item) => item.id === sectorId"
+    },
+    {
+      "file": "src/features/map/ExpeditionMap.tsx",
+      "line": 35,
+      "complexity": 1,
+      "function": "(item) => item.sectorId === sectorId"
+    },
+    {
+      "file": "src/features/map/ExpeditionMap.tsx",
+      "line": 36,
+      "complexity": 1,
+      "function": "(item) => item.id === nextMission(save)"
+    },
+    {
+      "file": "src/features/map/ExpeditionMap.tsx",
+      "line": 42,
+      "complexity": 1,
+      "function": "(item) => item.sectorId === sectorId"
+    },
+    {
+      "file": "src/features/map/ExpeditionMap.tsx",
+      "line": 43,
+      "complexity": 1,
+      "function": "(item) => ({ id: item.id, label: item.title })"
+    },
+    {
+      "file": "src/features/map/ExpeditionMap.tsx",
+      "line": 44,
+      "complexity": 1,
+      "function": "(item) => ({ id: item.id, label: item.name })"
+    },
+    {
+      "file": "src/features/map/ExpeditionMap.tsx",
+      "line": 51,
+      "complexity": 1,
+      "function": "(mission) => mission.id === item.id"
+    },
+    {
+      "file": "src/features/map/ExpeditionMap.tsx",
+      "line": 52,
+      "complexity": 1,
+      "function": "(mission) => mission.sectorId === item.id"
+    },
+    {
+      "file": "src/features/map/ExpeditionMap.tsx",
+      "line": 53,
+      "complexity": 1,
+      "function": "(mission) => save.completed[mission.id]"
+    },
+    {
+      "file": "src/features/map/ExpeditionMap.tsx",
+      "line": 75,
+      "complexity": 1,
+      "function": "(item) => save.completed[item.id]"
+    },
+    {
+      "file": "src/features/map/ExpeditionMap.tsx",
+      "line": 76,
+      "complexity": 1,
+      "function": "(item) => save.completed[item.id]"
+    },
+    {
+      "file": "src/features/map/ExpeditionMap.tsx",
+      "line": 78,
+      "complexity": 1,
+      "function": "(item) => item.id === sector.id"
+    },
+    {
+      "file": "src/features/map/ExpeditionMap.tsx",
+      "line": 81,
+      "complexity": 1,
+      "function": "(item) => !save.completed[item.id]"
+    },
+    {
+      "file": "src/features/map/ExpeditionMap.tsx",
+      "line": 95,
+      "complexity": 1,
+      "function": "(item) => item.sectorId === next.sectorId"
+    },
+    {
+      "file": "src/features/map/ExpeditionMap.tsx",
+      "line": 96,
+      "complexity": 1,
+      "function": "(item) => ({ id: item.id, label: item.title })"
+    },
+    {
+      "file": "src/features/map/ExpeditionMap.tsx",
+      "line": 100,
+      "complexity": 1,
+      "function": "(item) => item.id === next.id"
+    },
+    {
+      "file": "src/features/map/ExpeditionMap.tsx",
+      "line": 170,
+      "complexity": 1,
+      "function": "(position) => positions.set(mapKey, position)"
+    },
+    {
+      "file": "src/features/map/SpaceFlight.tsx",
+      "line": 63,
+      "complexity": 1,
+      "function": "() => {"
+    },
+    {
+      "file": "src/features/map/SpaceFlight.tsx",
+      "line": 67,
+      "complexity": 1,
+      "function": "() => {"
+    },
+    {
+      "file": "src/features/map/SpaceFlight.tsx",
+      "line": 70,
+      "complexity": 1,
+      "function": "() => thruster.dispose()"
+    },
+    {
+      "file": "src/features/map/SpaceFlight.tsx",
+      "line": 75,
+      "complexity": 1,
+      "function": "() => {"
+    },
+    {
+      "file": "src/features/map/SpaceFlight.tsx",
+      "line": 81,
+      "complexity": 1,
+      "function": "() => setSystemReduced(media.matches)"
+    },
+    {
+      "file": "src/features/map/SpaceFlight.tsx",
+      "line": 84,
+      "complexity": 1,
+      "function": "() => media.removeEventListener('change', update)"
+    },
+    {
+      "file": "src/features/map/SpaceFlight.tsx",
+      "line": 125,
+      "complexity": 1,
+      "function": "(item) => item.id === latest.current.nextId"
+    },
+    {
+      "file": "src/features/map/SpaceFlight.tsx",
+      "line": 142,
+      "complexity": 1,
+      "function": "() => {"
+    },
+    {
+      "file": "src/features/map/SpaceFlight.tsx",
+      "line": 150,
+      "complexity": 1,
+      "function": "(item) => item.id === nearId"
+    },
+    {
+      "file": "src/features/map/SpaceFlight.tsx",
+      "line": 151,
+      "complexity": 1,
+      "function": "(item) => item.id === nextId"
+    },
+    {
+      "file": "src/features/map/SpaceFlight.tsx",
+      "line": 158,
+      "complexity": 1,
+      "function": "(event: React.PointerEvent<HTMLButtonElement>) => {"
+    },
+    {
+      "file": "src/features/map/SpaceFlight.tsx",
+      "line": 211,
+      "complexity": 1,
+      "function": "(item) => `${item.x},${item.y}`"
+    },
+    {
+      "file": "src/features/map/SpaceFlight.tsx",
+      "line": 263,
+      "complexity": 1,
+      "function": "() => {"
+    },
+    {
+      "file": "src/features/map/SpaceFlight.tsx",
+      "line": 358,
+      "complexity": 1,
+      "function": "() => {"
+    },
+    {
+      "file": "src/features/map/thrusterSound.ts",
+      "line": 19,
+      "complexity": 1,
+      "function": "() => {}"
+    },
+    {
+      "file": "src/features/map/thrusterSound.ts",
+      "line": 48,
+      "complexity": 1,
+      "function": "() => {}"
+    },
+    {
+      "file": "src/features/mission/AnswerInput.tsx",
+      "line": 25,
+      "complexity": 1,
+      "function": "() => onChange(choice.value)"
+    },
+    {
+      "file": "src/features/mission/AnswerInput.tsx",
+      "line": 50,
+      "complexity": 1,
+      "function": "() => onChange([...selected, token].join(' '))"
+    },
+    {
+      "file": "src/features/mission/AnswerInput.tsx",
+      "line": 70,
+      "complexity": 1,
+      "function": "() => onChange(selected.slice(0, -1).join(' '))"
+    },
+    {
+      "file": "src/features/mission/AnswerInput.tsx",
+      "line": 91,
+      "complexity": 1,
+      "function": "(event) => onChange(event.target.value)"
+    },
+    {
+      "file": "src/features/mission/CreationFields.tsx",
+      "line": 22,
+      "complexity": 1,
+      "function": "(event) => onContextChange(event.target.value)"
+    },
+    {
+      "file": "src/features/mission/CreationFields.tsx",
+      "line": 31,
+      "complexity": 1,
+      "function": "(event) => onVariableChange(Number(event.target.value))"
+    },
+    {
+      "file": "src/features/mission/MissionScreen.tsx",
+      "line": 41,
+      "complexity": 1,
+      "function": "(item) => item.id === mission.sectorId"
+    },
+    {
+      "file": "src/features/mission/MissionScreen.tsx",
+      "line": 42,
+      "complexity": 1,
+      "function": "(item) => item.sectorId === mission.sectorId"
+    },
+    {
+      "file": "src/features/mission/MissionScreen.tsx",
+      "line": 43,
+      "complexity": 1,
+      "function": "(item) => item.id === mission.id"
+    },
+    {
+      "file": "src/features/mission/useMission.ts",
+      "line": 8,
+      "complexity": 1,
+      "function": "(sector) => sector.id === mission.sectorId"
+    },
+    {
+      "file": "src/features/mission/useMission.ts",
+      "line": 35,
+      "complexity": 1,
+      "function": "() => feedbackRef.current?.focus()"
+    },
+    {
+      "file": "src/features/mission/useMission.ts",
+      "line": 42,
+      "complexity": 1,
+      "function": "(value) => value + 1"
+    },
+    {
+      "file": "src/features/mission/useMission.ts",
+      "line": 51,
+      "complexity": 1,
+      "function": "function changeAnswer(value: string) {"
+    },
+    {
+      "file": "src/features/mission/useMission.ts",
+      "line": 55,
+      "complexity": 1,
+      "function": "function changeContext(value: string) {"
+    },
+    {
+      "file": "src/features/mission/useMission.ts",
+      "line": 59,
+      "complexity": 1,
+      "function": "function changeVariable(value: number) {"
+    },
+    {
+      "file": "src/features/mission/useMission.ts",
+      "line": 64,
+      "complexity": 1,
+      "function": "(value) => !value"
+    },
+    {
+      "file": "src/features/mission/useMission.ts",
+      "line": 68,
+      "complexity": 1,
+      "function": "(value) => Math.min(hintLimit, value + 1)"
+    },
+    {
+      "file": "src/features/mission/useNarration.ts",
+      "line": 28,
+      "complexity": 1,
+      "function": "(item) => item.lang.toLowerCase().startsWith('pt')"
+    },
+    {
+      "file": "src/features/mission/useNarration.ts",
+      "line": 48,
+      "complexity": 1,
+      "function": "() => setSpeaking(false)"
+    },
+    {
+      "file": "src/features/mission/useNarration.ts",
+      "line": 50,
+      "complexity": 1,
+      "function": "() => {"
+    },
+    {
+      "file": "src/features/progress/Summary.tsx",
+      "line": 40,
+      "complexity": 1,
+      "function": "(mission) => mission.sectorId === sector.id"
+    },
+    {
+      "file": "src/features/settings/SettingsDialog.tsx",
+      "line": 21,
+      "complexity": 1,
+      "function": "() => {"
+    },
+    {
+      "file": "src/features/settings/SettingsDialog.tsx",
+      "line": 47,
+      "complexity": 1,
+      "function": "(event) => onPreference('largeText', event.target.checked)"
+    },
+    {
+      "file": "src/features/settings/SettingsDialog.tsx",
+      "line": 58,
+      "complexity": 1,
+      "function": "(event) => onPreference('reducedMotion', event.target.checked)"
+    },
+    {
+      "file": "src/features/settings/SettingsDialog.tsx",
+      "line": 69,
+      "complexity": 1,
+      "function": "(event) => onPreference('soundEnabled', event.target.checked)"
+    },
+    {
+      "file": "src/features/settings/SettingsDialog.tsx",
+      "line": 84,
+      "complexity": 1,
+      "function": "() => {"
+    },
+    {
+      "file": "src/features/settings/SettingsDialog.tsx",
+      "line": 91,
+      "complexity": 1,
+      "function": "() => setConfirmReset(false)"
+    },
+    {
+      "file": "src/features/settings/SettingsDialog.tsx",
+      "line": 97,
+      "complexity": 1,
+      "function": "() => setConfirmReset(true)"
+    },
+    {
+      "file": "src/features/tutorial/Tutorial.tsx",
+      "line": 64,
+      "complexity": 1,
+      "function": "() => setStep(0)"
+    },
+    {
+      "file": "src/features/tutorial/Tutorial.tsx",
+      "line": 67,
+      "complexity": 1,
+      "function": "() => setStep(0)"
+    },
+    {
+      "file": "src/features/tutorial/Tutorial.tsx",
+      "line": 90,
+      "complexity": 1,
+      "function": "() => setStep(1)"
+    },
+    {
+      "file": "src/features/tutorial/Tutorial.tsx",
+      "line": 107,
+      "complexity": 1,
+      "function": "() => setStep(2)"
+    },
+    {
+      "file": "src/features/tutorial/Tutorial.tsx",
+      "line": 129,
+      "complexity": 1,
+      "function": "() => {"
+    }
+  ]
+}

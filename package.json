@@ -12,7 +12,9 @@
     "test:watch": "vitest",
     "test:e2e": "playwright test",
     "format": "prettier --write .",
-    "format:check": "prettier --check ."
+    "format:check": "prettier --check .",
+    "metrics": "node scripts/measure-complexity.mjs",
+    "metrics:check": "node scripts/measure-complexity.mjs --check"
   },
   "dependencies": {
     "@fontsource/dm-sans": "^5.3.0",

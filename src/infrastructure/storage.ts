@@ -1,6 +1,7 @@
 import { missionById, missions } from '../content/missions';
 import { initialSave } from '../game/progress';
 import type { MissionResult, SavedGame } from '../game/types';
+import { isRecord, matchesFields, optional } from '../game/validation';
 
 export const STORAGE_KEY = 'orbita-matematica:v1';
 export interface StoragePort {
@@ -8,65 +9,84 @@ export interface StoragePort {
   setItem(key: string, value: string): void;
 }
 
-function isRecord(value: unknown): value is Record<string, unknown> {
-  return typeof value === 'object' && value !== null && !Array.isArray(value);
+function isBoolean(value: unknown): boolean {
+  return typeof value === 'boolean';
 }
-
-function isResult(value: unknown): value is MissionResult {
-  if (!isRecord(value)) return false;
-  const validCreation =
-    value.creation === undefined ||
-    (isRecord(value.creation) &&
-      (value.creation.context === 'cristais' || value.creation.context === 'peças') &&
-      typeof value.creation.variable === 'number' &&
-      [2, 3, 4].includes(value.creation.variable));
+function isIntegerBetween(value: unknown, min: number, max: number): boolean {
+  return Number.isInteger(value) && Number(value) >= min && Number(value) <= max;
+}
+function isCreation(value: unknown): boolean {
   return (
-    Number.isInteger(value.hints) &&
-    Number(value.hints) >= 0 &&
-    Number(value.hints) <= 3 &&
-    typeof value.visual === 'boolean' &&
-    typeof value.guided === 'boolean' &&
-    Number.isInteger(value.attempts) &&
-    Number(value.attempts) >= 0 &&
-    validCreation
+    isRecord(value) &&
+    matchesFields(value, {
+      context: (context) => ['cristais', 'peças'].includes(context as string),
+      variable: (variable) => [2, 3, 4].includes(variable as number),
+    })
   );
 }
-
+function isResult(value: unknown): value is MissionResult {
+  return (
+    isRecord(value) &&
+    matchesFields(value, {
+      hints: (hints) => isIntegerBetween(hints, 0, 3),
+      visual: isBoolean,
+      guided: isBoolean,
+      attempts: (attempts) => isIntegerBetween(attempts, 0, Infinity),
+      creation: optional(isCreation),
+    })
+  );
+}
+interface SavedData {
+  completed: Record<string, unknown>;
+  tutorialDone: boolean;
+  lastMissionId: unknown;
+  preferences: { largeText: boolean; reducedMotion: boolean; soundEnabled: unknown };
+}
+function isPreferences(value: unknown): boolean {
+  return (
+    isRecord(value) && matchesFields(value, { largeText: isBoolean, reducedMotion: isBoolean })
+  );
+}
+function isSavedData(value: unknown): value is SavedData {
+  return (
+    isRecord(value) &&
+    matchesFields(value, {
+      version: (version) => version === 1,
+      completed: isRecord,
+      preferences: isPreferences,
+      tutorialDone: isBoolean,
+    })
+  );
+}
+function validMissionId(value: unknown): string | null {
+  return typeof value === 'string' && missionById.has(value) ? value : null;
+}
+function resultEntry(id: string, completed: Record<string, unknown>): [string, MissionResult][] {
+  const result = completed[id];
+  return isResult(result) ? [[id, result]] : [];
+}
+function validResults(completed: Record<string, unknown>): SavedGame['completed'] {
+  return Object.fromEntries(missions.flatMap((mission) => resultEntry(mission.id, completed)));
+}
+function restoreSave(data: unknown): SavedGame {
+  if (!isSavedData(data)) return initialSave();
+  return {
+    version: 1,
+    completed: validResults(data.completed),
+    tutorialDone: data.tutorialDone,
+    lastMissionId: validMissionId(data.lastMissionId),
+    preferences: {
+      largeText: data.preferences.largeText,
+      reducedMotion: data.preferences.reducedMotion,
+      soundEnabled:
+        typeof data.preferences.soundEnabled === 'boolean' ? data.preferences.soundEnabled : true,
+    },
+  };
+}
 export function parseSave(raw: string | null): SavedGame {
   if (!raw) return initialSave();
   try {
-    const data: unknown = JSON.parse(raw);
-    if (
-      !isRecord(data) ||
-      data.version !== 1 ||
-      !isRecord(data.completed) ||
-      !isRecord(data.preferences) ||
-      typeof data.tutorialDone !== 'boolean' ||
-      typeof data.preferences.largeText !== 'boolean' ||
-      typeof data.preferences.reducedMotion !== 'boolean'
-    )
-      return initialSave();
-    const completed: SavedGame['completed'] = {};
-    for (const mission of missions) {
-      const result = data.completed[mission.id];
-      if (!isResult(result)) continue;
-      completed[mission.id] = result;
-    }
-    return {
-      version: 1,
-      completed,
-      tutorialDone: data.tutorialDone,
-      lastMissionId:
-        typeof data.lastMissionId === 'string' && missionById.has(data.lastMissionId)
-          ? data.lastMissionId
-          : null,
-      preferences: {
-        largeText: data.preferences.largeText,
-        reducedMotion: data.preferences.reducedMotion,
-        soundEnabled:
-          typeof data.preferences.soundEnabled === 'boolean' ? data.preferences.soundEnabled : true,
-      },
-    };
+    return restoreSave(JSON.parse(raw));
   } catch {
     return initialSave();
   }

@@ -2,35 +2,37 @@ import { initialSave } from '../game/progress';
 import type { SavedGame } from '../game/types';
 import { loadGame, saveGame } from './storage';
 
-export function createBrowserGameStorage() {
-  let available = true;
-  const listeners = new Set<() => void>();
-  return {
-    read() {
-      try {
-        return loadGame(window.localStorage);
-      } catch {
-        return initialSave();
-      }
-    },
-    write(save: SavedGame) {
-      let next: boolean;
-      try {
-        next = saveGame(window.localStorage, save);
-      } catch {
-        next = false;
-      }
-      if (next !== available) {
-        available = next;
-        listeners.forEach((listener) => listener());
-      }
-    },
-    getStatus: () => available,
-    subscribe(listener: () => void) {
-      listeners.add(listener);
-      return () => {
-        listeners.delete(listener);
-      };
-    },
+function writeToBrowser(save: SavedGame): boolean {
+  try {
+    return saveGame(window.localStorage, save);
+  } catch {
+    return false;
+  }
+}
+class BrowserGameStorage {
+  private available = true;
+  private listeners = new Set<() => void>();
+  read() {
+    try {
+      return loadGame(window.localStorage);
+    } catch {
+      return initialSave();
+    }
+  }
+  write(save: SavedGame) {
+    const next = writeToBrowser(save);
+    if (next === this.available) return;
+    this.available = next;
+    this.listeners.forEach((listener) => listener());
+  }
+  getStatus = () => this.available;
+  subscribe = (listener: () => void) => {
+    this.listeners.add(listener);
+    return () => {
+      this.listeners.delete(listener);
+    };
   };
+}
+export function createBrowserGameStorage() {
+  return new BrowserGameStorage();
 }

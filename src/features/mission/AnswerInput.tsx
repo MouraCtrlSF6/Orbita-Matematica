@@ -1,84 +1,139 @@
-import { ChallengeKind, type Mission } from '../../game/types';
-
+import type { ReactNode } from 'react';
+import { ChallengeKind, type Mission, type Choice } from '../../game/types';
 interface AnswerInputProps {
   mission: Mission;
   answer: string;
   onChange: (answer: string) => void;
   disabled: boolean;
 }
-
-export function AnswerInput({ mission, answer, onChange, disabled }: AnswerInputProps) {
-  if (mission.kind === ChallengeKind.Choice) {
-    return (
-      <fieldset className="answer-options" disabled={disabled}>
-        <legend>Escolha sua resposta</legend>
-        {mission.choices?.map((choice, index) => (
-          <label
-            key={choice.value}
-            className={`answer-option ${answer === choice.value ? 'selected' : ''}`}
-          >
-            <input
-              type="radio"
-              name="answer"
-              value={choice.value}
-              checked={answer === choice.value}
-              onChange={() => onChange(choice.value)}
-            />
-            <span className="option-letter" aria-hidden="true">
-              {String.fromCharCode(65 + index)}
-            </span>
-            <span>{choice.label}</span>
-          </label>
-        ))}
-      </fieldset>
-    );
-  }
-  if (mission.kind === ChallengeKind.Build) {
-    const selected = answer ? answer.split(' ') : [];
-    return (
-      <fieldset className="build-answer" disabled={disabled}>
-        <legend>Monte a expressão na ordem</legend>
-        <div className="expression-slots" aria-live="polite">
-          {answer || 'Sua expressão aparece aqui'}
-        </div>
-        <div className="token-row">
-          {mission.tokens?.map((token) => (
-            <button
-              type="button"
-              key={token}
-              disabled={disabled || selected.includes(token)}
-              onClick={() => onChange([...selected, token].join(' '))}
-            >
-              {token === '×' ? (
-                <>
-                  <span aria-hidden="true">×</span>
-                  <span className="sr-only">Multiplicação</span>
-                </>
-              ) : token === '+' ? (
-                <>
-                  <span aria-hidden="true">+</span>
-                  <span className="sr-only">Adição</span>
-                </>
-              ) : (
-                token
-              )}
-            </button>
-          ))}
-          <button
-            type="button"
-            className="clear-tokens"
-            onClick={() => onChange(selected.slice(0, -1).join(' '))}
-            disabled={disabled || !answer}
-          >
-            Desfazer
-          </button>
-        </div>
-        <p className="field-help">
-          Selecione os símbolos da esquerda para a direita. Use Desfazer para corrigir.
-        </p>
-      </fieldset>
-    );
-  }
+interface ChoiceOptionProps extends AnswerInputProps {
+  choice: Choice;
+  index: number;
+}
+function ChoiceLabel({ choice, index }: { choice: Choice; index: number }) {
+  return (
+    <>
+      <span className="option-letter" aria-hidden="true">
+        {String.fromCharCode(65 + index)}
+      </span>
+      <span>{choice.label}</span>
+    </>
+  );
+}
+function ChoiceOption({ choice, index, answer, onChange, disabled }: ChoiceOptionProps) {
+  return (
+    <label className={`answer-option ${answer === choice.value ? 'selected' : ''}`}>
+      <input
+        type="radio"
+        name="answer"
+        value={choice.value}
+        checked={answer === choice.value}
+        onChange={() => onChange(choice.value)}
+        disabled={disabled}
+      />
+      <ChoiceLabel choice={choice} index={index} />
+    </label>
+  );
+}
+function Choices(props: AnswerInputProps) {
+  return (
+    <>
+      {props.mission.choices?.map((choice, index) => (
+        <ChoiceOption key={choice.value} {...props} choice={choice} index={index} />
+      ))}
+    </>
+  );
+}
+function ChoiceAnswer(props: AnswerInputProps) {
+  return (
+    <fieldset className="answer-options" disabled={props.disabled}>
+      <legend>Escolha sua resposta</legend>
+      <Choices {...props} />
+    </fieldset>
+  );
+}
+const tokenLabels: Record<string, ReactNode> = {
+  '×': (
+    <>
+      <span aria-hidden="true">×</span>
+      <span className="sr-only">Multiplicação</span>
+    </>
+  ),
+  '+': (
+    <>
+      <span aria-hidden="true">+</span>
+      <span className="sr-only">Adição</span>
+    </>
+  ),
+};
+function selectedTokens(answer: string): string[] {
+  return answer ? answer.split(' ') : [];
+}
+interface TokenProps extends AnswerInputProps {
+  token: string;
+}
+function TokenButton({ token, answer, disabled, onChange }: TokenProps) {
+  const selected = selectedTokens(answer);
+  return (
+    <button
+      type="button"
+      disabled={disabled || selected.includes(token)}
+      onClick={() => onChange([...selected, token].join(' '))}
+    >
+      {tokenLabels[token] ?? token}
+    </button>
+  );
+}
+function UndoButton({ answer, disabled, onChange }: AnswerInputProps) {
+  return (
+    <button
+      type="button"
+      className="clear-tokens"
+      onClick={() => onChange(selectedTokens(answer).slice(0, -1).join(' '))}
+      disabled={disabled || !answer}
+    >
+      Desfazer
+    </button>
+  );
+}
+function TokenRow(props: AnswerInputProps) {
+  return (
+    <div className="token-row">
+      {props.mission.tokens?.map((token) => (
+        <TokenButton key={token} {...props} token={token} />
+      ))}
+      <UndoButton {...props} />
+    </div>
+  );
+}
+function ExpressionSlots({ answer }: { answer: string }) {
+  return (
+    <div className="expression-slots" aria-live="polite">
+      {answer || 'Sua expressão aparece aqui'}
+    </div>
+  );
+}
+const buildHelp = (
+  <p className="field-help">
+    Selecione os símbolos da esquerda para a direita. Use Desfazer para corrigir.
+  </p>
+);
+function BuildAnswer(props: AnswerInputProps) {
+  return (
+    <fieldset className="build-answer" disabled={props.disabled}>
+      <legend>Monte a expressão na ordem</legend>
+      <ExpressionSlots answer={props.answer} />
+      <TokenRow {...props} />
+      {buildHelp}
+    </fieldset>
+  );
+}
+const numberHelp = (
+  <p className="field-help" id="number-help">
+    Use um número inteiro, como 6.
+  </p>
+);
+function NumberAnswer({ answer, onChange, disabled }: AnswerInputProps) {
   return (
     <div className="number-answer">
       <label htmlFor="numeric-answer">Qual é o total?</label>
@@ -94,9 +149,17 @@ export function AnswerInput({ mission, answer, onChange, disabled }: AnswerInput
         required
         aria-describedby="number-help"
       />
-      <p className="field-help" id="number-help">
-        Use um número inteiro, como 6.
-      </p>
+      {numberHelp}
     </div>
   );
+}
+const formats = {
+  [ChallengeKind.Choice]: ChoiceAnswer,
+  [ChallengeKind.Build]: BuildAnswer,
+  [ChallengeKind.Number]: NumberAnswer,
+  [ChallengeKind.Create]: NumberAnswer,
+};
+export function AnswerInput(props: AnswerInputProps) {
+  const Format = formats[props.mission.kind];
+  return <Format {...props} />;
 }

@@ -26,6 +26,15 @@ function mockAudio() {
 }
 
 describe('thruster audio', () => {
+  it('closes a partially created audio graph when initialization fails', () => {
+    const { context } = mockAudio();
+    vi.spyOn(context, 'createGain').mockImplementation(() => {
+      throw Error('blocked');
+    });
+    const sound = createThrusterSound();
+    expect(() => sound.unlock()).not.toThrow();
+    expect(context.close).toHaveBeenCalledOnce();
+  });
   it('initializes on a gesture, changes volume only on movement transitions and closes on disposal', () => {
     const { constructor, gain, context } = mockAudio();
     const sound = createThrusterSound();

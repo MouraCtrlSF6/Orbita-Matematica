@@ -189,6 +189,10 @@ describe('catalog validation', () => {
       { hints: ['apenas uma pista'] },
       { sectorId: 'unknown' },
       { expression: { type: 'constant', value: 'invalid' } },
+      { expression: { type: 'toString' } },
+      { expression: { type: 'constructor' } },
+      { expression: { type: '__proto__' } },
+      { expression: { type: null } },
       {
         expression: {
           type: 'operation',

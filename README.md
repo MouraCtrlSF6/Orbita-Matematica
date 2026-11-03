@@ -52,6 +52,14 @@ Antes dos testes de navegador, execute `npx playwright install chromium`. Os tes
 - `public/`: arquivos estáticos. As fontes são empacotadas localmente pelo npm.
 - `e2e/`: testes de navegação. Testes unitários ficam próximos ao código testado.
 
+## Complexidade
+
+`npm run metrics` mede o código de produção em `src/` com o motor da extensão VS Code **CodeMetrics** instalada, incluindo seus pesos para JSX e funções internas. `npm run metrics:check` falha se alguma unidade visível ultrapassar **7**. Testes e scripts de desenvolvimento ficam fora dessa medição.
+
+O comando requer a extensão `kisstkondoros.vscode-codemetrics` instalada em `~/.vscode/extensions`, ou o caminho dela em `CODEMETRICS_EXTENSION`. O runner usa os padrões da extensão e as opções CodeMetrics dos arquivos de ajustes do VS Code e de `.vscode/settings.json`; não altera esses arquivos. A análise depende do formato do pacote da extensão e avisa se uma versão futura deixar de ser compatível. Não é uma verificação de complexidade ciclomática do ESLint e não exige dependências adicionais no aplicativo.
+
+Para exportar os valores, use `npm run metrics -- --json`. Veja `docs/complexidade.md` para os resultados e decisões da refatoração.
+
 ## Acrescentar conteúdo
 
 O banco `src/content/problems.json` reúne 52 problemas na versão 3, agrupados em `sections` pelos setores do jogo:

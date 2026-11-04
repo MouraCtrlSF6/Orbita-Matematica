@@ -1,8 +1,8 @@
 import { useRef, useState, type Dispatch, type RefObject, type SetStateAction } from 'react';
-import { evaluate, isCorrect } from '../../game/math';
-import { ChallengeKind, type Mission, type MissionResult } from '../../game/types';
+import { evaluate, isCorrect } from '../../../game/math';
+import { ChallengeKind, type Mission, type MissionResult } from '../../../game/types';
 import { useNarration } from './useNarration';
-import { sectors } from '../../content/sectors';
+import { sectors } from '../../../content/sectors';
 interface MissionState {
   answer: string;
   hints: number;

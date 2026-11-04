@@ -2,7 +2,7 @@ import { expect, test, type Page } from '@playwright/test';
 import { missions } from '../src/content/missions';
 
 test('M toggles sound once per press and stays synchronized with settings', async ({ page }) => {
-  await page.goto('/');
+  await page.goto('/students');
   const toggle = page.getByRole('button', { name: 'Som da nave', exact: true });
   await page.getByRole('region', { name: 'Área de pilotagem' }).focus();
   await page.keyboard.down('m');
@@ -51,7 +51,7 @@ test('typing M in an answer does not mute the game', async ({ page }) => {
       )
       .map((item) => item.id),
   );
-  await page.goto('/');
+  await page.goto('/students');
   await page.getByRole('button', { name: 'Retomar exploração' }).click();
   await page.getByRole('button', { name: 'Entrar', exact: true }).click();
   const answer = page.getByRole('textbox', { name: 'Qual é o total?' });
@@ -96,7 +96,7 @@ for (const width of [1440, 390]) {
           }),
         );
     });
-    await page.goto('/');
+    await page.goto('/students');
     const toggle = page.getByRole('button', { name: 'Som da nave', exact: true });
     await expect(toggle).toHaveAttribute('aria-pressed', 'true');
     await expect(toggle).toContainText('Som ligado');
@@ -178,7 +178,7 @@ test('plays thrust only while moving, stops on interruption and persists mute', 
       }
     };
   });
-  await page.goto('/');
+  await page.goto('/students');
   expect((await audioState(page)).count).toBe(0);
   const pilot = page.getByRole('region', { name: 'Área de pilotagem' });
   await pilot.focus();
@@ -233,7 +233,7 @@ test('keeps flying without an audio API', async ({ page }) => {
   });
   const errors: string[] = [];
   page.on('pageerror', (error) => errors.push(error.message));
-  await page.goto('/');
+  await page.goto('/students');
   const ship = page.locator('.player-ship');
   const readX = () =>
     ship.evaluate((element) => new DOMMatrix(getComputedStyle(element).transform).m41);

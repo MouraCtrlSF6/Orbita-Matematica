@@ -41,13 +41,24 @@ Use `npm run format:check` para verificar a formatação com Prettier e `npm run
 
 Antes dos testes de navegador, execute `npx playwright install chromium`. Os testes iniciam o servidor automaticamente ou reutilizam a prévia local na porta 5173. Para rodar uma suíte: `npm test -- src/game/game.test.ts`.
 
+## Rotas e sessão local
+
+- `/sign` é a tela inicial para escolher o perfil.
+- `/students` abre o jogo e recupera o progresso salvo no navegador.
+- `/teachers` apresenta a área provisória do professor.
+
+O contexto global expõe o perfil da rota e um identificador local em memória. O identificador acompanha a navegação na aba e é renovado ao recarregar a página. A autenticação e a sincronização com o Firebase ficam para uma etapa posterior.
+
 ## Organização
 
 - `src/content/`: setores e missões tipadas, objetivos, habilidades, dicas e explicações.
 - `src/game/`: matemática, progresso, contratos e reducer puro, sem React ou APIs do navegador.
 - `src/infrastructure/`: leitura validada e gravação versionada do progresso local.
 - `src/features/`: mapa, tutorial, desafios, diário e ajustes; subcomponentes ficam junto da funcionalidade.
-- `src/app/`: composição das telas e conexão do estado com a persistência.
+- `src/pages/`: páginas de seleção, aluno e professor, com suas entradas HTML.
+- `src/app/routes/`: configuração, estilos e teste da navegação.
+- `src/app/contexts/`: contexto de sessão e seu teste.
+- `hooks/`: hooks locais dentro da página, funcionalidade ou contexto responsável.
 - `src/components/`: ícones e ilustrações SVG compartilhadas.
 - `public/`: arquivos estáticos. As fontes são empacotadas localmente pelo npm.
 - `e2e/`: testes de navegação. Testes unitários ficam próximos ao código testado.
@@ -93,6 +104,6 @@ O voo tem controle direto, sem inércia ou obstáculos punitivos. A preferência
 
 O progresso guarda conclusões, apoios e preferências no `localStorage` deste navegador. Não há cadastro, coleta de nomes ou diagnósticos, sincronização ou backend. Em computadores compartilhados, outro usuário verá o mesmo progresso. Os ajustes permitem reiniciá-lo com confirmação. Armazenamento bloqueado permite continuar em memória, com aviso de que o progresso não será mantido. Limpar os dados do navegador também apaga o diário. Ao ampliar o catálogo, conclusões válidas continuam associadas aos mesmos IDs, mesmo se novos problemas forem inseridos antes deles. As novas missões ficam pendentes e o desbloqueio exige concluir todas as anteriores.
 
-## Publicação futura
+## Publicação
 
-A entrega é local. O build usa caminhos relativos e pode ser servido como arquivos estáticos em subdiretórios. Para um futuro GitHub Actions, usar Node compatível e executar `npm ci`, `npm run lint`, `npm test` e `npm run build`. No job de navegador, executar `npx playwright install --with-deps chromium` e `npm run test:e2e`. Publicar `dist/` depois de definir o destino. Nenhum workflow de deploy ou serviço externo foi configurado.
+O workflow do GitHub Pages publica `dist/`. O build usa caminhos relativos e inclui um `index.html` por rota para permitir links diretos e recarregamento sob o subdiretório do repositório. O servidor estático pode acrescentar a barra final ao abrir uma rota diretamente.

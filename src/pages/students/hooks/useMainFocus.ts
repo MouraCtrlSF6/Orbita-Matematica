@@ -1,5 +1,5 @@
 import { useEffect, useRef, type RefObject } from 'react';
-import type { GameState } from '../game/reducer';
+import type { GameState } from '../../../game/reducer';
 function focusPage(main: HTMLElement | null) {
   const flight = main?.querySelector<HTMLElement>('.flight-viewport');
   (flight ?? main)?.focus();

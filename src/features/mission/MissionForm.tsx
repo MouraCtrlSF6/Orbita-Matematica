@@ -4,7 +4,7 @@ import { IconName } from '../../components/icon-names';
 import { AnswerInput } from './AnswerInput';
 import { CreationFields } from './CreationFields';
 import type { MissionViewProps } from './mission-view';
-import type { MissionSession } from './useMission';
+import type { MissionSession } from './hooks/useMission';
 function OptionalCreation({ session }: MissionViewProps) {
   if (!session.creation) return null;
   return (

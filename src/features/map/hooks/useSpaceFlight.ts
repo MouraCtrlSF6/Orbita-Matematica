@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
-import type { Point, SpaceWorld } from '../../game/space';
-import { attachFlight, FlightController, type FlightOptions } from './flightController';
+import type { Point, SpaceWorld } from '../../../game/space';
+import { attachFlight, FlightController, type FlightOptions } from '../flightController';
 export function useSpaceFlight(
   world: SpaceWorld,
   initialPosition: Point | undefined,

@@ -36,8 +36,8 @@ O botão na área de pilotagem, o ajuste Som da nave e o atalho M compartilham a
 - `src/infrastructure/`: validação e persistência do progresso; `storage.ts` usa uma porta de armazenamento e `gameStorage.ts` adapta o navegador e informa falhas.
 - `src/features/`: componentes, hooks e estilos por funcionalidade: mapa, tutorial, missões, descobertas e ajustes.
 - `src/features/map/`: cena, destinos, radar e painéis; `flightController.ts` controla a simulação e os eventos, `useSpaceFlight.ts` conecta o ciclo de vida React e `thrusterSound.ts` adapta o áudio. Manter posições transitórias fora do estado de renderização React.
-- `src/app/`: composição das telas, estado do jogo e conexão com a persistência.
-- `src/app/useMainFocus.ts`, `app-navigation.ts` e `useSoundShortcut.ts`: foco, navegação e atalho de som, separados da composição visual.
+- `src/pages/`: entradas HTML e componentes das páginas de seleção, aluno e professor. Os hooks de estado do jogo, foco e atalho de som ficam em `src/pages/students/hooks/`.
+- `src/app/`: estrutura visual do jogo e navegação interna da expedição. `routes/` reúne configuração e testes de rotas. `contexts/` reúne provedores e testes de contexto.
 - `src/components/`: ícones e ilustrações SVG compartilhados. Estilos globais ficam em `src/styles.css` e `src/styles/`.
 - `src/test/`: configuração e auxiliares de teste; testes de comportamento ficam próximos do código correspondente.
 - `public/`: arquivos estáticos; fontes são empacotadas localmente por dependências npm.

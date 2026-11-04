@@ -1,11 +1,11 @@
 import { useRef, useState } from 'react';
-import { useGame } from './useGame';
-import { useSoundShortcut } from './useSoundShortcut';
-import { useMainFocus } from './useMainFocus';
-import { AppNavigation, appClassName, type FlightSession } from './app-navigation';
-import { AppSidebar } from './AppSidebar';
-import { AppWorkspace, PageFooter, StorageWarning } from './AppLayout';
-import { AppScreen, SettingsOverlay, type AppScreenProps } from './AppScreens';
+import { useGame } from './hooks/useGame';
+import { useSoundShortcut } from './hooks/useSoundShortcut';
+import { useMainFocus } from './hooks/useMainFocus';
+import { AppNavigation, appClassName, type FlightSession } from '../../app/app-navigation';
+import { AppSidebar } from '../../app/AppSidebar';
+import { AppWorkspace, PageFooter, StorageWarning } from '../../app/AppLayout';
+import { AppScreen, SettingsOverlay, type AppScreenProps } from '../../app/AppScreens';
 interface AppContentProps extends AppScreenProps {
   storageAvailable: boolean;
 }
@@ -37,7 +37,7 @@ function AppShell(props: AppContentProps) {
     </div>
   );
 }
-export function App() {
+export function StudentsPage() {
   const game = useGame();
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [flightSession, setFlightSession] = useState<FlightSession>(() => ({

@@ -3,7 +3,7 @@ import type { Point, SpaceWorld } from '../../game/space';
 import type { FlightOptions } from './flightController';
 import { FlightViewport } from './FlightScene';
 import { FlightPanels } from './FlightPanels';
-import { useSpaceFlight, useSystemReducedMotion } from './useSpaceFlight';
+import { useSpaceFlight, useSystemReducedMotion } from './hooks/useSpaceFlight';
 export type { DestinationStatus } from './flightController';
 interface SpaceFlightProps extends FlightOptions {
   world: SpaceWorld;

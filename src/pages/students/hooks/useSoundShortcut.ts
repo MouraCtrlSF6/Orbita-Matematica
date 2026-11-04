@@ -1,5 +1,5 @@
 import { useEffect, type Dispatch } from 'react';
-import type { GameAction } from '../game/reducer';
+import type { GameAction } from '../../../game/reducer';
 function hasModifier(event: KeyboardEvent): boolean {
   return event.ctrlKey || event.altKey || event.metaKey;
 }

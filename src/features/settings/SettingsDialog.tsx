@@ -1,7 +1,8 @@
-import { useEffect, useRef, useState, type ChangeEventHandler } from 'react';
+import { useState, type ChangeEventHandler } from 'react';
 import { Icon } from '../../components/Icon';
 import { IconName } from '../../components/icon-names';
 import type { SavedGame } from '../../game/types';
+import { useDialog } from './hooks/useDialog';
 interface SettingsDialogProps {
   preferences: SavedGame['preferences'];
   onPreference: (key: keyof SavedGame['preferences'], value: boolean) => void;
@@ -129,13 +130,6 @@ function ResetSection({ onReset, onClose }: SettingsDialogProps) {
       Reiniciar expedição
     </button>
   );
-}
-function useDialog() {
-  const ref = useRef<HTMLDialogElement>(null);
-  useEffect(() => {
-    ref.current?.showModal();
-  }, []);
-  return ref;
 }
 export function SettingsDialog(props: SettingsDialogProps) {
   const ref = useDialog();

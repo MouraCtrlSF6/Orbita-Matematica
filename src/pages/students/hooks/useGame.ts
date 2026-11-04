@@ -1,6 +1,6 @@
 import { useEffect, useReducer, useState, useSyncExternalStore } from 'react';
-import { gameReducer, Screen } from '../game/reducer';
-import { createBrowserGameStorage } from '../infrastructure/gameStorage';
+import { gameReducer, Screen } from '../../../game/reducer';
+import { createBrowserGameStorage } from '../../../infrastructure/gameStorage';
 
 export function useGame() {
   const [repository] = useState(createBrowserGameStorage);

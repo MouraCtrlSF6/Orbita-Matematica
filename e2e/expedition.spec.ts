@@ -77,7 +77,7 @@ test('completes tutorial, all 52 catalog missions, authors a problem and restore
   page,
 }) => {
   test.setTimeout(90000);
-  await page.goto('/');
+  await page.goto('/students');
   await finishTutorial(page);
   for (let index = 0; index < missions.length - 1; index++) {
     await openMission(page, missions[index]);
@@ -122,7 +122,7 @@ test('completes tutorial, all 52 catalog missions, authors a problem and restore
 
 test('supports keyboard, preferences, reduced motion and confirmed reset', async ({ page }) => {
   await page.emulateMedia({ reducedMotion: 'reduce' });
-  await page.goto('/');
+  await page.goto('/students');
   await page.keyboard.press('Tab');
   await expect(page.getByRole('link', { name: 'Pular para o conteúdo' })).toBeFocused();
   await page.keyboard.press('Enter');
@@ -155,7 +155,7 @@ test('remains playable without storage or a speech API', async ({ page }) => {
     });
     Object.defineProperty(window, 'speechSynthesis', { value: undefined });
   });
-  await page.goto('/');
+  await page.goto('/students');
   await expect(page.getByText(/O navegador não permitiu salvar/)).toBeVisible();
   await finishTutorial(page);
   await openMission(page, missions[0]);
@@ -182,7 +182,7 @@ test('accepts the correct independent answers throughout all 52 missions', async
       }),
     ),
   );
-  await page.goto('/');
+  await page.goto('/students');
   await page.getByRole('button', { name: 'Retomar exploração' }).click();
   for (const mission of missions) {
     await openMission(page, mission);
@@ -206,7 +206,7 @@ test('has accessible structure and contrast across the main screens', async ({ p
       })),
     ).toEqual([]);
   }
-  await page.goto('/');
+  await page.goto('/students');
   await audit();
   await page.getByRole('button', { name: 'Ajustes da expedição' }).click();
   await audit();
@@ -233,7 +233,7 @@ test('has accessible structure and contrast across the main screens', async ({ p
 test('reflows at an effective 200 percent desktop zoom and smaller windows', async ({ page }) => {
   for (const width of [720, 390]) {
     await page.setViewportSize({ width, height: 600 });
-    await page.goto('/');
+    await page.goto('/students');
     await expect(page.getByRole('button', { name: 'Vamos explorar' })).toBeVisible();
     expect(
       await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth),

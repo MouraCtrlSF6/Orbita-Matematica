@@ -1,7 +1,7 @@
 import { Icon } from '../../components/Icon';
 import { IconName } from '../../components/icon-names';
 import { ChallengeKind, type Mission, type MissionResult } from '../../game/types';
-import { useMission } from './useMission';
+import { useMission } from './hooks/useMission';
 import { MissionGuide } from './MissionGuide';
 import { MissionHeading } from './MissionHeading';
 import { MissionSupport } from './MissionSupport';

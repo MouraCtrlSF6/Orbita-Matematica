@@ -3,7 +3,7 @@ import userEvent from '@testing-library/user-event';
 import { describe, expect, it, vi } from 'vitest';
 import { mission } from '../../test/mission';
 import { MissionScreen } from './MissionScreen';
-import { useMission } from './useMission';
+import { useMission } from './hooks/useMission';
 
 describe('mission interactions', () => {
   it('offers retry feedback and completes only once a correct answer is submitted', async () => {

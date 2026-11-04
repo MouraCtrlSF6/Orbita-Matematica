@@ -51,6 +51,7 @@ function ActiveMissionScreen({ state, navigation }: AppScreenProps) {
       onBack={navigation.returnSector}
       onComplete={navigation.complete}
       onNext={navigation.returnSector}
+      onActivity={navigation.recordActivity.bind(null, mission.sectorId, mission.id)}
     />
   );
 }

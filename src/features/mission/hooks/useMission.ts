@@ -3,6 +3,7 @@ import { evaluate, isCorrect } from '../../../game/math';
 import { ChallengeKind, type Mission, type MissionResult } from '../../../game/types';
 import { useNarration } from './useNarration';
 import { sectors } from '../../../content/sectors';
+import { submittedAnswer, type MissionActivity } from '../../../game/room-progress';
 interface MissionState {
   answer: string;
   hints: number;
@@ -61,6 +62,7 @@ class MissionActions {
     private feedbackRef: RefObject<HTMLDivElement | null>,
     private onComplete: (result: MissionResult) => void,
     private hintLimit: number,
+    private onActivity?: (activity: MissionActivity) => void,
   ) {}
   private update(patch: Partial<MissionState>) {
     this.setState((state) => ({ ...state, ...patch }));
@@ -81,24 +83,44 @@ class MissionActions {
   }
   checkAnswer = () => {
     if (!this.state.answer.trim() || this.state.done) return;
-    if (isCorrect(this.mission, this.state.answer, this.state.variable)) this.complete();
+    const correct = isCorrect(this.mission, this.state.answer, this.state.variable);
+    this.reportAnswer(correct);
+    if (correct) this.complete();
     else this.retry();
   };
   changeAnswer = (answer: string) => this.update({ answer, feedback: '' });
   changeContext = (context: string) => this.update({ context, answer: '', feedback: '' });
   changeVariable = (variable: number) => this.update({ variable, answer: '', feedback: '' });
-  toggleVisual = () =>
+  private reportAnswer(correct: boolean) {
+    const creation =
+      this.mission.kind === ChallengeKind.Create
+        ? { context: this.state.context, variable: this.state.variable }
+        : {};
+    this.onActivity?.({
+      type: 'answer',
+      attempt: { answer: submittedAnswer(this.mission, this.state.answer), correct, ...creation },
+    });
+  }
+  toggleVisual = () => {
+    if (!this.state.visual) this.onActivity?.({ type: 'visual' });
     this.setState((state) => ({ ...state, visual: !state.visual, visualUsed: true }));
+  };
   requestHint = () => {
-    if (!this.state.done)
+    if (!this.state.done && this.state.hints < this.hintLimit) {
+      this.onActivity?.({ type: 'hint' });
       this.setState((state) => ({ ...state, hints: Math.min(this.hintLimit, state.hints + 1) }));
+    }
   };
   toggleNarration = () => {
     if (this.narration.speaking) this.narration.stop();
     else this.narration.speak(narrationText(this.mission, this.state));
   };
 }
-export function useMission(mission: Mission, onComplete: (result: MissionResult) => void) {
+export function useMission(
+  mission: Mission,
+  onComplete: (result: MissionResult) => void,
+  onActivity?: (activity: MissionActivity) => void,
+) {
   const [state, setState] = useState(() => initialMission(mission));
   const hintLimit = sectors.find((sector) => sector.id === mission.sectorId)!.hintLimit;
   const feedbackRef = useRef<HTMLDivElement>(null);
@@ -111,6 +133,7 @@ export function useMission(mission: Mission, onComplete: (result: MissionResult)
     feedbackRef,
     onComplete,
     hintLimit,
+    onActivity,
   );
   return {
     ...state,

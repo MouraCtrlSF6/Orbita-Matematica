@@ -1,5 +1,6 @@
 import { expect, type Page } from '@playwright/test';
-import { enterRoom, test } from './rooms-fixture';
+import { enterRoom, mockRoomBackend, test } from './rooms-fixture';
+import type { RoomStudent } from '../src/game/room-progress';
 import AxeBuilder from '@axe-core/playwright';
 import { missions } from '../src/content/missions';
 import { sectors } from '../src/content/sectors';
@@ -78,6 +79,10 @@ test('completes tutorial, all 52 catalog missions, authors a problem and restore
   page,
 }) => {
   test.setTimeout(90000);
+  const roomPatches: Record<string, unknown>[] = [];
+  await page.exposeFunction('recordRoomPatch', (patch: Record<string, unknown>) => {
+    roomPatches.push(patch);
+  });
   await page.goto('/students');
   await enterRoom(page);
   await finishTutorial(page);
@@ -93,7 +98,12 @@ test('completes tutorial, all 52 catalog missions, authors a problem and restore
     await answerMission(page, missions[index]);
     expect(
       await page.evaluate(
-        (id) => JSON.parse(localStorage.getItem('orbita-matematica:v1')!).completed[id].hints,
+        (id) =>
+          JSON.parse(
+            sessionStorage.getItem(
+              'orbita-matematica:v1:room:b12ae140-fc6a-4690-ab61-5bfbb91a8d19',
+            )!,
+          ).completed[id].hints,
         missions[index].id,
       ),
     ).toBe(limit);
@@ -108,6 +118,17 @@ test('completes tutorial, all 52 catalog missions, authors a problem and restore
   await page.getByLabel('Quantidade de robôs (x)').selectOption('4');
   await page.getByRole('textbox', { name: 'Qual é o total?', exact: true }).fill('12');
   await page.getByRole('button', { name: 'Conferir resposta' }).click();
+  const creation = missions[missions.length - 1];
+  const attemptPath = `sectors/${creation.sectorId}/missions/${creation.id}/providedAnswers/attempt-1`;
+  await expect
+    .poll(() => roomPatches.find((patch) => attemptPath in patch)?.[attemptPath])
+    .toEqual({
+      order: 1,
+      answer: { label: 'Problema criado', value: '12' },
+      correct: true,
+      context: 'peças',
+      variable: 4,
+    });
   await page.getByRole('button', { name: 'Continuar exploração', exact: true }).click();
   await expect(page.locator('.sector-celebration')).toContainText('Você concluiu toda a expedição');
   await page.getByRole('button', { name: /Minhas descobertas/ }).click();
@@ -121,6 +142,37 @@ test('completes tutorial, all 52 catalog missions, authors a problem and restore
   await visitDestination(page, sectors[0].name);
   await visitDestination(page, missions[0].title);
   await expect(page.getByRole('heading', { name: missions[0].title })).toBeVisible();
+});
+
+test('isola o progresso de alunos da mesma sala no mesmo navegador', async ({ page, context }) => {
+  const mission = missions[0];
+  await page.goto('/students');
+  await enterRoom(page, { name: 'Primeira aluna', resume: false });
+  await finishTutorial(page);
+  await openMission(page, mission);
+  await answerMission(page, mission);
+  await expect(
+    page.getByRole('button', { name: 'Continuar exploração', exact: true }),
+  ).toBeVisible();
+
+  const second = await context.newPage();
+  await mockRoomBackend(second);
+  await second.goto('/students');
+  const registrations: RoomStudent[] = [];
+  await second.exposeFunction('recordStudentRegistration', (student: RoomStudent) => {
+    registrations.push(student);
+  });
+  await enterRoom(second, { name: 'Segundo aluno' });
+  await expect(second.locator('main#main')).toBeVisible();
+  await expect(second.getByRole('button', { name: 'Retomar exploração' })).toHaveCount(0);
+  expect(registrations[0].sectors[mission.sectorId].missions[mission.id].missionStatus).toBe(
+    'not_started',
+  );
+
+  await page.reload();
+  await enterRoom(page, { name: 'Terceira aluna', resume: false });
+  await expect(page.locator('main#main')).toBeVisible();
+  await expect(page.getByRole('button', { name: 'Retomar exploração' })).toHaveCount(0);
 });
 
 test('supports keyboard, preferences, reduced motion and confirmed reset', async ({ page }) => {
@@ -153,7 +205,7 @@ test('supports keyboard, preferences, reduced motion and confirmed reset', async
 
 test('remains playable without storage or a speech API', async ({ page }) => {
   await page.addInitScript(() => {
-    Object.defineProperty(window, 'localStorage', {
+    Object.defineProperty(window, 'sessionStorage', {
       get: () => {
         throw new Error('denied');
       },
@@ -177,8 +229,8 @@ test('remains playable without storage or a speech API', async ({ page }) => {
 test('accepts the correct independent answers throughout all 52 missions', async ({ page }) => {
   test.setTimeout(90000);
   await page.addInitScript(() =>
-    localStorage.setItem(
-      'orbita-matematica:v1',
+    sessionStorage.setItem(
+      'orbita-matematica:v1:room:b12ae140-fc6a-4690-ab61-5bfbb91a8d19',
       JSON.stringify({
         version: 1,
         completed: {},
@@ -254,6 +306,6 @@ test('reflows at an effective 200 percent desktop zoom and smaller windows', asy
     expect(
       await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth),
     ).toBe(true);
-    await page.evaluate(() => localStorage.clear());
+    await page.evaluate(() => sessionStorage.clear());
   }
 });

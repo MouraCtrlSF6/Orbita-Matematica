@@ -85,7 +85,8 @@ const privacy = (
   <div className="settings-privacy">
     <h3>Seu progresso, neste navegador</h3>
     <p>
-      Não pedimos nome nem cadastro. Limpar os dados do navegador também apaga suas descobertas.
+      Limpar os dados do navegador apaga suas descobertas locais. Os registros compartilhados na
+      sala ficam com o professor até ele excluir a sala.
     </p>
   </div>
 );

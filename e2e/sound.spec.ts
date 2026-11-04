@@ -35,8 +35,8 @@ test('M toggles sound once per press and stays synchronized with settings', asyn
 test('typing M in an answer does not mute the game', async ({ page }) => {
   await page.addInitScript(
     (ids) =>
-      localStorage.setItem(
-        'orbita-matematica:v1',
+      sessionStorage.setItem(
+        'orbita-matematica:v1:room:b12ae140-fc6a-4690-ab61-5bfbb91a8d19',
         JSON.stringify({
           version: 1,
           tutorialDone: true,
@@ -63,7 +63,10 @@ test('typing M in an answer does not mute the game', async ({ page }) => {
   await expect(answer).toHaveValue('m');
   expect(
     await page.evaluate(
-      () => JSON.parse(localStorage.getItem('orbita-matematica:v1')!).preferences.soundEnabled,
+      () =>
+        JSON.parse(
+          sessionStorage.getItem('orbita-matematica:v1:room:b12ae140-fc6a-4690-ab61-5bfbb91a8d19')!,
+        ).preferences.soundEnabled,
     ),
   ).toBe(true);
   await page.getByRole('button', { name: 'Quero uma pista' }).focus();
@@ -71,7 +74,12 @@ test('typing M in an answer does not mute the game', async ({ page }) => {
   await expect
     .poll(() =>
       page.evaluate(
-        () => JSON.parse(localStorage.getItem('orbita-matematica:v1')!).preferences.soundEnabled,
+        () =>
+          JSON.parse(
+            sessionStorage.getItem(
+              'orbita-matematica:v1:room:b12ae140-fc6a-4690-ab61-5bfbb91a8d19',
+            )!,
+          ).preferences.soundEnabled,
       ),
     )
     .toBe(false);
@@ -88,9 +96,9 @@ for (const width of [1440, 390]) {
   }) => {
     await page.setViewportSize({ width, height: 1000 });
     await page.addInitScript(() => {
-      if (!localStorage.getItem('orbita-matematica:v1'))
-        localStorage.setItem(
-          'orbita-matematica:v1',
+      if (!sessionStorage.getItem('orbita-matematica:v1:room:b12ae140-fc6a-4690-ab61-5bfbb91a8d19'))
+        sessionStorage.setItem(
+          'orbita-matematica:v1:room:b12ae140-fc6a-4690-ab61-5bfbb91a8d19',
           JSON.stringify({
             version: 1,
             completed: {},

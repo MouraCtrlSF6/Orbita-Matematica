@@ -2,6 +2,7 @@ import type { Dispatch, SetStateAction } from 'react';
 import { Screen, type GameAction, type GameState } from '../game/reducer';
 import type { MissionResult, SavedGame } from '../game/types';
 import type { Point } from '../game/space';
+import type { MissionActivity } from '../game/room-progress';
 export interface FlightSession {
   positions: Map<string, Point>;
   id: number;
@@ -12,6 +13,11 @@ export class AppNavigation {
     private state: GameState,
     private settings: Dispatch<SetStateAction<boolean>>,
     private session: Dispatch<SetStateAction<FlightSession>>,
+    readonly recordActivity: (
+      sectorId: string,
+      missionId: string,
+      activity: MissionActivity,
+    ) => void,
   ) {}
   map = () => this.dispatch({ type: 'navigate', screen: Screen.Map });
   tutorial = () => this.dispatch({ type: 'navigate', screen: Screen.Tutorial });

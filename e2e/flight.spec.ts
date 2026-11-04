@@ -7,8 +7,8 @@ import { sectors } from '../src/content/sectors';
 async function seed(page: Page, completedCount = 0) {
   await page.addInitScript(
     ({ ids, next }) =>
-      localStorage.setItem(
-        'orbita-matematica:v1',
+      sessionStorage.setItem(
+        'orbita-matematica:v1:room:b12ae140-fc6a-4690-ab61-5bfbb91a8d19',
         JSON.stringify({
           version: 1,
           completed: Object.fromEntries(

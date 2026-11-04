@@ -1,10 +1,14 @@
 import { initialSave } from '../game/progress';
 import type { SavedGame } from '../game/types';
-import { loadGame, saveGame } from './storage';
+import { loadGame, saveGame, STORAGE_KEY } from './storage';
 
-function writeToBrowser(save: SavedGame): boolean {
+export function roomSaveKey(roomId: string) {
+  return `${STORAGE_KEY}:room:${roomId}`;
+}
+
+function writeToBrowser(key: string, save: SavedGame): boolean {
   try {
-    return saveGame(window.localStorage, save);
+    return saveGame(window.sessionStorage, save, key);
   } catch {
     return false;
   }
@@ -12,15 +16,19 @@ function writeToBrowser(save: SavedGame): boolean {
 class BrowserGameStorage {
   private available = true;
   private listeners = new Set<() => void>();
+  private currentSave?: SavedGame;
+  constructor(private key: string) {}
   read() {
+    if (this.currentSave) return this.currentSave;
     try {
-      return loadGame(window.localStorage);
+      return loadGame(window.sessionStorage, this.key);
     } catch {
       return initialSave();
     }
   }
   write(save: SavedGame) {
-    const next = writeToBrowser(save);
+    this.currentSave = save;
+    const next = writeToBrowser(this.key, save);
     if (next === this.available) return;
     this.available = next;
     this.listeners.forEach((listener) => listener());
@@ -33,6 +41,8 @@ class BrowserGameStorage {
     };
   };
 }
-export function createBrowserGameStorage() {
-  return new BrowserGameStorage();
+export function createBrowserGameStorage(roomId: string) {
+  return new BrowserGameStorage(roomSaveKey(roomId));
 }
+
+export type RoomGameStorage = ReturnType<typeof createBrowserGameStorage>;

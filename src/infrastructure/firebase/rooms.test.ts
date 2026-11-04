@@ -1,5 +1,7 @@
 import { afterEach, beforeEach, expect, it, vi } from 'vitest';
-import { checkRoom, createRoom, watchRoom } from './rooms';
+import { checkRoom, createRoom, registerStudent, watchRoom } from './rooms';
+import { initialSave } from '../../game/progress';
+import { initialRoomStudent } from '../../game/room-progress';
 
 const { signIn, unsubscribe, goOffline, subscribe } = vi.hoisted(() => ({
   signIn: vi.fn(),
@@ -63,9 +65,40 @@ it('consulta apenas o indicador de sala aberta por REST', async () => {
   );
 });
 
+it('confirma o registro existente após reenvio do PUT condicional', async () => {
+  const save = initialSave();
+  const previous = initialRoomStudent('teacher-uid', 'Nome já registrado', save);
+  const fetch = vi
+    .fn()
+    .mockResolvedValueOnce(new Response('{}', { status: 412 }))
+    .mockResolvedValueOnce(new Response(JSON.stringify(previous)));
+  vi.stubGlobal('fetch', fetch);
+
+  const student = await registerStudent(
+    'room-id',
+    'Outro nome',
+    save,
+    new AbortController().signal,
+  );
+
+  expect(student).toEqual(previous);
+  const path = new URL(
+    'https://rooms.example.test/rooms/room-id/students/teacher-uid.json?auth=test-token',
+  );
+  expect(fetch).toHaveBeenNthCalledWith(
+    1,
+    path,
+    expect.objectContaining({
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json', 'If-Match': 'null_etag' },
+    }),
+  );
+  expect(fetch).toHaveBeenNthCalledWith(2, path, expect.not.objectContaining({ method: 'PUT' }));
+});
+
 it('acompanha os alunos da sala e encerra a conexão ao cancelar', async () => {
   subscribe.mockImplementation((_path, update) => {
-    update({ size: 2 });
+    update({ val: () => null });
     return unsubscribe;
   });
   const controller = new AbortController();
@@ -77,7 +110,7 @@ it('acompanha os alunos da sala e encerra a conexão ao cancelar', async () => {
     expect.any(Function),
     expect.any(Function),
   );
-  expect(onUpdate).toHaveBeenCalledWith(2);
+  expect(onUpdate).toHaveBeenCalledWith([]);
   controller.abort();
   expect(unsubscribe).toHaveBeenCalledOnce();
   expect(goOffline).toHaveBeenCalledWith('database');

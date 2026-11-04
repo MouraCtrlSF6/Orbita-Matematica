@@ -19,23 +19,41 @@ const roomIdField = (
   </>
 );
 
+const nameField = (
+  <>
+    <label htmlFor="student-name">Nome completo</label>
+    <input id="student-name" name="studentName" required maxLength={100} autoComplete="off" />
+    <label className="room-resume">
+      <input type="checkbox" name="resume" /> Continuar meu progresso desta aba nesta sala
+    </label>
+  </>
+);
+
 function RoomEntryForm() {
   const { joinRoom, joining, error } = useJoinRoom();
 
   return (
     <form className="room-entry-form" action={joinRoom}>
       {roomIdField}
+      {nameField}
       <JoinButton joining={joining} />
       {error && <p role="alert">{error}</p>}
     </form>
   );
 }
 
+const roomInstructions = (
+  <>
+    <p>Use o UID compartilhado pelo professor para começar a expedição.</p>
+    <p>O professor verá seu nome, o progresso e as respostas enviadas nesta atividade.</p>
+  </>
+);
+
 function JoinRoomPage() {
   return (
     <main className="entry-page">
       <h1>Entrar na sala</h1>
-      <p>Use o UID compartilhado pelo professor para começar a expedição.</p>
+      {roomInstructions}
       <RoomEntryForm />
       <Link to="/sign">Voltar à escolha de perfil</Link>
     </main>
@@ -43,6 +61,6 @@ function JoinRoomPage() {
 }
 
 export function StudentEntryPage() {
-  const { studentRoomId } = useSession();
-  return studentRoomId ? <StudentsPage /> : <JoinRoomPage />;
+  const { studentRoom } = useSession();
+  return studentRoom ? <StudentsPage room={studentRoom} /> : <JoinRoomPage />;
 }

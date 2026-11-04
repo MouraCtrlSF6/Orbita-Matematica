@@ -7,12 +7,23 @@ export async function mockRoomBackend(page: Page) {
     route.fulfill({
       contentType: 'text/javascript',
       body: `
+            import { initialRoomStudent } from '/src/game/room-progress.ts';
+            const studentId = crypto.randomUUID();
             export class RoomError extends Error {}
             export async function checkRoom(id) { return id === ${JSON.stringify(roomId)}; }
             export async function createRoom() {}
+            export async function registerStudent(id, name, save) {
+              const student = initialRoomStudent(studentId, name, save);
+              await window.recordStudentRegistration?.(student);
+              return student;
+            }
+            export async function updateStudent(id, uid, patch) {
+              await window.recordRoomPatch?.(patch);
+            }
+            export async function deleteRoom() {}
             export async function watchRoom(id, signal, onUpdate) {
               signal.throwIfAborted();
-              onUpdate(0);
+              onUpdate([]);
               window.addEventListener('mock-room-update', (event) => onUpdate(event.detail), { signal });
             }
           `,
@@ -30,7 +41,9 @@ export const test = base.extend<{ mockRooms: void }>({
   ],
 });
 
-export async function enterRoom(page: Page) {
+export async function enterRoom(page: Page, { name = 'Aluno de teste', resume = true } = {}) {
   await page.getByLabel('UID da sala').fill(roomId);
+  await page.getByLabel('Nome completo').fill(name);
+  if (resume) await page.getByRole('checkbox', { name: /Continuar meu progresso/ }).check();
   await page.getByRole('button', { name: 'Entrar na sala' }).click();
 }

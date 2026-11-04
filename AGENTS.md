@@ -6,7 +6,7 @@
 
 O percurso atual contém tutorial interativo e 52 missões em três setores: Estação de lançamento (`launch`, 22), Oficina orbital (`workshop`, 15) e Base de exploração (`base`, 15). São 37 exercícios adaptados de `docs/Equacoes_do_primeiro_grau.docx` e 15 missões originais. Há desafios de alternativas, resposta numérica, montagem de expressões e criação guiada de um problema. As contagens são um retrato do catálogo atual; a interface deve continuar derivando-as dos dados.
 
-O aplicativo funciona inteiramente no navegador, sem backend, cadastro ou sincronização. O progresso e as preferências ficam no `localStorage`. A entrega é um build estático; destino de hospedagem e implantação ainda precisam ser definidos.
+O aplicativo é publicado como build estático e usa Firebase para as salas. O progresso local e as preferências ficam no `sessionStorage`, isolados por aba e sala.
 
 ## Exploração espacial e fluxo do jogo
 
@@ -96,13 +96,13 @@ O foco pedagógico usa EF08MA06, com introdução à variável pela EF07MA13 e e
 
 ## Persistência e privacidade
 
-O armazenamento atual usa a chave `orbita-matematica:v1` e `SavedGame.version: 1`, independentes da versão 3 do catálogo. Salvar apenas conclusões, apoios, tentativas, criação guiada, estado do tutorial, última missão e preferências. Nunca armazenar nomes, diagnósticos ou credenciais.
+O armazenamento local usa a chave `orbita-matematica:v1:room:{roomId}` no `sessionStorage` e `SavedGame.version: 1`, independentes da versão 3 do catálogo. Retomar exige escolha explícita na entrada. O save legado do `localStorage` não tem dono identificável e não deve ser importado nas salas. Salvar localmente apenas conclusões, apoios, tentativas, criação guiada, estado do tutorial, última missão e preferências. Nunca armazenar nomes, diagnósticos ou credenciais no save.
 
 As preferências incluem `largeText`, `reducedMotion` e `soundEnabled`. Saves anteriores sem a preferência de som continuam válidos e recebem `soundEnabled: true`. Manter compatibilidade com registros históricos de até três dicas e com `guided`, sem reativar a conclusão guiada na interface atual.
 
 Preservar conclusões válidas por ID quando o catálogo crescer, mesmo que novas missões sejam inseridas antes delas; novas missões ficam pendentes e respeitam o desbloqueio sequencial. Mudanças incompatíveis no formato salvo exigem nova versão e migração explícita.
 
-Falhas ou bloqueio do armazenamento devem permitir continuar em memória, com aviso de que o progresso não será mantido. Reiniciar a expedição exige confirmação na interface. Em computadores compartilhados, o progresso pertence ao navegador e pode ser visto por outras pessoas; limpar os dados do navegador apaga o registro local.
+Falhas ou bloqueio do armazenamento devem permitir continuar em memória, com aviso de que o progresso não será mantido. Reiniciar a expedição exige confirmação na interface. Ao trocar de aluno em uma aba compartilhada, deixar a retomada desmarcada para começar com o progresso vazio.
 
 ## Validação das alterações
 

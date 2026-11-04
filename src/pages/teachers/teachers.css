@@ -1,0 +1,16 @@
+.room-students {
+  width: min(100%, 700px);
+  text-align: left;
+  overflow-wrap: anywhere;
+}
+
+.room-students details {
+  margin-block: 8px;
+  padding: 8px 12px;
+  border: 1px solid #cbbce4;
+  border-radius: 8px;
+}
+
+.room-students summary {
+  cursor: pointer;
+}

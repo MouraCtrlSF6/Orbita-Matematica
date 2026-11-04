@@ -8,11 +8,13 @@ import { MissionSupport } from './MissionSupport';
 import { MissionForm } from './MissionForm';
 import { MissionFeedback } from './MissionFeedback';
 import type { MissionViewProps } from './mission-view';
+import type { MissionActivity } from '../../game/room-progress';
 interface MissionScreenProps {
   mission: Mission;
   onComplete: (result: MissionResult) => void;
   onNext: () => void;
   onBack: () => void;
+  onActivity?: (activity: MissionActivity) => void;
 }
 interface ChallengeProps extends MissionViewProps {
   onNext: () => void;
@@ -67,8 +69,14 @@ function MissionLayout(props: ChallengeProps) {
     </div>
   );
 }
-export function MissionScreen({ mission, onComplete, onNext, onBack }: MissionScreenProps) {
-  const session = useMission(mission, onComplete);
+export function MissionScreen({
+  mission,
+  onComplete,
+  onNext,
+  onBack,
+  onActivity,
+}: MissionScreenProps) {
+  const session = useMission(mission, onComplete, onActivity);
   return (
     <div className="mission-screen">
       <MissionHeading mission={mission} done={session.done} onBack={onBack} />

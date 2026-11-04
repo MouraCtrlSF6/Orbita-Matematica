@@ -92,17 +92,17 @@ export function parseSave(raw: string | null): SavedGame {
   }
 }
 
-export function loadGame(storage: StoragePort): SavedGame {
+export function loadGame(storage: StoragePort, key = STORAGE_KEY): SavedGame {
   try {
-    return parseSave(storage.getItem(STORAGE_KEY));
+    return parseSave(storage.getItem(key));
   } catch {
     return initialSave();
   }
 }
 
-export function saveGame(storage: StoragePort, save: SavedGame): boolean {
+export function saveGame(storage: StoragePort, save: SavedGame, key = STORAGE_KEY): boolean {
   try {
-    storage.setItem(STORAGE_KEY, JSON.stringify(save));
+    storage.setItem(key, JSON.stringify(save));
     return true;
   } catch {
     return false;

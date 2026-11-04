@@ -14,7 +14,7 @@ Um som suave de propulsão acompanha o movimento da nave e vem ligado por padrã
 
 Pressione **M** para mutar ou desmutar o som da nave. O atalho compartilha a preferência do botão e dos ajustes; ele não é acionado enquanto você digita em campos, mantém a tecla pressionada ou usa combinações como Ctrl+M.
 
-As posições ficam somente em memória durante a sessão. Recarregar abre o universo; **Retomar exploração** leva ao setor e às proximidades da próxima missão pendente. O progresso anterior continua compatível com `orbita-matematica:v1` e `SavedGame.version: 1`. Reiniciar a expedição também limpa as posições da sessão.
+As posições ficam somente em memória durante a sessão. Ao entrar novamente com a opção de continuar marcada, o jogo abre no universo. **Retomar exploração** leva ao setor e às proximidades da próxima missão pendente. Reiniciar a expedição também limpa as posições da sessão.
 
 ## Executar localmente
 
@@ -44,31 +44,21 @@ Antes dos testes de navegador, execute `npx playwright install chromium`. Os tes
 ## Rotas e sessão local
 
 - `/sign` é a tela inicial para escolher o perfil.
-- `/students` pede o UID de uma sala aberta. Depois da verificação, abre o jogo e recupera o progresso salvo no navegador.
-- `/teachers` cria uma sala automaticamente e acompanha os registros de alunos em tempo real.
+- `/students` pede o UID de uma sala aberta e o nome completo. Depois de confirmar o registro, abre o jogo e recupera o progresso salvo no navegador.
+- `/teachers` cria uma sala automaticamente e acompanha os alunos, as missões e as respostas em tempo real. Ao fim da aula, use **Excluir sala** e confirme para apagar o registro da turma.
 
-O contexto global mantém o perfil, o identificador local e a sala do aluno em memória. Recarregar gera uma nova sala para o professor e pede novamente o UID ao aluno. Sair da área do professor encerra a assinatura do banco. O progresso do jogo continua no navegador.
+O contexto global mantém o perfil, o identificador local e a sala do aluno em memória. Recarregar gera uma nova sala para o professor e pede nova entrada ao aluno. Exclua a sala antes de fechar ou recarregar o painel, pois a identidade anônima que possui a sala também está em memória. Sair da rota encerra a assinatura do banco.
+
+O Firebase recebe o nome, o setor atual, as conclusões, os apoios usados e as respostas submetidas durante a aula. Por padrão, cada entrada começa com progresso vazio. Para retomar após recarregar, informe o UID da mesma sala na mesma aba e marque **Continuar meu progresso desta aba nesta sala**. A retomada importa conclusões e apoios daquele save. O nome e as respostas enviadas ficam fora do save. Uma falha de rede mantém as atualizações pendentes em memória, e recarregar pode descartá-las. Reiniciar a expedição apaga o progresso local e preserva o histórico já registrado na sala.
 
 O SDK do Firebase é inicializado quando `VITE_FIREBASE_API_KEY`, `VITE_FIREBASE_PROJECT_ID` e `VITE_FIREBASE_APP_ID` estão disponíveis. Use o `.env` na raiz para o desenvolvimento local. Para habilitar o SDK no GitHub Pages, forneça as variáveis `VITE_FIREBASE_*` ao passo de build do GitHub Actions. O Vite inclui essa configuração pública no JavaScript entregue ao navegador.
 
-Para usar salas, configure `VITE_FIREBASE_DATABASE_URL` com a URL do Realtime Database e habilite o provedor **Anônimo** no Firebase Authentication. A identidade anônima fica em memória, sem tela de login. A configuração abaixo permite criar a sala, consultar se ela está aberta e acompanhar os registros pelo painel. A escrita de registros de alunos, o encerramento de salas e o App Check ficam para etapas posteriores.
+Para usar salas, configure `VITE_FIREBASE_DATABASE_URL` com a URL do Realtime Database, habilite o provedor **Anônimo** no Firebase Authentication e publique o conteúdo de [database.rules.json](database.rules.json) na aba **Regras** do banco. O App Check fica para uma etapa posterior.
 
-```json
-{
-  "rules": {
-    ".read": false,
-    ".write": false,
-    "rooms": {
-      "$roomId": {
-        ".read": "auth != null && data.child('meta/ownerUid').val() === auth.uid",
-        "meta": {
-          ".write": "auth != null && (!data.exists() || data.child('ownerUid').val() === auth.uid) && newData.child('ownerUid').val() === auth.uid && newData.child('open').val() === true",
-          "open": { ".read": "auth != null" }
-        }
-      }
-    }
-  }
-}
+Para verificar as permissões localmente com dados fictícios, execute:
+
+```sh
+npx --yes firebase-tools@14 emulators:exec --project demo-orbita --only auth,database "node scripts/test-database-rules.mjs"
 ```
 
 ## Organização
@@ -124,7 +114,7 @@ O lançamento e a oficina oferecem a primeira dica de cada missão; a base ofere
 
 O voo tem controle direto, sem inércia ou obstáculos punitivos. A preferência de movimento reduzido, nos ajustes ou no sistema, remove brilhos dos destinos e da nave; a câmera acompanha sem suavização. A lista de destinos permite navegar sem deslocamento contínuo. O cenário é desenhado com HTML, CSS e SVG, sem dependências adicionais de motor de jogo.
 
-O progresso guarda conclusões, apoios e preferências no `localStorage` deste navegador. O Firebase recebe os dados de criação e de acesso à sala. O jogo dispensa cadastro manual e mantém conclusões e tentativas no navegador. Em computadores compartilhados, outro usuário verá o mesmo progresso. Os ajustes permitem reiniciá-lo com confirmação. Armazenamento bloqueado permite continuar em memória, com aviso de que o progresso não será mantido. Limpar os dados do navegador também apaga o diário. Ao ampliar o catálogo, conclusões válidas continuam associadas aos mesmos IDs, mesmo se novos problemas forem inseridos antes deles. As novas missões ficam pendentes e o desbloqueio exige concluir todas as anteriores.
+O navegador guarda conclusões, apoios e preferências no `sessionStorage`, por aba e sala, usando o formato `SavedGame.version: 1`. O save antigo compartilhado do `localStorage` fica fora da retomada porque não identifica seu dono. Em computadores compartilhados, deixe a opção de continuar desmarcada ao trocar de aluno. Armazenamento bloqueado permite continuar em memória, com aviso de que o progresso não será mantido. Ao ampliar o catálogo, conclusões válidas continuam associadas aos mesmos IDs, mesmo se novos problemas forem inseridos antes deles. As novas missões ficam pendentes e o desbloqueio exige concluir todas as anteriores.
 
 ## Publicação
 

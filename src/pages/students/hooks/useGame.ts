@@ -1,9 +1,8 @@
-import { useEffect, useReducer, useState, useSyncExternalStore } from 'react';
+import { useEffect, useReducer, useSyncExternalStore } from 'react';
 import { gameReducer, Screen } from '../../../game/reducer';
-import { createBrowserGameStorage } from '../../../infrastructure/gameStorage';
+import type { RoomGameStorage } from '../../../infrastructure/gameStorage';
 
-export function useGame() {
-  const [repository] = useState(createBrowserGameStorage);
+export function useGame(repository: RoomGameStorage) {
   const [state, dispatch] = useReducer(gameReducer, undefined, () => ({
     save: repository.read(),
     screen: Screen.Map,

@@ -1,8 +1,10 @@
-import { expect, test, type Page } from '@playwright/test';
+import { expect, type Page } from '@playwright/test';
+import { enterRoom, test } from './rooms-fixture';
 import { missions } from '../src/content/missions';
 
 test('M toggles sound once per press and stays synchronized with settings', async ({ page }) => {
   await page.goto('/students');
+  await enterRoom(page);
   const toggle = page.getByRole('button', { name: 'Som da nave', exact: true });
   await page.getByRole('region', { name: 'Área de pilotagem' }).focus();
   await page.keyboard.down('m');
@@ -20,6 +22,7 @@ test('M toggles sound once per press and stays synchronized with settings', asyn
   }
   await page.keyboard.press('m');
   await page.reload();
+  await enterRoom(page);
   await expect(toggle).toHaveAttribute('aria-pressed', 'false');
   await page.getByRole('button', { name: 'Ajustes da expedição' }).click();
   await expect(page.getByRole('checkbox', { name: /Som da nave/ })).not.toBeChecked();
@@ -52,6 +55,7 @@ test('typing M in an answer does not mute the game', async ({ page }) => {
       .map((item) => item.id),
   );
   await page.goto('/students');
+  await enterRoom(page);
   await page.getByRole('button', { name: 'Retomar exploração' }).click();
   await page.getByRole('button', { name: 'Entrar', exact: true }).click();
   const answer = page.getByRole('textbox', { name: 'Qual é o total?' });
@@ -97,6 +101,7 @@ for (const width of [1440, 390]) {
         );
     });
     await page.goto('/students');
+    await enterRoom(page);
     const toggle = page.getByRole('button', { name: 'Som da nave', exact: true });
     await expect(toggle).toHaveAttribute('aria-pressed', 'true');
     await expect(toggle).toContainText('Som ligado');
@@ -111,6 +116,7 @@ for (const width of [1440, 390]) {
     await page.keyboard.press('Space');
     await expect(toggle).toHaveAttribute('aria-pressed', 'false');
     await page.reload();
+    await enterRoom(page);
     await expect(toggle).toHaveAttribute('aria-pressed', 'false');
     await page.getByRole('button', { name: 'Retomar exploração' }).click();
     await expect(toggle).toHaveAttribute('aria-pressed', 'false');
@@ -179,6 +185,7 @@ test('plays thrust only while moving, stops on interruption and persists mute', 
     };
   });
   await page.goto('/students');
+  await enterRoom(page);
   expect((await audioState(page)).count).toBe(0);
   const pilot = page.getByRole('region', { name: 'Área de pilotagem' });
   await pilot.focus();
@@ -213,6 +220,7 @@ test('plays thrust only while moving, stops on interruption and persists mute', 
   expect((await audioState(page)).rms).toBeLessThan(0.00001);
   await page.keyboard.up('ArrowRight');
   await page.reload();
+  await enterRoom(page);
   await page.getByRole('button', { name: 'Ajustes da expedição' }).click();
   await expect(page.getByRole('checkbox', { name: /Som da nave/ })).not.toBeChecked();
   await page.getByRole('checkbox', { name: /Som da nave/ }).check();
@@ -234,6 +242,7 @@ test('keeps flying without an audio API', async ({ page }) => {
   const errors: string[] = [];
   page.on('pageerror', (error) => errors.push(error.message));
   await page.goto('/students');
+  await enterRoom(page);
   const ship = page.locator('.player-ship');
   const readX = () =>
     ship.evaluate((element) => new DOMMatrix(getComputedStyle(element).transform).m41);

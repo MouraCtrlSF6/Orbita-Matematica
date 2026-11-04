@@ -1,4 +1,5 @@
-import { expect, test, type Page } from '@playwright/test';
+import { expect, type Page } from '@playwright/test';
+import { enterRoom, mockRoomBackend, test } from './rooms-fixture';
 import AxeBuilder from '@axe-core/playwright';
 import { missions } from '../src/content/missions';
 import { sectors } from '../src/content/sectors';
@@ -51,6 +52,7 @@ test('pilots between destinations, requires confirmation, preserves position and
 }) => {
   await seed(page);
   await page.goto('/students');
+  await enterRoom(page);
   await page.getByRole('region', { name: 'Área de pilotagem' }).focus();
   await expect(page.getByRole('button', { name: 'Entrar', exact: true })).toBeEnabled();
   await page.keyboard.press('Enter');
@@ -87,6 +89,7 @@ test('stops on release, blur, hidden tab and settings, and moves the camera and 
 }) => {
   await seed(page);
   await page.goto('/students');
+  await enterRoom(page);
   await page.getByRole('button', { name: 'Retomar exploração' }).click();
   const pilot = page.getByRole('region', { name: 'Área de pilotagem' });
   await pilot.focus();
@@ -148,6 +151,7 @@ test('restores an existing save near the pending mission and exposes every desti
   const count = missions.filter((item) => item.sectorId === sectors[0].id).length;
   await seed(page, count);
   await page.goto('/students');
+  await enterRoom(page);
   await expect(page.getByRole('heading', { name: 'O universo espera por você.' })).toBeVisible();
   await page.locator('.flight-destinations summary').click();
   const buttons = page.locator('.flight-destinations button');
@@ -175,8 +179,10 @@ test('supports a real touch hold on a small screen with enlarged text', async ({
     isMobile: true,
   });
   const page = await context.newPage();
+  await mockRoomBackend(page);
   await seed(page);
   await page.goto('/students');
+  await enterRoom(page);
   await page.getByRole('button', { name: 'Retomar exploração' }).click();
   await page.getByRole('button', { name: 'Ajustes da expedição' }).click();
   await page.getByRole('checkbox', { name: /Texto maior/ }).check();
@@ -203,6 +209,7 @@ test('supports a real touch hold on a small screen with enlarged text', async ({
 
 test('allows completing the pilot practice with the keyboard', async ({ page }) => {
   await page.goto('/students');
+  await enterRoom(page);
   await page.getByRole('button', { name: 'Vamos explorar' }).click();
   const pilot = page.getByRole('region', { name: 'Área de pilotagem' });
   await pilot.focus();

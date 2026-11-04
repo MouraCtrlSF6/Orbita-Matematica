@@ -1,4 +1,5 @@
-import { expect, test } from '@playwright/test';
+import { expect } from '@playwright/test';
+import { enterRoom, test } from '../../../e2e/rooms-fixture';
 
 test('abre a escolha de perfil e navega pelos cards com teclado e histórico', async ({ page }) => {
   await page.goto('/');
@@ -8,6 +9,11 @@ test('abre a escolha de perfil e navega pelos cards com teclado e histórico', a
   await page.keyboard.press('Enter');
   await expect(page).toHaveURL(/\/teachers$/);
   await expect(page.getByRole('heading', { name: 'Área do professor' })).toBeVisible();
+  await expect(page.getByRole('status')).toHaveText('Registros de alunos: 0');
+  await page.evaluate(() =>
+    window.dispatchEvent(new CustomEvent('mock-room-update', { detail: 2 })),
+  );
+  await expect(page.getByRole('status')).toHaveText('Registros de alunos: 2');
 
   await page.goBack();
   await expect(page).toHaveURL(/\/sign$/);
@@ -19,5 +25,14 @@ test('abre a escolha de perfil e navega pelos cards com teclado e histórico', a
   await studentCard.focus();
   await studentCard.press('Enter');
   await expect(page).toHaveURL(/\/students$/);
+  await expect(page.locator('main#main')).toHaveCount(0);
+  await page.getByLabel('UID da sala').fill('inválido');
+  await page.getByRole('button', { name: 'Entrar na sala' }).click();
+  await expect(page.getByRole('alert')).toContainText('UID completo');
+  await page.getByLabel('UID da sala').fill('11111111-1111-4111-8111-111111111111');
+  await page.getByRole('button', { name: 'Entrar na sala' }).click();
+  await expect(page.getByRole('alert')).toContainText('Sala não encontrada');
+  await expect(page.locator('main#main')).toHaveCount(0);
+  await enterRoom(page);
   await expect(page.locator('main#main')).toBeVisible();
 });

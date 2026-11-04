@@ -1,9 +1,16 @@
-import { render, screen } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { Link, MemoryRouter, useNavigate } from 'react-router';
-import { expect, it } from 'vitest';
+import { expect, it, vi } from 'vitest';
+import { createRoom, watchRoom } from '../../infrastructure/firebase/rooms';
 import { SessionProvider } from './SessionProvider';
 import { useSession } from './hooks/useSession';
+
+vi.mock('../../infrastructure/firebase/rooms', async (importOriginal) => ({
+  ...(await importOriginal<typeof import('../../infrastructure/firebase/rooms')>()),
+  createRoom: vi.fn(),
+  watchRoom: vi.fn(),
+}));
 
 function SessionProbe() {
   const { role, localSessionId } = useSession();
@@ -31,6 +38,8 @@ function mountSession(path: string) {
 }
 
 it('deriva o perfil do histórico e mantém a sessão até remontar o aplicativo', async () => {
+  vi.mocked(createRoom).mockResolvedValue(undefined);
+  vi.mocked(watchRoom).mockResolvedValue(undefined);
   const user = userEvent.setup();
   const { unmount } = mountSession('/sign');
   const session = screen.getByLabelText('Sessão').textContent;
@@ -46,7 +55,13 @@ it('deriva o perfil do histórico e mantém a sessão até remontar o aplicativo
   expect(screen.getByLabelText('Sessão').textContent).toBe(session);
 
   unmount();
-  mountSession('/teachers/');
+  const teacher = mountSession('/teachers/');
   expect(screen.getByLabelText('Perfil')).toHaveTextContent('teacher');
-  expect(screen.getByLabelText('Sessão').textContent).not.toBe(session);
+  const roomId = screen.getByLabelText('Sessão').textContent;
+  expect(roomId).not.toBe(session);
+  await waitFor(() => expect(watchRoom).toHaveBeenCalledTimes(1));
+  expect(createRoom).toHaveBeenCalledWith(roomId, expect.any(AbortSignal));
+  const signal = vi.mocked(watchRoom).mock.calls[0][1];
+  teacher.unmount();
+  expect(signal.aborted).toBe(true);
 });

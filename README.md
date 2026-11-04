@@ -44,12 +44,32 @@ Antes dos testes de navegador, execute `npx playwright install chromium`. Os tes
 ## Rotas e sessão local
 
 - `/sign` é a tela inicial para escolher o perfil.
-- `/students` abre o jogo e recupera o progresso salvo no navegador.
-- `/teachers` apresenta a área provisória do professor.
+- `/students` pede o UID de uma sala aberta. Depois da verificação, abre o jogo e recupera o progresso salvo no navegador.
+- `/teachers` cria uma sala automaticamente e acompanha os registros de alunos em tempo real.
 
-O contexto global expõe o perfil da rota e um identificador local em memória. O identificador acompanha a navegação na aba e é renovado ao recarregar a página. A autenticação e a sincronização com o Firebase ficam para uma etapa posterior.
+O contexto global mantém o perfil, o identificador local e a sala do aluno em memória. Recarregar gera uma nova sala para o professor e pede novamente o UID ao aluno. Sair da área do professor encerra a assinatura do banco. O progresso do jogo continua no navegador.
 
 O SDK do Firebase é inicializado quando `VITE_FIREBASE_API_KEY`, `VITE_FIREBASE_PROJECT_ID` e `VITE_FIREBASE_APP_ID` estão disponíveis. Use o `.env` na raiz para o desenvolvimento local. Para habilitar o SDK no GitHub Pages, forneça as variáveis `VITE_FIREBASE_*` ao passo de build do GitHub Actions. O Vite inclui essa configuração pública no JavaScript entregue ao navegador.
+
+Para usar salas, configure `VITE_FIREBASE_DATABASE_URL` com a URL do Realtime Database e habilite o provedor **Anônimo** no Firebase Authentication. A identidade anônima fica em memória, sem tela de login. A configuração abaixo permite criar a sala, consultar se ela está aberta e acompanhar os registros pelo painel. A escrita de registros de alunos, o encerramento de salas e o App Check ficam para etapas posteriores.
+
+```json
+{
+  "rules": {
+    ".read": false,
+    ".write": false,
+    "rooms": {
+      "$roomId": {
+        ".read": "auth != null && data.child('meta/ownerUid').val() === auth.uid",
+        "meta": {
+          ".write": "auth != null && (!data.exists() || data.child('ownerUid').val() === auth.uid) && newData.child('ownerUid').val() === auth.uid && newData.child('open').val() === true",
+          "open": { ".read": "auth != null" }
+        }
+      }
+    }
+  }
+}
+```
 
 ## Organização
 
@@ -104,7 +124,7 @@ O lançamento e a oficina oferecem a primeira dica de cada missão; a base ofere
 
 O voo tem controle direto, sem inércia ou obstáculos punitivos. A preferência de movimento reduzido, nos ajustes ou no sistema, remove brilhos dos destinos e da nave; a câmera acompanha sem suavização. A lista de destinos permite navegar sem deslocamento contínuo. O cenário é desenhado com HTML, CSS e SVG, sem dependências adicionais de motor de jogo.
 
-O progresso guarda conclusões, apoios e preferências no `localStorage` deste navegador. Não há cadastro, coleta de nomes ou diagnósticos, sincronização ou backend. Em computadores compartilhados, outro usuário verá o mesmo progresso. Os ajustes permitem reiniciá-lo com confirmação. Armazenamento bloqueado permite continuar em memória, com aviso de que o progresso não será mantido. Limpar os dados do navegador também apaga o diário. Ao ampliar o catálogo, conclusões válidas continuam associadas aos mesmos IDs, mesmo se novos problemas forem inseridos antes deles. As novas missões ficam pendentes e o desbloqueio exige concluir todas as anteriores.
+O progresso guarda conclusões, apoios e preferências no `localStorage` deste navegador. O Firebase recebe os dados de criação e de acesso à sala. O jogo dispensa cadastro manual e mantém conclusões e tentativas no navegador. Em computadores compartilhados, outro usuário verá o mesmo progresso. Os ajustes permitem reiniciá-lo com confirmação. Armazenamento bloqueado permite continuar em memória, com aviso de que o progresso não será mantido. Limpar os dados do navegador também apaga o diário. Ao ampliar o catálogo, conclusões válidas continuam associadas aos mesmos IDs, mesmo se novos problemas forem inseridos antes deles. As novas missões ficam pendentes e o desbloqueio exige concluir todas as anteriores.
 
 ## Publicação
 

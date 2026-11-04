@@ -1,4 +1,5 @@
-import { expect, test, type Page } from '@playwright/test';
+import { expect, type Page } from '@playwright/test';
+import { enterRoom, test } from './rooms-fixture';
 import AxeBuilder from '@axe-core/playwright';
 import { missions } from '../src/content/missions';
 import { sectors } from '../src/content/sectors';
@@ -78,6 +79,7 @@ test('completes tutorial, all 52 catalog missions, authors a problem and restore
 }) => {
   test.setTimeout(90000);
   await page.goto('/students');
+  await enterRoom(page);
   await finishTutorial(page);
   for (let index = 0; index < missions.length - 1; index++) {
     await openMission(page, missions[index]);
@@ -112,6 +114,7 @@ test('completes tutorial, all 52 catalog missions, authors a problem and restore
   await expect(page.getByRole('heading', { name: 'Um universo de descobertas!' })).toBeVisible();
   await expect(page.getByText(/Seu problema: 4 robôs levam 2 peças/)).toBeVisible();
   await page.reload();
+  await enterRoom(page);
   await page.getByRole('button', { name: /Minhas descobertas/ }).click();
   await expect(page.getByRole('heading', { name: 'Um universo de descobertas!' })).toBeVisible();
   await page.getByRole('button', { name: 'Voltar ao mapa' }).click();
@@ -123,6 +126,7 @@ test('completes tutorial, all 52 catalog missions, authors a problem and restore
 test('supports keyboard, preferences, reduced motion and confirmed reset', async ({ page }) => {
   await page.emulateMedia({ reducedMotion: 'reduce' });
   await page.goto('/students');
+  await enterRoom(page);
   await page.keyboard.press('Tab');
   await expect(page.getByRole('link', { name: 'Pular para o conteúdo' })).toBeFocused();
   await page.keyboard.press('Enter');
@@ -136,6 +140,7 @@ test('supports keyboard, preferences, reduced motion and confirmed reset', async
   await expect(page.locator('.flight')).toHaveClass(/flight-reduced/);
   await expect(page.locator('.player-ship')).toHaveCSS('filter', 'none');
   await page.reload();
+  await enterRoom(page);
   await expect(page.locator('.app-shell')).toHaveClass(/large-text/);
   await page.getByRole('button', { name: 'Ajustes da expedição' }).click();
   await page.getByRole('button', { name: 'Reiniciar expedição' }).click();
@@ -156,6 +161,7 @@ test('remains playable without storage or a speech API', async ({ page }) => {
     Object.defineProperty(window, 'speechSynthesis', { value: undefined });
   });
   await page.goto('/students');
+  await enterRoom(page);
   await expect(page.getByText(/O navegador não permitiu salvar/)).toBeVisible();
   await finishTutorial(page);
   await openMission(page, missions[0]);
@@ -183,6 +189,7 @@ test('accepts the correct independent answers throughout all 52 missions', async
     ),
   );
   await page.goto('/students');
+  await enterRoom(page);
   await page.getByRole('button', { name: 'Retomar exploração' }).click();
   for (const mission of missions) {
     await openMission(page, mission);
@@ -207,6 +214,7 @@ test('has accessible structure and contrast across the main screens', async ({ p
     ).toEqual([]);
   }
   await page.goto('/students');
+  await enterRoom(page);
   await audit();
   await page.getByRole('button', { name: 'Ajustes da expedição' }).click();
   await audit();
@@ -234,6 +242,7 @@ test('reflows at an effective 200 percent desktop zoom and smaller windows', asy
   for (const width of [720, 390]) {
     await page.setViewportSize({ width, height: 600 });
     await page.goto('/students');
+    await enterRoom(page);
     await expect(page.getByRole('button', { name: 'Vamos explorar' })).toBeVisible();
     expect(
       await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth),

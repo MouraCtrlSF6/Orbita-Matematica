@@ -49,6 +49,8 @@ Antes dos testes de navegador, execute `npx playwright install chromium`. Os tes
 
 O contexto global expõe o perfil da rota e um identificador local em memória. O identificador acompanha a navegação na aba e é renovado ao recarregar a página. A autenticação e a sincronização com o Firebase ficam para uma etapa posterior.
 
+O SDK do Firebase é inicializado quando `VITE_FIREBASE_API_KEY`, `VITE_FIREBASE_PROJECT_ID` e `VITE_FIREBASE_APP_ID` estão disponíveis. Use o `.env` na raiz para o desenvolvimento local. Para habilitar o SDK no GitHub Pages, forneça as variáveis `VITE_FIREBASE_*` ao passo de build do GitHub Actions. O Vite inclui essa configuração pública no JavaScript entregue ao navegador.
+
 ## Organização
 
 - `src/content/`: setores e missões tipadas, objetivos, habilidades, dicas e explicações.

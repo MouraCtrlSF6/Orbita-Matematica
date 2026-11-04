@@ -12,6 +12,8 @@ export interface LocalSession {
   deleteRoom?: () => Promise<void>;
   roomDeleted: boolean;
   markRoomDeleted: () => void;
+  teacherRoomName: string | null;
+  setTeacherRoomName: (name: string) => void;
 }
 
 export const SessionContext = createContext<LocalSession | null>(null);

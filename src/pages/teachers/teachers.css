@@ -14,3 +14,17 @@
 .room-students summary {
   cursor: pointer;
 }
+.create-room-form {
+  display: grid;
+  gap: 12px;
+  width: min(100%, 420px);
+  text-align: left;
+}
+
+.create-room-form input {
+  width: 100%;
+  min-height: 44px;
+  padding: 8px 12px;
+  border: 1px solid #7560a8;
+  border-radius: 7px;
+}

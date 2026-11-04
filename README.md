@@ -44,16 +44,20 @@ Antes dos testes de navegador, execute `npx playwright install chromium`. Os tes
 ## Rotas e sessão local
 
 - `/sign` é a tela inicial para escolher o perfil.
-- `/students` pede o UID de uma sala aberta e o nome completo. Depois de confirmar o registro, abre o jogo e recupera o progresso salvo no navegador.
-- `/teachers` cria uma sala automaticamente e acompanha os alunos, as missões e as respostas em tempo real. Ao fim da aula, use **Excluir sala** e confirme para apagar o registro da turma.
+- `/students` pede o nome da sala aberta e o nome completo. Depois de confirmar o registro, abre o jogo.
+- `/teachers` permite escolher o nome da sala e acompanha os alunos, as missões e as respostas em tempo real. Abra o registro de um aluno e use **Remover aluno** para apagá-lo da sala. O jogo continua aberto para o aluno e os envios da sessão removida são bloqueados. Ao fim da aula, use **Excluir sala** para apagar os registros da turma e liberar o nome.
 
-O contexto global mantém o perfil, o identificador local e a sala do aluno em memória. Recarregar gera uma nova sala para o professor e pede nova entrada ao aluno. Exclua a sala antes de fechar ou recarregar o painel, pois a identidade anônima que possui a sala também está em memória. Sair da rota encerra a assinatura do banco.
+Compartilhe o nome exibido no painel. A busca ignora maiúsculas, acentos e espaços excedentes. O nome normalizado aceita de 3 a 48 caracteres, com letras, números, espaços e hífens.
 
-O Firebase recebe o nome, o setor atual, as conclusões, os apoios usados e as respostas submetidas durante a aula. Por padrão, cada entrada começa com progresso vazio. Para retomar após recarregar, informe o UID da mesma sala na mesma aba e marque **Continuar meu progresso desta aba nesta sala**. A retomada importa conclusões e apoios daquele save. O nome e as respostas enviadas ficam fora do save. Uma falha de rede mantém as atualizações pendentes em memória, e recarregar pode descartá-las. Reiniciar a expedição apaga o progresso local e preserva o histórico já registrado na sala.
+O contexto global mantém o perfil, o identificador local e a sala em memória. Recarregar volta à criação ou entrada da sala. Exclua a sala antes de fechar ou recarregar o painel, pois a identidade anônima que possui a sala também está em memória. Sair da rota encerra a assinatura do banco.
+
+O Firebase recebe o nome, o setor atual, as conclusões, os apoios usados e as respostas submetidas durante a aula. Por padrão, cada entrada começa com progresso vazio. Para retomar após recarregar, informe o nome da mesma sala na mesma aba e marque **Continuar meu progresso desta aba nesta sala**. A retomada importa conclusões e apoios daquele save. O nome e as respostas enviadas ficam fora do save. Uma falha de rede mantém as atualizações pendentes em memória, e recarregar pode descartá-las. Reiniciar a expedição apaga o progresso local e preserva o histórico já registrado na sala.
 
 O SDK do Firebase é inicializado quando `VITE_FIREBASE_API_KEY`, `VITE_FIREBASE_PROJECT_ID` e `VITE_FIREBASE_APP_ID` estão disponíveis. Use o `.env` na raiz para o desenvolvimento local. Para habilitar o SDK no GitHub Pages, forneça as variáveis `VITE_FIREBASE_*` ao passo de build do GitHub Actions. O Vite inclui essa configuração pública no JavaScript entregue ao navegador.
 
 Para usar salas, configure `VITE_FIREBASE_DATABASE_URL` com a URL do Realtime Database, habilite o provedor **Anônimo** no Firebase Authentication e publique o conteúdo de [database.rules.json](database.rules.json) na aba **Regras** do banco. O App Check fica para uma etapa posterior.
+
+As regras permitem leitura pública de todo o banco, incluindo nomes, progresso e respostas. A escrita exige autenticação e segue as permissões da sala.
 
 Para verificar as permissões localmente com dados fictícios, execute:
 

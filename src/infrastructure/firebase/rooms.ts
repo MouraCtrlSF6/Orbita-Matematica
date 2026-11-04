@@ -14,7 +14,6 @@ export class RoomError extends Error {
 }
 
 let pendingSignIn: Promise<User> | undefined;
-const createdRooms = new Set<string>();
 
 function getRoomBackend() {
   const app = initializeFirebase();
@@ -97,33 +96,70 @@ export async function updateStudent(roomId: string, uid: string, patch: StudentP
   });
 }
 
-export async function deleteRoom(roomId: string) {
+function roomPatch(body: StudentPatch, signal?: AbortSignal): RequestInit {
+  return {
+    method: 'PATCH',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(body),
+    signal,
+  };
+}
+
+export async function removeStudent(roomId: string, uid: string) {
+  const user = await getRoomUser();
+  await roomRequest(
+    `/rooms/${roomId}`,
+    user,
+    roomPatch({
+      [`removedStudents/${uid}`]: true,
+      [`students/${uid}`]: null,
+    }),
+  );
+}
+
+export async function deleteRoom(roomId: string, name: string) {
   const user = await getRoomUser();
   try {
-    await roomRequest(`/rooms/${roomId}`, user, { method: 'DELETE' });
+    await roomRequest(
+      '',
+      user,
+      roomPatch({ [`rooms/${roomId}`]: null, [`roomNames/${name}`]: null }),
+    );
   } catch (error) {
     const response = await roomRequest(`/rooms/${roomId}/meta/open`, user, {});
     if ((await response.json()) !== null) throw error;
   }
 }
 
-export async function checkRoom(roomId: string, signal: AbortSignal) {
-  signal.throwIfAborted();
-  const user = await getRoomUser();
-  const response = await roomRequest(`/rooms/${roomId}/meta/open`, user, { signal });
-  return (await response.json()) === true;
+async function readRoomId(name: string, user: User, signal?: AbortSignal) {
+  const response = await roomRequest(`/roomNames/${encodeURIComponent(name)}`, user, { signal });
+  const id: unknown = await response.json();
+  return typeof id === 'string' && /^[\da-f]{8}-(?:[\da-f]{4}-){3}[\da-f]{12}$/.test(id)
+    ? id
+    : null;
 }
 
-export async function createRoom(roomId: string, signal: AbortSignal) {
-  if (createdRooms.has(roomId)) return;
+export async function findRoomByName(name: string, signal: AbortSignal) {
+  signal.throwIfAborted();
+  return readRoomId(name, await getRoomUser(), signal);
+}
+
+async function confirmCreation(name: string, roomId: string, user: User, error: unknown) {
+  const existing = await readRoomId(name, user);
+  if (existing === roomId) return;
+  if (existing) throw new RoomError('Já existe uma sala com esse nome. Escolha outro.', 409);
+  throw error;
+}
+
+export async function createRoom(roomId: string, name: string) {
   const user = await getRoomUser();
-  await roomRequest(`/rooms/${roomId}/meta`, user, {
-    method: 'PUT',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ ownerUid: user.uid, open: true }),
-    signal,
+  const patch = roomPatch({
+    [`rooms/${roomId}/meta`]: { ownerUid: user.uid, open: true, name },
+    [`roomNames/${name}`]: roomId,
   });
-  createdRooms.add(roomId);
+  await roomRequest('', user, patch).catch((error: unknown) =>
+    confirmCreation(name, roomId, user, error),
+  );
 }
 
 export async function watchRoom(

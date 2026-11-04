@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, expect, it, vi } from 'vitest';
-import { checkRoom, createRoom, registerStudent, watchRoom } from './rooms';
+import { createRoom, findRoomByName, registerStudent, removeStudent, watchRoom } from './rooms';
 import { initialSave } from '../../game/progress';
 import { initialRoomStudent } from '../../game/room-progress';
 
@@ -38,30 +38,47 @@ it('grava os metadados da sala com o UID autenticado sem sobrescrever os alunos'
   const fetch = vi.fn().mockResolvedValue(new Response('{}'));
   vi.stubGlobal('fetch', fetch);
 
-  await createRoom('room-id', new AbortController().signal);
+  await createRoom('room-id', 'turma teste');
 
   expect(fetch).toHaveBeenCalledWith(
-    new URL('https://rooms.example.test/rooms/room-id/meta.json?auth=test-token'),
+    new URL('https://rooms.example.test/.json?auth=test-token'),
     expect.objectContaining({
-      method: 'PUT',
-      body: JSON.stringify({ ownerUid: 'teacher-uid', open: true }),
+      method: 'PATCH',
+      body: JSON.stringify({
+        'rooms/room-id/meta': { ownerUid: 'teacher-uid', open: true, name: 'turma teste' },
+        'roomNames/turma teste': 'room-id',
+      }),
     }),
   );
 });
 
-it('consulta apenas o indicador de sala aberta por REST', async () => {
+it('busca por nome no índice sem ler a coleção de salas', async () => {
+  const roomId = '11111111-1111-4111-8111-111111111111';
   const fetch = vi
     .fn()
-    .mockResolvedValueOnce(new Response('true'))
+    .mockResolvedValueOnce(new Response(JSON.stringify(roomId)))
     .mockResolvedValueOnce(new Response('null'));
   vi.stubGlobal('fetch', fetch);
   const { signal } = new AbortController();
 
-  await expect(checkRoom('room-id', signal)).resolves.toBe(true);
-  await expect(checkRoom('missing', signal)).resolves.toBe(false);
+  await expect(findRoomByName('turma teste', signal)).resolves.toBe(roomId);
+  await expect(findRoomByName('missing', signal)).resolves.toBe(null);
   expect(fetch).toHaveBeenCalledWith(
-    new URL('https://rooms.example.test/rooms/room-id/meta/open.json?auth=test-token'),
+    new URL('https://rooms.example.test/roomNames/turma%20teste.json?auth=test-token'),
     expect.objectContaining({ cache: 'no-store' }),
+  );
+});
+
+it('apaga o registro e bloqueia reenvios na mesma operação', async () => {
+  const fetch = vi.fn().mockResolvedValue(new Response('{}'));
+  vi.stubGlobal('fetch', fetch);
+  await removeStudent('room-id', 'student-id');
+  expect(fetch).toHaveBeenCalledWith(
+    new URL('https://rooms.example.test/rooms/room-id.json?auth=test-token'),
+    expect.objectContaining({
+      method: 'PATCH',
+      body: JSON.stringify({ 'removedStudents/student-id': true, 'students/student-id': null }),
+    }),
   );
 });
 

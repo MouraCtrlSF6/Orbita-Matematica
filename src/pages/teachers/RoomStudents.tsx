@@ -4,6 +4,7 @@ import type {
   RoomSector,
   RoomStudent,
 } from '../../game/room-progress';
+import { RemoveStudentButton } from './RemoveStudentButton';
 
 const statusLabels = {
   not_started: 'Não iniciado',
@@ -86,14 +87,19 @@ function StudentSector({ sector }: { sector: RoomSector }) {
   );
 }
 
+function StudentSectors({ student }: { student: RoomStudent }) {
+  return Object.entries(student.sectors).map(([id, sector]) => (
+    <StudentSector key={id} sector={sector} />
+  ));
+}
+
 function StudentDetails({ student }: { student: RoomStudent }) {
   return (
     <details>
       <summary>{student.name}</summary>
+      <RemoveStudentButton studentId={student.studentId} name={student.name} />
       <p>Setor atual · {student.currentSector ?? 'Fora dos setores'}</p>
-      {Object.entries(student.sectors).map(([id, sector]) => (
-        <StudentSector key={id} sector={sector} />
-      ))}
+      <StudentSectors student={student} />
     </details>
   );
 }

@@ -1,16 +1,17 @@
 import { useActionState, useEffect, useRef } from 'react';
 import { useSession } from '../../../app/contexts/hooks/useSession';
-import { checkRoom, registerStudent, RoomError } from '../../../infrastructure/firebase/rooms';
+import { findRoomByName, registerStudent, RoomError } from '../../../infrastructure/firebase/rooms';
 import { createBrowserGameStorage } from '../../../infrastructure/gameStorage';
 import { StudentRoom } from '../room-sync';
 import { initialSave } from '../../../game/progress';
 
-const roomIdPattern = /^[\da-f]{8}-(?:[\da-f]{4}-){3}[\da-f]{12}$/i;
+import { invalidRoomName, normalizeRoomName } from '../../../game/room-name';
 
-async function joinStudent(roomId: string, form: FormData, signal: AbortSignal) {
+async function joinStudent(roomName: string, form: FormData, signal: AbortSignal) {
   const name = readName(form);
-  if (!(await checkRoom(roomId, signal))) {
-    throw new RoomError('Sala não encontrada ou fechada. Confira o UID com o professor.');
+  const roomId = await findRoomByName(roomName, signal);
+  if (!roomId) {
+    throw new RoomError('Sala não encontrada ou fechada. Confira o nome com o professor.');
   }
   signal.throwIfAborted();
   return registerRoomStudent(roomId, name, form.has('resume'), signal);
@@ -55,16 +56,15 @@ function readName(form: FormData) {
   return name;
 }
 
-async function joinWithRoomId(
+async function joinWithRoomName(
   getSignal: () => AbortSignal,
   setStudentRoom: (room: StudentRoom) => void,
   _previous: string,
   form: FormData,
 ) {
-  const roomId = String(form.get('roomId')).trim().toLowerCase();
-  if (!roomIdPattern.test(roomId))
-    return 'Informe o UID completo da sala compartilhada pelo professor.';
-  return enterOpenRoom(roomId, form, getSignal(), setStudentRoom);
+  const roomName = normalizeRoomName(form.get('roomName'));
+  if (!roomName) return invalidRoomName;
+  return enterOpenRoom(roomName, form, getSignal(), setStudentRoom);
 }
 
 function useRoomRequestSignal() {
@@ -81,7 +81,7 @@ export function useJoinRoom() {
   const { setStudentRoom } = useSession();
   const getSignal = useRoomRequestSignal();
   const [error, joinRoom, joining] = useActionState(
-    joinWithRoomId.bind(null, getSignal, setStudentRoom),
+    joinWithRoomName.bind(null, getSignal, setStudentRoom),
     '',
   );
 

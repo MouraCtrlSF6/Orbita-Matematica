@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { createRoom, RoomError, watchRoom } from '../../../infrastructure/firebase/rooms';
+import { RoomError, watchRoom } from '../../../infrastructure/firebase/rooms';
 import type { RoomStudent } from '../../../game/room-progress';
 
 export type TeacherRoom =
@@ -30,19 +30,17 @@ function connectRoom(roomId: string, setRoom: (room: TeacherRoom) => void) {
   const fail = failConnection.bind(null, controller, setRoom);
   const update = (students: RoomStudent[]) => setRoom({ status: 'ready', students });
 
-  void createRoom(roomId, signal)
-    .then(() => watchRoom(roomId, signal, update, fail))
-    .catch(fail);
+  void watchRoom(roomId, signal, update, fail).catch(fail);
   return () => controller.abort();
 }
 
-export function useTeacherRoom(roomId: string, deleted: boolean) {
+export function useTeacherRoom(roomId: string, active: boolean) {
   const [room, setRoom] = useState<TeacherRoom>({ status: 'connecting' });
   const [attempt, setAttempt] = useState(0);
 
   useEffect(() => {
-    if (!deleted) return connectRoom(roomId, setRoom);
-  }, [roomId, attempt, deleted]);
+    if (active) return connectRoom(roomId, setRoom);
+  }, [roomId, attempt, active]);
 
   function retryRoom() {
     setRoom({ status: 'connecting' });

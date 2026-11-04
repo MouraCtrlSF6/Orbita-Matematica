@@ -1,5 +1,11 @@
-import { expect } from '@playwright/test';
+import { expect, type Page } from '@playwright/test';
 import { enterRoom, test } from '../../../e2e/rooms-fixture';
+
+async function createRoom(page: Page) {
+  await page.getByLabel('Nome da sala').fill('Turma Têste');
+  await page.getByRole('button', { name: 'Criar sala' }).click();
+  await expect(page.getByText('turma teste', { exact: true })).toBeVisible();
+}
 
 test('abre a escolha de perfil e navega pelos cards com teclado e histórico', async ({ page }) => {
   await page.goto('/');
@@ -9,6 +15,10 @@ test('abre a escolha de perfil e navega pelos cards com teclado e histórico', a
   await page.keyboard.press('Enter');
   await expect(page).toHaveURL(/\/teachers$/);
   await expect(page.getByRole('heading', { name: 'Área do professor' })).toBeVisible();
+  await page.getByLabel('Nome da sala').fill('Sala ocupada');
+  await page.getByRole('button', { name: 'Criar sala' }).click();
+  await expect(page.getByRole('alert')).toContainText('Já existe uma sala');
+  await createRoom(page);
   await expect(page.getByRole('status')).toHaveText('Registros de alunos: 0');
   await page.evaluate(() =>
     window.dispatchEvent(
@@ -48,6 +58,9 @@ test('abre a escolha de perfil e navega pelos cards com teclado e histórico', a
   await page.getByText('Estação · Em andamento').click();
   await page.getByText('Missão 1 · Em andamento').click();
   await expect(page.getByText('Resposta numérica · 4 · Incorreta')).toBeVisible();
+  page.once('dialog', (dialog) => void dialog.accept());
+  await page.getByRole('button', { name: 'Remover Aluno de teste da sala' }).click();
+  await expect(page.getByRole('status')).toHaveText('Registros de alunos: 0');
 
   await page.goBack();
   await expect(page).toHaveURL(/\/sign$/);
@@ -60,11 +73,11 @@ test('abre a escolha de perfil e navega pelos cards com teclado e histórico', a
   await studentCard.press('Enter');
   await expect(page).toHaveURL(/\/students$/);
   await expect(page.locator('main#main')).toHaveCount(0);
-  await page.getByLabel('UID da sala').fill('inválido');
+  await page.getByLabel('Nome da sala').fill('!!!');
   await page.getByLabel('Nome completo').fill('Aluno de teste');
   await page.getByRole('button', { name: 'Entrar na sala' }).click();
-  await expect(page.getByRole('alert')).toContainText('UID completo');
-  await page.getByLabel('UID da sala').fill('11111111-1111-4111-8111-111111111111');
+  await expect(page.getByRole('alert')).toContainText('Use de 3 a 48 caracteres');
+  await page.getByLabel('Nome da sala').fill('turma inexistente');
   await page.getByLabel('Nome completo').fill('Aluno de teste');
   await page.getByRole('button', { name: 'Entrar na sala' }).click();
   await expect(page.getByRole('alert')).toContainText('Sala não encontrada');
@@ -75,6 +88,7 @@ test('abre a escolha de perfil e navega pelos cards com teclado e histórico', a
 
 test('confirma a exclusão e não recria a sala ao voltar à rota', async ({ page }) => {
   await page.goto('/teachers');
+  await createRoom(page);
   page.once('dialog', (dialog) => void dialog.accept());
   await page.getByRole('button', { name: 'Excluir sala' }).click();
   await expect(page.getByRole('status')).toHaveText('Sala excluída.');

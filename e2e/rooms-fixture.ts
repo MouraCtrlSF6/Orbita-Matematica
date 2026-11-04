@@ -10,8 +10,15 @@ export async function mockRoomBackend(page: Page) {
             import { initialRoomStudent } from '/src/game/room-progress.ts';
             const studentId = crypto.randomUUID();
             export class RoomError extends Error {}
-            export async function checkRoom(id) { return id === ${JSON.stringify(roomId)}; }
-            export async function createRoom() {}
+            export async function findRoomByName(name) {
+              return name === 'turma teste' ? ${JSON.stringify(roomId)} : null;
+            }
+            export async function createRoom(id, name) {
+              if (name === 'sala ocupada') throw new RoomError('Já existe uma sala com esse nome.');
+            }
+            export async function removeStudent() {
+              window.dispatchEvent(new CustomEvent('mock-room-update', { detail: [] }));
+            }
             export async function registerStudent(id, name, save) {
               const student = initialRoomStudent(studentId, name, save);
               await window.recordStudentRegistration?.(student);
@@ -42,7 +49,7 @@ export const test = base.extend<{ mockRooms: void }>({
 });
 
 export async function enterRoom(page: Page, { name = 'Aluno de teste', resume = true } = {}) {
-  await page.getByLabel('UID da sala').fill(roomId);
+  await page.getByLabel('Nome da sala').fill('Turma Têste');
   await page.getByLabel('Nome completo').fill(name);
   if (resume) await page.getByRole('checkbox', { name: /Continuar meu progresso/ }).check();
   await page.getByRole('button', { name: 'Entrar na sala' }).click();

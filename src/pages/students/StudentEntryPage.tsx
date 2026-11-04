@@ -2,6 +2,7 @@ import { Link } from 'react-router';
 import { useSession } from '../../app/contexts/hooks/useSession';
 import { StudentsPage } from './StudentsPage';
 import { useJoinRoom } from './hooks/useJoinRoom';
+import { roomNameMaxLength } from '../../game/room-name';
 import './room-entry.css';
 
 function JoinButton({ joining }: { joining: boolean }) {
@@ -12,10 +13,10 @@ function JoinButton({ joining }: { joining: boolean }) {
   );
 }
 
-const roomIdField = (
+const roomNameField = (
   <>
-    <label htmlFor="room-id">UID da sala</label>
-    <input id="room-id" name="roomId" required autoCapitalize="none" spellCheck={false} />
+    <label htmlFor="room-name">Nome da sala</label>
+    <input id="room-name" name="roomName" required maxLength={roomNameMaxLength} />
   </>
 );
 
@@ -34,7 +35,7 @@ function RoomEntryForm() {
 
   return (
     <form className="room-entry-form" action={joinRoom}>
-      {roomIdField}
+      {roomNameField}
       {nameField}
       <JoinButton joining={joining} />
       {error && <p role="alert">{error}</p>}
@@ -44,7 +45,7 @@ function RoomEntryForm() {
 
 const roomInstructions = (
   <>
-    <p>Use o UID compartilhado pelo professor para começar a expedição.</p>
+    <p>Use o nome compartilhado pelo professor para começar a expedição.</p>
     <p>O professor verá seu nome, o progresso e as respostas enviadas nesta atividade.</p>
   </>
 );

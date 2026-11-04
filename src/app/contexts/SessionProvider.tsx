@@ -13,18 +13,22 @@ interface TeacherSessionProps extends SessionProviderProps {
   session: LocalSession;
 }
 
-async function deleteCurrentRoom(roomId: string, markDeleted: () => void) {
-  await deleteRoom(roomId);
-  markDeleted();
+async function deleteCurrentRoom(session: LocalSession) {
+  if (!session.teacherRoomName) return;
+  await deleteRoom(session.localSessionId, session.teacherRoomName);
+  session.markRoomDeleted();
 }
 
 function TeacherSession({ children, session }: TeacherSessionProps) {
-  const { room, retryRoom } = useTeacherRoom(session.localSessionId, session.roomDeleted);
+  const { room, retryRoom } = useTeacherRoom(
+    session.localSessionId,
+    Boolean(session.teacherRoomName) && !session.roomDeleted,
+  );
   const value: LocalSession = {
     ...session,
     teacherRoom: session.roomDeleted ? { status: 'deleted' } : room,
     retryRoom,
-    deleteRoom: deleteCurrentRoom.bind(null, session.localSessionId, session.markRoomDeleted),
+    deleteRoom: deleteCurrentRoom.bind(null, session),
   };
   return <SessionContext.Provider value={value}>{children}</SessionContext.Provider>;
 }
@@ -33,6 +37,7 @@ function useLocalSession() {
   const [localSessionId] = useState(() => crypto.randomUUID());
   const [studentRoom, setStudentRoom] = useState<StudentRoom | null>(null);
   const [roomDeleted, setRoomDeleted] = useState(false);
+  const [teacherRoomName, setTeacherRoomName] = useState<string | null>(null);
   const student = useMatch('/students');
   const teacher = useMatch('/teachers');
   const role = student ? 'student' : teacher ? 'teacher' : null;
@@ -44,8 +49,10 @@ function useLocalSession() {
       setStudentRoom,
       roomDeleted,
       markRoomDeleted: () => setRoomDeleted(true),
+      teacherRoomName,
+      setTeacherRoomName,
     }),
-    [role, localSessionId, studentRoom, roomDeleted],
+    [role, localSessionId, studentRoom, roomDeleted, teacherRoomName],
   );
 }
 

@@ -2,18 +2,17 @@ import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { Link, MemoryRouter, useNavigate } from 'react-router';
 import { expect, it, vi } from 'vitest';
-import { createRoom, watchRoom } from '../../infrastructure/firebase/rooms';
+import { watchRoom } from '../../infrastructure/firebase/rooms';
 import { SessionProvider } from './SessionProvider';
 import { useSession } from './hooks/useSession';
 
 vi.mock('../../infrastructure/firebase/rooms', async (importOriginal) => ({
   ...(await importOriginal<typeof import('../../infrastructure/firebase/rooms')>()),
-  createRoom: vi.fn(),
   watchRoom: vi.fn(),
 }));
 
 function SessionProbe() {
-  const { role, localSessionId } = useSession();
+  const { role, localSessionId, setTeacherRoomName } = useSession();
   const navigate = useNavigate();
 
   return (
@@ -21,6 +20,7 @@ function SessionProbe() {
       <output aria-label="Perfil">{role ?? 'seleção'}</output>
       <output aria-label="Sessão">{localSessionId}</output>
       <Link to="/students">Aluno</Link>
+      <button onClick={() => setTeacherRoomName('turma teste')}>Confirmar sala</button>
       <button onClick={() => void navigate(-1)}>Voltar</button>
       <button onClick={() => void navigate(1)}>Avançar</button>
     </>
@@ -38,7 +38,6 @@ function mountSession(path: string) {
 }
 
 it('deriva o perfil do histórico e mantém a sessão até remontar o aplicativo', async () => {
-  vi.mocked(createRoom).mockResolvedValue(undefined);
   vi.mocked(watchRoom).mockResolvedValue(undefined);
   const user = userEvent.setup();
   const { unmount } = mountSession('/sign');
@@ -59,8 +58,15 @@ it('deriva o perfil do histórico e mantém a sessão até remontar o aplicativo
   expect(screen.getByLabelText('Perfil')).toHaveTextContent('teacher');
   const roomId = screen.getByLabelText('Sessão').textContent;
   expect(roomId).not.toBe(session);
+  expect(watchRoom).not.toHaveBeenCalled();
+  await user.click(screen.getByRole('button', { name: 'Confirmar sala' }));
   await waitFor(() => expect(watchRoom).toHaveBeenCalledTimes(1));
-  expect(createRoom).toHaveBeenCalledWith(roomId, expect.any(AbortSignal));
+  expect(watchRoom).toHaveBeenCalledWith(
+    roomId,
+    expect.any(AbortSignal),
+    expect.any(Function),
+    expect.any(Function),
+  );
   const signal = vi.mocked(watchRoom).mock.calls[0][1];
   teacher.unmount();
   expect(signal.aborted).toBe(true);

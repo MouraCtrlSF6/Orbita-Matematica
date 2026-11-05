@@ -1,10 +1,11 @@
 import { defineConfig } from 'vitest/config';
 import react from '@vitejs/plugin-react';
+import tailwindcss from '@tailwindcss/vite';
 import { publishRouteEntries, routeInputs } from './src/app/routes/static-route-entries';
 
 export default defineConfig({
   base: './',
-  plugins: [react(), publishRouteEntries()],
+  plugins: [react(), tailwindcss(), publishRouteEntries()],
   build: {
     rollupOptions: {
       input: routeInputs,

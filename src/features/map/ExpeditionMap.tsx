@@ -25,7 +25,7 @@ function ExpeditionJourney({ expedition }: { expedition: Expedition }) {
     <>
       <SectorCelebration expedition={expedition} />
       <ExpeditionFlight expedition={expedition} />
-      <p className="exploration-note">
+      <p className="exploration-note text-[#afbed8] text-small text-center pt-4.5">
         O ritmo é seu. Sem perder vidas, com pistas em cada descoberta.
       </p>
     </>

@@ -26,7 +26,10 @@ function AppContent(props: AppContentProps) {
   );
 }
 const skipLink = (
-  <a className="skip-link" href="#main">
+  <a
+    className="skip-link fixed -top-25 left-5 [z-index:10] bg-white py-3 px-5 focus:top-3"
+    href="#main"
+  >
     Pular para o conteúdo
   </a>
 );

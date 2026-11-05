@@ -72,12 +72,26 @@ npx --yes firebase-tools@14 emulators:exec --project demo-orbita --only auth,dat
 - `src/infrastructure/`: leitura validada e gravação versionada do progresso local.
 - `src/features/`: mapa, tutorial, desafios, diário e ajustes; subcomponentes ficam junto da funcionalidade.
 - `src/pages/`: páginas de seleção, aluno e professor, com suas entradas HTML.
-- `src/app/routes/`: configuração, estilos e teste da navegação.
+- `src/app/routes/`: configuração e teste da navegação.
 - `src/app/contexts/`: contexto de sessão e seu teste.
 - `hooks/`: hooks locais dentro da página, funcionalidade ou contexto responsável.
 - `src/components/`: ícones e ilustrações SVG compartilhadas.
 - `public/`: arquivos estáticos. As fontes são empacotadas localmente pelo npm.
 - `e2e/`: testes de navegação. Testes unitários ficam próximos ao código testado.
+
+## Estilos e design system
+
+O Tailwind CSS 4 é compilado pelo plugin `@tailwindcss/vite`, sem dependência de CDN. A configuração fica em `src/styles/design-system.css`, com `@theme` para cores, fontes, tamanhos de texto, raios, breakpoints e a animação de flutuação. O arquivo também define as variantes `ds-*` para botões, estados, setores, exploração, texto ampliado e movimento reduzido. No Tailwind 4, essa configuração é feita em CSS, sem `tailwind.config.js`.
+
+Os componentes usam utilitários diretamente em `className`, incluindo variantes de estado e responsividade. Classes identificadoras como `flight-viewport` e `space-destination` permanecem para os controles, testes e seletores de contexto, sem folhas de estilo por funcionalidade. Manter os nomes completos dos utilitários no código para que o Tailwind possa detectá-los; não montar nomes de classes por interpolação de fragmentos.
+
+Somente `src/styles.css` e `src/styles/design-system.css` contêm CSS. O primeiro reúne imports, reset, tipografia global, foco, elementos nativos, layout de `main` e preferências globais de acessibilidade; o segundo reúne os tokens, variantes e keyframes. O Preflight fica desativado para preservar o reset existente. Gradientes, sombras, transformações e pseudo-elementos específicos usam utilitários e variantes em `className`.
+
+Preferir `rem` para tipografia, espaçamentos, dimensões, raios e efeitos da interface. A raiz usa `100%`, respeitando a preferência do navegador; o corpo usa `text-root` (`0.9375rem`), equivalente aos 15px anteriores quando a fonte padrão é 16px. A escala `--spacing: 0.25rem` permite utilitários como `p-6` e `gap-3`. Tamanhos de texto e raios recorrentes têm tokens nomeados no tema. Bordas finas de 1px, coordenadas da simulação e unidades internas de SVG são exceções intencionais.
+
+Os breakpoints também usam `rem`: `43.75rem`, `62.5rem`, `78.125rem` e `100rem`. Em media queries, essas unidades dependem do tamanho inicial de fonte do navegador. As variantes `ds-down-desktop`, `ds-down-tablet`, `ds-down-mobile` e `ds-up-wide` preservam os limites inclusivos e, com a preferência padrão, os cortes anteriores de 700, 1000, 1250 e 1600px. Veja [a revisão do design system](docs/design-system.md) para as decisões, exceções e oportunidades de manutenção.
+
+Ao alterar estilos, reutilize os tokens e variantes existentes, preserve os efeitos e valide teclado, foco, texto ampliado e movimento reduzido. O tema não altera as regras de progressão nem os dados salvos.
 
 ## Complexidade
 

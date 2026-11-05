@@ -45,8 +45,9 @@ export function isExploration(screen: Screen): boolean {
 }
 export function appClassName(state: GameState): string {
   const flags = {
-    'app-shell': true,
-    'exploration-shell': isExploration(state.screen),
+    'app-shell flex min-h-[100vh] ds-down-mobile:block': true,
+    'exploration-shell bg-space text-space-ink [&_main]:max-w-none [&_main]:pt-7 [&_main]:pr-7 [&_main]:pb-0 [&_main]:pl-7 ds-down-mobile:[&_main]:pt-5.5 ds-down-mobile:[&_main]:pr-3 ds-down-mobile:[&_main]:pb-0 ds-down-mobile:[&_main]:pl-3':
+      isExploration(state.screen),
     'large-text': state.save.preferences.largeText,
     'reduce-motion': state.save.preferences.reducedMotion,
   };

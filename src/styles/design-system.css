@@ -1,0 +1,152 @@
+@theme static {
+  --color-*: initial;
+  --color-white: #fff;
+  --color-transparent: transparent;
+  --color-current: currentColor;
+  --color-canvas: #f7f8fa;
+  --color-text: #2a2d3d;
+  --color-ink: #26283b;
+  --color-muted: #6a6e7b;
+  --color-line: #e6e7ed;
+  --color-purple: #7560c2;
+  --color-mint: #aee3ce;
+  --color-primary: #7860bc;
+  --color-primary-hover: #644ba7;
+  --color-focus: #7760c8;
+  --color-peach: #f1c3a8;
+  --color-peach-hover: #ffdac3;
+  --color-peach-ink: #382f35;
+  --color-danger: #a44051;
+  --color-selected: #f1ebfb;
+  --color-selected-border: #9077bc;
+  --color-success: #eaf5ef;
+  --color-success-border: #c8e6d6;
+  --color-success-ink: #2f624d;
+  --color-retry: #fff7e8;
+  --color-sidebar: #131626;
+  --color-space: #090d20;
+  --color-space-ink: #edf2ff;
+  --color-flight: #0c1329;
+  --color-flight-panel: #141e36;
+  --color-flight-ink: #eef3ff;
+  --color-flight-primary: #94f4d4;
+  --color-flight-primary-hover: #bcffe9;
+  --color-flight-primary-ink: #092c29;
+  --color-flight-secondary: #18223d;
+  --color-flight-secondary-border: #485773;
+  --color-flight-secondary-ink: #e0e9ff;
+  --color-flight-focus: #a6ffe0;
+  --color-sector-mint: #80c6ac;
+  --color-sector-purple: #b29bdd;
+  --color-sector-peach: #ddb094;
+  --color-planet-mint: #b9dece;
+  --color-planet-mint-dark: #5f9d86;
+  --color-planet-mint-light: #e0f1e8;
+  --color-planet-purple: #c6b4e5;
+  --color-planet-purple-dark: #8a72b5;
+  --color-planet-purple-light: #e1d5f3;
+  --color-planet-peach: #edcfad;
+  --color-planet-peach-dark: #c2936f;
+  --color-planet-peach-light: #fae7cc;
+  --font-body: 'DM Sans', sans-serif;
+  --font-heading: 'Manrope', sans-serif;
+  --spacing: 0.25rem;
+  --text-micro: 0.5rem;
+  --text-eyebrow: 0.5625rem;
+  --text-caption: 0.75rem;
+  --text-label: 0.6875rem;
+  --text-small: 0.875rem;
+  --text-support: 0.8125rem;
+  --text-body: 1rem;
+  --text-root: 0.9375rem;
+  --text-subheading: 1.0625rem;
+  --text-heading: 1.5rem;
+  --text-radar: 0.375rem;
+  --text-detail: 0.4375rem;
+  --text-section: 1.125rem;
+  --text-dialog-body: 1.125rem;
+  --text-profile: 1.171875rem;
+  --text-panel-heading: 1.1875rem;
+  --text-control: 1.25rem;
+  --text-challenge-compact: 1.3125rem;
+  --text-formula: 1.375rem;
+  --text-challenge: 1.4375rem;
+  --text-dialog-heading: 1.5625rem;
+  --text-brand-mobile: 1.625rem;
+  --text-page-compact: 1.6875rem;
+  --text-brand-compact: 1.75rem;
+  --text-guide: 1.8125rem;
+  --text-brand: 1.9375rem;
+  --text-hero-compact: 2.0625rem;
+  --text-summary: 2.1875rem;
+  --text-page: clamp(1.5625rem, 2.25vw, 2.1875rem);
+  --text-exploration-title: clamp(1.5625rem, 2.5vw, 2.375rem);
+  --text-hero: clamp(1.75rem, 2.8vw, 2.6875rem);
+  --radius-xs: 0.25rem;
+  --radius-sm: 0.3125rem;
+  --radius-subtle: 0.375rem;
+  --radius-control: 0.4375rem;
+  --radius-option: 0.5rem;
+  --radius-card: 0.875rem;
+  --radius-dialog: 1rem;
+  --radius-soft: 0.5625rem;
+  --radius-tile: 0.625rem;
+  --radius-icon: 0.6875rem;
+  --radius-panel: 0.75rem;
+  --radius-aside: 0.8125rem;
+  --radius-hero: 0.9375rem;
+  --radius-badge: 1.25rem;
+  --radius-status: 1.5rem;
+  --breakpoint-*: initial;
+  --breakpoint-mobile: 43.75rem;
+  --breakpoint-tablet: 62.5rem;
+  --breakpoint-desktop: 78.125rem;
+  --breakpoint-wide: 100rem;
+  --animate-space-float: float 7s ease-in-out infinite;
+
+  @keyframes float {
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-0.4375rem);
+    }
+  }
+}
+
+@custom-variant ds-hover (&:hover);
+@custom-variant ds-pressed (&:active);
+@custom-variant ds-disabled (&:disabled);
+@custom-variant ds-tone-purple (&:nth-of-type(3n + 1));
+@custom-variant ds-tone-blue (&:nth-of-type(3n + 2));
+@custom-variant ds-primary (&.primary);
+@custom-variant ds-peach (&.peach-button);
+@custom-variant ds-danger (&.danger);
+@custom-variant ds-flight-primary (&.flight-primary);
+@custom-variant ds-flight-secondary (&.flight-secondary);
+@custom-variant ds-selected (&.selected);
+@custom-variant ds-active (&.active);
+@custom-variant ds-success (&.success);
+@custom-variant ds-retry (&.retry);
+@custom-variant ds-locked (&.locked);
+@custom-variant ds-complete (&.complete);
+@custom-variant ds-next (&.next);
+@custom-variant ds-available (&.available);
+@custom-variant ds-purple (&.purple);
+@custom-variant ds-peach-sector (&.peach);
+@custom-variant ds-exploration (&:where(.exploration-shell, .exploration-shell *));
+@custom-variant ds-large-text (&:where(.large-text, .large-text *));
+@custom-variant ds-reduced-motion {
+  &:where(.reduce-motion, .reduce-motion *, .flight-reduced, .flight-reduced *) {
+    @slot;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    @slot;
+  }
+}
+
+@custom-variant ds-up-wide (@media (min-width: theme(--breakpoint-wide)));
+@custom-variant ds-down-desktop (@media (max-width: theme(--breakpoint-desktop)));
+@custom-variant ds-down-tablet (@media (max-width: theme(--breakpoint-tablet)));
+@custom-variant ds-down-mobile (@media (max-width: theme(--breakpoint-mobile)));

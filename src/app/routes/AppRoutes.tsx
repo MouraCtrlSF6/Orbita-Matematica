@@ -2,7 +2,6 @@ import { Navigate, useRoutes } from 'react-router';
 import { SignPage } from '../../pages/sign/SignPage';
 import { StudentEntryPage } from '../../pages/students/StudentEntryPage';
 import { TeachersPage } from '../../pages/teachers/TeachersPage';
-import './routes.css';
 
 const routes = [
   { path: '/sign', element: <SignPage /> },

@@ -5,7 +5,6 @@ import type { RoomStudent } from '../../game/room-progress';
 import { RoomStudents } from './RoomStudents';
 import { DeleteRoomButton } from './DeleteRoomButton';
 import { CreateRoomForm } from './CreateRoomForm';
-import './teachers.css';
 
 const connectingRoom = <p role="status">Abrindo sala…</p>;
 const deletedRoom = <p role="status">Sala excluída.</p>;
@@ -35,7 +34,10 @@ function RoomFailure({ message, retryRoom }: RoomFailureProps) {
   return (
     <>
       <p role="alert">{message}</p>
-      <button className="button primary" onClick={retryRoom}>
+      <button
+        className="button primary min-h-11 [border:0] rounded-control inline-flex justify-center items-center gap-[0.6875rem] py-3 px-5 text-small font-bold no-underline ds-primary:bg-primary ds-primary:text-white ds-primary:ds-hover:bg-primary-hover ds-primary:ds-hover:[transform:translateY(-0.0625rem)] ds-disabled:[opacity:0.48] ds-disabled:[transform:none]! ds-down-mobile:[.exploration-toolbar_&]:[flex:1_1_auto] [.feedback_&]:mt-[1.0625rem] [.tutorial-card_&]:mt-6"
+        onClick={retryRoom}
+      >
         Tentar novamente
       </button>
     </>
@@ -76,7 +78,7 @@ function TeacherRoomView() {
 
 export function TeachersPage() {
   return (
-    <main className="entry-page">
+    <main className="entry-page min-h-[100vh] grid content-center justify-items-center gap-4 p-6 text-center [&_code]:[overflow-wrap:anywhere]">
       <h1>Área do professor</h1>
       <TeacherRoomView />
       <Link to="/sign">Voltar à escolha de perfil</Link>

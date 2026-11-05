@@ -13,7 +13,10 @@ interface SpaceFlightProps extends FlightOptions {
 }
 function FlightInstructions({ id }: { id: string }) {
   return (
-    <p id={id} className="flight-instructions">
+    <p
+      id={id}
+      className="flight-instructions py-3 px-4.5 bg-flight-panel [border-bottom:1px_solid_#34425f] text-[#c6d3ec] text-small ds-down-mobile:p-3"
+    >
       Setas ou WASD para pilotar · Solte para parar · Aproxime-se e pressione Enter para entrar. Tab
       sai da pilotagem.
     </p>
@@ -33,7 +36,9 @@ export function SpaceFlight(props: SpaceFlightProps) {
   const helpId = useId();
   const reducedClass = props.reducedMotion || systemReduced ? 'flight-reduced' : '';
   return (
-    <div className={`flight ${reducedClass}`}>
+    <div
+      className={`flight text-flight-ink bg-flight [border:1px_solid_#43516e] rounded-card overflow-hidden [&_button:focus-visible]:[outline-color:var(--color-flight-focus)] [&_summary:focus-visible]:[outline-color:var(--color-flight-focus)] ${reducedClass}`}
+    >
       <ScenePanel {...props} {...flight} helpId={helpId} />
       <FlightPanels {...props} {...flight} />
     </div>

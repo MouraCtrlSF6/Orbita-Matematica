@@ -34,11 +34,12 @@ O botão na área de pilotagem, o ajuste Som da nave e o atalho M compartilham a
 - `src/game/`: tipos, avaliação matemática, progressão e reducer; manter as regras independentes de React e APIs do navegador.
 - `src/game/space.ts`: geometria do mundo, deslocamento, proximidade dos destinos e câmera, com funções puras. `validation.ts` reúne auxiliares de validação.
 - `src/infrastructure/`: validação e persistência do progresso; `storage.ts` usa uma porta de armazenamento e `gameStorage.ts` adapta o navegador e informa falhas.
-- `src/features/`: componentes, hooks e estilos por funcionalidade: mapa, tutorial, missões, descobertas e ajustes.
+- `src/features/`: componentes e hooks por funcionalidade: mapa, tutorial, missões, descobertas e ajustes. Os estilos específicos usam utilitários Tailwind em `className`.
 - `src/features/map/`: cena, destinos, radar e painéis; `flightController.ts` controla a simulação e os eventos, `useSpaceFlight.ts` conecta o ciclo de vida React e `thrusterSound.ts` adapta o áudio. Manter posições transitórias fora do estado de renderização React.
 - `src/pages/`: entradas HTML e componentes das páginas de seleção, aluno e professor. Os hooks de estado do jogo, foco e atalho de som ficam em `src/pages/students/hooks/`.
 - `src/app/`: estrutura visual do jogo e navegação interna da expedição. `routes/` reúne configuração e testes de rotas. `contexts/` reúne provedores e testes de contexto.
-- `src/components/`: ícones e ilustrações SVG compartilhados. Estilos globais ficam em `src/styles.css` e `src/styles/`.
+- `src/components/`: ícones e ilustrações SVG compartilhados. Regras globais de estilo ficam em `src/styles.css`.
+- `src/styles/design-system.css`: configuração CSS do Tailwind 4, com tokens `@theme`, variantes `ds-*` e keyframes. O plugin `@tailwindcss/vite` compila os estilos. Reutilizar tokens e variantes diretamente em `className`; manter nomes completos dos utilitários no código, sem interpolar fragmentos. Somente esse arquivo e `src/styles.css` contêm CSS; não criar folhas por funcionalidade. Preservar o reset existente, sem Preflight, e os valores e efeitos visuais. As variantes `ds-down-*` e `ds-up-wide` mantêm os limites inclusivos dos breakpoints. Classes identificadoras usadas por controles, testes e seletores de contexto devem continuar estáveis.
 - `src/test/`: configuração e auxiliares de teste; testes de comportamento ficam próximos do código correspondente.
 - `public/`: arquivos estáticos; fontes são empacotadas localmente por dependências npm.
 - `e2e/`: percursos de navegador com Playwright e verificações de acessibilidade com axe.
@@ -67,6 +68,8 @@ As métricas exigem a extensão `kisstkondoros.vscode-codemetrics` em `~/.vscode
 Usar dois espaços, aspas simples e ponto e vírgula. Componentes usam PascalCase; funções e variáveis, camelCase. Definir interfaces nomeadas para props e preferir enums para estados e variantes nomeados.
 
 Manter componentes e hooks específicos junto de sua funcionalidade. Importar módulos diretamente. Calcular valores derivados durante a renderização, evitando estado duplicado sincronizado por efeitos. Validar dados externos como `unknown` antes de utilizá-los.
+
+Preferir `rem` às medidas em `px` nos estilos da interface. Usar a escala de espaçamento do Tailwind e os tokens nomeados de tipografia e raios antes de valores arbitrários. A raiz permanece em `100%`; `text-root` no corpo define `0.9375rem`, preservando a fonte visual anterior sem fixar a preferência do navegador. Manter todos os breakpoints em `rem`, com limites inclusivos. Bordas finas de 1px, coordenadas da simulação e unidades internas de SVG são exceções; não converter a geometria do voo por substituição textual. Consultar `docs/design-system.md` ao revisar o tema.
 
 ## Conteúdo e regras matemáticas
 

@@ -1,4 +1,5 @@
 import { expect, type Page } from '@playwright/test';
+import AxeBuilder from '@axe-core/playwright';
 import { enterRoom, test } from '../../../e2e/rooms-fixture';
 
 async function createRoom(page: Page) {
@@ -56,10 +57,29 @@ test('opens profile selection and navigates the cards with the keyboard and hist
     ),
   );
   await expect(page.getByRole('status')).toHaveText('Registros de alunos: 1');
-  await page.getByText('Aluno de teste', { exact: true }).click();
-  await page.getByText('Estação · Em andamento').click();
-  await page.getByText('Missão 1 · Em andamento').click();
+  const studentTrigger = page.getByRole('button', { name: 'Aluno de teste', exact: true });
+
+  await studentTrigger.focus();
+  await page.keyboard.press('Enter');
+  await page.getByRole('button', { name: 'Estação · Em andamento', exact: true }).click();
+  await page.getByRole('button', { name: 'Missão 1 · Em andamento', exact: true }).click();
   await expect(page.getByText('Resposta numérica · 4 · Incorreta')).toBeVisible();
+  await studentTrigger.press('Space');
+  await expect(
+    page.getByRole('button', { name: 'Estação · Em andamento', exact: true }),
+  ).toBeHidden();
+  await studentTrigger.press('Enter');
+  await expect(page.getByText('Resposta numérica · 4 · Incorreta')).toBeVisible();
+  await page.setViewportSize({ width: 390, height: 844 });
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+  expect((await new AxeBuilder({ page }).analyze()).violations).toEqual([]);
+  await page.screenshot({
+    path: test.info().outputPath('student-collapsibles-mobile.png'),
+    fullPage: true,
+  });
+  page.once('dialog', (dialog) => void dialog.dismiss());
+  await page.getByRole('button', { name: 'Remover Aluno de teste da sala' }).click();
+  await expect(studentTrigger).toBeVisible();
   page.once('dialog', (dialog) => void dialog.accept());
   await page.getByRole('button', { name: 'Remover Aluno de teste da sala' }).click();
   await expect(page.getByRole('status')).toHaveText('Registros de alunos: 0');

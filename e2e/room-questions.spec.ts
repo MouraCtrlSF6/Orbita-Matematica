@@ -94,10 +94,12 @@ test('adds all four formats, validates builds and confirms removal', async ({ pa
   await expect(
     page.getByRole('heading', { name: 'Estação de lançamento · 26 questões' }),
   ).toBeVisible();
-  const question = page
-    .locator('details')
-    .filter({ has: page.locator('summary', { hasText: 'Questão de criação ·' }) });
-  await question.locator('summary').click();
+  const question = page.locator('.collapsible').filter({
+    has: page.getByRole('button', { name: 'Questão de criação · Criação guiada', exact: true }),
+  });
+  await question
+    .getByRole('button', { name: 'Questão de criação · Criação guiada', exact: true })
+    .click();
   await expect(question.getByText('Resposta esperada:', { exact: false })).toContainText(
     'x = 3 → 10',
   );

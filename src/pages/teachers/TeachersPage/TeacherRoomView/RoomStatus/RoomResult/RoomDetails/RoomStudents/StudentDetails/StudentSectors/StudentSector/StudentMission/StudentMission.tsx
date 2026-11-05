@@ -1,3 +1,4 @@
+import { Collapsible } from '../../../../../../../../../../../../components/Collapsible/Collapsible';
 import { MissionTitle } from './MissionTitle/MissionTitle';
 import type { RoomMission } from '../../../../../../../../../../../../game/room-progress';
 import { statusLabels } from '../statusLabels';
@@ -10,13 +11,13 @@ export interface StudentMissionProps {
 
 export function StudentMission({ mission }: StudentMissionProps) {
   return (
-    <details>
-      <summary>
-        Missão {mission.missionNumber} · {statusLabels[mission.missionStatus]}
-      </summary>
+    <Collapsible
+      title={`Missão ${mission.missionNumber} · ${statusLabels[mission.missionStatus]}`}
+      keepMounted
+    >
       <MissionTitle title={mission.missionTitle} />
       <MissionSupports mission={mission} />
       <MissionAnswers mission={mission} />
-    </details>
+    </Collapsible>
   );
 }

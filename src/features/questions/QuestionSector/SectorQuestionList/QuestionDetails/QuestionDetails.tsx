@@ -2,6 +2,8 @@ import type { Mission } from '../../../../../game/types';
 import { QuestionDescription } from './QuestionDescription/QuestionDescription';
 import { QuestionSolution } from './QuestionSolution/QuestionSolution';
 import { RemoveQuestionButton } from './RemoveQuestionButton/RemoveQuestionButton';
+import { Collapsible } from '../../../../../components/Collapsible/Collapsible';
+import { CollapsibleVariant } from '../../../../../components/Collapsible/collapsible-styles';
 
 interface QuestionDetailsProps {
   mission: Mission;
@@ -18,10 +20,10 @@ const formatNames = {
 
 export function QuestionDetails({ mission, pending, remove }: QuestionDetailsProps) {
   return (
-    <details className="rounded-card border border-line p-4 [overflow-wrap:anywhere]">
-      <summary>
-        {mission.title} · {formatNames[mission.kind]}
-      </summary>
+    <Collapsible
+      variant={CollapsibleVariant.Card}
+      title={`${mission.title} · ${formatNames[mission.kind]}`}
+    >
       <QuestionDescription mission={mission} />
       <QuestionSolution mission={mission} />
       <RemoveQuestionButton
@@ -30,6 +32,6 @@ export function QuestionDetails({ mission, pending, remove }: QuestionDetailsPro
         pending={pending}
         remove={remove}
       />
-    </details>
+    </Collapsible>
   );
 }

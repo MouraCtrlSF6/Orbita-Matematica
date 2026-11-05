@@ -45,9 +45,89 @@ As variantes `ds-down-*` e `ds-up-wide` preservam comparações inclusivas. O `r
 
 ## Oportunidades de manutenção
 
-A skill recomenda primitivos reutilizáveis com variantes tipadas. Há sequências de classes repetidas, especialmente nos botões, que podem ser extraídas para componentes compartilhados em uma refatoração específica. Isso reduz a possibilidade de divergência entre controles equivalentes.
+Os componentes compartilhados em `src/components/` oferecem variantes tipadas com os tokens existentes. Novos controles e substituições dos padrões repetidos devem reutilizar esses componentes. O formulário de criação de sala já usa `Button` e `Input`; os demais consumidores existentes mantêm sua implementação até serem migrados.
 
 Algumas cores locais da arte e seletores descendentes ainda usam valores arbitrários. Novas cores compartilhadas devem ganhar tokens semânticos; novos padrões recorrentes devem ganhar componentes. A existência de arte específica não justifica duplicar padrões de formulário ou de navegação.
+
+## Componentes compartilhados
+
+`Select`, `Tabs`, `Dialog`, `Checkbox`, `RadioGroup` e `Collapsible` usam [Radix Primitives](https://www.radix-ui.com/primitives/docs/overview/introduction), instalados por pacote. `Button` usa Radix Slot para composição com `asChild`; `Input` preserva o elemento HTML nativo. Não há tema adicional do Radix. As classes usam os tokens atuais, `class-variance-authority` organiza variantes de botão e campo, e `tailwind-merge` permite sobrescrever utilitários por `className`.
+
+Importar cada componente diretamente de `src/components/Component/Component.tsx`, sem arquivo de reexportação. Os enums ficam nos arquivos de estilos indicados abaixo; `ControlSize` e `ControlVariant` pertencem a `src/components/utils/control-styles.ts`.
+
+| Componente   | Configuração                                                                                               | Variantes                                                                                                                                      |
+| ------------ | ---------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- |
+| `Button`     | Props nativas, `ref`, `size`, `asChild`                                                                    | `ButtonVariant`: `Primary` (padrão), `Secondary`, `Peach`, `Danger`, `Ghost`, `FlightPrimary`, `FlightSecondary`, em `Button/button-styles.ts` |
+| `Input`      | Props nativas, `ref`, `size`; `nativeSize` preserva o atributo HTML `size`                                 | `ControlVariant`: `Default` (padrão), `Invalid`                                                                                                |
+| `Select`     | `label`, `options`, `value`/`defaultValue`, `onValueChange`, `name`, `required`, `disabled`, `size`        | `ControlVariant`: `Default` (padrão), `Invalid`                                                                                                |
+| `Tabs`       | `label`, `items` com `value`, `label`, `content`, `disabled`; props de Root do Radix                       | `TabsVariant`: `Pills` (padrão), `Underline`, em `Tabs/tab-styles.ts`                                                                          |
+| `Dialog`     | `title`, `description`, `trigger`, `children`, `open`/`defaultOpen`, `onOpenChange`, `closeLabel`          | `DialogVariant`: `Default` (padrão), `Wide`, em `Dialog/dialog-styles.ts`                                                                      |
+| `Checkbox`   | `label`, `checked`/`defaultChecked`, `onCheckedChange`, `name`, `value`, `required`, `disabled`, `size`    | `CheckboxVariant`: `Default` (padrão), `Card`, em `Checkbox/checkbox-styles.ts`                                                                |
+| `RadioGroup` | `label`, `options`, `value`/`defaultValue`, `onValueChange`, `name`, `required`, `disabled`, `orientation` | `RadioGroupVariant`: `Default` (padrão), `Cards`, em `RadioGroup/radio-group-styles.ts`                                                        |
+
+`Collapsible` fica em `src/components/Collapsible/Collapsible.tsx`. Recebe `title`, `children`, `open`/`defaultOpen`, `onOpenChange`, `disabled`, `className`, `triggerProps` e `contentProps`. `CollapsibleVariant`, em `Collapsible/collapsible-styles.ts`, oferece `Default` (borda de seleção e raio de opção), `Card` (superfície branca, borda e raio de card) e `Ghost` (sem borda). Todas usam os tokens existentes, gatilho com altura mínima de `2.75rem`, indicador de expansão e foco visível, sem animação.
+
+O gatilho é um botão nativo com `type="button"`, `aria-expanded` e `aria-controls` gerenciados pelo Radix; Enter e espaço alternam a expansão. `title` deve conter texto ou conteúdo não interativo. Ações como remover um aluno ou excluir uma questão ficam no conteúdo, fora do botão. Refs e atributos específicos podem ser passados por `triggerProps` e `contentProps`; props de Root, incluindo `ref`, são encaminhadas pelo componente.
+
+Por padrão, o conteúdo interno é desmontado ao fechar. `keepMounted` preserva seus campos e expansões internas e o oculta com `data-[state=closed]:hidden`, removendo os controles fechados da navegação por teclado e da árvore de acessibilidade. O acompanhamento usa essa opção para preservar setores e missões abertos ao recolher um aluno; as questões usam a variante `Card`.
+
+```tsx
+import { Collapsible } from '../components/Collapsible/Collapsible';
+import { CollapsibleVariant } from '../components/Collapsible/collapsible-styles';
+
+<Collapsible title="Detalhes da questão" variant={CollapsibleVariant.Card}>
+  <p>Enunciado e resposta esperada.</p>
+</Collapsible>;
+```
+
+`ControlSize` oferece `Small`, `Medium` (padrão) e `Large`. Botões e campos mantêm altura mínima de `2.75rem`; o checkbox dimensiona o indicador dentro de um rótulo com essa altura mínima. `Input` e `Select` com `Invalid` expõem `aria-invalid`; fornecer o texto de erro por `aria-describedby` (no Select, via `triggerProps`). `Input` precisa de um `<label>` associado ou nome acessível explícito. `label` no Select e RadioGroup fornece o nome acessível; renderizar também um rótulo visível quando o contexto não o fornecer.
+
+```tsx
+import { Button } from '../components/Button/Button';
+import { ButtonVariant } from '../components/Button/button-styles';
+import { Input } from '../components/Input/Input';
+import { Select } from '../components/Select/Select';
+import { Checkbox } from '../components/Checkbox/Checkbox';
+import { RadioGroup } from '../components/RadioGroup/RadioGroup';
+import { Tabs } from '../components/Tabs/Tabs';
+import { Dialog } from '../components/Dialog/Dialog';
+
+<Button type="submit" variant={ButtonVariant.Primary}>
+  Salvar
+</Button>;
+<label>
+  Nome
+  <Input name="name" required />
+</label>;
+<Select
+  label="Setor"
+  name="sector"
+  defaultValue="launch"
+  options={[{ value: 'launch', label: 'Lançamento' }]}
+/>;
+<Checkbox label="Continuar progresso" name="resume" />;
+<RadioGroup label="Alternativas" name="answer" options={[{ value: '6', label: 'Seis' }]} />;
+<Tabs
+  label="Seções da sala"
+  defaultValue="students"
+  items={[{ value: 'students', label: 'Alunos', content: <p>Alunos da sala</p> }]}
+/>;
+<Dialog
+  title="Ajustes"
+  description="Ajuste sua experiência."
+  trigger={<Button>Abrir ajustes</Button>}
+>
+  <p>Conteúdo do diálogo</p>
+</Dialog>;
+```
+
+`Button` tem `type="button"` por padrão; formulários devem declarar `type="submit"`. Com `asChild`, fornecer um único elemento que aceite props e ref, como um link; o comportamento de desabilitação continua dependendo do elemento composto. Os controles Radix usam callbacks de valor (`onValueChange`, `onCheckedChange`), sem fabricar eventos de inputs. Checkbox aceita também `checked="indeterminate"`. Não alternar um controle entre modo controlado e não controlado.
+
+`Select.options` usa valores não vazios e únicos, rótulos textuais e `disabled` opcional. `RadioGroup.options` usa valores únicos, rótulos React e `disabled` opcional. Select, Checkbox e RadioGroup participam de `FormData` por `name`, inclusive em formulários nativos. As abas gerenciam os vínculos entre aba e painel e a navegação por setas; `activationMode="manual"` permite ativação por Enter ou espaço.
+
+Dialog fornece título, descrição, botão de fechamento, Escape e controle de foco pelo Radix. O `trigger` deve aceitar props e ref; quando o diálogo é aberto externamente sem trigger, usar `contentProps.onCloseAutoFocus` para direcionar a restauração de foco. Select oferece `triggerProps` e `contentProps`; Dialog oferece `contentProps`. Eventos, atributos ARIA e refs específicos dessas partes podem ser configurados por essas props.
+
+Os portais de Select e Dialog usam `document.body` por padrão. Quando precisarem herdar preferências ou estilos limitados a um ancestral, passar `portalContainer` para um elemento nesse contexto. Os controles não adicionam animações; o botão respeita `ds-reduced-motion`, e o CSS global continua atendendo a preferência do sistema. A fixture `e2e/fixtures/components.html` é usada somente nos testes locais e não é uma entrada do build de produção.
 
 ## Verificação
 

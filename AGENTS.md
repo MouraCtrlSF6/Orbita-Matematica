@@ -46,7 +46,7 @@ O botão na área de pilotagem, o ajuste Som da nave e o atalho M compartilham a
 
 ## Estrutura e responsabilidades
 
-- `src/content/problems.json`: fonte única das missões jogáveis, organizada em seções na versão 3 do catálogo.
+- `src/content/problems.json`: fonte do catálogo padrão das salas, organizada em seções na versão 3 do catálogo.
 - `src/content/mission-catalog.ts`: valida o catálogo recebido como `unknown`, incluindo campos, expressões, IDs únicos e correspondência e ordem dos setores.
 - `src/content/missions.ts`: carrega o JSON por meio do validador e exporta `missions` e `missionById`.
 - `src/content/sectors.ts`: define os setores e sua ordem no percurso.
@@ -162,3 +162,14 @@ Em alterações apenas de documentação, verificar os caminhos, comandos e afir
 ## Commits e pull requests
 
 Usar títulos curtos no imperativo, como `Add guided algebra mission`. Descrever comportamento, validação, referências a issues quando existirem e capturas de tela para mudanças visuais. Verificar a disponibilidade e o estado do Git antes de criar commits ou pull requests; esta cópia local pode não conter metadados de repositório.
+
+## Catálogo de questões por sala
+
+- A área do professor possui as seções Alunos e Questões. Os componentes de autoria e consulta pertencem a `src/features/questions/`; o carregamento e as gravações pertencem ao painel da sala.
+- `src/game/room-catalog.ts` define catálogo, revisão, serialização e validação. O registro `rooms/{roomId}/catalog` contém revisão e as listas dos três setores serializadas como strings JSON para preservar arrays vazios no Realtime Database. Não criar novos setores.
+- Novas salas recebem o catálogo padrão atomicamente com metadados e índice de nome. Salas antigas sem catálogo usam o padrão até a primeira alteração. Escritas usam ETag e revisão; conflitos exigem recarregar antes de repetir a alteração.
+- O aluno carrega e valida o catálogo uma vez antes do registro na sala. A cópia da partida fica em `StudentRoom.missions`, em memória. Não acrescentar assinaturas ou polling de questões nos alunos. Sair da sala limpa a sessão em memória; receber outra revisão exige nova entrada. Saves não contêm o catálogo.
+- Regras puras aceitam o catálogo como argumento. As telas usam o contexto de catálogo da partida. Os padrões dos argumentos mantêm compatibilidade com testes e uso isolado, mas o jogo da sala deve fornecer suas próprias missões.
+- A autoria aceita os quatro formatos existentes; a criação guiada permanece fixa em `2 × x + 4`. Montagens validam peças e equivalência algébrica sem `eval`, inclusive peças repetidas. Não mudar o catálogo padrão ao personalizar uma sala.
+- Exclusões preservam respostas remotas e conclusões históricas por ID. Ao reencontrar um aluno, acrescentar missões ausentes sem sobrescrever tentativas. Totais, mapas e desbloqueios consideram somente a cópia da partida. Setores e salas vazios são válidos.
+- Revisar regras e validadores em conjunto. Publicar as regras separadamente do frontend; não afirmar que a configuração remota foi atualizada com base em testes locais.

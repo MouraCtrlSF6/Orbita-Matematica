@@ -1,6 +1,6 @@
 import { useSession } from '../../../../../../../app/contexts/hooks/useSession';
 import type { RoomStudent } from '../../../../../../../game/room-progress';
-import { RoomStudents } from './RoomStudents/RoomStudents';
+import { RoomSections } from './RoomSections/RoomSections';
 import { DeleteRoomButton } from './DeleteRoomButton/DeleteRoomButton';
 import { RoomName } from './RoomName/RoomName';
 
@@ -14,7 +14,7 @@ export function RoomDetails({ students }: RoomDetailsProps) {
   return (
     <>
       <RoomName />
-      <RoomStudents students={students} />
+      <RoomSections students={students} />
       {deleteRoom && <DeleteRoomButton remove={deleteRoom} />}
     </>
   );

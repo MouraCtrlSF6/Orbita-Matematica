@@ -1,5 +1,6 @@
+import { useMissionCatalog } from '../../../../pages/students/hooks/useMissionCatalog';
 import { useMissionContext } from '../hooks/useMissionContext';
-import { missions } from '../../../../content/missions';
+
 import { sectors } from '../../../../content/sectors';
 import type { Mission } from '../../../../game/types';
 import { MissionBack } from './MissionBack/MissionBack';
@@ -14,6 +15,8 @@ function sectorForMission(mission: Mission) {
 }
 
 export function MissionHeading({ onBack }: MissionHeadingProps) {
+  const missions = useMissionCatalog();
+
   const { mission, session } = useMissionContext();
 
   const sector = sectorForMission(mission);

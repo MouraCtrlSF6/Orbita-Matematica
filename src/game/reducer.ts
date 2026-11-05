@@ -1,6 +1,6 @@
-import { missionById, missions } from '../content/missions';
+import { missions } from '../content/missions';
 import { initialSave, isMissionUnlocked, isSectorUnlocked } from './progress';
-import type { MissionResult, SavedGame } from './types';
+import type { Mission, MissionResult, SavedGame } from './types';
 
 export enum Screen {
   Map = 'map',
@@ -30,30 +30,45 @@ export type GameAction =
 
 type ActionOf<T extends GameAction['type']> = Extract<GameAction, { type: T }>;
 type ActionHandlers = {
-  [T in GameAction['type']]: (state: GameState, action: ActionOf<T>) => GameState;
+  [T in GameAction['type']]: (
+    state: GameState,
+    action: ActionOf<T>,
+    catalog: Mission[],
+  ) => GameState;
 };
 function navigate(state: GameState, action: ActionOf<'navigate'>): GameState {
   return { ...state, screen: action.screen, missionId: null };
 }
-function enterSector(state: GameState, action: ActionOf<'enter-sector'>): GameState {
-  if (!state.save.tutorialDone || !isSectorUnlocked(action.id, state.save.completed)) return state;
+function enterSector(
+  state: GameState,
+  action: ActionOf<'enter-sector'>,
+  catalog: Mission[],
+): GameState {
+  if (!state.save.tutorialDone || !isSectorUnlocked(action.id, state.save.completed, catalog))
+    return state;
   return { ...state, screen: Screen.Sector, sectorId: action.id, missionId: null };
 }
-function startMission(state: GameState, action: ActionOf<'start'>): GameState {
-  if (!missionById.has(action.id) || !isMissionUnlocked(action.id, state.save.completed))
-    return state;
+function startMission(state: GameState, action: ActionOf<'start'>, catalog: Mission[]): GameState {
+  const mission = catalog.find((item) => item.id === action.id);
+
+  if (!mission || !isMissionUnlocked(action.id, state.save.completed, catalog)) return state;
   return {
     ...state,
     screen: Screen.Mission,
     missionId: action.id,
-    sectorId: missionById.get(action.id)!.sectorId,
+    sectorId: mission.sectorId,
     save: { ...state.save, lastMissionId: action.id },
   };
 }
-function completeMission(state: GameState, action: ActionOf<'complete'>): GameState {
-  if (!state.missionId || !isMissionUnlocked(state.missionId, state.save.completed)) return state;
+function completeMission(
+  state: GameState,
+  action: ActionOf<'complete'>,
+  catalog: Mission[],
+): GameState {
+  if (!state.missionId || !isMissionUnlocked(state.missionId, state.save.completed, catalog))
+    return state;
   const completed = { ...state.save.completed, [state.missionId]: action.result };
-  const next = missions.find((mission) => !completed[mission.id]);
+  const next = catalog.find((mission) => !completed[mission.id]);
   return { ...state, save: { ...state.save, completed, lastMissionId: next?.id ?? null } };
 }
 const handlers: ActionHandlers = {
@@ -87,8 +102,16 @@ const handlers: ActionHandlers = {
   }),
   reset: () => ({ save: initialSave(), screen: Screen.Map, missionId: null, sectorId: null }),
 };
-export function gameReducer(state: GameState, action: GameAction): GameState {
+export function gameReducer(
+  state: GameState,
+  action: GameAction,
+  catalog: Mission[] = missions,
+): GameState {
   // The mapped handler table enforces every action's payload; indexing preserves that pair at runtime.
-  const handler = handlers[action.type] as (state: GameState, action: GameAction) => GameState;
-  return handler(state, action);
+  const handler = handlers[action.type] as (
+    state: GameState,
+    action: GameAction,
+    catalog: Mission[],
+  ) => GameState;
+  return handler(state, action, catalog);
 }

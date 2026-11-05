@@ -1,3 +1,4 @@
+import { useMissionCatalog } from '../../../pages/students/hooks/useMissionCatalog';
 import { useMemo } from 'react';
 import { Expedition, mapWorld, type ExpeditionMapProps } from './expedition';
 import { ExpeditionHeader } from './ExpeditionHeader/ExpeditionHeader';
@@ -5,9 +6,11 @@ import { ExpeditionToolbar } from './ExpeditionToolbar/ExpeditionToolbar';
 import { ExpeditionJourney } from './ExpeditionJourney/ExpeditionJourney';
 
 export function ExpeditionMap(props: ExpeditionMapProps) {
-  const world = useMemo(() => mapWorld(props.sectorId), [props.sectorId]);
+  const catalog = useMissionCatalog();
 
-  const expedition = new Expedition(props, world);
+  const world = useMemo(() => mapWorld(props.sectorId, catalog), [props.sectorId, catalog]);
+
+  const expedition = new Expedition(props, world, catalog);
 
   return (
     <section className="exploration-screen" aria-labelledby="exploration-title">

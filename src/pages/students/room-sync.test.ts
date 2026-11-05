@@ -26,6 +26,7 @@ it('imports saved completions and supports without inventing answers', () => {
   const record = student.sectors[mission.sectorId].missions[mission.id];
   expect(record).toEqual({
     missionNumber: 1,
+    missionTitle: mission.title,
     missionStatus: 'completed',
     usedHints: true,
     usedVisuals: true,

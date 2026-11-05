@@ -1,3 +1,5 @@
+import { missions as defaultMissions } from '../../content/missions';
+import type { Mission } from '../../game/types';
 import {
   sectorStatus,
   type MissionActivity,
@@ -78,6 +80,7 @@ export class StudentRoom {
     readonly roomId: string,
     private student: RoomStudent,
     readonly storage = createBrowserGameStorage(roomId),
+    readonly missions: Mission[] = defaultMissions,
   ) {
     this.writes = new StudentWrites((patch) => updateStudent(roomId, student.studentId, patch));
   }
@@ -149,7 +152,13 @@ export class StudentRoom {
     const path = `sectors/${sectorId}/missions/${missionId}`;
 
     if (answer.correct) mission.missionStatus = 'completed';
-    sector.sectorStatus = sectorStatus(sector.missions);
+    sector.sectorStatus = sectorStatus(
+      Object.fromEntries(
+        this.missions
+          .filter((item) => item.sectorId === sectorId)
+          .map((item) => [item.id, sector.missions[item.id]]),
+      ),
+    );
     this.writes.enqueue({
       [`${path}/providedAnswers/${key}`]: answer,
       [`${path}/missionStatus`]: mission.missionStatus,

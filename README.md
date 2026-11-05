@@ -1,6 +1,6 @@
 # Órbita Matemática
 
-Jogo educativo em React para explorar expressões algébricas no 8º ano. A expedição espacial contém tutorial interativo, três setores e 52 missões, com enunciados curtos, objetos visuais, pistas progressivas e criação guiada de um problema.
+Jogo educativo em React para explorar expressões algébricas no 8º ano. A expedição espacial contém tutorial interativo, três setores e um catálogo padrão de 52 missões, com enunciados curtos, objetos visuais, pistas progressivas e criação guiada de um problema.
 
 ## Explorar com a nave
 
@@ -132,7 +132,7 @@ Todos usam os campos de `Mission`. Os 37 exercícios de `docs/Equacoes_do_primei
 
 Nas equações, `formula` preserva a igualdade original, `expression` representa o lado esquerdo e `variable` contém a solução para conferir a substituição. A validação usa `correctChoice`, pois o valor do lado esquerdo pode ser diferente de x. Nos cálculos sem incógnita, `variable` é 0 e não participa da expressão. Os modelos visuais de resultados negativos usam objetos que representam −1, mantendo as quantidades de objetos não negativas.
 
-`problems.json` é a fonte única das missões jogáveis. `missions.ts` importa o JSON, valida os objetos e exporta `missions` e `missionById`, preservando a ordem das seções e dos problemas. O carregamento rejeita campos inválidos, IDs repetidos e setores fora da ordem definida em `sectors.ts`. Os enunciados e apoios continuam sujeitos à revisão pedagógica com a professora.
+`problems.json` é a fonte do catálogo padrão das salas. `missions.ts` importa o JSON, valida os objetos e exporta `missions` e `missionById`, preservando a ordem das seções e dos problemas. O carregamento rejeita campos inválidos, IDs repetidos e setores fora da ordem definida em `sectors.ts`. Os enunciados e apoios continuam sujeitos à revisão pedagógica com a professora.
 
 1. Adicione uma missão à lista `problems` do setor correspondente em `src/content/problems.json`, com identificador único e estável e na ordem desejada. Informe setor, objetivo, referência curricular, enunciado, expressão, representação visual, três dicas e explicação. O catálogo preserva as três dicas; o jogo exibe somente a primeira nos setores de lançamento e oficina e as duas primeiras na base, conforme `hintLimit` em `sectors.ts`.
 2. Escolha um formato existente: alternativas, resposta numérica, montagem ou criação guiada. Alternativas devem ter uma única resposta correta; montagens devem incluir as ordens matematicamente equivalentes.
@@ -156,3 +156,17 @@ O navegador guarda conclusões, apoios e preferências no `sessionStorage`, por 
 ## Publicação
 
 O workflow do GitHub Pages publica `dist/`. O build usa caminhos relativos e inclui um `index.html` por rota para permitir links diretos e recarregamento sob o subdiretório do repositório. O servidor estático pode acrescentar a barra final ao abrir uma rota diretamente.
+
+## Questões por sala
+
+Após criar uma sala, o professor alterna entre **Alunos** (acompanhamento em tempo real) e **Questões**. A lista de questões é agrupada nos três setores existentes. Cada nova sala recebe uma cópia completa do catálogo padrão; o professor pode consultar os detalhes, adicionar questões ao final de um setor ou excluir questões com confirmação. Essas alterações não afetam outras salas nem o arquivo `problems.json`. Não há criação de setores, edição ou reordenação nesta versão.
+
+O formulário aceita os quatro formatos atuais, com um editor de expressões por números, variável e operações. Alternativas exigem uma única opção correta. Respostas numéricas exigem resultados inteiros não negativos. Montagens usam peças separadas por `|` e ordens equivalentes verificadas algebricamente; cada ordem deve usar as peças disponíveis. A criação guiada permanece restrita a `2 × x + 4`, com cristais ou peças e valores de x entre 2 e 4. Conferir enunciados, resultados, dicas e modelos visuais continua sendo responsabilidade pedagógica do professor.
+
+O aluno consulta as questões **uma única vez ao entrar na sala**, antes de confirmar o registro. O catálogo da partida fica em memória, separado do save. Não há assinatura nem consulta periódica de questões para alunos. Quem já está jogando mantém suas questões mesmo após alterações do professor; para recebê-las, use **Sair da sala** e entre novamente, ou recarregue e preencha a entrada. A retomada de progresso continua sendo uma escolha explícita.
+
+Conclusões válidas são preservadas por ID, incluindo questões criadas pelo professor. Questões excluídas deixam de contar no percurso na próxima entrada, mas suas respostas históricas não são apagadas. Novas questões permanecem pendentes e seguem o desbloqueio sequencial. Setores vazios permitem passagem quando os anteriores forem concluídos; uma sala totalmente vazia continua navegável.
+
+O banco armazena `rooms/{roomId}/catalog`, com revisão numérica e três listas de missões serializadas como strings JSON, uma por setor. Essa representação preserva listas vazias e arrays que o Realtime Database converteria ou removeria. Os clientes validam o conteúdo recebido; as regras restringem proprietário, revisão, setores e tamanho dos registros. As gravações condicionais por ETag detectam alterações concorrentes entre abas. Salas antigas sem catálogo usam os dados padrão e materializam sua cópia na primeira alteração.
+
+**Publicação:** publique as novas regras de `database.rules.json` separadamente do frontend. O workflow do GitHub Pages não publica regras. A gravação do catálogo exige essas regras atualizadas; os registros continuam sujeitos à leitura pública já configurada no banco.

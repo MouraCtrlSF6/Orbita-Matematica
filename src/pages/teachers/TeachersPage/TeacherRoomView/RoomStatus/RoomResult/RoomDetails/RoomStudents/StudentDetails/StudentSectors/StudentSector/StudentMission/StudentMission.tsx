@@ -1,3 +1,4 @@
+import { MissionTitle } from './MissionTitle/MissionTitle';
 import type { RoomMission } from '../../../../../../../../../../../../game/room-progress';
 import { statusLabels } from '../statusLabels';
 import { MissionSupports } from './MissionSupports/MissionSupports';
@@ -13,6 +14,7 @@ export function StudentMission({ mission }: StudentMissionProps) {
       <summary>
         Missão {mission.missionNumber} · {statusLabels[mission.missionStatus]}
       </summary>
+      <MissionTitle title={mission.missionTitle} />
       <MissionSupports mission={mission} />
       <MissionAnswers mission={mission} />
     </details>

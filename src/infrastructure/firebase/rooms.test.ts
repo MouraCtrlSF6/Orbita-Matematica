@@ -1,3 +1,4 @@
+import { defaultRoomCatalog, storeRoomCatalog } from '../../game/room-catalog';
 import { afterEach, beforeEach, expect, it, vi } from 'vitest';
 import { createRoom, findRoomByName, registerStudent, removeStudent, watchRoom } from './rooms';
 import { initialSave } from '../../game/progress';
@@ -47,6 +48,7 @@ it('grava os metadados da sala com o UID autenticado sem sobrescrever os alunos'
       body: JSON.stringify({
         'rooms/room-id/meta': { ownerUid: 'teacher-uid', open: true, name: 'turma teste' },
         'roomNames/turma teste': 'room-id',
+        'rooms/room-id/catalog': storeRoomCatalog(defaultRoomCatalog()),
       }),
     }),
   );

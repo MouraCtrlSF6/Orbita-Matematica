@@ -1,8 +1,11 @@
+import { missions } from '../../content/missions';
+import { defaultRoomCatalog, storeRoomCatalog } from '../../game/room-catalog';
+import { mergeStudentMissions } from '../../game/merge-student-missions';
 import { inMemoryPersistence, initializeAuth, signInAnonymously, type User } from 'firebase/auth';
 import { initializeFirebase } from './firebase-app';
 import { initialRoomStudent, type RoomStudent } from '../../game/room-progress';
-import type { SavedGame } from '../../game/types';
-import { isRoomStudent, readRoomStudents } from './room-records';
+import type { Mission, SavedGame } from '../../game/types';
+import { readRoomStudent, readRoomStudents } from './room-records';
 
 export class RoomError extends Error {
   constructor(
@@ -22,7 +25,7 @@ function getRoomBackend() {
   return { app, databaseURL: app.options.databaseURL };
 }
 
-async function getRoomUser() {
+export async function getRoomUser() {
   const { app } = getRoomBackend();
   const auth = initializeAuth(app, { persistence: inMemoryPersistence });
   if (auth.currentUser) return auth.currentUser;
@@ -35,7 +38,12 @@ async function getRoomUser() {
   return pendingSignIn;
 }
 
-async function roomRequest(path: string, user: User, options: RequestInit, acceptedStatus = 0) {
+export async function roomRequest(
+  path: string,
+  user: User,
+  options: RequestInit,
+  acceptedStatus = 0,
+) {
   const { databaseURL } = getRoomBackend();
   const url = new URL(`${path}.json`, databaseURL);
   url.searchParams.set('auth', await user.getIdToken());
@@ -61,9 +69,10 @@ export async function registerStudent(
   name: string,
   save: SavedGame,
   signal: AbortSignal,
+  catalog: Mission[] = missions,
 ) {
   const user = await getRoomUser();
-  const student = initialRoomStudent(user.uid, name, save);
+  const student = initialRoomStudent(user.uid, name, save, catalog);
   const path = studentPath(roomId, user.uid);
   const response = await roomRequest(
     path,
@@ -76,13 +85,18 @@ export async function registerStudent(
     },
     412,
   );
-  return response.status === 412 ? readOwnStudent(path, user, signal) : student;
+  if (response.status !== 412) return student;
+  const existing = await readOwnStudent(path, user, signal);
+  const { merged, patch } = mergeStudentMissions(existing, student);
+
+  if (Object.keys(patch).length) await roomRequest(path, user, roomPatch(patch, signal));
+  return merged;
 }
 
 async function readOwnStudent(path: string, user: User, signal: AbortSignal) {
   const response = await roomRequest(path, user, { signal });
-  const student: unknown = await response.json();
-  if (isRoomStudent(student) && student.studentId === user.uid) return student;
+  const student = readRoomStudent(await response.json());
+  if (student?.studentId === user.uid) return student;
   throw new RoomError('Não foi possível confirmar seu registro na sala.');
 }
 
@@ -156,6 +170,7 @@ export async function createRoom(roomId: string, name: string) {
   const patch = roomPatch({
     [`rooms/${roomId}/meta`]: { ownerUid: user.uid, open: true, name },
     [`roomNames/${name}`]: roomId,
+    [`rooms/${roomId}/catalog`]: storeRoomCatalog(defaultRoomCatalog()),
   });
   await roomRequest('', user, patch).catch((error: unknown) =>
     confirmCreation(name, roomId, user, error),

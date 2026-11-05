@@ -1,4 +1,5 @@
-import { missions } from '../../../../../../content/missions';
+import { useMissionCatalog } from '../../../../../../pages/students/hooks/useMissionCatalog';
+
 import type { SavedGame, Sector } from '../../../../../../game/types';
 import { DiscoveryList } from './DiscoveryList/DiscoveryList';
 
@@ -8,6 +9,8 @@ export interface SectorDiscoveriesProps {
 }
 
 export function SectorDiscoveries({ sector, save }: SectorDiscoveriesProps) {
+  const missions = useMissionCatalog();
+
   const items = missions.filter((item) => item.sectorId === sector.id);
 
   return (

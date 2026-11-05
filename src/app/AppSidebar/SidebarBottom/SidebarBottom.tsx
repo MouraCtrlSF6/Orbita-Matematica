@@ -1,3 +1,4 @@
+import { LeaveRoomLink } from './LeaveRoomLink/LeaveRoomLink';
 import { useStudentGame } from '../../../pages/students/hooks/useStudentGame';
 import { Icon } from '../../../components/Icon/Icon';
 import { IconName } from '../../../components/icon-names';
@@ -37,6 +38,7 @@ export function SidebarBottom() {
         <Icon name={IconName.Settings} />
         Ajustes da expedição
       </button>
+      <LeaveRoomLink />
       {sidebarFooter}
     </div>
   );

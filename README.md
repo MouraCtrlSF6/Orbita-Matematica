@@ -70,14 +70,33 @@ npx --yes firebase-tools@14 emulators:exec --project demo-orbita --only auth,dat
 - `src/content/`: setores e missões tipadas, objetivos, habilidades, dicas e explicações.
 - `src/game/`: matemática, progresso, contratos e reducer puro, sem React ou APIs do navegador.
 - `src/infrastructure/`: leitura validada e gravação versionada do progresso local.
-- `src/features/`: mapa, tutorial, desafios, diário e ajustes; subcomponentes ficam junto da funcionalidade.
+- `src/features/`: mapa, tutorial, desafios, diário e ajustes; cada componente tem uma pasta própria e seus filhos exclusivos ficam em subpastas, refletindo a composição da interface.
 - `src/pages/`: páginas de seleção, aluno e professor, com suas entradas HTML.
 - `src/app/routes/`: configuração e teste da navegação.
 - `src/app/contexts/`: contexto de sessão e seu teste.
-- `hooks/`: hooks locais dentro da página, funcionalidade ou contexto responsável.
+- `hooks/`, `contexts/` e `utils/`: arquivos privados dentro da pasta do componente responsável; arquivos usados por vários ramos ficam no escopo comum mais próximo.
 - `src/components/`: ícones e ilustrações SVG compartilhadas.
 - `public/`: arquivos estáticos. As fontes são empacotadas localmente pelo npm.
 - `e2e/`: testes de navegação. Testes unitários ficam próximos ao código testado.
+
+Por exemplo, os controles e a lista de destinos pertencem a `PilotActions`:
+
+```text
+src/features/map/SpaceFlight/FlightPanels/PilotActions/
+├── PilotActions.tsx
+├── DestinationList/
+│   ├── DestinationList.tsx
+│   └── DestinationLinks/
+│       ├── DestinationLinks.tsx
+│       └── DestinationLink/
+│           └── DestinationLink.tsx
+└── FlightControls/
+    ├── FlightControls.tsx
+    └── FlightControl/
+        └── FlightControl.tsx
+```
+
+Componentes compartilhados entre funcionalidades, como `SpaceFlight` e `ObjectModel`, permanecem na raiz da funcionalidade responsável, com seus próprios descendentes. As pastas de domínio, conteúdo e infraestrutura mantêm suas responsabilidades.
 
 ## Estilos e design system
 

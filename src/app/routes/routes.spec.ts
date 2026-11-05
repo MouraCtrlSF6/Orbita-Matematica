@@ -88,7 +88,7 @@ test('opens profile selection and navigates the cards with the keyboard and hist
   await expect(page.locator('main#main')).toBeVisible();
 });
 
-test('confirms deletion and does not recreate the room when returning to the route', async ({
+test('allows creating another room after deletion and returning to the teacher area', async ({
   page,
 }) => {
   await page.goto('/teachers');
@@ -98,5 +98,10 @@ test('confirms deletion and does not recreate the room when returning to the rou
   await expect(page.getByRole('status')).toHaveText('Sala excluída.');
   await page.getByRole('link', { name: 'Voltar à escolha de perfil' }).click();
   await page.getByRole('link', { name: 'Sou Professor' }).click();
-  await expect(page.getByRole('status')).toHaveText('Sala excluída.');
+  await expect(page.getByLabel('Nome da sala')).toBeVisible();
+  await expect(page.getByText('Sala excluída.', { exact: true })).toHaveCount(0);
+  await page.getByLabel('Nome da sala').fill('Nova turma');
+  await page.getByRole('button', { name: 'Criar sala' }).click();
+  await expect(page.getByText('nova turma', { exact: true })).toBeVisible();
+  await expect(page.getByRole('status')).toHaveText('Registros de alunos: 0');
 });

@@ -10,9 +10,15 @@ export interface StudentDetailsProps {
 export function StudentDetails({ student }: StudentDetailsProps) {
   return (
     <Collapsible title={student.name} keepMounted>
-      <RemoveStudentButton studentId={student.studentId} name={student.name} />
-      <p>Setor atual · {student.currentSector ?? 'Fora dos setores'}</p>
+      <p>
+        Setor atual ·{' '}
+        <span className="text-focus font-bold">{student.currentSector ?? 'Fora dos setores'}</span>
+      </p>
       <StudentSectors student={student} />
+
+      <div className="mt-4 flex items-center justify-end">
+        <RemoveStudentButton studentId={student.studentId} name={student.name} />
+      </div>
     </Collapsible>
   );
 }

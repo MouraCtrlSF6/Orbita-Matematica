@@ -8,7 +8,7 @@ export interface RoomStudentsProps {
 export function RoomStudents({ students }: RoomStudentsProps) {
   return (
     <section
-      className="room-students [width:min(100%,_43.75rem)] text-left [overflow-wrap:anywhere] [&_.collapsible]:my-2"
+      className="room-students w-full text-left wrap-anywhere [&_.collapsible]:my-2"
       aria-label="Alunos da sala"
     >
       <p role="status">Registros de alunos: {students.length}</p>

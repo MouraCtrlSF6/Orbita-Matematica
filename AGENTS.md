@@ -2,11 +2,30 @@
 
 ## Visão geral
 
-Órbita Matemática é um jogo educativo em português, com temática de exploração espacial, desenvolvido em React, TypeScript e Vite. O foco é apoiar o estudo de expressões algébricas no 8º ano, incluindo valor numérico, variáveis, propriedades das operações e equações do primeiro grau.
+Órbita Matemática é um jogo educativo em português, com temática de exploração espacial, desenvolvido em React 19, TypeScript e Vite, com React Router para navegação e Tailwind CSS 4 para estilos. O foco é apoiar o estudo de expressões algébricas no 8º ano, incluindo valor numérico, variáveis, propriedades das operações e equações do primeiro grau.
 
 O percurso atual contém tutorial interativo e 52 missões em três setores: Estação de lançamento (`launch`, 22), Oficina orbital (`workshop`, 15) e Base de exploração (`base`, 15). São 37 exercícios adaptados de `docs/Equacoes_do_primeiro_grau.docx` e 15 missões originais. Há desafios de alternativas, resposta numérica, montagem de expressões e criação guiada de um problema. As contagens são um retrato do catálogo atual; a interface deve continuar derivando-as dos dados.
 
-O aplicativo é publicado como build estático e usa Firebase para as salas. O progresso local e as preferências ficam no `sessionStorage`, isolados por aba e sala.
+O frontend gera um build estático e integra Firebase Authentication anônimo e Realtime Database para salas de aula. O progresso local e as preferências ficam no `sessionStorage`, isolados por aba e sala. Há um workflow de publicação no GitHub Pages; sua presença não comprova o estado da implantação ou da configuração remota.
+
+## Perfis, salas e acompanhamento
+
+- `/sign` permite escolher o perfil; caminhos desconhecidos redirecionam para essa página.
+- `/students` exige o nome de uma sala aberta e o nome completo do aluno, com até 100 caracteres. O jogo abre após confirmar o registro no Firebase. A opção de continuar o progresso da mesma aba e sala é explícita; sem ela, a entrada começa com progresso vazio.
+- `/teachers` permite criar uma sala com nome disponível e acompanhar alunos, setor atual, estados de setores e missões, uso de apoios e respostas corretas e incorretas em tempo real. O registro das tentativas mantém ordem, rótulo e valor da resposta; a criação inclui contexto e variável.
+- A normalização do nome da sala remove acentos, ignora maiúsculas, reduz espaços e aceita de 3 a 48 caracteres, com letras ASCII, números, espaços e hífens, começando e terminando com letra ou número. Reutilizar `src/game/room-name.ts`.
+- Remover aluno apaga seu registro e grava um marcador que bloqueia novas escritas daquele UID na sala. O jogo local continua aberto. Excluir sala remove também o índice do nome e libera seu uso; preservar as operações atômicas e os fluxos de confirmação existentes.
+- Perfil, sala e identidade anônima ficam em memória. Recarregar retorna ao formulário de entrada ou criação; o nome e a propriedade da sala não são recuperados automaticamente pelo painel. Sair da área do professor encerra a assinatura do banco.
+
+## Firebase e sincronização
+
+`src/infrastructure/firebase/firebase-app.ts` lê a configuração pública `VITE_FIREBASE_*`. A inicialização exige `VITE_FIREBASE_API_KEY`, `VITE_FIREBASE_PROJECT_ID` e `VITE_FIREBASE_APP_ID`; as salas também exigem `VITE_FIREBASE_DATABASE_URL` e o provedor Anônimo habilitado. Usar o `.env` local sem copiar seus valores para documentação, logs ou commits. A configuração do Vite entra no JavaScript público do build; não colocar credenciais administrativas nessas variáveis. App Check ainda não está implementado.
+
+`rooms.ts` autentica com persistência em memória e usa REST autenticado para escritas e consultas pontuais, com timeout de 12 segundos. O registro do aluno usa PUT condicional e confirma o registro existente ao receber 412. O painel carrega `firebase/database` dinamicamente e usa assinatura `onValue`; cancelar deve remover a assinatura e encerrar a conexão.
+
+`src/pages/students/room-sync.ts` mantém uma fila ordenada de patches em memória. Falhas transitórias repetem o mesmo registro, com espera progressiva de 1 a 30 segundos; rejeições HTTP permanentes interrompem os envios. Preservar a ordem e a identidade das tentativas ao repetir uma escrita. Pendências podem ser perdidas ao recarregar. Reiniciar a expedição limpa o progresso local e as posições de voo, preservando o histórico já enviado à sala. Retomar conclusões e apoios não deve inventar respostas anteriores.
+
+`database.rules.json` é o contrato de permissões e validação do Realtime Database. Atualmente, `.read: true` na raiz permite leitura pública, inclusive dos nomes, progresso e respostas. As escritas exigem autenticação e respeitam o proprietário da sala, o UID do aluno e os marcadores de remoção. Não descrever os registros remotos como privados nem tratar a escolha do perfil na interface como autorização. Alterações no contrato exigem revisar regras, validadores, sincronização e testes em conjunto.
 
 ## Exploração espacial e fluxo do jogo
 
@@ -17,7 +36,7 @@ A experiência atual permite pilotar uma nave pelo universo, entrar nos setores 
 - Interromper movimento e som ao perder foco, ocultar a aba, abrir ajustes ou mudar de tela. O voo tem controle direto, sem inércia ou obstáculos punitivos.
 - Concluir uma missão libera a seguinte. Continuar exploração e Voltar ao setor restauram a posição da visita, sem abrir automaticamente outra pergunta. Ao concluir o setor, o aluno pode voltar ao universo e visitar o próximo.
 - Manter destinos bloqueados identificados, voo livre no setor liberado e revisita às missões concluídas. O tutorial inclui prática opcional de pilotagem antes da introdução à álgebra.
-- Posições da nave são transitórias e ficam em memória durante a sessão. Recarregar abre o universo; Retomar exploração leva ao setor e às proximidades da próxima missão pendente. Reiniciar também limpa as posições da sessão.
+- Posições da nave são transitórias e ficam em memória durante a sessão. Após recarregar, é necessário entrar novamente na sala; ao optar por continuar, o jogo abre no universo. Retomar exploração leva ao setor e às proximidades da próxima missão pendente. Reiniciar também limpa as posições da sessão.
 
 ## Som e controles
 
@@ -32,20 +51,22 @@ O botão na área de pilotagem, o ajuste Som da nave e o atalho M compartilham a
 - `src/content/missions.ts`: carrega o JSON por meio do validador e exporta `missions` e `missionById`.
 - `src/content/sectors.ts`: define os setores e sua ordem no percurso.
 - `src/game/`: tipos, avaliação matemática, progressão e reducer; manter as regras independentes de React e APIs do navegador.
+- `src/game/room-progress.ts`: contratos e construção do acompanhamento de sala, estados de progresso e representação de respostas, sem dependência do Firebase. `room-name.ts` normaliza nomes de sala.
 - `src/game/space.ts`: geometria do mundo, deslocamento, proximidade dos destinos e câmera, com funções puras. `validation.ts` reúne auxiliares de validação.
-- `src/infrastructure/`: validação e persistência do progresso; `storage.ts` usa uma porta de armazenamento e `gameStorage.ts` adapta o navegador e informa falhas.
+- `src/infrastructure/`: `storage.ts` valida o save por uma porta de armazenamento; `gameStorage.ts` adapta `sessionStorage` por sala, mantém fallback em memória e informa falhas. `firebase/` contém configuração, autenticação, operações de salas e validação dos registros remotos.
 - `src/features/`: componentes e hooks por funcionalidade: mapa, tutorial, missões, descobertas e ajustes. Os estilos específicos usam utilitários Tailwind em `className`.
 - `src/features/map/`: cena, destinos, radar e painéis; `flightController.ts` controla a simulação e os eventos, `SpaceFlight/hooks/useSpaceFlight.ts` conecta o ciclo de vida React e `thrusterSound.ts` adapta o áudio. Manter posições transitórias fora do estado de renderização React.
 - `src/features/mission/MissionScreen/`: organiza a tela e seus descendentes. `contexts/MissionProvider/` é a fonte do estado da missão; os consumidores usam `hooks/useMissionContext.ts`, sem repassar a sessão por componentes de layout. Os controles de resposta recebem somente seus dados e callbacks por props.
 - `src/pages/students/StudentEntryPage/StudentsPage/contexts/StudentGameProvider/`: mantém o estado do jogo, navegação, ajustes e sessão de voo, com seus hooks privados em `hooks/`. Os consumidores usam o hook compartilhado `src/pages/students/hooks/useStudentGame.ts`. As posições continuam em memória fora do estado de renderização.
 - `src/pages/teachers/TeachersPage/`: organiza a área do professor. Cada formulário mantém seus hooks de criação de salas, exclusão ou remoção de alunos dentro da própria pasta, com estado de envio e erros.
+- `src/pages/students/room-sync.ts`: adaptação das atividades de missão em atualizações remotas, fila e estado de sincronização, separados das regras puras de `src/game/`.
 - `src/pages/`: entradas HTML e componentes das páginas de seleção, aluno e professor. Hooks privados ficam na pasta `hooks/` do componente responsável; hooks e contextos usados por vários ramos permanecem no escopo comum da página ou funcionalidade.
-- `src/app/`: estrutura visual do jogo e navegação interna da expedição. `routes/` reúne configuração e testes de rotas. `contexts/` reúne provedores e testes de contexto.
+- `src/app/`: estrutura visual do jogo e navegação interna da expedição. `routes/` reúne configuração, entradas estáticas e testes Playwright de rotas. `contexts/SessionProvider/` mantém a sessão global; `contexts/hooks/` expõe acesso à sessão e acompanhamento do professor.
 - `src/components/`: ícones e ilustrações SVG compartilhados. Regras globais de estilo ficam em `src/styles.css`.
 - `src/styles/design-system.css`: configuração CSS do Tailwind 4, com tokens `@theme`, variantes `ds-*` e keyframes. O plugin `@tailwindcss/vite` compila os estilos. Reutilizar tokens e variantes diretamente em `className`; manter nomes completos dos utilitários no código, sem interpolar fragmentos. Somente esse arquivo e `src/styles.css` contêm CSS; não criar folhas por funcionalidade. Preservar o reset existente, sem Preflight, e os valores e efeitos visuais. As variantes `ds-down-*` e `ds-up-wide` mantêm os limites inclusivos dos breakpoints. Classes identificadoras usadas por controles, testes e seletores de contexto devem continuar estáveis.
 - `src/test/`: configuração e auxiliares de teste; testes de comportamento ficam próximos do código correspondente.
 - `public/`: arquivos estáticos; fontes são empacotadas localmente por dependências npm.
-- `e2e/`: percursos de navegador com Playwright e verificações de acessibilidade com axe.
+- `e2e/`: percursos de navegador com Playwright e verificações de acessibilidade com axe. `rooms-fixture.ts` substitui o módulo de salas por um backend simulado nos percursos que a usam; isso não valida o Firebase real.
 - `docs/`: documentos de referência e `pedagogia.md`, com objetivos, sequência e necessidades de revisão pedagógica.
 
 ## Desenvolvimento e comandos
@@ -62,9 +83,17 @@ Usar Node.js 20.19+ na linha 20 ou 22.12+ e npm de forma consistente. Instalar c
 - `npm run test:e2e`: executar Playwright em Chromium. Instalar antes com `npx playwright install chromium`.
 - `npm run metrics`: medir a complexidade do código de produção com o motor da extensão CodeMetrics do VS Code; `npm run metrics:check` verifica o limite de 7 por unidade visível. `npm run metrics -- --json` exporta os valores.
 
+O Vitest executa `src/**/*.test.{ts,tsx}`. Arquivos `src/app/routes/*.spec.ts` pertencem ao Playwright, junto dos percursos `e2e/*.spec.ts`.
+
 O Playwright inicia o servidor de desenvolvimento na porta 5173 e pode reutilizar um servidor existente fora de CI. Para instalar o navegador e dependências em CI, usar `npx playwright install --with-deps chromium`. O Vite usa `base: './'` para permitir publicação em subdiretórios; preservar esse comportamento.
 
 As métricas exigem a extensão `kisstkondoros.vscode-codemetrics` em `~/.vscode/extensions` ou seu diretório em `CODEMETRICS_EXTENSION`. Preservar os pesos e ajustes reais da extensão; não reduzir pesos nem excluir unidades para cumprir o limite. Essa medição inclui JSX e funções internas e difere da complexidade ciclomática do ESLint. Consultar `docs/complexidade.md` para o escopo e as decisões da refatoração.
+
+## Build e publicação
+
+`vite.config.ts` usa React, Tailwind e `publishRouteEntries()`, com entradas HTML na raiz e em `src/pages/{sign,students,teachers}/index.html`. O plugin publica as entradas como `dist/{sign,students,teachers}/index.html` e ajusta os caminhos dos assets. Preservar `base: './'`, o meta `app-base` e o cálculo de basename em `AppRouter` para links diretos, histórico e recarregamento em subdiretórios.
+
+`.github/workflows/jekyll-gh-pages.yml`, apesar do nome herdado de Jekyll, executa o build Vite com Node 22 e publica `dist/` no GitHub Pages em pushes para `master` ou execução manual. O workflow atual roda `npm ci` e `npm run build`, sem lint, testes ou métricas e sem passagem explícita das variáveis Firebase ao build. A disponibilidade de salas na publicação depende dessa configuração; não afirmar que está habilitada apenas porque o workflow existe. As regras do banco são publicadas separadamente, não por esse workflow.
 
 ## Estilo e organização do código
 
@@ -102,7 +131,7 @@ O foco pedagógico usa EF08MA06, com introdução à variável pela EF07MA13 e e
 
 ## Persistência e privacidade
 
-O armazenamento local usa a chave `orbita-matematica:v1:room:{roomId}` no `sessionStorage` e `SavedGame.version: 1`, independentes da versão 3 do catálogo. Retomar exige escolha explícita na entrada. O save legado do `localStorage` não tem dono identificável e não deve ser importado nas salas. Salvar localmente apenas conclusões, apoios, tentativas, criação guiada, estado do tutorial, última missão e preferências. Nunca armazenar nomes, diagnósticos ou credenciais no save.
+O armazenamento local usa a chave `orbita-matematica:v1:room:{roomId}` no `sessionStorage` e `SavedGame.version: 1`, independentes da versão 3 do catálogo. Retomar exige escolha explícita na entrada. O save legado do `localStorage` não tem dono identificável e não deve ser importado nas salas. Salvar localmente apenas conclusões, apoios, tentativas, criação guiada, estado do tutorial, última missão e preferências. Nunca armazenar nomes, diagnósticos ou credenciais no save. O nome informado na entrada e as respostas são enviados ao Firebase e ficam fora desse save; preservar essa distinção ao atualizar a interface e a documentação de privacidade.
 
 As preferências incluem `largeText`, `reducedMotion` e `soundEnabled`. Saves anteriores sem a preferência de som continuam válidos e recebem `soundEnabled: true`. Manter compatibilidade com registros históricos de até três dicas e com `guided`, sem reativar a conclusão guiada na interface atual.
 
@@ -116,7 +145,17 @@ Colocar `*.test.ts` e `*.test.tsx` junto do comportamento coberto. Testar result
 
 Para alterações de código ou conteúdo, executar os testes afetados, `npm run lint` e `npm run build`. Em alterações de código de produção, executar também `npm run metrics:check` quando a extensão estiver disponível e informar sua ausência caso impeça a verificação.
 
-Para mudanças de interface, navegação, acessibilidade ou persistência, executar os percursos pertinentes de Playwright. Os percursos existentes cobrem as 52 missões, retomada, teclado, toque, câmera, radar, retorno à posição visitada, interrupções do voo, som, atalho M, ajustes, reinício confirmado, ausência de armazenamento, voz ou áudio, auditoria axe e telas menores. No retorno de missão, comparar a posição efetiva anterior à entrada com a posição restaurada. Uma auditoria automatizada não substitui avaliação manual ou pedagógica.
+Para mudanças de interface, navegação, acessibilidade ou persistência, executar os percursos pertinentes de Playwright. Os percursos existentes cobrem as 52 missões, retomada, teclado, toque, câmera, radar, retorno à posição visitada, interrupções do voo, som, atalho M, ajustes, reinício confirmado, ausência de armazenamento, voz ou áudio, auditoria axe e telas menores. Cobrir também entrada por perfil, criação e exclusão de sala, remoção de aluno, sincronização e isolamento do progresso entre abas e salas. No retorno de missão, comparar a posição efetiva anterior à entrada com a posição restaurada. Uma auditoria automatizada não substitui avaliação manual ou pedagógica.
+
+Para alterações nas salas, executar as suítes afetadas de `src/infrastructure/firebase/rooms.test.ts` e `src/pages/students/room-sync.test.ts`, além dos testes de sessão, persistência e rotas pertinentes. Testes com mocks estabelecem o comportamento local, sem comprovar permissões ou serviços em produção.
+
+Validar mudanças em `database.rules.json` com dados fictícios nos emuladores locais de Auth e Database, definidos em `firebase.json` (portas 9099 e 19000), usando:
+
+```sh
+npx --yes firebase-tools@14 emulators:exec --project demo-orbita --only auth,database "node scripts/test-database-rules.mjs"
+```
+
+O script exercita permissões e validação sem usar a base de produção. Executar testes com serviços reais somente quando fizerem parte do escopo autorizado; não enviar nomes reais para validar alterações locais.
 
 Em alterações apenas de documentação, verificar os caminhos, comandos e afirmações contra os arquivos atuais e conferir a formatação dos arquivos modificados. Informar verificações executadas e limitações reais, sem afirmar que testes não executados passaram.
 

@@ -3,8 +3,8 @@ name: frontend-react-design
 description: >-
   Aplicar convenções de legibilidade, componentes, props, contextos e estrutura modular ao
   implementar, revisar ou refatorar frontends React e TypeScript. Usar para organização de
-  código React, separação de componentes, hooks e contextos, redução de prop drilling e
-  verificação de complexidade com CodeMetrics. Não se destina a design gráfico ou branding.
+  código React, estrutura de pastas por hierarquia de componentes, hooks e contextos,
+  redução de prop drilling e verificação de complexidade com CodeMetrics. Não se destina a design gráfico ou branding.
 ---
 
 # Frontend React Design
@@ -27,7 +27,7 @@ Aplicar as convenções abaixo ao código frontend solicitado, mantendo o projet
 
 ## Componentes e contratos de props
 
-- Declarar apenas um componente React por arquivo. Ao dividir um componente, criar arquivos para os componentes menores na mesma pasta da funcionalidade.
+- Declarar apenas um componente React por arquivo, em uma pasta com seu nome: `Component/Component.tsx`. Ao extrair filhos exclusivos, criar suas pastas dentro da pasta do componente pai, conforme a hierarquia descrita em Estrutura do projeto.
 - Avaliar responsabilidades antes de separar a tela visualmente. Um componente que busca dados, controla filtros, renderiza gráficos e resumos, trata carregamento e erros e executa ações acumula motivos independentes para mudar.
 - Aplicar responsabilidade única: dar a cada componente uma finalidade clara, que permita entender, testar e evoluir seu comportamento sem conhecer todos os detalhes da funcionalidade.
 - Fazer o componente pai orquestrar a composição e conectar as partes. Delegar a cada componente ou hook a lógica que pertence à sua responsabilidade, em vez de apenas mover JSX e manter toda a lógica concentrada no pai.
@@ -39,11 +39,16 @@ Aplicar as convenções abaixo ao código frontend solicitado, mantendo o projet
 Exemplo de decomposição por responsabilidade, com um arquivo por componente:
 
 ```text
-Dashboard.tsx
-DashboardFilters.tsx
-DashboardSummaryCards.tsx
-DashboardCharts.tsx
-DashboardActions.tsx
+Dashboard/
+  Dashboard.tsx
+  DashboardFilters/
+    DashboardFilters.tsx
+  DashboardSummaryCards/
+    DashboardSummaryCards.tsx
+  DashboardCharts/
+    DashboardCharts.tsx
+  DashboardActions/
+    DashboardActions.tsx
 ```
 
 `Dashboard` organiza a funcionalidade; os demais componentes concentram o comportamento e a apresentação que lhes cabem. A divisão deve seguir as responsabilidades reais da tarefa, e não reproduzir esse conjunto de arquivos em qualquer tela.
@@ -76,28 +81,70 @@ Verificar a configuração de build antes de considerar o React Compiler ativo. 
 
 ## Estrutura do projeto
 
-Adotar esta base para projetos novos ou quando a tarefa incluir a organização estrutural:
+### Pastas que refletem a hierarquia de componentes
+
+- Mapear a composição e os consumidores reais antes de mover arquivos, incluindo componentes selecionados por mapas ou listas. Imports usados somente como tipos e referências de testes não definem o componente pai.
+- Declarar cada componente em `Component/Component.tsx`, com o nome em PascalCase tanto na pasta quanto no arquivo.
+- Colocar cada filho utilizado exclusivamente por um componente em uma subpasta desse pai. Repetir a regra em todos os níveis: a relação `PilotActions → DestinationList → DestinationLinks → DestinationLink` deve aparecer na árvore de pastas, em vez de manter todos os arquivos como irmãos na raiz da funcionalidade.
+- Aplicar a convenção a todos os componentes e páginas dentro do escopo solicitado. Em uma reorganização de todo o frontend, revisar todas as funcionalidades, sem limitar a mudança ao exemplo fornecido pelo usuário. Uma tarefa localizada continua restrita aos componentes envolvidos.
+- Quando um componente for utilizado por vários ramos, colocá-lo no ancestral comum mais próximo dentro da funcionalidade. Quando atender várias funcionalidades, preservar seu módulo responsável ou usar o local compartilhado existente, conforme sua responsabilidade. Não duplicá-lo nem colocá-lo arbitrariamente sob um único consumidor.
+- Manter hooks, contextos, tipos e utilitários privados junto do componente responsável, usando subpastas `hooks/`, `contexts/` e `utils/` conforme o tipo do arquivo. Arquivos de apoio usados por vários ramos ficam no escopo comum mais próximo.
+- Colocar os testes unitários junto do arquivo coberto e movê-los com ele. Configurações, entradas HTML, testes E2E e arquivos de domínio, conteúdo e infraestrutura mantêm seus locais por responsabilidade; a hierarquia de componentes não exige criar uma pasta para cada arquivo sem relação com a composição da interface.
+
+Exemplo com filhos exclusivos e seus arquivos de apoio:
+
+```text
+PilotActions/
+  PilotActions.tsx
+  PilotActions.test.tsx
+  hooks/
+    usePilotActions.ts
+  DestinationList/
+    DestinationList.tsx
+    DestinationLinks/
+      DestinationLinks.tsx
+      DestinationLink/
+        DestinationLink.tsx
+  FlightControls/
+    FlightControls.tsx
+    FlightControl/
+      FlightControl.tsx
+```
+
+O exemplo demonstra a organização; não criar hooks, testes ou outros arquivos sem uma responsabilidade real. Se `DestinationLink` passar a ser compartilhado por outro ramo, reavaliar seu local pelo ancestral comum dos consumidores.
+
+Ao reorganizar, atualizar imports diretos, imports dinâmicos, referências de tipos como `typeof import(...)`, mocks, configurações e caminhos citados na documentação. Preservar as entradas públicas necessárias e evitar arquivos de reexportação criados apenas para esconder a hierarquia. Remover somente as pastas antigas que ficarem vazias.
+
+### Fronteiras de módulos
+
+Preservar a organização funcional adotada pelo projeto, como `features/` ou `modules/`. A hierarquia aplica-se dentro dessas fronteiras; não exige renomear módulos nem transferir regras de negócio para pastas de apresentação.
+
+Para projetos novos ou quando a tarefa incluir a organização estrutural, usar esta base e desenvolver a árvore de componentes dentro de cada página ou funcionalidade:
 
 ```text
 src/
   app/
     routes/        # Frontend route declarations
-  components/      # Reusable UI primitives, such as buttons and inputs
+  components/      # Reusable UI primitives, each in its own directory
   modules/         # Features and business rules
     feature-name/
-      hooks/       # Feature-specific hooks
-      contexts/    # Feature-specific contexts
-  pages/           # Route entry points
+      FeatureRoot/
+        FeatureRoot.tsx
+        ChildComponent/
+          ChildComponent.tsx
+        hooks/     # Hooks private to FeatureRoot
+      hooks/       # Hooks shared within the feature
+      contexts/    # Contexts shared within the feature
+  pages/           # Route entry points, each in its own directory
   shared/
     hooks/         # Hooks used across modules
     contexts/      # Contexts used across modules
     utils/         # Utilities independent of a specific feature
 ```
 
-- Separar hooks e contextos em pastas próprias dentro do módulo que os utiliza.
 - Mover para `src/shared/hooks`, `src/shared/contexts` ou `src/shared/utils` apenas o que for utilizado em mais de um módulo e não pertencer diretamente a uma funcionalidade específica.
 - Colocar um método utilitário por arquivo em `utils`, com um nome que indique seu propósito. Não usar `shared` como depósito de regras de negócio de um módulo.
-- Preservar as fronteiras funcionais do projeto ao extrair componentes menores. Uma mudança localizada não exige migrar toda a estrutura existente para esta base.
+- Na revisão, conferir se cada componente tem sua pasta, se filhos exclusivos estão sob o pai correto, se arquivos compartilhados permanecem acessíveis aos seus consumidores e se os caminhos atualizados resolvem corretamente.
 
 ## React e desempenho
 
@@ -117,7 +164,7 @@ Se essa skill não estiver disponível, informar a limitação quando relevante 
 
 ## Aplicação e entrega
 
-1. Inspecionar a estrutura, as configurações de lint/formatação e os comandos disponíveis, além dos componentes e consumidores afetados pela tarefa.
-2. Implementar ou revisar o comportamento solicitado usando estas convenções; escolher contextos com base no fluxo real de dados.
+1. Inspecionar a estrutura, as configurações de lint/formatação e os comandos disponíveis; mapear os componentes e consumidores afetados, distinguindo filhos exclusivos de arquivos compartilhados.
+2. Implementar ou revisar o comportamento solicitado usando estas convenções, com pastas que reflitam a hierarquia de componentes; escolher contextos com base no fluxo real de dados.
 3. Formatar os arquivos alterados, executar as verificações pertinentes ao comportamento e medir a complexidade com o motor indicado quando disponível.
 4. Informar as mudanças relevantes, as verificações executadas e eventuais limites de validação.

@@ -6,7 +6,7 @@ async function openTeacherQuestions(page: Page) {
   await page.goto('/teachers');
   await page.getByLabel('Nome da sala').fill('Turma teste');
   await page.getByRole('button', { name: 'Criar sala' }).click();
-  await page.getByRole('button', { name: 'Questões', exact: true }).click();
+  await page.getByRole('tab', { name: 'Questões', exact: true }).click();
   await expect(
     page.getByRole('heading', { name: 'Estação de lançamento · 22 questões' }),
   ).toBeVisible();
@@ -60,6 +60,29 @@ async function joinReadyStudent(page: Page) {
   });
   await enterRoom(page);
 }
+
+test('switches teacher tabs with arrow keys and labels the active panel', async ({ page }) => {
+  await openTeacherQuestions(page);
+  const questions = page.getByRole('tab', { name: 'Questões', exact: true });
+  const students = page.getByRole('tab', { name: 'Alunos', exact: true });
+
+  await expect(page.getByRole('tablist', { name: 'Seções da sala' })).toBeVisible();
+  await questions.focus();
+  await page.keyboard.press('ArrowLeft');
+  await expect(students).toBeFocused();
+  await expect(students).toHaveAttribute('aria-selected', 'true');
+  await expect(page.getByRole('tabpanel', { name: 'Alunos' })).toContainText(
+    'Registros de alunos: 0',
+  );
+  await expect(page.getByRole('tabpanel', { name: 'Questões' })).toBeHidden();
+  await page.keyboard.press('ArrowRight');
+  await expect(questions).toBeFocused();
+  await expect(questions).toHaveAttribute('aria-selected', 'true');
+  await expect(page.getByRole('tabpanel', { name: 'Questões' })).toContainText(
+    'Recarregar questões',
+  );
+  await expect(page.getByRole('tabpanel', { name: 'Alunos' })).toBeHidden();
+});
 
 test('adds all four formats, validates builds and confirms removal', async ({ page }) => {
   await openTeacherQuestions(page);
@@ -126,7 +149,7 @@ test('adds all four formats, validates builds and confirms removal', async ({ pa
   await expect(
     page.getByRole('heading', { name: 'Estação de lançamento · 25 questões' }),
   ).toBeVisible();
-  await page.getByRole('button', { name: 'Alunos', exact: true }).click();
+  await page.getByRole('tab', { name: 'Alunos', exact: true }).click();
   await expect(page.getByRole('status')).toHaveText('Registros de alunos: 0');
 });
 

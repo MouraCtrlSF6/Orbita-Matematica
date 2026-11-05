@@ -3,11 +3,15 @@ import { RoomStudents } from '../../RoomStudents/RoomStudents';
 import { RoomQuestions } from './RoomQuestions/RoomQuestions';
 
 interface RoomSectionContentProps {
-  section: string;
+  section: 'students' | 'questions';
   students: RoomStudent[];
 }
 
 export function RoomSectionContent({ section, students }: RoomSectionContentProps) {
-  if (section === 'students') return <RoomStudents students={students} />;
-  return <RoomQuestions />;
+  return (
+    <>
+      <h2>{section === 'students' ? 'Alunos' : 'Questões'}</h2>
+      {section === 'students' ? <RoomStudents students={students} /> : <RoomQuestions />}
+    </>
+  );
 }

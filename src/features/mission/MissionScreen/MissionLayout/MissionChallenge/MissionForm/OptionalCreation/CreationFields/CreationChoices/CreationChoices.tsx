@@ -17,7 +17,7 @@ interface CreationChoicesProps {
 
 export function CreationChoices(props: CreationChoicesProps) {
   return (
-    <div className="creation-selects flex flex-wrap gap-4 [&_label]:text-small [&_label]:font-semibold [&_label]:[flex:1] [&_label]:min-w-42.5 [&_select]:block [&_select]:w-full [&_select]:p-3 [&_select]:[border:1px_solid_#d4cadd] [&_select]:rounded-control [&_select]:mt-[0.4375rem] [&_select]:bg-white [&_select]:text-[#62516f] ds-down-mobile:gap-2.5 ds-down-mobile:[&_label]:min-w-35">
+    <div className="creation-selects flex flex-wrap gap-4 [&_label]:text-small [&_label]:font-semibold [&_label]:[flex:1] [&_label]:min-w-42.5 ds-down-mobile:gap-2.5 ds-down-mobile:[&_label]:min-w-35">
       <CreationSelect
         label="Carga da missão"
         value={props.context}

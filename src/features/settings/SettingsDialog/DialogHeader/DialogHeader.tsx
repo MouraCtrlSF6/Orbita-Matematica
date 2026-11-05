@@ -1,3 +1,5 @@
+import { Button } from '../../../../components/Button/Button';
+import { ButtonVariant } from '../../../../components/Button/button-styles';
 import { Icon } from '../../../../components/Icon/Icon';
 import { IconName } from '../../../../components/icon-names';
 import { type SettingsDialogProps } from '../settings-dialog-types';
@@ -10,13 +12,14 @@ export function DialogHeader({ onClose }: DialogHeaderProps) {
   return (
     <div className="dialog-header flex items-center justify-between gap-5 [&_h2]:text-dialog-heading">
       <h2 id="settings-title">Do seu jeito</h2>
-      <button
-        className="icon-button [background:#f2eff7] text-[#746283] [border:0] w-10 h-10 rounded-full grid place-items-center"
+      <Button
+        variant={ButtonVariant.Icon}
+
         onClick={onClose}
         aria-label="Fechar ajustes"
       >
         <Icon name={IconName.Close} />
-      </button>
+      </Button>
     </div>
   );
 }

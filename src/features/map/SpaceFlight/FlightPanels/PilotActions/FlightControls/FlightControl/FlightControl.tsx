@@ -1,3 +1,5 @@
+import { Button } from '../../../../../../../components/Button/Button';
+import { ButtonVariant } from '../../../../../../../components/Button/button-styles';
 import type { FlightViewProps } from '../../../../flight-scene-types';
 
 export interface FlightControlProps {
@@ -12,9 +14,11 @@ export function FlightControl({
   paused,
 }: FlightControlProps) {
   return (
-    <button
+    <Button
+      variant={ButtonVariant.FlightSecondary}
       aria-label={label}
       disabled={paused}
+      className="p-0 font-normal"
       onPointerDown={(event) => controller.pointerDown(key, event)}
       onPointerUp={controller.stop}
       onPointerCancel={controller.stop}
@@ -24,6 +28,6 @@ export function FlightControl({
       onKeyUp={controller.stop}
     >
       {symbol}
-    </button>
+    </Button>
   );
 }

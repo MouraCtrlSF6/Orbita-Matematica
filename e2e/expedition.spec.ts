@@ -114,8 +114,10 @@ test('completes tutorial, all 52 catalog missions, authors a problem and restore
     }
   }
   await openMission(page, missions[missions.length - 1]);
-  await page.getByLabel('Carga da missão').selectOption('peças');
-  await page.getByLabel('Quantidade de robôs (x)').selectOption('4');
+  await page.getByRole('combobox', { name: 'Carga da missão' }).click();
+  await page.getByRole('option', { name: 'Peças de reparo', exact: true }).click();
+  await page.getByRole('combobox', { name: 'Quantidade de robôs (x)' }).click();
+  await page.getByRole('option', { name: '4 robôs', exact: true }).click();
   await page.getByRole('textbox', { name: 'Qual é o total?', exact: true }).fill('12');
   await page.getByRole('button', { name: 'Conferir resposta' }).click();
   const creation = missions[missions.length - 1];

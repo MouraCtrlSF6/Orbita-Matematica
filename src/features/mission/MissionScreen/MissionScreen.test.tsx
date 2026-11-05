@@ -94,9 +94,11 @@ describe('mission interactions', () => {
       />,
     );
     await user.type(screen.getByLabelText('Qual é o total?'), '10');
-    await user.selectOptions(screen.getByLabelText('Quantidade de robôs (x)'), '4');
+    screen.getByRole('combobox', { name: 'Quantidade de robôs (x)' }).focus();
+    await user.keyboard('{Enter}{End}{Enter}');
     expect(screen.getByLabelText('Qual é o total?')).toHaveValue('');
-    await user.selectOptions(screen.getByLabelText('Carga da missão'), 'peças');
+    screen.getByRole('combobox', { name: 'Carga da missão' }).focus();
+    await user.keyboard('{Enter}{End}{Enter}');
     expect(screen.getByText(/Cada um dos 4 robôs leva 2 peças/)).toBeInTheDocument();
     await user.type(screen.getByLabelText('Qual é o total?'), '12');
     await user.click(screen.getByRole('button', { name: /Conferir/ }));

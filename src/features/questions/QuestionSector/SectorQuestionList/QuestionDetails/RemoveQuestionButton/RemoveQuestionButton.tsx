@@ -1,3 +1,5 @@
+import { Button } from '../../../../../../components/Button/Button';
+import { ButtonVariant } from '../../../../../../components/Button/button-styles';
 interface RemoveQuestionButtonProps {
   id: string;
   title: string;
@@ -7,8 +9,13 @@ interface RemoveQuestionButtonProps {
 
 export function RemoveQuestionButton({ id, title, pending, remove }: RemoveQuestionButtonProps) {
   return (
-    <button type="button" disabled={pending} onClick={() => remove(id)}>
+    <Button
+      variant={ButtonVariant.Danger}
+      type="button"
+      disabled={pending}
+      onClick={() => remove(id)}
+    >
       Excluir questão {title}
-    </button>
+    </Button>
   );
 }

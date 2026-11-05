@@ -1,4 +1,5 @@
 import type { ComponentProps } from 'react';
+import { ChevronDownIcon } from '@radix-ui/react-icons';
 import * as SelectPrimitive from '@radix-ui/react-select';
 import { mergeClasses } from '../../utils/merge-classes';
 import { controlStyles, ControlVariant, type ControlSize } from '../../utils/control-styles';
@@ -28,7 +29,9 @@ export function SelectTrigger({
       )}
     >
       <SelectPrimitive.Value placeholder={placeholder} />
-      <SelectPrimitive.Icon aria-hidden>⌄</SelectPrimitive.Icon>
+      <SelectPrimitive.Icon asChild>
+        <ChevronDownIcon aria-hidden="true" focusable="false" />
+      </SelectPrimitive.Icon>
     </SelectPrimitive.Trigger>
   );
 }

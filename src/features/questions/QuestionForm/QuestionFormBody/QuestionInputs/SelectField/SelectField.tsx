@@ -1,23 +1,32 @@
-interface SelectFieldProps {
-  label: string;
-  name?: string;
-  value?: string;
-  defaultValue?: string;
+import { useId } from 'react';
+import { Select, type SelectProps } from '../../../../../../components/Select/Select';
+
+interface SelectFieldProps extends Omit<SelectProps, 'onValueChange'> {
   onChange?: (value: string) => void;
-  options: { value: string; label: string; disabled?: boolean }[];
 }
 
-export function SelectField({ label, options, onChange, ...input }: SelectFieldProps) {
+export function SelectField({
+  label,
+  options,
+  onChange,
+  id,
+  defaultValue = options[0]?.value,
+  ...input
+}: SelectFieldProps) {
+  const generatedId = useId();
+  const controlId = id ?? generatedId;
+
   return (
-    <label className="grid gap-1">
-      {label}
-      <select aria-label={label} {...input} onChange={(event) => onChange?.(event.target.value)}>
-        {options.map((option) => (
-          <option key={option.value} value={option.value} disabled={option.disabled}>
-            {option.label}
-          </option>
-        ))}
-      </select>
-    </label>
+    <div className="grid gap-1">
+      <label htmlFor={controlId}>{label}</label>
+      <Select
+        {...input}
+        id={controlId}
+        label={label}
+        options={options}
+        defaultValue={defaultValue}
+        onValueChange={onChange}
+      />
+    </div>
   );
 }

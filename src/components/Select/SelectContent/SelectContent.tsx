@@ -2,6 +2,7 @@ import type { ComponentProps } from 'react';
 import * as SelectPrimitive from '@radix-ui/react-select';
 import { mergeClasses } from '../../utils/merge-classes';
 import { SelectOptions, type SelectOptionsProps } from './SelectOptions/SelectOptions';
+import { SelectScrollButton } from './SelectScrollButton/SelectScrollButton';
 
 export interface SelectContentProps extends ComponentProps<typeof SelectPrimitive.Content> {
   options: SelectOptionsProps['options'];
@@ -18,13 +19,9 @@ export function SelectContent({ options, className, ...props }: SelectContentPro
         className,
       )}
     >
-      <SelectPrimitive.ScrollUpButton className="text-center" aria-label="Rolar para cima">
-        ▴
-      </SelectPrimitive.ScrollUpButton>
+      <SelectScrollButton direction="up" />
       <SelectOptions options={options} />
-      <SelectPrimitive.ScrollDownButton className="text-center" aria-label="Rolar para baixo">
-        ▾
-      </SelectPrimitive.ScrollDownButton>
+      <SelectScrollButton direction="down" />
     </SelectPrimitive.Content>
   );
 }

@@ -1,3 +1,5 @@
+import { Button } from '../../../../../../../../../../components/Button/Button';
+import { ButtonVariant } from '../../../../../../../../../../components/Button/button-styles';
 import { useRoomQuestions } from './hooks/useRoomQuestions';
 import { QuestionFeedback } from './QuestionFeedback/QuestionFeedback';
 import { QuestionCatalog } from './QuestionCatalog/QuestionCatalog';
@@ -12,9 +14,14 @@ export function RoomQuestions() {
         as questões carregadas.
       </p>
       <QuestionFeedback error={questions.error} message={questions.message} />
-      <button type="button" disabled={questions.pending} onClick={questions.reload}>
+      <Button
+        variant={ButtonVariant.Secondary}
+        type="button"
+        disabled={questions.pending}
+        onClick={questions.reload}
+      >
         Recarregar questões
-      </button>
+      </Button>
       <QuestionCatalog questions={questions} />
     </div>
   );

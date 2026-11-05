@@ -1,3 +1,5 @@
+import { Button } from '../../../../../../../../../components/Button/Button';
+import { ButtonVariant } from '../../../../../../../../../components/Button/button-styles';
 interface RoomSectionNavigationProps {
   section: string;
   select: (section: 'students' | 'questions') => void;
@@ -12,14 +14,15 @@ export function RoomSectionNavigation({ section, select }: RoomSectionNavigation
   return (
     <nav aria-label="Seções da sala" className="flex gap-3 my-4">
       {sections.map((item) => (
-        <button
+        <Button
+          variant={section === item.id ? ButtonVariant.Primary : ButtonVariant.Secondary}
           key={item.id}
           type="button"
           aria-pressed={section === item.id}
           onClick={() => select(item.id)}
         >
           {item.label}
-        </button>
+        </Button>
       ))}
     </nav>
   );

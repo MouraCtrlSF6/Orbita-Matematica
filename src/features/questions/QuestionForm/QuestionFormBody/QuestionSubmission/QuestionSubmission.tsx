@@ -1,3 +1,5 @@
+import { Button } from '../../../../../components/Button/Button';
+import { ButtonVariant } from '../../../../../components/Button/button-styles';
 interface QuestionSubmissionProps {
   error: string;
 }
@@ -7,7 +9,9 @@ export function QuestionSubmission({ error }: QuestionSubmissionProps) {
     <>
       <p>Confira o resultado, as dicas e a representação visual antes de adicionar.</p>
       {error && <p role="alert">{error}</p>}
-      <button type="submit">Adicionar questão à sala</button>
+      <Button variant={ButtonVariant.Primary} type="submit">
+        Adicionar questão à sala
+      </Button>
     </>
   );
 }

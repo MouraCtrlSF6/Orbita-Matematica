@@ -1,3 +1,5 @@
+import { Button } from '../../../../../../../../../../components/Button/Button';
+import { ButtonVariant } from '../../../../../../../../../../components/Button/button-styles';
 import type { ReactNode } from 'react';
 import type { AnswerControlProps } from '../../../answer-control';
 
@@ -30,12 +32,14 @@ export function TokenButton({
   occurrence = 0,
 }: TokenButtonProps) {
   return (
-    <button
+    <Button
+      variant={ButtonVariant.Secondary}
       type="button"
+      className="font-normal"
       disabled={disabled || selected.filter((item) => item === token).length > occurrence}
       onClick={() => onChange([...selected, token].join(' '))}
     >
       {tokenLabels[token] ?? token}
-    </button>
+    </Button>
   );
 }

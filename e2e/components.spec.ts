@@ -14,7 +14,7 @@ test('supports keyboard selection, form submission and tab navigation', async ({
   await expect(page.getByRole('option', { name: 'Indisponível' })).toBeDisabled();
   await page.keyboard.press('End');
   await page.keyboard.press('Enter');
-  await expect(select).toHaveText('Base⌄');
+  await expect(select).toHaveText('Base');
   await page.getByRole('checkbox').focus();
   await page.keyboard.press('Space');
   await page.getByRole('radio', { name: 'Quatro' }).focus();

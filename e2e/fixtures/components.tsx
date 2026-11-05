@@ -58,9 +58,12 @@ export function ComponentFixture() {
       <output aria-label="Valores salvos">{result}</output>
       <div className="my-6 flex flex-wrap gap-3">
         {Object.values(ButtonVariant).map((variant) => (
-          <Button key={variant} variant={variant}>
-            {variant}
-          </Button>
+          <div
+            key={variant}
+            className={variant === ButtonVariant.Navigation ? 'rounded-control bg-sidebar' : ''}
+          >
+            <Button variant={variant}>{variant}</Button>
+          </div>
         ))}
       </div>
       <Tabs

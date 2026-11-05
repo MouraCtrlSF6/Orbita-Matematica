@@ -18,7 +18,15 @@ async function fillQuestion(page: Page, title: string, kind: string) {
     .filter({ has: page.getByRole('button', { name: 'Adicionar questão à sala' }) });
 
   if (!(await form.isVisible())) await page.getByText('Adicionar questão', { exact: true }).click();
-  await page.getByLabel('Formato', { exact: true }).selectOption(kind);
+  const formats: Record<string, string> = {
+    choice: 'Alternativas',
+    number: 'Resposta numérica',
+    build: 'Montagem de expressão',
+    create: 'Criação guiada',
+  };
+
+  await page.getByRole('combobox', { name: 'Formato', exact: true }).click();
+  await page.getByRole('option', { name: formats[kind], exact: true }).click();
   for (const [label, value] of [
     ['Título', title],
     ['Enunciado', 'Calcule o total da expedição.'],
@@ -78,8 +86,10 @@ test('adds all four formats, validates builds and confirms removal', async ({ pa
   ).toBeVisible();
 
   const build = await fillQuestion(page, 'Questão de montagem', 'build');
-  await build.getByLabel('Tipo de expressão', { exact: true }).selectOption('operation');
-  await build.getByLabel('Tipo de expressão esquerda', { exact: true }).selectOption('variable');
+  await build.getByRole('combobox', { name: 'Tipo de expressão', exact: true }).click();
+  await page.getByRole('option', { name: 'Operação', exact: true }).click();
+  await build.getByRole('combobox', { name: 'Tipo de expressão esquerda', exact: true }).click();
+  await page.getByRole('option', { name: 'Variável x', exact: true }).click();
   await build.getByLabel('Valor de expressão direita', { exact: true }).fill('2');
   await build.getByLabel('Peças disponíveis').fill('x | + | 2');
   await build.getByLabel('Ordem correta das peças').fill('x | + | 2');
@@ -140,6 +150,23 @@ test('keeps the student snapshot until reentry and loads changed questions once'
   await enterRoom(student);
   await expect(student.locator('.exploration-count')).toContainText('/ 51');
   await student.close();
+});
+
+test('selects a sector with the shared control and resets it after saving', async ({ page }) => {
+  await openTeacherQuestions(page);
+  const form = await fillQuestion(page, 'Questão da base', 'number');
+  const sector = form.getByRole('combobox', { name: 'Setor', exact: true });
+
+  await sector.focus();
+  await page.keyboard.press('Enter');
+  await page.keyboard.press('End');
+  await page.keyboard.press('Enter');
+  await expect(sector).toContainText('Base de exploração');
+  await form.getByRole('button', { name: 'Adicionar questão à sala' }).click();
+  await expect(
+    page.getByRole('heading', { name: 'Base de exploração · 16 questões' }),
+  ).toBeVisible();
+  await expect(sector).toContainText('Estação de lançamento');
 });
 
 test('preserves the form on write failure and allows retrying load and save', async ({ page }) => {

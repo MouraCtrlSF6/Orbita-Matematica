@@ -1,4 +1,5 @@
 import * as SelectPrimitive from '@radix-ui/react-select';
+import { CheckIcon } from '@radix-ui/react-icons';
 
 export interface SelectOptionProps {
   value: string;
@@ -14,7 +15,7 @@ export function SelectOption({ label, ...props }: SelectOptionProps) {
     >
       <SelectPrimitive.ItemText>{label}</SelectPrimitive.ItemText>
       <SelectPrimitive.ItemIndicator className="absolute right-3" aria-hidden>
-        ✓
+        <CheckIcon />
       </SelectPrimitive.ItemIndicator>
     </SelectPrimitive.Item>
   );

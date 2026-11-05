@@ -3,6 +3,7 @@ import type { GameAction } from '../../../game/reducer';
 function hasModifier(event: KeyboardEvent): boolean {
   return event.ctrlKey || event.altKey || event.metaKey;
 }
+
 function isEditing(target: EventTarget | null): boolean {
   if (!(target instanceof HTMLElement)) return false;
   return (
@@ -14,6 +15,7 @@ function isEditing(target: EventTarget | null): boolean {
     )
   );
 }
+
 function isSoundShortcut(event: KeyboardEvent): boolean {
   return (
     event.key.toLowerCase() === 'm' &&
@@ -24,6 +26,7 @@ function isSoundShortcut(event: KeyboardEvent): boolean {
     !isEditing(event.target)
   );
 }
+
 function soundListener(dispatch: Dispatch<GameAction>) {
   return (event: KeyboardEvent) => {
     if (!isSoundShortcut(event)) return;
@@ -31,9 +34,11 @@ function soundListener(dispatch: Dispatch<GameAction>) {
     dispatch({ type: 'toggle-sound' });
   };
 }
+
 export function useSoundShortcut(dispatch: Dispatch<GameAction>) {
   useEffect(() => {
     const listener = soundListener(dispatch);
+
     window.addEventListener('keydown', listener);
     return () => window.removeEventListener('keydown', listener);
   }, [dispatch]);

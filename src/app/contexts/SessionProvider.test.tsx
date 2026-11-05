@@ -37,7 +37,7 @@ function mountSession(path: string) {
   );
 }
 
-it('deriva o perfil do histórico e mantém a sessão até remontar o aplicativo', async () => {
+it('derives the role from history and keeps the session until the application remounts', async () => {
   vi.mocked(watchRoom).mockResolvedValue(undefined);
   const user = userEvent.setup();
   const { unmount } = mountSession('/sign');

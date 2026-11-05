@@ -1,29 +1,5 @@
-import { useActionState } from 'react';
-import { useSession } from '../../app/contexts/hooks/useSession';
-import { invalidRoomName, normalizeRoomName, roomNameMaxLength } from '../../game/room-name';
-import { createRoom, RoomError } from '../../infrastructure/firebase/rooms';
-
-async function createNamedRoom(
-  roomId: string,
-  setName: (name: string) => void,
-  _previous: string,
-  form: FormData,
-) {
-  const name = normalizeRoomName(form.get('roomName'));
-  if (!name) return invalidRoomName;
-  return createRoom(roomId, name)
-    .then(() => {
-      setName(name);
-      return '';
-    })
-    .catch(createErrorMessage);
-}
-
-function createErrorMessage(error: unknown) {
-  return error instanceof RoomError
-    ? error.message
-    : 'Não foi possível criar a sala. Tente novamente.';
-}
+import { useCreateRoom } from './hooks/useCreateRoom';
+import { roomNameMaxLength } from '../../game/room-name';
 
 const nameField = (
   <>
@@ -33,11 +9,8 @@ const nameField = (
 );
 
 export function CreateRoomForm() {
-  const { localSessionId, setTeacherRoomName } = useSession();
-  const [error, action, pending] = useActionState(
-    createNamedRoom.bind(null, localSessionId, setTeacherRoomName),
-    '',
-  );
+  const { error, action, pending } = useCreateRoom();
+
   return (
     <form
       className="create-room-form grid gap-3 [width:min(100%,_26.25rem)] text-left [&_input]:w-full [&_input]:min-h-11 [&_input]:py-2 [&_input]:px-3 [&_input]:[border:1px_solid_#7560a8] [&_input]:rounded-control"

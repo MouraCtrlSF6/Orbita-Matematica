@@ -36,6 +36,9 @@ O botão na área de pilotagem, o ajuste Som da nave e o atalho M compartilham a
 - `src/infrastructure/`: validação e persistência do progresso; `storage.ts` usa uma porta de armazenamento e `gameStorage.ts` adapta o navegador e informa falhas.
 - `src/features/`: componentes e hooks por funcionalidade: mapa, tutorial, missões, descobertas e ajustes. Os estilos específicos usam utilitários Tailwind em `className`.
 - `src/features/map/`: cena, destinos, radar e painéis; `flightController.ts` controla a simulação e os eventos, `useSpaceFlight.ts` conecta o ciclo de vida React e `thrusterSound.ts` adapta o áudio. Manter posições transitórias fora do estado de renderização React.
+- `src/features/mission/contexts/`: `MissionProvider` é a fonte do estado da missão; os consumidores usam `hooks/useMissionContext.ts`, sem repassar a sessão por componentes de layout. Os controles de resposta recebem somente seus dados e callbacks por props.
+- `src/pages/students/contexts/`: `StudentGameProvider` mantém o estado do jogo, navegação, ajustes e sessão de voo; os consumidores usam `hooks/useStudentGame.ts`. As posições continuam em memória fora do estado de renderização.
+- `src/pages/teachers/hooks/`: criação de salas, exclusão e remoção de alunos com estado de envio e erros; os componentes compõem os formulários.
 - `src/pages/`: entradas HTML e componentes das páginas de seleção, aluno e professor. Os hooks de estado do jogo, foco e atalho de som ficam em `src/pages/students/hooks/`.
 - `src/app/`: estrutura visual do jogo e navegação interna da expedição. `routes/` reúne configuração e testes de rotas. `contexts/` reúne provedores e testes de contexto.
 - `src/components/`: ícones e ilustrações SVG compartilhados. Regras globais de estilo ficam em `src/styles.css`.

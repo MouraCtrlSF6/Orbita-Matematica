@@ -9,9 +9,15 @@ export function useGame(repository: RoomGameStorage) {
     missionId: null,
     sectorId: null,
   }));
+
   const storageAvailable = useSyncExternalStore(repository.subscribe, repository.getStatus);
+
   useEffect(() => {
     repository.write(state.save);
   }, [repository, state.save]);
-  return { state, dispatch, storageAvailable };
+  return {
+    state,
+    dispatch,
+    storageAvailable,
+  };
 }

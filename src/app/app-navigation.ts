@@ -27,7 +27,11 @@ export class AppNavigation {
   complete = (result: MissionResult) => this.dispatch({ type: 'complete', result });
   finishTutorial = () => this.dispatch({ type: 'tutorial-done' });
   preference = (key: keyof SavedGame['preferences'], value: boolean) =>
-    this.dispatch({ type: 'preference', key, value });
+    this.dispatch({
+      type: 'preference',
+      key,
+      value,
+    });
   sound = (value: boolean) => this.preference('soundEnabled', value);
   openSettings = () => this.settings(true);
   closeSettings = () => this.settings(false);
@@ -43,6 +47,7 @@ export class AppNavigation {
 export function isExploration(screen: Screen): boolean {
   return [Screen.Map, Screen.Sector].includes(screen);
 }
+
 export function appClassName(state: GameState): string {
   const flags = {
     'app-shell flex min-h-[100vh] ds-down-mobile:block': true,
@@ -51,6 +56,7 @@ export function appClassName(state: GameState): string {
     'large-text': state.save.preferences.largeText,
     'reduce-motion': state.save.preferences.reducedMotion,
   };
+
   return Object.keys(flags)
     .filter((key) => flags[key as keyof typeof flags])
     .join(' ');

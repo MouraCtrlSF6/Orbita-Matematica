@@ -50,6 +50,7 @@ class StudentWrites {
 
   private async flush() {
     const patch = this.pending[0];
+
     if (!patch) return this.setStatus('synced');
     this.setStatus('pending');
     try {
@@ -83,7 +84,9 @@ export class StudentRoom {
 
   visitSector(sectorId: string | null) {
     const sector = sectorId ? this.student.sectors[sectorId] : undefined;
+
     const name = sector?.sectorName;
+
     if (this.student.currentSector === name) return;
     this.student.currentSector = name;
     this.writes.enqueue({ currentSector: name ?? null });
@@ -97,6 +100,7 @@ export class StudentRoom {
 
   openMission(sectorId: string, missionId: string) {
     const mission = this.student.sectors[sectorId]?.missions[missionId];
+
     if (mission?.missionStatus !== 'not_started') return;
     mission.missionStatus = 'in_progress';
     this.writes.enqueue({
@@ -106,15 +110,19 @@ export class StudentRoom {
 
   record = (sectorId: string, missionId: string, activity: MissionActivity) => {
     const mission = this.student.sectors[sectorId]?.missions[missionId];
+
     if (!mission) return;
     const path = `sectors/${sectorId}/missions/${missionId}`;
+
     if (activity.type === 'answer') this.recordAnswer(sectorId, missionId, activity);
     else this.useSupport(sectorId, missionId, path, activity.type);
   };
 
   private useSupport(sectorId: string, missionId: string, path: string, type: 'hint' | 'visual') {
     const mission = this.student.sectors[sectorId].missions[missionId];
+
     const field = type === 'hint' ? 'usedHints' : 'usedVisuals';
+
     if (mission[field]) return;
     mission[field] = true;
     this.writes.enqueue({ [`${path}/${field}`]: true });
@@ -126,13 +134,20 @@ export class StudentRoom {
     activity: Extract<MissionActivity, { type: 'answer' }>,
   ) {
     const sector = this.student.sectors[sectorId];
+
     const mission = sector.missions[missionId];
+
     const attempts = (mission.providedAnswers ??= {});
+
     const order = nextAttemptOrder(attempts);
+
     const key = `attempt-${order}`;
+
     const answer = { ...activity.attempt, order };
+
     attempts[key] = answer;
     const path = `sectors/${sectorId}/missions/${missionId}`;
+
     if (answer.correct) mission.missionStatus = 'completed';
     sector.sectorStatus = sectorStatus(sector.missions);
     this.writes.enqueue({

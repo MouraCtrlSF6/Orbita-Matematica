@@ -1,6 +1,7 @@
-interface SpaceBodyProps {
+export interface SpaceBodyProps {
   kind: 'planet' | 'moon' | 'asteroid';
 }
+
 const shapes = {
   asteroid: (
     <>
@@ -26,6 +27,7 @@ const shapes = {
     </>
   ),
 };
+
 export function SpaceBody({ kind }: SpaceBodyProps) {
   return (
     <svg viewBox="0 0 120 120" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">

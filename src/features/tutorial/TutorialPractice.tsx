@@ -1,7 +1,9 @@
 import { SpaceFlight } from '../map/SpaceFlight';
 import { createWorld } from '../../game/space';
 import type { TutorialPageProps } from './tutorial-view';
+
 const practiceWorld = createWorld([{ id: 'beacon', label: 'Sinal de treinamento' }]);
+
 const practiceStatus = {
   beacon: {
     unlocked: true,
@@ -9,6 +11,7 @@ const practiceStatus = {
     detail: 'Aproxime-se e confirme a entrada para concluir a prática',
   },
 };
+
 const practiceDescription = (
   <>
     <p>
@@ -21,7 +24,15 @@ const practiceDescription = (
     </p>
   </>
 );
-export function TutorialPractice(props: TutorialPageProps) {
+
+interface TutorialPracticeProps {
+  onPilotDone: TutorialPageProps['onPilotDone'];
+  reducedMotion?: TutorialPageProps['reducedMotion'];
+  soundEnabled?: TutorialPageProps['soundEnabled'];
+  paused?: TutorialPageProps['paused'];
+}
+
+export function TutorialPractice(props: TutorialPracticeProps) {
   return (
     <div className="tutorial-pilot mt-4.5 [&_>_p]:mb-[0.9375rem]">
       {practiceDescription}

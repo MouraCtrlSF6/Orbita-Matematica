@@ -28,11 +28,13 @@ function initialMission(mission: Mission): MissionState {
     variable: mission.variable,
   };
 }
+
 function retryMessage(mission: Mission): string {
   return mission.kind === ChallengeKind.Build
     ? `Vamos ajustar a expressão. ${mission.hints[0]} Você pode usar Desfazer ou pedir uma pista.`
     : `Ainda não chegamos ao resultado. ${mission.hints[0]} Tente novamente ou peça uma pista.`;
 }
+
 function missionResult(state: MissionState, creation: boolean): MissionResult {
   return {
     hints: state.hints,
@@ -42,17 +44,20 @@ function missionResult(state: MissionState, creation: boolean): MissionResult {
     ...(creation ? { creation: { context: state.context, variable: state.variable } } : {}),
   };
 }
+
 function narrationDetail(mission: Mission, state: MissionState): string {
   if (mission.kind === ChallengeKind.Create)
     return `Cada um dos ${state.variable} robôs leva 2 ${state.context}. A base guarda mais 4. Quantos temos ao todo?`;
   return mission.kind === ChallengeKind.Build ? '' : mission.formula;
 }
+
 function narrationText(mission: Mission, state: MissionState): string {
   return `${mission.prompt} ${narrationDetail(mission, state)}`
     .replaceAll('×', ' vezes ')
     .replaceAll('+', ' mais ')
     .replaceAll('=', ' igual a ');
 }
+
 class MissionActions {
   constructor(
     private mission: Mission,
@@ -67,6 +72,7 @@ class MissionActions {
   private update(patch: Partial<MissionState>) {
     this.setState((state) => ({ ...state, ...patch }));
   }
+
   private complete() {
     if (this.state.done) return;
     this.narration.stop();
@@ -74,6 +80,7 @@ class MissionActions {
     this.onComplete(missionResult(this.state, this.mission.kind === ChallengeKind.Create));
     requestAnimationFrame(() => this.feedbackRef.current?.focus());
   }
+
   private retry() {
     this.setState((state) => ({
       ...state,
@@ -81,29 +88,51 @@ class MissionActions {
       feedback: retryMessage(this.mission),
     }));
   }
+
   checkAnswer = () => {
     if (!this.state.answer.trim() || this.state.done) return;
     const correct = isCorrect(this.mission, this.state.answer, this.state.variable);
+
     this.reportAnswer(correct);
     if (correct) this.complete();
     else this.retry();
   };
   changeAnswer = (answer: string) => this.update({ answer, feedback: '' });
-  changeContext = (context: string) => this.update({ context, answer: '', feedback: '' });
-  changeVariable = (variable: number) => this.update({ variable, answer: '', feedback: '' });
+  changeContext = (context: string) =>
+    this.update({
+      context,
+      answer: '',
+      feedback: '',
+    });
+  changeVariable = (variable: number) =>
+    this.update({
+      variable,
+      answer: '',
+      feedback: '',
+    });
   private reportAnswer(correct: boolean) {
     const creation =
       this.mission.kind === ChallengeKind.Create
         ? { context: this.state.context, variable: this.state.variable }
         : {};
+
     this.onActivity?.({
       type: 'answer',
-      attempt: { answer: submittedAnswer(this.mission, this.state.answer), correct, ...creation },
+      attempt: {
+        answer: submittedAnswer(this.mission, this.state.answer),
+        correct,
+        ...creation,
+      },
     });
   }
+
   toggleVisual = () => {
     if (!this.state.visual) this.onActivity?.({ type: 'visual' });
-    this.setState((state) => ({ ...state, visual: !state.visual, visualUsed: true }));
+    this.setState((state) => ({
+      ...state,
+      visual: !state.visual,
+      visualUsed: true,
+    }));
   };
   requestHint = () => {
     if (!this.state.done && this.state.hints < this.hintLimit) {
@@ -122,9 +151,13 @@ export function useMission(
   onActivity?: (activity: MissionActivity) => void,
 ) {
   const [state, setState] = useState(() => initialMission(mission));
+
   const hintLimit = sectors.find((sector) => sector.id === mission.sectorId)!.hintLimit;
+
   const feedbackRef = useRef<HTMLDivElement>(null);
+
   const narration = useNarration();
+
   const actions = new MissionActions(
     mission,
     state,
@@ -135,6 +168,7 @@ export function useMission(
     hintLimit,
     onActivity,
   );
+
   return {
     ...state,
     hintLimit,
@@ -151,4 +185,5 @@ export function useMission(
     toggleNarration: actions.toggleNarration,
   };
 }
+
 export type MissionSession = ReturnType<typeof useMission>;

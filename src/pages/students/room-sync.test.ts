@@ -19,7 +19,7 @@ const submit = (correct: boolean) => ({
   attempt: { answer: { label: 'Resposta', value: '3' }, correct },
 });
 
-it('importa conclusões e apoios do save sem inventar respostas', () => {
+it('imports saved completions and supports without inventing answers', () => {
   const save = initialSave();
   save.completed[mission.id] = { hints: 1, visual: true, attempts: 3, guided: false };
   const student = initialRoomStudent('student', 'Aluno de teste', save);
@@ -32,7 +32,7 @@ it('importa conclusões e apoios do save sem inventar respostas', () => {
   });
 });
 
-it('reenvia o mesmo registro, mantém a ordem e preserva a conclusão ao reiniciar', async () => {
+it('retries the same record, keeps its order and preserves completion after a restart', async () => {
   vi.useFakeTimers();
   const send = vi.mocked(updateStudent);
   send.mockRejectedValueOnce(new TypeError('offline')).mockResolvedValue(undefined);
@@ -63,7 +63,7 @@ it('reenvia o mesmo registro, mantém a ordem e preserva a conclusão ao reinici
   });
 });
 
-it('interrompe a fila quando o banco recusa escrita após exclusão da sala', async () => {
+it('stops the queue when the database rejects writes after room deletion', async () => {
   const send = vi.mocked(updateStudent);
   send.mockRejectedValue(new RoomError('Sala indisponível', 401));
   const room = new StudentRoom(

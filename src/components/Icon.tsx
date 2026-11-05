@@ -19,10 +19,11 @@ const paths: Record<IconName, string> = {
     'M14 4c3-2 6-2 6-2s0 3-2 6l-7 8-5-5 8-7Zm-7 8-4 1-1 5 6-2m8-7-1 6-5 1m-5 3-3 3m1-6-2 2m7 1-2 2M14 7h.01',
 };
 
-interface IconProps {
+export interface IconProps {
   name: IconName;
   size?: number;
 }
+
 export function Icon({ name, size = 22 }: IconProps) {
   return (
     <svg

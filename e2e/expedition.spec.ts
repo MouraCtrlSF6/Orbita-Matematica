@@ -144,7 +144,7 @@ test('completes tutorial, all 52 catalog missions, authors a problem and restore
   await expect(page.getByRole('heading', { name: missions[0].title })).toBeVisible();
 });
 
-test('isola o progresso de alunos da mesma sala no mesmo navegador', async ({ page, context }) => {
+test('isolates progress for students in the same room and browser', async ({ page, context }) => {
   const mission = missions[0];
   await page.goto('/students');
   await enterRoom(page, { name: 'Primeira aluna', resume: false });

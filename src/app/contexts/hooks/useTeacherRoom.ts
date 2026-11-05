@@ -26,8 +26,11 @@ function failConnection(
 
 function connectRoom(roomId: string, setRoom: (room: TeacherRoom) => void) {
   const controller = new AbortController();
+
   const { signal } = controller;
+
   const fail = failConnection.bind(null, controller, setRoom);
+
   const update = (students: RoomStudent[]) => setRoom({ status: 'ready', students });
 
   void watchRoom(roomId, signal, update, fail).catch(fail);
@@ -36,6 +39,7 @@ function connectRoom(roomId: string, setRoom: (room: TeacherRoom) => void) {
 
 export function useTeacherRoom(roomId: string, active: boolean) {
   const [room, setRoom] = useState<TeacherRoom>({ status: 'connecting' });
+
   const [attempt, setAttempt] = useState(0);
 
   useEffect(() => {

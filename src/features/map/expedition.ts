@@ -19,6 +19,7 @@ export interface ExpeditionMapProps {
 function sectorMissions(id: string) {
   return missions.filter((item) => item.sectorId === id);
 }
+
 export function mapWorld(sectorId: string | null): SpaceWorld {
   if (sectorId)
     return createWorld(
@@ -26,20 +27,39 @@ export function mapWorld(sectorId: string | null): SpaceWorld {
     );
   return createWorld(sectors.map((item) => ({ id: item.id, label: item.name })));
 }
+
 function missionStatus(id: string, save: SavedGame): DestinationStatus {
   const unlocked = isMissionUnlocked(id, save.completed);
+
   const completed = Boolean(save.completed[id]);
+
   const detail = completed ? 'Concluída · você pode revisitar' : 'Disponível para explorar';
-  return { unlocked, completed, detail: unlocked ? detail : 'Conclua as missões anteriores' };
+
+  return {
+    unlocked,
+    completed,
+    detail: unlocked ? detail : 'Conclua as missões anteriores',
+  };
 }
+
 function sectorStatus(id: string, save: SavedGame): DestinationStatus {
   const items = sectorMissions(id);
+
   const count = items.filter((item) => save.completed[item.id]).length;
+
   const unlocked = isSectorUnlocked(id, save.completed);
+
   const completed = count === items.length;
+
   const detail = `${count} de ${items.length} missões · ${completed ? 'Concluído' : 'Disponível'}`;
-  return { unlocked, completed, detail: unlocked ? detail : 'Conclua o setor anterior' };
+
+  return {
+    unlocked,
+    completed,
+    detail: unlocked ? detail : 'Conclua o setor anterior',
+  };
 }
+
 export class Expedition {
   constructor(
     readonly props: ExpeditionMapProps,
@@ -65,6 +85,7 @@ export class Expedition {
   }
   get statuses(): Record<string, DestinationStatus> {
     const status = this.props.sectorId ? missionStatus : sectorStatus;
+
     return Object.fromEntries(
       this.world.destinations.map((item) => [item.id, status(item.id, this.props.save)]),
     );
@@ -85,13 +106,16 @@ export class Expedition {
   }
   private ensurePosition() {
     const next = this.nextMission;
+
     if (this.props.positions.has(next.sectorId)) return;
     const world = mapWorld(next.sectorId);
+
     this.props.positions.set(
       next.sectorId,
       approach(world.destinations.find((item) => item.id === next.id)),
     );
   }
+
   resume = () => {
     if (!this.props.save.tutorialDone) {
       this.props.onTutorial();

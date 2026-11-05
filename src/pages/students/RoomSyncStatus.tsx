@@ -8,8 +8,13 @@ const messages = {
   stopped: 'O envio para a sala foi interrompido. Você pode continuar jogando neste navegador.',
 };
 
-export function RoomSyncStatus({ room }: { room: StudentRoom }) {
+export interface RoomSyncStatusProps {
+  room: StudentRoom;
+}
+
+export function RoomSyncStatus({ room }: RoomSyncStatusProps) {
   const status = useSyncExternalStore(room.writes.subscribe, room.writes.getStatus);
+
   return (
     <p role="status" className="room-sync-status" hidden={status === 'synced'}>
       {messages[status]}

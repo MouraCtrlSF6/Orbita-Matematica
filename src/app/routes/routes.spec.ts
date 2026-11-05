@@ -7,7 +7,9 @@ async function createRoom(page: Page) {
   await expect(page.getByText('turma teste', { exact: true })).toBeVisible();
 }
 
-test('abre a escolha de perfil e navega pelos cards com teclado e histórico', async ({ page }) => {
+test('opens profile selection and navigates the cards with the keyboard and history', async ({
+  page,
+}) => {
   await page.goto('/');
   await expect(page).toHaveURL(/\/sign$/);
   await page.keyboard.press('Tab');
@@ -86,7 +88,9 @@ test('abre a escolha de perfil e navega pelos cards com teclado e histórico', a
   await expect(page.locator('main#main')).toBeVisible();
 });
 
-test('confirma a exclusão e não recria a sala ao voltar à rota', async ({ page }) => {
+test('confirms deletion and does not recreate the room when returning to the route', async ({
+  page,
+}) => {
   await page.goto('/teachers');
   await createRoom(page);
   page.once('dialog', (dialog) => void dialog.accept());

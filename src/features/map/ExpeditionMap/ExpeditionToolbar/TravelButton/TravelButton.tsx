@@ -9,7 +9,7 @@ export function TravelButton({ expedition }: ExpeditionViewProps) {
         variant={ButtonVariant.FlightSecondary}
 
         onClick={expedition.props.onUniverse}
-        className="ds-down-mobile:[.exploration-toolbar_&]:[flex:1_1_auto] [.feedback_&]:mt-[1.0625rem] [.tutorial-card_&]:mt-6"
+        className="ds-down-mobile:[.exploration-toolbar_&]:[flex:1_1_auto] [.feedback_&]:mt-[1.0625rem]"
       >
         ← Voltar ao universo
       </Button>
@@ -19,7 +19,7 @@ export function TravelButton({ expedition }: ExpeditionViewProps) {
       variant={ButtonVariant.FlightPrimary}
 
       onClick={expedition.resume}
-      className="ds-down-mobile:[.exploration-toolbar_&]:[flex:1_1_auto] [.feedback_&]:mt-[1.0625rem] [.tutorial-card_&]:mt-6"
+      className="ds-down-mobile:[.exploration-toolbar_&]:[flex:1_1_auto] [.feedback_&]:mt-[1.0625rem]"
     >
       {expedition.resumeLabel}
     </Button>

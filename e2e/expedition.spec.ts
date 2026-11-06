@@ -25,16 +25,6 @@ async function openMission(page: Page, mission: Mission) {
   await visitDestination(page, mission.title);
 }
 
-async function finishTutorial(page: Page) {
-  await page.getByRole('button', { name: 'Vamos explorar', exact: true }).click();
-  await page.getByRole('button', { name: 'Pular prática de pilotagem' }).click();
-  await page.getByRole('button', { name: 'Conhecer uma variável' }).click();
-  await page.getByRole('button', { name: 'Agora é sua vez' }).click();
-  await page.getByRole('radio', { name: '4 cristais', exact: true }).check();
-  await page.getByRole('button', { name: 'Pronto para explorar' }).click();
-  await page.getByRole('button', { name: 'Retomar exploração' }).click();
-}
-
 interface Response {
   radio?: string;
   number?: string;
@@ -75,7 +65,7 @@ async function answerMission(page: Page, mission: Mission) {
   await page.getByRole('button', { name: 'Conferir resposta' }).click();
 }
 
-test('completes tutorial, all 52 catalog missions, authors a problem and restores progress', async ({
+test('completes all 52 catalog missions, authors a problem and restores progress', async ({
   page,
 }) => {
   test.setTimeout(90000);
@@ -85,7 +75,7 @@ test('completes tutorial, all 52 catalog missions, authors a problem and restore
   });
   await page.goto('/students');
   await enterRoom(page);
-  await finishTutorial(page);
+  await page.getByRole('button', { name: 'Retomar exploração' }).click();
   for (let index = 0; index < missions.length - 1; index++) {
     await openMission(page, missions[index]);
     const limit = missions[index].sectorId === 'base' ? 2 : 1;
@@ -150,7 +140,7 @@ test('isolates progress for students in the same room and browser', async ({ pag
   const mission = missions[0];
   await page.goto('/students');
   await enterRoom(page, { name: 'Primeira aluna', resume: false });
-  await finishTutorial(page);
+  await page.getByRole('button', { name: 'Retomar exploração' }).click();
   await openMission(page, mission);
   await answerMission(page, mission);
   await expect(
@@ -166,7 +156,7 @@ test('isolates progress for students in the same room and browser', async ({ pag
   });
   await enterRoom(second, { name: 'Segundo aluno' });
   await expect(second.locator('main#main')).toBeVisible();
-  await expect(second.getByRole('button', { name: 'Retomar exploração' })).toHaveCount(0);
+  await expect(second.getByRole('button', { name: 'Retomar exploração' })).toBeVisible();
   expect(registrations[0].sectors[mission.sectorId].missions[mission.id].missionStatus).toBe(
     'not_started',
   );
@@ -174,7 +164,10 @@ test('isolates progress for students in the same room and browser', async ({ pag
   await page.reload();
   await enterRoom(page, { name: 'Terceira aluna', resume: false });
   await expect(page.locator('main#main')).toBeVisible();
-  await expect(page.getByRole('button', { name: 'Retomar exploração' })).toHaveCount(0);
+  await page.getByRole('button', { name: 'Retomar exploração' }).click();
+  await expect(page.locator(`[data-destination="${mission.id}"]`)).not.toHaveClass(
+    /(^|\s)complete(\s|$)/,
+  );
 });
 
 test('supports keyboard, preferences, reduced motion and confirmed reset', async ({ page }) => {
@@ -217,7 +210,7 @@ test('remains playable without storage or a speech API', async ({ page }) => {
   await page.goto('/students');
   await enterRoom(page);
   await expect(page.getByText(/O navegador não permitiu salvar/)).toBeVisible();
-  await finishTutorial(page);
+  await page.getByRole('button', { name: 'Retomar exploração' }).click();
   await openMission(page, missions[0]);
   await page.getByRole('button', { name: 'Ouvir enunciado' }).click();
   await expect(page.getByText(/Leitura em voz alta indisponível/)).toBeVisible();
@@ -273,15 +266,6 @@ test('has accessible structure and contrast across the main screens', async ({ p
   await page.getByRole('button', { name: 'Ajustes da expedição' }).click();
   await audit();
   await page.keyboard.press('Escape');
-  await page.getByRole('button', { name: 'Vamos explorar' }).click();
-  await audit();
-  await page.getByRole('button', { name: 'Pular prática de pilotagem' }).click();
-  await audit();
-  await page.getByRole('button', { name: 'Conhecer uma variável' }).click();
-  await page.getByRole('button', { name: 'Agora é sua vez' }).click();
-  await page.getByRole('radio', { name: '4 cristais', exact: true }).check();
-  await page.getByRole('button', { name: 'Pronto para explorar' }).click();
-  await audit();
   await page.getByRole('button', { name: 'Retomar exploração' }).click();
   await audit();
   await openMission(page, missions[0]);
@@ -297,11 +281,11 @@ test('reflows at an effective 200 percent desktop zoom and smaller windows', asy
     await page.setViewportSize({ width, height: 600 });
     await page.goto('/students');
     await enterRoom(page);
-    await expect(page.getByRole('button', { name: 'Vamos explorar' })).toBeVisible();
+    await expect(page.getByRole('button', { name: 'Retomar exploração' })).toBeVisible();
     expect(
       await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth),
     ).toBe(true);
-    await finishTutorial(page);
+    await page.getByRole('button', { name: 'Retomar exploração' }).click();
     await expect(page.getByRole('region', { name: 'Área de pilotagem' })).toBeVisible();
     await openMission(page, missions[0]);
     await expect(page.getByRole('button', { name: 'Conferir resposta' })).toBeVisible();

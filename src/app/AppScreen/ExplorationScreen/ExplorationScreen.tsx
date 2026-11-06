@@ -15,7 +15,6 @@ export function ExplorationScreen() {
       onSector={navigation.enterSector}
       onUniverse={navigation.map}
       onStart={navigation.start}
-      onTutorial={navigation.tutorial}
       onSummary={navigation.summary}
       onSoundChange={navigation.sound}
     />

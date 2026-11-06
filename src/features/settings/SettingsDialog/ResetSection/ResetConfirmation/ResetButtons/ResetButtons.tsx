@@ -4,7 +4,7 @@ import { type ResetButtonsProps } from '../../../settings-dialog-types';
 
 export function ResetButtons({ onReset, onClose, onCancel }: ResetButtonsProps) {
   return (
-    <div className="button-row [.tutorial-pilot_&]:flex [.tutorial-pilot_&]:flex-wrap [.tutorial-pilot_&]:gap-3 [.tutorial-pilot_&]:mt-[0.9375rem] flex gap-2.5 flex-wrap mt-[0.9375rem]">
+    <div className="button-row flex gap-2.5 flex-wrap mt-[0.9375rem]">
       <Button
         variant={ButtonVariant.DangerSolid}
 
@@ -12,7 +12,7 @@ export function ResetButtons({ onReset, onClose, onCancel }: ResetButtonsProps) 
           onReset();
           onClose();
         }}
-        className="ds-down-mobile:[.exploration-toolbar_&]:[flex:1_1_auto] [.feedback_&]:mt-[1.0625rem] [.tutorial-card_&]:mt-6"
+        className="ds-down-mobile:[.exploration-toolbar_&]:[flex:1_1_auto] [.feedback_&]:mt-[1.0625rem]"
       >
         Sim, apagar progresso
       </Button>

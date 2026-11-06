@@ -18,7 +18,7 @@ async function expectNavigationFits(page: Page) {
     });
   });
 
-  expect(result).toHaveLength(3);
+  expect(result).toHaveLength(2);
   for (const item of result) expect(item).toEqual({ contained: true, textFits: true });
 }
 

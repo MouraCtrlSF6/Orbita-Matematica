@@ -239,7 +239,7 @@ test('plays thrust only while moving, stops on interruption and persists mute', 
   await expect.poll(async () => (await audioState(page)).rms).toBeGreaterThan(0.001);
   await page.mouse.up();
   await expect.poll(async () => (await audioState(page)).rms).toBeLessThan(0.00001);
-  await page.getByRole('button', { name: 'Vamos explorar', exact: true }).click();
+  await page.getByRole('button', { name: /Minhas descobertas/ }).click();
   await expect.poll(async () => (await audioState(page)).state).toBe('closed');
 });
 

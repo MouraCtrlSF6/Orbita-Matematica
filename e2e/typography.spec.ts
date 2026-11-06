@@ -23,7 +23,7 @@ test('scales text and controls with the root font size and keeps narrow screens 
   await page.setViewportSize({ width: 390, height: 844 });
   await expect(field).toBeVisible();
   await enterRoom(page, { resume: false });
-  await expect(page.getByRole('button', { name: 'Vamos explorar', exact: true })).toBeVisible();
+  await expect(page.getByRole('button', { name: 'Retomar exploração', exact: true })).toBeVisible();
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(
     true,
   );

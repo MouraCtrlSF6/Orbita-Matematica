@@ -13,7 +13,7 @@ export function NextMission({ onNext }: NextMissionProps) {
       variant={ButtonVariant.Primary}
 
       onClick={onNext}
-      className="ds-down-mobile:[.exploration-toolbar_&]:[flex:1_1_auto] [.feedback_&]:mt-[1.0625rem] [.tutorial-card_&]:mt-6"
+      className="ds-down-mobile:[.exploration-toolbar_&]:[flex:1_1_auto] [.feedback_&]:mt-[1.0625rem]"
     >
       Continuar exploração
       <Icon name={IconName.Arrow} size={18} />

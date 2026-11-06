@@ -25,7 +25,6 @@ export function StudentGameProvider({ room, children }: StudentGameProviderProps
   useRoomProgress(room, game.state);
   const navigation = new AppNavigation(
     game.dispatch,
-    game.state,
     setSettingsOpen,
     setFlightSession,
     room.record,

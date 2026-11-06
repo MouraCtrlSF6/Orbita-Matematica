@@ -12,7 +12,7 @@ export function SubmitAnswer() {
     <Button
       variant={ButtonVariant.Primary}
       type="submit"
-      className="answer-submit mt-4.5 ds-down-mobile:[.exploration-toolbar_&]:[flex:1_1_auto] [.feedback_&]:mt-[1.0625rem] [.tutorial-card_&]:mt-6"
+      className="answer-submit mt-4.5 ds-down-mobile:[.exploration-toolbar_&]:[flex:1_1_auto] [.feedback_&]:mt-[1.0625rem]"
       disabled={!session.answer.trim()}
     >
       Conferir resposta

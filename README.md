@@ -14,7 +14,7 @@ Saiba mais no [percurso pedagógico](docs/pedagogia.md).
 
 ## 🪐 O que ele disponibiliza
 
-- **Exploração espacial:** três setores, tutorial, radar e catálogo padrão de 52 missões, com desbloqueio progressivo.
+- **Exploração espacial:** três setores, radar e catálogo padrão de 52 missões, com desbloqueio progressivo.
 - **Desafios variados:** alternativas, respostas numéricas, discursivas, montagem de expressões e criação guiada.
 - **Área do professor:** salas, acompanhamento de respostas e apoios em tempo real e remoção de alunos.
 - **Questões por sala:** inclusão, exclusão e reordenação no mesmo setor por arraste ou teclado, sem alterar o catálogo padrão.

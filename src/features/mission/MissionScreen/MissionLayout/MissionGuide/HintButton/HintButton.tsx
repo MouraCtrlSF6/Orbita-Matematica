@@ -13,7 +13,7 @@ export function HintButton({ hints, openHints, done, onHint }: MissionGuideProps
   return (
     <Button
       variant={ButtonVariant.Secondary}
-      className="hint-button [border:1px_solid_#d8cce6] bg-white text-[#71558d] w-full mt-5 mr-0 mb-0 ml-0 ds-hover:[background:#f8f5fd] ds-down-tablet:max-w-80 ds-down-mobile:[.exploration-toolbar_&]:[flex:1_1_auto] [.feedback_&]:mt-[1.0625rem] [.tutorial-card_&]:mt-6"
+      className="hint-button [border:1px_solid_#d8cce6] bg-white text-[#71558d] w-full mt-5 mr-0 mb-0 ml-0 ds-hover:[background:#f8f5fd] ds-down-tablet:max-w-80 ds-down-mobile:[.exploration-toolbar_&]:[flex:1_1_auto] [.feedback_&]:mt-[1.0625rem]"
       disabled={openHints >= hints.length || done}
       onClick={onHint}
     >

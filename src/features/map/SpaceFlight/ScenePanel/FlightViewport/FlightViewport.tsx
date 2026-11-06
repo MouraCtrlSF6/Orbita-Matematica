@@ -13,7 +13,7 @@ export function FlightViewport({ viewportRef, helpId, ...props }: FlightViewport
   return (
     <div
       ref={viewportRef}
-      className="flight-viewport relative [height:clamp(23.75rem,_57vh,_43.75rem)] overflow-hidden isolate [outline-offset:-0.3125rem] [background:#080d20] focus-visible:[outline:0.1875rem_solid_#a6ffe0] [.tutorial-pilot_&]:h-95 ds-down-mobile:h-102.5"
+      className="flight-viewport relative [height:clamp(23.75rem,_57vh,_43.75rem)] overflow-hidden isolate [outline-offset:-0.3125rem] [background:#080d20] focus-visible:[outline:0.1875rem_solid_#a6ffe0] ds-down-mobile:h-102.5"
       tabIndex={0}
       role="region"
       aria-label="Área de pilotagem"

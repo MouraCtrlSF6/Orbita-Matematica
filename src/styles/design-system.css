@@ -155,3 +155,48 @@
 @custom-variant ds-down-desktop (@media (max-width: theme(--breakpoint-desktop)));
 @custom-variant ds-down-tablet (@media (max-width: theme(--breakpoint-tablet)));
 @custom-variant ds-down-mobile (@media (max-width: theme(--breakpoint-mobile)));
+
+@keyframes accordion-slide-down {
+  from {
+    height: 0;
+  }
+  to {
+    height: var(--radix-accordion-content-height);
+  }
+}
+
+@keyframes accordion-slide-up {
+  from {
+    height: var(--radix-accordion-content-height);
+  }
+  to {
+    height: 0;
+  }
+}
+
+@layer components {
+  .accordion-content:not(.accordion-content-persistent)[data-state='open'] {
+    animation: accordion-slide-down 220ms ease-out;
+  }
+
+  .accordion-content:not(.accordion-content-persistent)[data-state='closed'] {
+    animation: accordion-slide-up 220ms ease-in;
+  }
+
+  .accordion-content-persistent > .accordion-content-layout {
+    display: grid;
+    transition:
+      grid-template-rows 220ms ease,
+      visibility 220ms;
+  }
+
+  .accordion-content-persistent[data-state='open'] > .accordion-content-layout {
+    grid-template-rows: 1fr;
+    visibility: visible;
+  }
+
+  .accordion-content-persistent[data-state='closed'] > .accordion-content-layout {
+    grid-template-rows: 0fr;
+    visibility: hidden;
+  }
+}

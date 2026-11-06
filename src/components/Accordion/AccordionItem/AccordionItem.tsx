@@ -45,12 +45,16 @@ export function AccordionItem({ section, variant, heading }: AccordionItemProps)
         {...section.contentProps}
         forceMount={section.keepMounted || undefined}
         className={mergeClasses(
-          'accordion-content text-body leading-relaxed data-[state=closed]:hidden',
-          accordionContentStyles[variant],
+          'accordion-content overflow-hidden text-body leading-relaxed ds-reduced-motion:animate-none ds-reduced-motion:transition-none',
+          section.keepMounted && 'accordion-content-persistent',
           section.contentProps?.className,
         )}
       >
-        {section.content}
+        <div className="accordion-content-layout ds-reduced-motion:transition-none">
+          <div className="min-h-0 overflow-hidden">
+            <div className={accordionContentStyles[variant]}>{section.content}</div>
+          </div>
+        </div>
       </AccordionPrimitive.Content>
     </AccordionPrimitive.Item>
   );

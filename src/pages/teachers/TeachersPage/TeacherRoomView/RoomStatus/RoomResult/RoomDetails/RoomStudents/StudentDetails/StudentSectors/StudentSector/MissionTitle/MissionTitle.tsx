@@ -1,5 +1,5 @@
-import type { RoomMission } from '../../../../../../../../../../../../../game/room-progress';
-import { ProgressStatusLabel } from '../../ProgressStatusLabel/ProgressStatusLabel';
+import type { RoomMission } from '../../../../../../../../../../../../game/room-progress';
+import { ProgressStatusLabel } from '../ProgressStatusLabel/ProgressStatusLabel';
 
 interface MissionTitleProps {
   mission: RoomMission;

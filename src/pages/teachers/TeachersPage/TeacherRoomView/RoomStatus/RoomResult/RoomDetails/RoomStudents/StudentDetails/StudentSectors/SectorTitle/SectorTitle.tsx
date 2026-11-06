@@ -1,5 +1,5 @@
-import type { RoomSector } from '../../../../../../../../../../../../game/room-progress';
-import { ProgressStatusLabel } from '../ProgressStatusLabel/ProgressStatusLabel';
+import type { RoomSector } from '../../../../../../../../../../../game/room-progress';
+import { ProgressStatusLabel } from '../StudentSector/ProgressStatusLabel/ProgressStatusLabel';
 
 interface SectorTitleProps {
   sector: RoomSector;

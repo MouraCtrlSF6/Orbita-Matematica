@@ -153,7 +153,7 @@ Os portais de Select e Dialog usam `document.body` por padrão. Quando precisare
 
 ## Accordion
 
-`src/components/Accordion/Accordion.tsx` usa `@radix-ui/react-accordion` para agrupar seções expansíveis. Os títulos são botões gerenciados pelo Radix, com chevron de Radix Icons, foco visível, altura mínima de `2.75rem` e relações acessíveis entre gatilhos e regiões de conteúdo. Não há animação adicional; a indicação de expansão muda diretamente, respeitando movimento reduzido.
+`src/components/Accordion/Accordion.tsx` usa `@radix-ui/react-accordion` para agrupar seções expansíveis. Os títulos são botões gerenciados pelo Radix, com chevron de Radix Icons, foco visível, altura mínima de `2.75rem` e relações acessíveis entre gatilhos e regiões de conteúdo. A abertura e o fechamento deslizam durante 220 ms; as preferências de movimento reduzido do sistema e do jogo desativam a animação.
 
 `AccordionVariant`, em `Accordion/accordion-styles.ts`, oferece `Default` (borda de seleção e raio de opção), `Card` (superfície branca, borda `line` e raio de card), `Ghost` (separador inferior sem moldura) e `Flight` (cores do painel de voo e foco claro). As classes usam os tokens existentes de cor, tipografia e espaçamento, sem folhas CSS específicas.
 
@@ -177,7 +177,7 @@ import { AccordionVariant } from '../components/Accordion/accordion-styles';
 
 `label` nomeia o grupo. `heading` configura o nível dos títulos de `h2` a `h6`, com `h3` por padrão. `items` aceita valores únicos e não vazios, `title`, `content`, `disabled`, `keepMounted`, `className`, `triggerProps` e `contentProps`. Os títulos devem conter texto ou conteúdo não interativo; ações ficam no corpo. A raiz recebe os demais atributos do Radix, `className` e `ref`, incluindo `disabled`, `orientation` e `dir`. `triggerProps` e `contentProps` encaminham atributos, eventos e refs às partes correspondentes.
 
-Conteúdo fechado é desmontado por padrão. `keepMounted` preserva campos e componentes internos e oculta a seção fechada com `data-[state=closed]:hidden`, removendo-a do teclado e da árvore de acessibilidade. Enter e espaço alternam a seção; setas, Home e End movem o foco entre títulos habilitados conforme a orientação do primitivo. Os gatilhos usam `type="button"`, sem enviar formulários. Um catálogo vazio de itens é válido. Esta inclusão disponibiliza o componente compartilhado sem substituir automaticamente as listagens que usam Collapsible.
+Conteúdo fechado é desmontado por padrão. `keepMounted` preserva campos e componentes internos e recolhe a seção com uma transição de linhas de grid em um elemento interno, isolado dos estilos temporários de medição do Radix, ocultando-a ao final do fechamento e removendo-a do teclado e da árvore de acessibilidade. Sem `keepMounted`, a altura é animada com `--radix-accordion-content-height`, e o Radix aguarda o término da animação antes de desmontar o conteúdo. O espaçamento fica em um elemento interno para recolher junto do conteúdo. Enter e espaço alternam a seção; setas, Home e End movem o foco entre títulos habilitados conforme a orientação do primitivo. Os gatilhos usam `type="button"`, sem enviar formulários. Um catálogo vazio de itens é válido. Esta inclusão disponibiliza o componente compartilhado sem substituir automaticamente as listagens que usam Collapsible.
 
 ## Tooltip
 

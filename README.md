@@ -59,7 +59,7 @@ Versões fixadas no `package-lock.json`:
 
 **Perfis:** `/sign` escolhe aluno ou professor; `/teachers` gerencia a sala; `/students` recebe o nome da sala e o nome completo do aluno.
 
-**Sessão:** progresso em `sessionStorage`, por aba e sala, com retomada explícita. A identidade anônima fica em memória: recarregar exige nova entrada e não recupera a propriedade da sala. Exclua a sala ao encerrar a aula, antes de fechar ou recarregar o painel.
+**Sessão:** progresso em `sessionStorage`, por aba e sala, com retomada explícita. A identidade anônima persiste durante a sessão da aba, usando `sessionStorage` pelo SDK do Firebase, com fallback em memória quando o armazenamento estiver bloqueado. Recarregar exige nova entrada e reutiliza o registro do aluno na mesma sala, preservando o histórico; a retomada do progresso continua sendo uma escolha explícita. Outra sessão de aba ou dispositivo não tem reconhecimento garantido. Duplicatas antigas não são unidas automaticamente. O UID do professor também persiste na aba, mas o painel não recupera automaticamente a sala após recarregar. Exclua a sala ao encerrar a aula, antes de fechar ou recarregar o painel.
 
 **Dados:** o Firebase recebe nomes, progresso e respostas. As regras atuais permitem leitura pública e restringem escritas por autenticação e permissões da sala. Não versione `.env` nem use credenciais administrativas em `VITE_*`: esses valores entram no JavaScript público.
 

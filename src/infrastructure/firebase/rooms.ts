@@ -1,7 +1,13 @@
 import { missions } from '../../content/missions';
 import { defaultRoomCatalog, storeRoomCatalog } from '../../game/room-catalog';
 import { mergeStudentMissions } from '../../game/merge-student-missions';
-import { inMemoryPersistence, initializeAuth, signInAnonymously, type User } from 'firebase/auth';
+import {
+  browserSessionPersistence,
+  inMemoryPersistence,
+  initializeAuth,
+  signInAnonymously,
+  type User,
+} from 'firebase/auth';
 import { initializeFirebase } from './firebase-app';
 import { initialRoomStudent, type RoomStudent } from '../../game/room-progress';
 import type { Mission, SavedGame } from '../../game/types';
@@ -27,7 +33,10 @@ function getRoomBackend() {
 
 export async function getRoomUser() {
   const { app } = getRoomBackend();
-  const auth = initializeAuth(app, { persistence: inMemoryPersistence });
+  const auth = initializeAuth(app, {
+    persistence: [browserSessionPersistence, inMemoryPersistence],
+  });
+  await auth.authStateReady();
   if (auth.currentUser) return auth.currentUser;
 
   pendingSignIn ??= signInAnonymously(auth)

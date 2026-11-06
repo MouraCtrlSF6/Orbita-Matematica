@@ -1,14 +1,23 @@
 import { defaultRoomCatalog, storeRoomCatalog } from '../../game/room-catalog';
 import { afterEach, beforeEach, expect, it, vi } from 'vitest';
-import { createRoom, findRoomByName, registerStudent, removeStudent, watchRoom } from './rooms';
+import {
+  createRoom,
+  findRoomByName,
+  getRoomUser,
+  registerStudent,
+  removeStudent,
+  watchRoom,
+} from './rooms';
+import { browserSessionPersistence, inMemoryPersistence, initializeAuth } from 'firebase/auth';
 import { initialSave } from '../../game/progress';
 import { initialRoomStudent } from '../../game/room-progress';
 
-const { signIn, unsubscribe, goOffline, subscribe } = vi.hoisted(() => ({
+const { signIn, unsubscribe, goOffline, subscribe, auth } = vi.hoisted(() => ({
   signIn: vi.fn(),
   unsubscribe: vi.fn(),
   goOffline: vi.fn(),
   subscribe: vi.fn(),
+  auth: { currentUser: null as { uid: string } | null, authStateReady: vi.fn() },
 }));
 
 vi.mock('./firebase-app', () => ({
@@ -17,7 +26,8 @@ vi.mock('./firebase-app', () => ({
 
 vi.mock('firebase/auth', () => ({
   inMemoryPersistence: {},
-  initializeAuth: () => ({ currentUser: null }),
+  browserSessionPersistence: {},
+  initializeAuth: vi.fn(() => auth),
   signInAnonymously: signIn,
 }));
 
@@ -32,7 +42,32 @@ vi.mock('firebase/database', () => ({
 afterEach(() => vi.unstubAllGlobals());
 
 beforeEach(() => {
+  auth.currentUser = null;
+  auth.authStateReady.mockReset().mockResolvedValue(undefined);
+  signIn.mockReset();
   signIn.mockResolvedValue({ user: { uid: 'teacher-uid', getIdToken: async () => 'test-token' } });
+});
+
+it('aguarda a restauração do UID antes de autenticar e prioriza persistência na aba', async () => {
+  let restore: () => void = () => {};
+  auth.authStateReady.mockImplementation(() => new Promise<void>((resolve) => (restore = resolve)));
+  const pending = getRoomUser();
+  expect(signIn).not.toHaveBeenCalled();
+  auth.currentUser = { uid: 'restored-student' };
+  restore();
+  await expect(pending).resolves.toBe(auth.currentUser);
+  expect(signIn).not.toHaveBeenCalled();
+  expect(initializeAuth).toHaveBeenCalledWith(expect.anything(), {
+    persistence: [browserSessionPersistence, inMemoryPersistence],
+  });
+});
+
+it('compartilha uma autenticação entre chamadas simultâneas e permite repetir após falha', async () => {
+  signIn.mockRejectedValueOnce(new Error('offline'));
+  await expect(getRoomUser()).rejects.toThrow('offline');
+  const users = await Promise.all([getRoomUser(), getRoomUser(), getRoomUser()]);
+  expect(users.map((user) => user.uid)).toEqual(['teacher-uid', 'teacher-uid', 'teacher-uid']);
+  expect(signIn).toHaveBeenCalledTimes(2);
 });
 
 it('grava os metadados da sala com o UID autenticado sem sobrescrever os alunos', async () => {

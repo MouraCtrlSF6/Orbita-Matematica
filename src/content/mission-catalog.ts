@@ -91,7 +91,7 @@ const missionFields = {
   expectedTokens: optional(isTextArray),
   equivalentTokens: optional(isTokenOrders),
 };
-function isMission(value: unknown): value is Mission {
+export function isMission(value: unknown): value is Mission {
   return isRecord(value) && matchesFields(value, missionFields) && hasMissionFormat(value);
 }
 function hasMissionFormat(value: Record<string, unknown>): boolean {

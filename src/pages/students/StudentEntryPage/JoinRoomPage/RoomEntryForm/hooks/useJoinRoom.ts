@@ -1,3 +1,4 @@
+import { loadRoomCatalog } from '../../../../../../infrastructure/firebase/room-catalog';
 import { useActionState, useEffect, useRef } from 'react';
 import { useSession } from '../../../../../../app/contexts/hooks/useSession';
 import {
@@ -28,15 +29,17 @@ async function registerRoomStudent(
   resume: boolean,
   signal: AbortSignal,
 ) {
-  const storage = createBrowserGameStorage(roomId);
+  const { catalog } = await loadRoomCatalog(roomId, signal);
+
+  const storage = createBrowserGameStorage(roomId, catalog.missions);
 
   const save = resume ? storage.read() : initialSave();
 
-  const student = await registerStudent(roomId, name, save, signal);
+  const student = await registerStudent(roomId, name, save, signal, catalog.missions);
 
   signal.throwIfAborted();
   storage.write(save);
-  return new StudentRoom(roomId, student, storage);
+  return new StudentRoom(roomId, student, storage, catalog.missions);
 }
 
 async function enterOpenRoom(

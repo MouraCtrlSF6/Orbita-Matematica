@@ -1,6 +1,6 @@
 import { missions } from '../content/missions';
 import { sectors } from '../content/sectors';
-import type { SavedGame } from './types';
+import type { Mission, SavedGame } from './types';
 
 export const initialSave = (): SavedGame => ({
   version: 1,
@@ -10,26 +10,48 @@ export const initialSave = (): SavedGame => ({
   preferences: { largeText: false, reducedMotion: false, soundEnabled: true },
 });
 
-export function isSectorUnlocked(sectorId: string, completed: SavedGame['completed']): boolean {
-  const index = sectors.findIndex((sector) => sector.id === sectorId);
+export function isSectorUnlocked(
+  sectorId: string,
+  completed: SavedGame['completed'],
+  catalog: Mission[] = missions,
+): boolean {
+  const index = sectorIndex(sectorId);
   if (index < 0) return false;
-  const firstMission = missions.find((mission) => mission.sectorId === sectorId);
-  return firstMission !== undefined && isMissionUnlocked(firstMission.id, completed);
+  const previous = new Set(sectors.slice(0, index).map((sector) => sector.id));
+  return previousMissionsComplete(catalog, previous, completed);
 }
 
-export function isMissionUnlocked(id: string, completed: SavedGame['completed']): boolean {
-  const index = missions.findIndex((mission) => mission.id === id);
+export function isMissionUnlocked(
+  id: string,
+  completed: SavedGame['completed'],
+  catalog: Mission[] = missions,
+): boolean {
+  const index = catalog.findIndex((mission) => mission.id === id);
   return (
-    index >= 0 && missions.slice(0, index).every((mission) => completed[mission.id] !== undefined)
+    index >= 0 && catalog.slice(0, index).every((mission) => completed[mission.id] !== undefined)
   );
 }
 
-export function nextMission(save: SavedGame): string {
+export function nextMission(save: SavedGame, catalog: Mission[] = missions): string {
   if (
     save.lastMissionId &&
-    isMissionUnlocked(save.lastMissionId, save.completed) &&
+    isMissionUnlocked(save.lastMissionId, save.completed, catalog) &&
     !save.completed[save.lastMissionId]
   )
     return save.lastMissionId;
-  return missions.find((mission) => !save.completed[mission.id])?.id ?? missions[0].id;
+  return catalog.find((mission) => !save.completed[mission.id])?.id ?? catalog[0]?.id ?? '';
+}
+
+function sectorIndex(id: string) {
+  return sectors.findIndex((sector) => sector.id === id);
+}
+
+function previousMissionsComplete(
+  catalog: Mission[],
+  previous: Set<string>,
+  completed: SavedGame['completed'],
+) {
+  return catalog
+    .filter((mission) => previous.has(mission.sectorId))
+    .every((mission) => completed[mission.id] !== undefined);
 }

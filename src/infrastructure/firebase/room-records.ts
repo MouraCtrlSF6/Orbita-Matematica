@@ -6,7 +6,7 @@ import {
   optional,
   type Validator,
 } from '../../game/validation';
-import type { RoomStudent } from '../../game/room-progress';
+import type { RoomSector, RoomStudent } from '../../game/room-progress';
 
 const isStatus = (value: unknown) =>
   value === 'not_started' || value === 'in_progress' || value === 'completed';
@@ -26,6 +26,7 @@ const isAttempt = fields({
 });
 const isMission = fields({
   missionNumber: isOrdinal,
+  missionTitle: optional(isText),
   missionStatus: isStatus,
   usedHints: isBoolean,
   usedVisuals: isBoolean,
@@ -34,7 +35,7 @@ const isMission = fields({
 const isSector = fields({
   sectorName: isText,
   sectorStatus: isStatus,
-  missions: records(isMission),
+  missions: optional(records(isMission)),
 });
 const validateStudent = fields({
   studentId: isText,
@@ -43,10 +44,31 @@ const validateStudent = fields({
   sectors: records(isSector),
 });
 
-export function isRoomStudent(value: unknown): value is RoomStudent {
+interface StoredRoomStudent extends Omit<RoomStudent, 'sectors'> {
+  sectors: Record<string, Omit<RoomSector, 'missions'> & { missions?: RoomSector['missions'] }>;
+}
+
+function isStoredRoomStudent(value: unknown): value is StoredRoomStudent {
   return validateStudent(value);
 }
 
+export function readRoomStudent(value: unknown): RoomStudent | null {
+  if (!isStoredRoomStudent(value)) return null;
+  return {
+    ...value,
+    sectors: Object.fromEntries(
+      Object.entries(value.sectors).map(([id, sector]) => [
+        id,
+        { ...sector, missions: sector.missions ?? {} },
+      ]),
+    ),
+  };
+}
+
 export function readRoomStudents(value: unknown): RoomStudent[] {
-  return isRecord(value) ? Object.values(value).filter(isRoomStudent) : [];
+  return isRecord(value)
+    ? Object.values(value)
+        .map(readRoomStudent)
+        .filter((student) => student !== null)
+    : [];
 }

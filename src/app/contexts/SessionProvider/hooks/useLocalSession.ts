@@ -1,34 +1,15 @@
-import { useMemo, useState } from 'react';
-import { useMatch } from 'react-router';
+import { useState } from 'react';
 import type { LocalSession } from '../../session';
 import type { StudentRoom } from '../../../../pages/students/room-sync';
+import { useSessionRole } from './useSessionRole';
+import { useTeacherRoomState } from './useTeacherRoomState';
 
-export function useLocalSession() {
+export function useLocalSession(): LocalSession {
   const [localSessionId] = useState(() => crypto.randomUUID());
-
   const [studentRoom, setStudentRoom] = useState<StudentRoom | null>(null);
+  const role = useSessionRole();
+  const teacher = useTeacherRoomState(role === 'teacher');
 
-  const [roomDeleted, setRoomDeleted] = useState(false);
-
-  const [teacherRoomName, setTeacherRoomName] = useState<string | null>(null);
-
-  const student = useMatch('/students');
-
-  const teacher = useMatch('/teachers');
-
-  const role = student ? 'student' : teacher ? 'teacher' : null;
-
-  return useMemo<LocalSession>(
-    () => ({
-      role,
-      localSessionId,
-      studentRoom,
-      setStudentRoom,
-      roomDeleted,
-      markRoomDeleted: () => setRoomDeleted(true),
-      teacherRoomName,
-      setTeacherRoomName,
-    }),
-    [role, localSessionId, studentRoom, roomDeleted, teacherRoomName],
-  );
+  if (role !== 'student' && studentRoom) setStudentRoom(null);
+  return { role, localSessionId, studentRoom, setStudentRoom, ...teacher };
 }

@@ -12,9 +12,10 @@ export function TokenRow({ tokens, ...controls }: TokenRowProps) {
 
   return (
     <div className="token-row flex gap-[0.5625rem] flex-wrap my-[0.9375rem] mx-0 [&_button]:[border:1px_solid_#cebfdf] [&_button]:[background:#f1eafa] [&_button]:text-[#6c4f8e] [&_button]:rounded-control [&_button]:py-2.5 [&_button]:px-4 [&_button]:text-control [&_button]:min-w-[2.9375rem] [&_button:disabled]:[opacity:0.4] ds-down-mobile:gap-[0.4375rem] ds-down-mobile:[&_button]:py-2.5 ds-down-mobile:[&_button]:px-3">
-      {tokens?.map((token) => (
+      {tokens?.map((token, index) => (
         <TokenButton
-          key={token}
+          key={index}
+          occurrence={tokens.slice(0, index).filter((item) => item === token).length}
           selected={selected}
           disabled={controls.disabled}
           onChange={controls.onChange}

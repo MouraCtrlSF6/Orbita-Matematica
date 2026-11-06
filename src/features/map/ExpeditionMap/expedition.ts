@@ -1,8 +1,8 @@
-import { missionById, missions } from '../../../content/missions';
+import { missions } from '../../../content/missions';
 import { sectors } from '../../../content/sectors';
 import { isMissionUnlocked, isSectorUnlocked, nextMission } from '../../../game/progress';
 import { approach, createWorld, type Point, type SpaceWorld } from '../../../game/space';
-import type { SavedGame } from '../../../game/types';
+import type { Mission, SavedGame } from '../../../game/types';
 import type { DestinationStatus } from '../flightController';
 export interface ExpeditionMapProps {
   save: SavedGame;
@@ -16,20 +16,20 @@ export interface ExpeditionMapProps {
   onSummary: () => void;
   onSoundChange: (enabled: boolean) => void;
 }
-function sectorMissions(id: string) {
-  return missions.filter((item) => item.sectorId === id);
+function sectorMissions(id: string, catalog: Mission[]) {
+  return catalog.filter((item) => item.sectorId === id);
 }
 
-export function mapWorld(sectorId: string | null): SpaceWorld {
+export function mapWorld(sectorId: string | null, catalog: Mission[] = missions): SpaceWorld {
   if (sectorId)
     return createWorld(
-      sectorMissions(sectorId).map((item) => ({ id: item.id, label: item.title })),
+      sectorMissions(sectorId, catalog).map((item) => ({ id: item.id, label: item.title })),
     );
   return createWorld(sectors.map((item) => ({ id: item.id, label: item.name })));
 }
 
-function missionStatus(id: string, save: SavedGame): DestinationStatus {
-  const unlocked = isMissionUnlocked(id, save.completed);
+function missionStatus(id: string, save: SavedGame, catalog: Mission[]): DestinationStatus {
+  const unlocked = isMissionUnlocked(id, save.completed, catalog);
 
   const completed = Boolean(save.completed[id]);
 
@@ -42,12 +42,12 @@ function missionStatus(id: string, save: SavedGame): DestinationStatus {
   };
 }
 
-function sectorStatus(id: string, save: SavedGame): DestinationStatus {
-  const items = sectorMissions(id);
+function sectorStatus(id: string, save: SavedGame, catalog: Mission[]): DestinationStatus {
+  const items = sectorMissions(id, catalog);
 
   const count = items.filter((item) => save.completed[item.id]).length;
 
-  const unlocked = isSectorUnlocked(id, save.completed);
+  const unlocked = isSectorUnlocked(id, save.completed, catalog);
 
   const completed = count === items.length;
 
@@ -64,20 +64,25 @@ export class Expedition {
   constructor(
     readonly props: ExpeditionMapProps,
     readonly world: SpaceWorld,
+    readonly missions: Mission[] = missions,
   ) {}
   get sector() {
     return sectors.find((item) => item.id === this.props.sectorId);
   }
   get nextMission() {
-    return missionById.get(nextMission(this.props.save))!;
+    return this.missions.find(
+      (mission) => mission.id === nextMission(this.props.save, this.missions),
+    );
   }
   get allComplete() {
-    return missions.every((item) => this.props.save.completed[item.id]);
+    return this.missions.every((item) => this.props.save.completed[item.id]);
   }
   get sectorComplete() {
     return (
       Boolean(this.sector) &&
-      sectorMissions(this.props.sectorId!).every((item) => this.props.save.completed[item.id])
+      sectorMissions(this.props.sectorId!, this.missions).every(
+        (item) => this.props.save.completed[item.id],
+      )
     );
   }
   get mapKey() {
@@ -87,7 +92,10 @@ export class Expedition {
     const status = this.props.sectorId ? missionStatus : sectorStatus;
 
     return Object.fromEntries(
-      this.world.destinations.map((item) => [item.id, status(item.id, this.props.save)]),
+      this.world.destinations.map((item) => [
+        item.id,
+        status(item.id, this.props.save, this.missions),
+      ]),
     );
   }
   get nextSector() {
@@ -96,9 +104,10 @@ export class Expedition {
   }
   get nextId() {
     if (this.props.sectorId)
-      return sectorMissions(this.props.sectorId).find((item) => !this.props.save.completed[item.id])
-        ?.id;
-    return this.allComplete ? undefined : this.nextMission.sectorId;
+      return sectorMissions(this.props.sectorId, this.missions).find(
+        (item) => !this.props.save.completed[item.id],
+      )?.id;
+    return this.allComplete ? undefined : this.nextMission?.sectorId;
   }
   get resumeLabel() {
     if (!this.props.save.tutorialDone) return 'Vamos explorar';
@@ -107,8 +116,8 @@ export class Expedition {
   private ensurePosition() {
     const next = this.nextMission;
 
-    if (this.props.positions.has(next.sectorId)) return;
-    const world = mapWorld(next.sectorId);
+    if (!next || this.props.positions.has(next.sectorId)) return;
+    const world = mapWorld(next.sectorId, this.missions);
 
     this.props.positions.set(
       next.sectorId,
@@ -122,7 +131,7 @@ export class Expedition {
       return;
     }
     this.ensurePosition();
-    this.props.onSector(this.nextMission.sectorId);
+    this.props.onSector(this.nextMission?.sectorId ?? sectors[0].id);
   };
   visit = (id: string) => {
     if (!this.props.save.tutorialDone) this.props.onTutorial();

@@ -1,5 +1,6 @@
 import { type SelectOption } from '../../creation-fields-types';
-import { SelectOptions } from './SelectOptions/SelectOptions';
+import { useId } from 'react';
+import { Select } from '../../../../../../../../../../components/Select/Select';
 
 export interface CreationSelectProps {
   label: string;
@@ -9,12 +10,20 @@ export interface CreationSelectProps {
 }
 
 export function CreationSelect({ label, value, options, onChange }: CreationSelectProps) {
+  const id = useId();
+  const items = options.map((option) => ({ ...option, value: String(option.value) }));
+
   return (
-    <label>
+    <label htmlFor={id}>
       {label}
-      <select value={value} onChange={(event) => onChange(event.target.value)}>
-        <SelectOptions options={options} />
-      </select>
+      <Select
+        id={id}
+        label={label}
+        value={String(value)}
+        options={items}
+        onValueChange={onChange}
+        className="mt-[0.4375rem] p-3 text-[#62516f]"
+      />
     </label>
   );
 }

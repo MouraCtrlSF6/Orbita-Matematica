@@ -1,5 +1,6 @@
+import { missions } from '../content/missions';
 import { initialSave } from '../game/progress';
-import type { SavedGame } from '../game/types';
+import type { Mission, SavedGame } from '../game/types';
 import { loadGame, saveGame, STORAGE_KEY } from './storage';
 
 export function roomSaveKey(roomId: string) {
@@ -17,11 +18,14 @@ class BrowserGameStorage {
   private available = true;
   private listeners = new Set<() => void>();
   private currentSave?: SavedGame;
-  constructor(private key: string) {}
+  constructor(
+    private key: string,
+    private catalog: Mission[],
+  ) {}
   read() {
     if (this.currentSave) return this.currentSave;
     try {
-      return loadGame(window.sessionStorage, this.key);
+      return loadGame(window.sessionStorage, this.key, this.catalog);
     } catch {
       return initialSave();
     }
@@ -41,8 +45,8 @@ class BrowserGameStorage {
     };
   };
 }
-export function createBrowserGameStorage(roomId: string) {
-  return new BrowserGameStorage(roomSaveKey(roomId));
+export function createBrowserGameStorage(roomId: string, catalog: Mission[] = missions) {
+  return new BrowserGameStorage(roomSaveKey(roomId), catalog);
 }
 
 export type RoomGameStorage = ReturnType<typeof createBrowserGameStorage>;

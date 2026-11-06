@@ -1,9 +1,12 @@
+import { Button } from '../../../../../../../../../../components/Button/Button';
+import { ButtonVariant } from '../../../../../../../../../../components/Button/button-styles';
 import type { ReactNode } from 'react';
 import type { AnswerControlProps } from '../../../answer-control';
 
 export interface TokenButtonProps extends Pick<AnswerControlProps, 'disabled' | 'onChange'> {
   token: string;
   selected: string[];
+  occurrence?: number;
 }
 
 const tokenLabels: Record<string, ReactNode> = {
@@ -21,14 +24,22 @@ const tokenLabels: Record<string, ReactNode> = {
   ),
 };
 
-export function TokenButton({ token, selected, disabled, onChange }: TokenButtonProps) {
+export function TokenButton({
+  token,
+  selected,
+  disabled,
+  onChange,
+  occurrence = 0,
+}: TokenButtonProps) {
   return (
-    <button
+    <Button
+      variant={ButtonVariant.Secondary}
       type="button"
-      disabled={disabled || selected.includes(token)}
+      className="font-normal"
+      disabled={disabled || selected.filter((item) => item === token).length > occurrence}
       onClick={() => onChange([...selected, token].join(' '))}
     >
       {tokenLabels[token] ?? token}
-    </button>
+    </Button>
   );
 }

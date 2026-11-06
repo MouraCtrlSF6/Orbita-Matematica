@@ -45,3 +45,11 @@ As missões do lançamento e da oficina oferecem apenas a primeira dica; na base
 A primeira montagem aceita `3 × x` e `x × 3`; a segunda aceita as quatro ordens equivalentes com seus símbolos. As missões originais usam números naturais pequenos; o catálogo ampliado também inclui zero, soluções negativas e expressões com frações. Nos modelos negativos, cada objeto representa −1. Avaliar com a professora a adequação dessa representação antes de usá-la como apoio.
 
 **Validação pedagógica pendente:** com a professora, observar compreensão dos enunciados, relação entre objetos e expressão, utilidade das dicas e transferência para outro valor de x. Ajustar contexto, quantidade de itens e progressão conforme essa observação. A conclusão no aplicativo, incluindo registros históricos de solução guiada, não comprova domínio independente da habilidade.
+
+## Catálogo personalizado por sala
+
+O catálogo padrão de 52 missões permanece como referência inicial. O professor pode acrescentar questões dos quatro formatos ou remover questões da sua sala, sem criar setores. Novas questões entram ao final do setor escolhido. Ao remover pré-requisitos ou acrescentar desafios, revisar a continuidade entre objetivos, habilidades e dificuldade: a aplicação mantém o desbloqueio sequencial, mas isso não garante uma sequência pedagógica adequada.
+
+Antes de adicionar, calcular a resposta independentemente e conferir enunciado, alternativas, três dicas, explicação e quantidade de objetos visuais. O formulário valida a estrutura e os resultados numéricos, detecta alternativas duplicadas e verifica equivalência algébrica das montagens; essas verificações não comprovam que o enunciado corresponda à expressão ou que a alternativa escolhida pelo autor seja pedagogicamente correta. A criação guiada mantém `2 × x + 4` e as opções existentes.
+
+**Revisão pendente:** avaliar com a professora os formulários de autoria, as questões produzidas e o efeito das exclusões na progressão. Diferentes alunos podem usar revisões distintas durante uma aula: o catálogo é fixado na entrada e só muda ao sair e entrar novamente. Histórico de respostas e conclusões permanece preservado, mas os totais exibidos consideram o catálogo carregado naquela partida. Questões excluídas não devem ser interpretadas como habilidades adquiridas.

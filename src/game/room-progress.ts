@@ -14,6 +14,7 @@ export interface ProvidedAnswer {
 
 export interface RoomMission {
   missionNumber: number;
+  missionTitle?: string;
   missionStatus: ProgressStatus;
   usedHints: boolean;
   usedVisuals: boolean;
@@ -45,33 +46,45 @@ export function sectorStatus(missions: Record<string, RoomMission>): ProgressSta
 }
 
 function allCompleted(missions: RoomMission[]) {
-  return missions.length > 0 && missions.every((mission) => mission.missionStatus === 'completed');
+  return missions.every((mission) => mission.missionStatus === 'completed');
 }
 
 function initialMission(mission: Mission, index: number, save: SavedGame): RoomMission {
   const result = save.completed[mission.id];
   return {
     missionNumber: index + 1,
+    missionTitle: mission.title,
     missionStatus: result ? 'completed' : 'not_started',
     usedHints: Boolean(result?.hints),
     usedVisuals: Boolean(result?.visual),
   };
 }
 
-function initialSector(sector: (typeof sectors)[number], save: SavedGame): RoomSector {
+function initialSector(
+  sector: (typeof sectors)[number],
+  save: SavedGame,
+  catalog: Mission[],
+): RoomSector {
   const records = Object.fromEntries(
-    missions
+    catalog
       .filter((mission) => mission.sectorId === sector.id)
       .map((mission, index) => [mission.id, initialMission(mission, index, save)]),
   );
   return { sectorName: sector.name, sectorStatus: sectorStatus(records), missions: records };
 }
 
-export function initialRoomStudent(studentId: string, name: string, save: SavedGame): RoomStudent {
+export function initialRoomStudent(
+  studentId: string,
+  name: string,
+  save: SavedGame,
+  catalog: Mission[] = missions,
+): RoomStudent {
   return {
     studentId,
     name,
-    sectors: Object.fromEntries(sectors.map((sector) => [sector.id, initialSector(sector, save)])),
+    sectors: Object.fromEntries(
+      sectors.map((sector) => [sector.id, initialSector(sector, save, catalog)]),
+    ),
   };
 }
 

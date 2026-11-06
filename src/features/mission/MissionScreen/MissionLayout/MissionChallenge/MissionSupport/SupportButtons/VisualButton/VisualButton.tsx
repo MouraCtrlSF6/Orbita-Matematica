@@ -1,16 +1,20 @@
+import { Button } from '../../../../../../../../components/Button/Button';
+import { CubeIcon } from '@radix-ui/react-icons';
+import { ButtonVariant } from '../../../../../../../../components/Button/button-styles';
 import { useMissionContext } from '../../../../../hooks/useMissionContext';
 
 export function VisualButton() {
   const { session } = useMissionContext();
 
   return (
-    <button
-      className="subtle-button [background:#f6f5f8] [border:1px_solid_#e6e1ed] text-[#665873] rounded-subtle py-[0.5625rem] px-3 inline-flex items-center justify-center gap-[0.4375rem] text-label min-h-10 ds-hover:[background:#ece6f5] ds-down-mobile:text-caption"
+    <Button
+      variant={ButtonVariant.Subtle}
+
       aria-expanded={session.visual}
       onClick={session.toggleVisual}
     >
-      <span aria-hidden="true">◇</span>
+      <CubeIcon aria-hidden="true" />
       {session.visual ? 'Ocultar objetos' : 'Ver com objetos'}
-    </button>
+    </Button>
   );
 }

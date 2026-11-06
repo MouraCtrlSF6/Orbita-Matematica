@@ -1,11 +1,14 @@
 import assert from 'node:assert/strict';
 
+const authHost = process.env.FIREBASE_AUTH_EMULATOR_HOST ?? '127.0.0.1:9099';
+assert.match(authHost, /^127\.0\.0\.1:\d+$/);
+
 const databaseHost = process.env.FIREBASE_DATABASE_EMULATOR_HOST ?? '127.0.0.1:19000';
 assert.match(databaseHost, /^127\.0\.0\.1:\d+$/);
 
 async function identity() {
   const response = await fetch(
-    'http://127.0.0.1:9099/identitytoolkit.googleapis.com/v1/accounts:signUp?key=fake-key',
+    `http://${authHost}/identitytoolkit.googleapis.com/v1/accounts:signUp?key=fake-key`,
     {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -37,6 +40,7 @@ const entry = `${room}/students/${student.localId}`;
 const meta = { ownerUid: teacher.localId, open: true, name: roomName };
 const mission = {
   missionNumber: 1,
+  missionTitle: 'Questão de teste',
   missionStatus: 'not_started',
   usedHints: false,
   usedVisuals: false,
@@ -51,15 +55,46 @@ const profile = {
 const attempt = { order: 1, answer: { label: 'Alternativa A', value: '1' }, correct: false };
 const patch = { 'sectors/launch/missions/first/providedAnswers/attempt-1': attempt };
 
-const create = { [`${room}/meta`]: meta, [indexPath]: roomId };
+const catalog = { revision: 0, sectors: { launch: '[]', workshop: '[]', base: '[]' } };
+const create = { [`${room}/meta`]: meta, [indexPath]: roomId, [`${room}/catalog`]: catalog };
 const duplicate = {
   [`rooms/${nextRoomId}/meta`]: { ...meta, ownerUid: other.localId },
   [indexPath]: nextRoomId,
 };
 await request(`${room}/meta`, teacher, 'PUT', meta, 401);
 await request('', teacher, 'PATCH', create, 200);
-await request('', teacher, 'PATCH', create, 200);
+await request('', teacher, 'PATCH', { [`${room}/meta`]: meta, [indexPath]: roomId }, 200);
 await request('', other, 'PATCH', duplicate, 401);
+await request(`${room}/catalog`, teacher, 'PUT', catalog, 401);
+await request(`${room}/catalog`, student, 'GET', undefined, 200);
+await request(`${room}/catalog`, student, 'PUT', { ...catalog, revision: 1 }, 401);
+await request(`${room}/catalog`, other, 'PUT', { ...catalog, revision: 1 }, 401);
+await request(`${room}/catalog`, null, 'PUT', { ...catalog, revision: 1 }, 401);
+await request(`${room}/catalog`, teacher, 'PUT', catalog, 401);
+await request(
+  `${room}/catalog`,
+  teacher,
+  'PUT',
+  { ...catalog, revision: 1, sectors: { ...catalog.sectors, extra: '[]' } },
+  401,
+);
+await request(
+  `${room}/catalog`,
+  teacher,
+  'PUT',
+  { ...catalog, revision: 1, sectors: { launch: '[]' } },
+  401,
+);
+await request(
+  `${room}/catalog`,
+  teacher,
+  'PUT',
+  { ...catalog, revision: 1, sectors: { ...catalog.sectors, base: [] } },
+  401,
+);
+await request(`${room}/catalog`, teacher, 'PUT', { ...catalog, revision: 1 }, 200);
+await request(`${room}/catalog`, teacher, 'DELETE', undefined, 401);
+
 assert.equal(await request(indexPath, student, 'GET', undefined, 200), roomId);
 assert.equal((await request('roomNames', null, 'GET', undefined, 200))[roomName], roomId);
 await request(`${room}/meta/open`, student, 'GET', undefined, 200);
@@ -69,6 +104,20 @@ assert.equal((await request(entry, student, 'GET', undefined, 200)).name, profil
 await request(entry, student, 'PATCH', patch, 200);
 await request(entry, student, 'PATCH', patch, 200);
 await request(entry, student, 'PATCH', { name: 1 }, 401);
+await request(
+  entry,
+  student,
+  'PATCH',
+  { 'sectors/extra': { sectorName: 'Extra', sectorStatus: 'not_started' } },
+  401,
+);
+await request(
+  entry,
+  student,
+  'PATCH',
+  { 'sectors/base': { sectorName: 'Base', sectorStatus: 'completed' } },
+  200,
+);
 assert.equal((await request(entry, other, 'GET', undefined, 200)).name, profile.name);
 await request(entry, other, 'PATCH', patch, 401);
 await request(entry, null, 'PATCH', patch, 401);

@@ -1,3 +1,5 @@
+import { Button } from '../../../../../../../../../../components/Button/Button';
+import { ButtonVariant } from '../../../../../../../../../../components/Button/button-styles';
 import { useRemoveStudent } from './hooks/useRemoveStudent';
 
 export interface RemoveStudentButtonProps {
@@ -10,13 +12,16 @@ export function RemoveStudentButton({ studentId, name }: RemoveStudentButtonProp
 
   return (
     <form action={action}>
-      <button
-        className="button danger min-h-11 [border:0] rounded-control inline-flex justify-center items-center gap-[0.6875rem] py-3 px-5 text-small font-bold no-underline ds-disabled:[opacity:0.48] ds-disabled:[transform:none]! ds-danger:bg-danger ds-danger:text-white ds-down-mobile:[.exploration-toolbar_&]:[flex:1_1_auto] [.feedback_&]:mt-[1.0625rem] [.tutorial-card_&]:mt-6"
+      <Button
+        variant={ButtonVariant.DangerSolid}
+
         disabled={pending}
         aria-label={`Remover ${name} da sala`}
+        type="submit"
+        className="ds-down-mobile:[.exploration-toolbar_&]:[flex:1_1_auto] [.feedback_&]:mt-[1.0625rem] [.tutorial-card_&]:mt-6"
       >
         {pending ? 'Removendo…' : 'Remover aluno'}
-      </button>
+      </Button>
       {error && <p role="alert">{error}</p>}
     </form>
   );

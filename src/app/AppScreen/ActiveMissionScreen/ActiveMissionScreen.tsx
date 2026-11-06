@@ -1,11 +1,14 @@
+import { useMissionCatalog } from '../../../pages/students/hooks/useMissionCatalog';
 import { useStudentGame } from '../../../pages/students/hooks/useStudentGame';
-import { missionById } from '../../../content/missions';
+
 import { MissionScreen } from '../../../features/mission/MissionScreen/MissionScreen';
 
 export function ActiveMissionScreen() {
+  const missions = useMissionCatalog();
+
   const { state, navigation } = useStudentGame();
 
-  const mission = missionById.get(state.missionId ?? '');
+  const mission = missions.find((item) => item.id === state.missionId);
 
   if (!mission) return null;
   return (

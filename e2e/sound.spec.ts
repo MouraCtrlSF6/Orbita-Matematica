@@ -1,8 +1,10 @@
-import { expect, test, type Page } from '@playwright/test';
+import { expect, type Page } from '@playwright/test';
+import { enterRoom, test } from './rooms-fixture';
 import { missions } from '../src/content/missions';
 
 test('M toggles sound once per press and stays synchronized with settings', async ({ page }) => {
-  await page.goto('/');
+  await page.goto('/students');
+  await enterRoom(page);
   const toggle = page.getByRole('button', { name: 'Som da nave', exact: true });
   await page.getByRole('region', { name: 'Área de pilotagem' }).focus();
   await page.keyboard.down('m');
@@ -20,6 +22,7 @@ test('M toggles sound once per press and stays synchronized with settings', asyn
   }
   await page.keyboard.press('m');
   await page.reload();
+  await enterRoom(page);
   await expect(toggle).toHaveAttribute('aria-pressed', 'false');
   await page.getByRole('button', { name: 'Ajustes da expedição' }).click();
   await expect(page.getByRole('checkbox', { name: /Som da nave/ })).not.toBeChecked();
@@ -32,8 +35,8 @@ test('M toggles sound once per press and stays synchronized with settings', asyn
 test('typing M in an answer does not mute the game', async ({ page }) => {
   await page.addInitScript(
     (ids) =>
-      localStorage.setItem(
-        'orbita-matematica:v1',
+      sessionStorage.setItem(
+        'orbita-matematica:v1:room:b12ae140-fc6a-4690-ab61-5bfbb91a8d19',
         JSON.stringify({
           version: 1,
           tutorialDone: true,
@@ -51,7 +54,8 @@ test('typing M in an answer does not mute the game', async ({ page }) => {
       )
       .map((item) => item.id),
   );
-  await page.goto('/');
+  await page.goto('/students');
+  await enterRoom(page);
   await page.getByRole('button', { name: 'Retomar exploração' }).click();
   await page.getByRole('button', { name: 'Entrar', exact: true }).click();
   const answer = page.getByRole('textbox', { name: 'Qual é o total?' });
@@ -59,7 +63,10 @@ test('typing M in an answer does not mute the game', async ({ page }) => {
   await expect(answer).toHaveValue('m');
   expect(
     await page.evaluate(
-      () => JSON.parse(localStorage.getItem('orbita-matematica:v1')!).preferences.soundEnabled,
+      () =>
+        JSON.parse(
+          sessionStorage.getItem('orbita-matematica:v1:room:b12ae140-fc6a-4690-ab61-5bfbb91a8d19')!,
+        ).preferences.soundEnabled,
     ),
   ).toBe(true);
   await page.getByRole('button', { name: 'Quero uma pista' }).focus();
@@ -67,7 +74,12 @@ test('typing M in an answer does not mute the game', async ({ page }) => {
   await expect
     .poll(() =>
       page.evaluate(
-        () => JSON.parse(localStorage.getItem('orbita-matematica:v1')!).preferences.soundEnabled,
+        () =>
+          JSON.parse(
+            sessionStorage.getItem(
+              'orbita-matematica:v1:room:b12ae140-fc6a-4690-ab61-5bfbb91a8d19',
+            )!,
+          ).preferences.soundEnabled,
       ),
     )
     .toBe(false);
@@ -84,9 +96,9 @@ for (const width of [1440, 390]) {
   }) => {
     await page.setViewportSize({ width, height: 1000 });
     await page.addInitScript(() => {
-      if (!localStorage.getItem('orbita-matematica:v1'))
-        localStorage.setItem(
-          'orbita-matematica:v1',
+      if (!sessionStorage.getItem('orbita-matematica:v1:room:b12ae140-fc6a-4690-ab61-5bfbb91a8d19'))
+        sessionStorage.setItem(
+          'orbita-matematica:v1:room:b12ae140-fc6a-4690-ab61-5bfbb91a8d19',
           JSON.stringify({
             version: 1,
             completed: {},
@@ -96,7 +108,8 @@ for (const width of [1440, 390]) {
           }),
         );
     });
-    await page.goto('/');
+    await page.goto('/students');
+    await enterRoom(page);
     const toggle = page.getByRole('button', { name: 'Som da nave', exact: true });
     await expect(toggle).toHaveAttribute('aria-pressed', 'true');
     await expect(toggle).toContainText('Som ligado');
@@ -111,6 +124,7 @@ for (const width of [1440, 390]) {
     await page.keyboard.press('Space');
     await expect(toggle).toHaveAttribute('aria-pressed', 'false');
     await page.reload();
+    await enterRoom(page);
     await expect(toggle).toHaveAttribute('aria-pressed', 'false');
     await page.getByRole('button', { name: 'Retomar exploração' }).click();
     await expect(toggle).toHaveAttribute('aria-pressed', 'false');
@@ -178,7 +192,8 @@ test('plays thrust only while moving, stops on interruption and persists mute', 
       }
     };
   });
-  await page.goto('/');
+  await page.goto('/students');
+  await enterRoom(page);
   expect((await audioState(page)).count).toBe(0);
   const pilot = page.getByRole('region', { name: 'Área de pilotagem' });
   await pilot.focus();
@@ -213,6 +228,7 @@ test('plays thrust only while moving, stops on interruption and persists mute', 
   expect((await audioState(page)).rms).toBeLessThan(0.00001);
   await page.keyboard.up('ArrowRight');
   await page.reload();
+  await enterRoom(page);
   await page.getByRole('button', { name: 'Ajustes da expedição' }).click();
   await expect(page.getByRole('checkbox', { name: /Som da nave/ })).not.toBeChecked();
   await page.getByRole('checkbox', { name: /Som da nave/ }).check();
@@ -223,7 +239,7 @@ test('plays thrust only while moving, stops on interruption and persists mute', 
   await expect.poll(async () => (await audioState(page)).rms).toBeGreaterThan(0.001);
   await page.mouse.up();
   await expect.poll(async () => (await audioState(page)).rms).toBeLessThan(0.00001);
-  await page.getByRole('button', { name: 'Vamos explorar', exact: true }).click();
+  await page.getByRole('button', { name: /Minhas descobertas/ }).click();
   await expect.poll(async () => (await audioState(page)).state).toBe('closed');
 });
 
@@ -233,7 +249,8 @@ test('keeps flying without an audio API', async ({ page }) => {
   });
   const errors: string[] = [];
   page.on('pageerror', (error) => errors.push(error.message));
-  await page.goto('/');
+  await page.goto('/students');
+  await enterRoom(page);
   const ship = page.locator('.player-ship');
   const readX = () =>
     ship.evaluate((element) => new DOMMatrix(getComputedStyle(element).transform).m41);

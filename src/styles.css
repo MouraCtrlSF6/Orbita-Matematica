@@ -1,10 +1,149 @@
-@import './styles/base.css';
-@import './app/layout.css';
-@import './components/SpaceArt.css';
-@import './features/map/map.css';
-@import './features/map/exploration.css';
-@import './features/mission/mission.css';
-@import './features/tutorial/tutorial.css';
-@import './features/progress/progress.css';
-@import './features/settings/settings.css';
-@import './styles/accessibility.css';
+@layer theme, base, components, utilities;
+@import 'tailwindcss/theme.css' layer(theme);
+@import 'tailwindcss/utilities.css' layer(utilities) source('./');
+@import './styles/design-system.css';
+@import '@fontsource/dm-sans/latin-400.css';
+@import '@fontsource/dm-sans/latin-500.css';
+@import '@fontsource/dm-sans/latin-600.css';
+@import '@fontsource/dm-sans/latin-700.css';
+@import '@fontsource/manrope/latin-600.css';
+@import '@fontsource/manrope/latin-700.css';
+@import '@fontsource/manrope/latin-800.css';
+
+@layer base {
+  :root {
+    @apply font-body text-text bg-canvas;
+    font-synthesis: none;
+    @apply font-normal leading-[1.55];
+    font-size: 100%;
+    --purple: var(--color-purple);
+    --ink: var(--color-ink);
+    --muted: var(--color-muted);
+    --line: var(--color-line);
+    --mint: var(--color-mint);
+  }
+  * {
+    @apply box-border;
+  }
+  body {
+    @apply m-0 text-root;
+  }
+  button,
+  input,
+  textarea,
+  select {
+    font: inherit;
+  }
+  button,
+  a,
+  input,
+  select,
+  summary {
+    -webkit-tap-highlight-color: transparent;
+  }
+  button {
+    @apply cursor-pointer;
+  }
+  button {
+    transition:
+      background 0.18s,
+      transform 0.18s;
+  }
+  button:disabled {
+    @apply cursor-not-allowed;
+  }
+  button:focus-visible,
+  a:focus-visible,
+  input:focus-visible,
+  textarea:focus-visible,
+  select:focus-visible,
+  summary:focus-visible,
+  [tabindex='-1']:focus-visible {
+    outline: 0.1875rem solid var(--color-focus);
+    @apply [outline-offset:0.3125rem];
+  }
+  a {
+    @apply text-[inherit];
+  }
+  h1,
+  h2,
+  h3,
+  p {
+    @apply m-0;
+  }
+  h1,
+  h2,
+  h3 {
+    @apply font-heading tracking-[-0.045em];
+  }
+  h1 {
+    @apply text-page leading-[1.3] font-extrabold;
+  }
+  h2 {
+    @apply text-heading leading-[1.35] font-extrabold;
+  }
+  h3 {
+    @apply text-subheading leading-[1.4] font-extrabold;
+  }
+  button svg {
+    @apply shrink-0;
+  }
+  progress {
+    @apply block appearance-none [border:0] h-1 rounded-subtle w-full [background:#efeff3] overflow-hidden mt-2 mr-0 mb-4 ml-0;
+  }
+  progress::-webkit-progress-bar {
+    @apply [background:#efeff3] rounded-subtle;
+  }
+  progress::-webkit-progress-value {
+    @apply [background:var(--accent,_#9680c7)] rounded-subtle;
+  }
+  progress::-moz-progress-bar {
+    @apply [background:var(--accent,_#9680c7)] rounded-subtle;
+  }
+  main:focus {
+    outline: none;
+  }
+  main {
+    @apply max-w-375 m-auto pt-9.5 pr-11 pb-0 pl-11;
+  }
+  @media (min-width: theme(--breakpoint-wide)) {
+    main {
+      @apply pt-12.5;
+    }
+  }
+  @media (max-width: theme(--breakpoint-desktop)) {
+    main {
+      @apply pt-7.5 pr-7 pb-0 pl-7;
+    }
+  }
+  @media (max-width: theme(--breakpoint-mobile)) {
+    main {
+      @apply pt-6 pr-5 pb-0 pl-5;
+    }
+  }
+  .large-text {
+    --text-scale: 1.18;
+  }
+  .large-text main {
+    zoom: var(--text-scale);
+  }
+  .reduce-motion * {
+    animation: none !important;
+    transition: none !important;
+    scroll-behavior: auto !important;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation: none !important;
+      transition: none !important;
+      scroll-behavior: auto !important;
+    }
+  }
+  @media (max-width: theme(--breakpoint-mobile)) {
+    .large-text main {
+      zoom: 1.12;
+    }
+  }
+}

@@ -1,0 +1,162 @@
+import { expect, type Page } from '@playwright/test';
+import AxeBuilder from '@axe-core/playwright';
+import { enterRoom, test } from '../../../e2e/rooms-fixture';
+
+async function createRoom(page: Page) {
+  await page.getByLabel('Nome da sala').fill('Turma Têste');
+  await page.getByRole('button', { name: 'Criar sala' }).click();
+  await expect(page.getByRole('code').filter({ hasText: /^turma teste$/ })).toBeVisible();
+}
+
+test('opens profile selection and navigates the cards with the keyboard and history', async ({
+  page,
+}) => {
+  await page.goto('/');
+  await expect(page).toHaveURL(/\/sign$/);
+  await expect(page.getByRole('link', { name: 'Sou Professor' })).toBeVisible();
+  await page.keyboard.press('Tab');
+  await expect(page.getByRole('link', { name: 'Sou Professor' })).toBeFocused();
+  await page.keyboard.press('Enter');
+  await expect(page).toHaveURL(/\/teachers$/);
+  await expect(page.getByRole('heading', { name: 'Área do professor' })).toBeVisible();
+  await page.getByLabel('Nome da sala').fill('Sala ocupada');
+  await page.getByRole('button', { name: 'Criar sala' }).click();
+  await expect(page.getByRole('alert')).toContainText('Já existe uma sala');
+  await createRoom(page);
+  await expect(page.getByRole('status').filter({ hasText: 'Registros de alunos: 0' })).toHaveText(
+    'Registros de alunos: 0',
+  );
+  await page.evaluate(() =>
+    window.dispatchEvent(
+      new CustomEvent('mock-room-update', {
+        detail: [
+          {
+            studentId: 'test-student',
+            name: 'Aluno de teste',
+            sectors: {
+              launch: {
+                sectorName: 'Estação',
+                sectorStatus: 'in_progress',
+                missions: {
+                  launch1: {
+                    missionNumber: 1,
+                    missionStatus: 'in_progress',
+                    usedHints: true,
+                    usedVisuals: false,
+                    providedAnswers: {
+                      'attempt-1': {
+                        order: 1,
+                        answer: { label: 'Resposta numérica', value: '4' },
+                        correct: false,
+                      },
+                    },
+                  },
+                },
+              },
+            },
+          },
+        ],
+      }),
+    ),
+  );
+  await expect(page.getByRole('status')).toHaveText('Registros de alunos: 1');
+  const studentTrigger = page.getByRole('button', { name: 'Aluno de teste', exact: true });
+
+  await studentTrigger.focus();
+  await page.keyboard.press('Enter');
+  await page.getByRole('button', { name: 'Estação · Em andamento', exact: true }).click();
+  await page.getByRole('button', { name: 'Missão 1 Em andamento', exact: true }).click();
+  await expect(page.getByText('Resposta numérica · 4 · Incorreta')).toBeVisible();
+  await studentTrigger.press('Space');
+  await expect(
+    page.getByRole('button', { name: 'Estação · Em andamento', exact: true }),
+  ).toBeHidden();
+  await studentTrigger.press('Enter');
+  await expect(page.getByText('Resposta numérica · 4 · Incorreta')).toBeVisible();
+  await page.setViewportSize({ width: 390, height: 844 });
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+  // These explicitly requested text colors have known contrast limitations on light surfaces.
+  const { violations } = await new AxeBuilder({ page })
+    .exclude('.text-lime-600')
+    .exclude('.text-amber-600')
+    .analyze();
+
+  expect(violations).toEqual([]);
+  await page.screenshot({
+    path: test.info().outputPath('student-collapsibles-mobile.png'),
+    fullPage: true,
+  });
+  await page.getByRole('button', { name: 'Remover Aluno de teste da sala' }).click();
+  await page.getByRole('dialog').getByRole('button', { name: 'Cancelar', exact: true }).click();
+  await expect(studentTrigger).toBeVisible();
+  await page.getByRole('button', { name: 'Remover Aluno de teste da sala' }).click();
+  await page
+    .getByRole('dialog')
+    .getByRole('button', { name: 'Remover aluno', exact: true })
+    .click();
+  await expect(page.getByRole('status').filter({ hasText: 'Registros de alunos: 0' })).toHaveText(
+    'Registros de alunos: 0',
+  );
+
+  await page.goBack();
+  await expect(page).toHaveURL(/\/sign$/);
+  await page.goForward();
+  await expect(page).toHaveURL(/\/teachers$/);
+  await page.getByRole('link', { name: 'Voltar à escolha de perfil' }).click();
+
+  const studentCard = page.getByRole('link', { name: 'Sou aluno' });
+  await studentCard.focus();
+  await studentCard.press('Enter');
+  await expect(page).toHaveURL(/\/students$/);
+  await expect(page.locator('main#main')).toHaveCount(0);
+  await page.getByLabel('Nome da sala').fill('!!!');
+  await page.getByLabel('Nome completo').fill('Aluno de teste');
+  await page.getByRole('button', { name: 'Entrar na sala' }).click();
+  await expect(page.getByRole('alert')).toContainText('Use de 3 a 48 caracteres');
+  await page.getByLabel('Nome da sala').fill('turma inexistente');
+  await page.getByLabel('Nome completo').fill('Aluno de teste');
+  await page.getByRole('button', { name: 'Entrar na sala' }).click();
+  await expect(page.getByRole('alert')).toContainText('Sala não encontrada');
+  await expect(page.locator('main#main')).toHaveCount(0);
+  await enterRoom(page);
+  await expect(page.locator('main#main')).toBeVisible();
+});
+
+test('places plain profile navigation below the form and shows the button in the dashboard', async ({
+  page,
+}) => {
+  await page.goto('/teachers');
+  const backLink = page.getByRole('link', { name: 'Voltar à escolha de perfil' });
+  const submit = page.getByRole('button', { name: 'Criar sala' });
+
+  await expect(backLink).toBeVisible();
+  await expect(backLink).not.toHaveClass(/button/);
+  expect((await backLink.boundingBox())!.y).toBeGreaterThan(
+    (await submit.boundingBox())!.y + (await submit.boundingBox())!.height,
+  );
+  await page.getByLabel('Nome da sala').fill('Turma Têste');
+  await submit.click();
+  await expect(page.getByRole('status').filter({ hasText: 'Registros de alunos: 0' })).toHaveText(
+    'Registros de alunos: 0',
+  );
+  await expect(backLink).toHaveCount(1);
+  await expect(backLink).toHaveClass(/button/);
+  await expect(backLink.locator('svg')).toBeVisible();
+  await backLink.click();
+  await expect(page).toHaveURL(/\/sign$/);
+});
+
+test('allows a new room after deletion and returning to the teacher route', async ({ page }) => {
+  await page.goto('/teachers');
+  await createRoom(page);
+  await page.getByRole('button', { name: 'Excluir sala', exact: true }).click();
+  await page.getByRole('dialog').getByRole('button', { name: 'Excluir sala', exact: true }).click();
+  await expect(page.locator('.toast')).toContainText('Sala excluída com sucesso.');
+  await page.getByRole('link', { name: 'Voltar à escolha de perfil' }).click();
+  await page.getByRole('link', { name: 'Sou Professor' }).click();
+  await expect(page.getByLabel('Nome da sala')).toBeVisible();
+  await createRoom(page);
+  await expect(page.getByRole('status').filter({ hasText: 'Registros de alunos: 0' })).toHaveText(
+    'Registros de alunos: 0',
+  );
+});

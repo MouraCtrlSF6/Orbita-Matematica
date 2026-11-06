@@ -1,0 +1,4 @@
+interface:
+  display_name: "Frontend React Design"
+  short_description: "Componentes, contextos e organização de frontend React"
+  default_prompt: "Use $frontend-react-design para implementar ou refatorar este frontend React seguindo as convenções de organização, legibilidade e complexidade, com código sempre em inglês americano."

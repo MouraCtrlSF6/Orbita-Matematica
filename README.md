@@ -1,98 +1,93 @@
-# Órbita Matemática
+# 🚀 Órbita Matemática
 
-Jogo educativo em React para explorar expressões algébricas no 8º ano. A expedição espacial contém tutorial interativo, três setores e 52 missões, com enunciados curtos, objetos visuais, pistas progressivas e criação guiada de um problema.
+<p align="center">
+  <img src="public/favicon.svg" alt="Logo do Órbita Matemática: planeta roxo com um anel orbital" width="160" height="160" />
+</p>
 
-## Explorar com a nave
+Jogo de álgebra para o **8º ano** com exploração espacial e salas de aula. O aluno pilota uma nave e resolve missões; o professor organiza as questões e acompanha a turma.
 
-O mapa do universo apresenta os três setores. Use as **setas ou WASD** com a área de pilotagem focada para mover a nave; ao soltar, ela para. Aproxime-se de um setor e pressione **Enter** ou o botão **Entrar**. Dentro dele, visite planetas, luas e asteroides: cada destino representa uma missão do catálogo. A câmera acompanha a nave, o radar mostra os destinos e sua posição, e uma seta indica a próxima missão.
+## 💡 Por que ele existe
 
-Concluir uma missão libera a seguinte. **Continuar exploração** e **Voltar ao setor** devolvem a nave à posição da visita, sem abrir automaticamente outra pergunta. Ao concluir o setor, volte ao universo para visitar o próximo. Setores e desafios bloqueados continuam identificados no mapa; é possível voar livremente dentro do setor liberado e revisitar missões concluídas.
+Aproximar a álgebra de sua aplicação por meio de desafios curtos, recursos visuais e apoios que respeitam o ritmo do aluno. O foco é a habilidade **EF08MA06 da BNCC**, com revisão pedagógica das atividades.
 
-Em telas de toque, mantenha pressionados os botões de direção e use **Entrar**. A opção **Destinos em lista** oferece acesso direto aos destinos liberados sem exigir pilotagem. Tab sai da área de voo. Abrir ajustes, mudar de tela ou perder foco interrompe o movimento. O tutorial inclui uma prática opcional de pilotagem antes da introdução à álgebra.
+Saiba mais no [percurso pedagógico](docs/pedagogia.md).
 
-Um som suave de propulsão acompanha o movimento da nave e vem ligado por padrão. Use o botão fixo no canto inferior direito da área de pilotagem para ligar ou desligar o som, ou altere **Som da nave** nos ajustes; os dois controles compartilham a preferência salva neste navegador. O efeito é gerado localmente após uma interação de pilotagem, sem baixar arquivos de áudio, e para ao interromper o voo. Se o navegador não oferecer ou permitir áudio, a navegação continua funcionando.
+## 🪐 O que ele disponibiliza
 
-Pressione **M** para mutar ou desmutar o som da nave. O atalho compartilha a preferência do botão e dos ajustes; ele não é acionado enquanto você digita em campos, mantém a tecla pressionada ou usa combinações como Ctrl+M.
+- **Exploração espacial:** três setores, radar e catálogo padrão de 52 missões, com desbloqueio progressivo.
+- **Desafios variados:** alternativas, respostas numéricas, discursivas, montagem de expressões e criação guiada.
+- **Área do professor:** salas, acompanhamento de respostas e apoios em tempo real e remoção de alunos.
+- **Questões por sala:** inclusão, exclusão e reordenação no mesmo setor por arraste ou teclado, sem alterar o catálogo padrão.
+- **Acessibilidade:** teclado, toque, destinos em lista, texto ampliado, movimento reduzido, pistas, objetos visuais e leitura opcional em voz alta.
+- **Progresso por sala:** retomada opcional na mesma aba e diário de descobertas, sem cronômetro, perda de vidas ou penalização pelo uso de apoios.
 
-As posições ficam somente em memória durante a sessão. Recarregar abre o universo; **Retomar exploração** leva ao setor e às proximidades da próxima missão pendente. O progresso anterior continua compatível com `orbita-matematica:v1` e `SavedGame.version: 1`. Reiniciar a expedição também limpa as posições da sessão.
+Para pilotar, use **setas ou WASD** e **Enter** para entrar em destinos próximos; em telas de toque, use os botões de direção. **M** liga ou desliga o som da nave. Cada partida carrega o catálogo ao entrar; para receber alterações do professor, saia e entre novamente na sala.
 
-## Executar localmente
+## 🛠️ Tecnologias e versões
 
-Requer Node.js **20.19+ ou 22.12+** e npm. Na pasta do projeto:
+Versões fixadas no `package-lock.json`:
 
-```powershell
-npm ci
-npm run dev
-```
+| Tecnologia        | Versão                               |
+| ----------------- | ------------------------------------ |
+| React / React DOM | 19.3.1                               |
+| TypeScript        | 5.9.3                                |
+| Vite              | 7.3.7                                |
+| React Router      | 7.18.5                               |
+| Tailwind CSS      | 4.3.4                                |
+| Firebase          | 13.2.0                               |
+| Radix UI          | Pacotes por componente; Dialog 1.3.1 |
+| Vitest            | 3.2.7                                |
+| Playwright        | 1.64.1                               |
+| ESLint / Prettier | 9.39.5 / 3.9.10                      |
 
-Abra o endereço informado pelo Vite, normalmente `http://127.0.0.1:5173/`. Não abra `index.html` diretamente pelo explorador de arquivos.
+## ⚙️ Configuração principal
 
-| Comando              | Finalidade                                         |
-| -------------------- | -------------------------------------------------- |
-| `npm run dev`        | Servidor local de desenvolvimento                  |
-| `npm run build`      | Verificação TypeScript e build estático em `dist/` |
-| `npm run preview`    | Servir o build para revisão local                  |
-| `npm run lint`       | Verificar TypeScript, React Hooks e Fast Refresh   |
-| `npm test`           | Testar regras, persistência e componentes          |
-| `npm run test:watch` | Executar testes durante o desenvolvimento          |
-| `npm run test:e2e`   | Executar percursos de navegador com Playwright     |
+1. Instale **Node.js 20.19+ na linha 20 ou 22.12+** e use npm.
+2. Na raiz do projeto, execute `npm ci`.
+3. Crie um `.env` com a configuração pública do seu projeto Firebase:
 
-Use `npm run format:check` para verificar a formatação com Prettier e `npm run format` para aplicá-la.
+   ```dotenv
+   VITE_FIREBASE_API_KEY=sua-chave-publica
+   VITE_FIREBASE_AUTH_DOMAIN=seu-projeto.firebaseapp.com
+   VITE_FIREBASE_PROJECT_ID=seu-projeto
+   VITE_FIREBASE_APP_ID=seu-app-id
+   VITE_FIREBASE_DATABASE_URL=https://seu-banco.firebasedatabase.app
+   ```
 
-Antes dos testes de navegador, execute `npx playwright install chromium`. Os testes iniciam o servidor automaticamente ou reutilizam a prévia local na porta 5173. Para rodar uma suíte: `npm test -- src/game/game.test.ts`.
+4. Habilite o provedor **Anônimo** no Firebase Authentication e publique as [regras do Realtime Database](database.rules.json).
+5. Execute `npm run dev` e abra a URL informada pelo Vite, normalmente `http://127.0.0.1:5173/`.
 
-## Organização
+**Perfis:** `/sign` escolhe aluno ou professor; `/teachers` gerencia a sala; `/students` recebe o nome da sala e o nome completo do aluno.
 
-- `src/content/`: setores e missões tipadas, objetivos, habilidades, dicas e explicações.
-- `src/game/`: matemática, progresso, contratos e reducer puro, sem React ou APIs do navegador.
-- `src/infrastructure/`: leitura validada e gravação versionada do progresso local.
-- `src/features/`: mapa, tutorial, desafios, diário e ajustes; subcomponentes ficam junto da funcionalidade.
-- `src/app/`: composição das telas e conexão do estado com a persistência.
-- `src/components/`: ícones e ilustrações SVG compartilhadas.
-- `public/`: arquivos estáticos. As fontes são empacotadas localmente pelo npm.
-- `e2e/`: testes de navegação. Testes unitários ficam próximos ao código testado.
+**Sessão:** progresso em `sessionStorage`, por aba e sala, com retomada explícita. A identidade anônima persiste durante a sessão da aba, usando `sessionStorage` pelo SDK do Firebase, com fallback em memória quando o armazenamento estiver bloqueado. Recarregar exige nova entrada e reutiliza o registro do aluno na mesma sala, preservando o histórico; a retomada do progresso continua sendo uma escolha explícita. Outra sessão de aba ou dispositivo não tem reconhecimento garantido. Duplicatas antigas não são unidas automaticamente. O UID do professor também persiste na aba, mas o painel não recupera automaticamente a sala após recarregar. Exclua a sala ao encerrar a aula, antes de fechar ou recarregar o painel.
 
-## Complexidade
+**Dados:** o Firebase recebe nomes, progresso e respostas. As regras atuais permitem leitura pública e restringem escritas por autenticação e permissões da sala. Não versione `.env` nem use credenciais administrativas em `VITE_*`: esses valores entram no JavaScript público.
 
-`npm run metrics` mede o código de produção em `src/` com o motor da extensão VS Code **CodeMetrics** instalada, incluindo seus pesos para JSX e funções internas. `npm run metrics:check` falha se alguma unidade visível ultrapassar **7**. Testes e scripts de desenvolvimento ficam fora dessa medição.
+**Publicação:** o build em `dist/` suporta as três rotas e subdiretórios. O [workflow do GitHub Pages](.github/workflows/jekyll-gh-pages.yml) publica o frontend; forneça as variáveis Firebase no build e publique as regras do banco separadamente.
 
-O comando requer a extensão `kisstkondoros.vscode-codemetrics` instalada em `~/.vscode/extensions`, ou o caminho dela em `CODEMETRICS_EXTENSION`. O runner usa os padrões da extensão e as opções CodeMetrics dos arquivos de ajustes do VS Code e de `.vscode/settings.json`; não altera esses arquivos. A análise depende do formato do pacote da extensão e avisa se uma versão futura deixar de ser compatível. Não é uma verificação de complexidade ciclomática do ESLint e não exige dependências adicionais no aplicativo.
+## ▶️ Comandos
 
-Para exportar os valores, use `npm run metrics -- --json`. Veja `docs/complexidade.md` para os resultados e decisões da refatoração.
+| Comando                 | Finalidade                                 |
+| ----------------------- | ------------------------------------------ |
+| `npm ci`                | Instalar as dependências do lockfile       |
+| `npm run dev`           | Iniciar o servidor de desenvolvimento      |
+| `npm run build`         | Verificar TypeScript e gerar `dist/`       |
+| `npm run preview`       | Servir o build localmente                  |
+| `npm run lint`          | Verificar o código com ESLint              |
+| `npm test`              | Executar testes unitários e de componentes |
+| `npm run test:watch`    | Manter os testes em observação             |
+| `npm run test:e2e`      | Executar os percursos de navegador         |
+| `npm run format:check`  | Conferir a formatação                      |
+| `npm run format`        | Formatar o projeto com Prettier            |
+| `npm run metrics`       | Exibir as métricas de complexidade         |
+| `npm run metrics:check` | Verificar o limite de complexidade 7       |
 
-## Acrescentar conteúdo
+Instale Chromium com `npx playwright install chromium` antes dos testes E2E. Métricas exigem CodeMetrics ou `CODEMETRICS_EXTENSION`. Consulte [contribuição e emuladores](AGENTS.md), [complexidade](docs/complexidade.md) e [design system](docs/design-system.md).
 
-O banco `src/content/problems.json` reúne 52 problemas na versão 3, agrupados em `sections` pelos setores do jogo:
+### Relatório de acompanhamento em PDF
 
-- **Estação de lançamento (`launch`):** 22 problemas; inclui os níveis 1 e 2 do documento, com operações e números que faltam.
-- **Oficina orbital (`workshop`):** 15 problemas; inclui os níveis 3 e 4, com equações com x e duas operações.
-- **Base de exploração (`base`):** 15 problemas; inclui os níveis 5 e 6, com incógnitas nos dois lados, parênteses e frações.
+Na aba **Alunos**, use **Exportar PDF** para baixar os registros da sala. A geração ocorre localmente em um worker, com fundo `#F7F8FA`, seções por setor e detalhamento de cada aluno, questão, respostas incorretas e uso de dicas. O arquivo não é enviado ao servidor. A captura dos alunos acontece no clique; o catálogo atual é carregado para a exportação.
 
-Todos usam os campos de `Mission`. Os 37 exercícios de `docs/Equacoes_do_primeiro_grau.docx` têm enunciados curtos ambientados nos respectivos setores, alternativas (`kind: "choice"`) e a resposta do gabarito em `correctChoice`. A numeração original permanece no identificador e no título. As 15 missões existentes permanecem intactas; cada seção registra os dois arquivos de origem histórica em `sources`.
+Uma questão é considerada certa somente se a tentativa de ordem 1 estiver correta. As taxas usam as participações aluno–questão com primeira tentativa conhecida. Acertos posteriores contam como conclusão após novas tentativas; todos os erros permanecem contabilizados separadamente. Não respondidas e conclusões antigas sem histórico não são erros presumidos. Os destaques mostram empates e bases de comparação; não representam diagnóstico de aprendizagem.
 
-Nas equações, `formula` preserva a igualdade original, `expression` representa o lado esquerdo e `variable` contém a solução para conferir a substituição. A validação usa `correctChoice`, pois o valor do lado esquerdo pode ser diferente de x. Nos cálculos sem incógnita, `variable` é 0 e não participa da expressão. Os modelos visuais de resultados negativos usam objetos que representam −1, mantendo as quantidades de objetos não negativas.
-
-`problems.json` é a fonte única das missões jogáveis. `missions.ts` importa o JSON, valida os objetos e exporta `missions` e `missionById`, preservando a ordem das seções e dos problemas. O carregamento rejeita campos inválidos, IDs repetidos e setores fora da ordem definida em `sectors.ts`. Os enunciados e apoios continuam sujeitos à revisão pedagógica com a professora.
-
-1. Adicione uma missão à lista `problems` do setor correspondente em `src/content/problems.json`, com identificador único e estável e na ordem desejada. Informe setor, objetivo, referência curricular, enunciado, expressão, representação visual, três dicas e explicação. O catálogo preserva as três dicas; o jogo exibe somente a primeira nos setores de lançamento e oficina e as duas primeiras na base, conforme `hintLimit` em `sectors.ts`.
-2. Escolha um formato existente: alternativas, resposta numérica, montagem ou criação guiada. Alternativas devem ter uma única resposta correta; montagens devem incluir as ordens matematicamente equivalentes.
-3. No JSON, use nós `{ "type": "constant", "value": 3 }`, `{ "type": "variable" }` ou `{ "type": "operation", "operation": "add", "left": ..., "right": ... }`. As operações aceitas são `add`, `subtract`, `multiply` e `divide`; organize os nós para representar corretamente os parênteses e a prioridade das operações. Nunca execute texto com `eval`.
-4. Novos setores entram em `src/content/sectors.ts`. Agrupe suas missões no percurso. As contagens da interface vêm dos dados e o desbloqueio é sequencial.
-5. Para novos formatos ou operações, amplie os tipos e regras em `src/game/`, crie um componente específico e conecte-o ao renderizador. A criação guiada atual usa `2 × x + 4`; outra proposta de autoria requer componente próprio.
-6. Acrescente resultados calculados independentemente aos testes e revise a linguagem com a professora. Preserve IDs existentes; mudanças incompatíveis de progresso exigem nova versão do armazenamento e migração explícita.
-
-## Inclusão e privacidade
-
-O levantamento da professora Heidi orientou o foco em **valor numérico de expressões algébricas, EF08MA06**. A introdução recupera a ideia de variável da EF07MA13. Os documentos originais estão preservados em `docs/`. Veja `docs/pedagogia.md` para a sequência e a validação pedagógica pendente.
-
-Todos podem usar teclado, objetos visuais, dicas, texto ampliado e movimento reduzido. Não há cronômetro, perda de vidas ou competição. A leitura opcional utiliza vozes em português disponíveis no navegador; sua ausência não impede jogar. A disponibilidade de vozes e seu eventual processamento remoto dependem do navegador e do sistema.
-
-O lançamento e a oficina oferecem a primeira dica de cada missão; a base oferece as duas primeiras. Não há botão para revelar a solução ou concluir sem responder corretamente. A explicação é apresentada após o acerto, e o diário mantém os registros históricos de conclusões guiadas.
-
-O voo tem controle direto, sem inércia ou obstáculos punitivos. A preferência de movimento reduzido, nos ajustes ou no sistema, remove brilhos dos destinos e da nave; a câmera acompanha sem suavização. A lista de destinos permite navegar sem deslocamento contínuo. O cenário é desenhado com HTML, CSS e SVG, sem dependências adicionais de motor de jogo.
-
-O progresso guarda conclusões, apoios e preferências no `localStorage` deste navegador. Não há cadastro, coleta de nomes ou diagnósticos, sincronização ou backend. Em computadores compartilhados, outro usuário verá o mesmo progresso. Os ajustes permitem reiniciá-lo com confirmação. Armazenamento bloqueado permite continuar em memória, com aviso de que o progresso não será mantido. Limpar os dados do navegador também apaga o diário. Ao ampliar o catálogo, conclusões válidas continuam associadas aos mesmos IDs, mesmo se novos problemas forem inseridos antes deles. As novas missões ficam pendentes e o desbloqueio exige concluir todas as anteriores.
-
-## Publicação futura
-
-A entrega é local. O build usa caminhos relativos e pode ser servido como arquivos estáticos em subdiretórios. Para um futuro GitHub Actions, usar Node compatível e executar `npm ci`, `npm run lint`, `npm test` e `npm run build`. No job de navegador, executar `npx playwright install --with-deps chromium` e `npm run test:e2e`. Publicar `dist/` depois de definir o destino. Nenhum workflow de deploy ou serviço externo foi configurado.
+“Usou dicas” indica apenas o registro por questão, sem quantidade ou momento de uso. O total de alunos corresponde a registros, sem presença online. Questões retiradas aparecem em histórico separado; enunciados antigos não são reconstruídos. Alunos com catálogos de entrada distintos podem ter questões atuais sem registro.

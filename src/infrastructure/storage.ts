@@ -1,6 +1,6 @@
 import { missionById, missions } from '../content/missions';
 import { initialSave } from '../game/progress';
-import type { MissionResult, SavedGame } from '../game/types';
+import type { Mission, MissionResult, SavedGame } from '../game/types';
 import { isRecord, matchesFields, optional } from '../game/validation';
 
 export const STORAGE_KEY = 'orbita-matematica:v1';
@@ -58,23 +58,33 @@ function isSavedData(value: unknown): value is SavedData {
     })
   );
 }
-function validMissionId(value: unknown): string | null {
-  return typeof value === 'string' && missionById.has(value) ? value : null;
+function validMissionId(value: unknown, catalog: Mission[]): string | null {
+  return typeof value === 'string' && catalog.some((mission) => mission.id === value)
+    ? value
+    : null;
 }
 function resultEntry(id: string, completed: Record<string, unknown>): [string, MissionResult][] {
   const result = completed[id];
   return isResult(result) ? [[id, result]] : [];
 }
 function validResults(completed: Record<string, unknown>): SavedGame['completed'] {
-  return Object.fromEntries(missions.flatMap((mission) => resultEntry(mission.id, completed)));
+  return Object.fromEntries(
+    Object.keys(completed)
+      .filter(isKnownMission)
+      .flatMap((id) => resultEntry(id, completed)),
+  );
 }
-function restoreSave(data: unknown): SavedGame {
+function isKnownMission(id: string) {
+  return missionById.has(id) || /^custom-[a-f0-9-]{36}$/.test(id);
+}
+
+function restoreSave(data: unknown, catalog: Mission[]): SavedGame {
   if (!isSavedData(data)) return initialSave();
   return {
     version: 1,
     completed: validResults(data.completed),
     tutorialDone: data.tutorialDone,
-    lastMissionId: validMissionId(data.lastMissionId),
+    lastMissionId: validMissionId(data.lastMissionId, catalog),
     preferences: {
       largeText: data.preferences.largeText,
       reducedMotion: data.preferences.reducedMotion,
@@ -83,26 +93,30 @@ function restoreSave(data: unknown): SavedGame {
     },
   };
 }
-export function parseSave(raw: string | null): SavedGame {
+export function parseSave(raw: string | null, catalog: Mission[] = missions): SavedGame {
   if (!raw) return initialSave();
   try {
-    return restoreSave(JSON.parse(raw));
+    return restoreSave(JSON.parse(raw), catalog);
   } catch {
     return initialSave();
   }
 }
 
-export function loadGame(storage: StoragePort): SavedGame {
+export function loadGame(
+  storage: StoragePort,
+  key = STORAGE_KEY,
+  catalog: Mission[] = missions,
+): SavedGame {
   try {
-    return parseSave(storage.getItem(STORAGE_KEY));
+    return parseSave(storage.getItem(key), catalog);
   } catch {
     return initialSave();
   }
 }
 
-export function saveGame(storage: StoragePort, save: SavedGame): boolean {
+export function saveGame(storage: StoragePort, save: SavedGame, key = STORAGE_KEY): boolean {
   try {
-    storage.setItem(STORAGE_KEY, JSON.stringify(save));
+    storage.setItem(key, JSON.stringify(save));
     return true;
   } catch {
     return false;

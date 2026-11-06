@@ -1,119 +1,61 @@
 # Diretrizes do projeto
 
-## Visão geral
+## Visão geral e referências
 
-Órbita Matemática é um jogo educativo em português, com temática de exploração espacial, desenvolvido em React, TypeScript e Vite. O foco é apoiar o estudo de expressões algébricas no 8º ano, incluindo valor numérico, variáveis, propriedades das operações e equações do primeiro grau.
+Órbita Matemática é um jogo de álgebra para o 8º ano, com exploração espacial, salas de aula e acompanhamento pelo professor. Usa React, TypeScript, Vite, React Router, Tailwind CSS 4, Radix UI e Firebase. O catálogo padrão tem 52 missões em três setores; cada sala pode personalizar suas questões.
 
-O percurso atual contém tutorial interativo e 52 missões em três setores: Estação de lançamento (`launch`, 22), Oficina orbital (`workshop`, 15) e Base de exploração (`base`, 15). São 37 exercícios adaptados de `docs/Equacoes_do_primeiro_grau.docx` e 15 missões originais. Há desafios de alternativas, resposta numérica, montagem de expressões e criação guiada de um problema. As contagens são um retrato do catálogo atual; a interface deve continuar derivando-as dos dados.
+Consultar `README.md` para execução, controles, salas e publicação; `docs/pedagogia.md` para currículo e revisão pedagógica; `docs/design-system.md` para estilos; `docs/complexidade.md` para métricas. Conferir a implementação antes de afirmar o estado de serviços remotos.
 
-O aplicativo funciona inteiramente no navegador, sem backend, cadastro ou sincronização. O progresso e as preferências ficam no `localStorage`. A entrega é um build estático; destino de hospedagem e implantação ainda precisam ser definidos.
+## Organização e estilo
 
-## Exploração espacial e fluxo do jogo
+- `src/content/`: catálogo padrão, validação e setores. `src/game/`: matemática, progressão, geometria, contratos e regras puras, sem React ou APIs do navegador.
+- `src/infrastructure/`: persistência e integração Firebase. `src/pages/`: perfis, salas e sincronização. `src/features/`: funcionalidades do jogo e autoria de questões. `src/app/`: composição, sessão e rotas. `src/components/`: UI compartilhada.
+- Usar `Component/Component.tsx`; filhos exclusivos, hooks, contextos e utilitários ficam junto do proprietário. Compartilhados ficam no ancestral comum. Importar diretamente, sem arquivos de reexportação.
+- Usar dois espaços, aspas simples, ponto e vírgula, componentes PascalCase, funções camelCase, interfaces nomeadas para props e preferir enums para estados e variantes. Validar dados externos como `unknown`; calcular valores derivados sem duplicar estado.
+- Consumir os contextos de missão, jogo e catálogo; evitar repassar sessões por componentes de layout. Posições transitórias de voo ficam fora do estado de renderização React.
+- Reutilizar os controles de `src/components/`, variantes CVA e `mergeClasses`; preservar semântica, foco e teclado das primitivas Radix. Usar `useToast` para notificações de ações e manter confirmações destrutivas em diálogos. A área do professor é carregada sob demanda por `lazy`/`Suspense`.
+- Usar utilitários Tailwind completos em `className`, tokens e variantes `ds-*`. CSS somente em `src/styles.css` e `src/styles/design-system.css`, sem Preflight. Preferir `rem`; preservar breakpoints inclusivos, classes usadas por controles/testes e geometria do voo.
 
-A experiência atual permite pilotar uma nave pelo universo, entrar nos setores e visitar planetas, luas e asteroides que representam as missões. Preservar a exploração como parte do percurso, com câmera acompanhando a nave, radar e indicação da próxima missão.
+## Conteúdo e catálogo por sala
 
-- Usar setas ou WASD com a área de pilotagem focada; soltar as teclas interrompe o movimento. A entrada em um destino próximo exige Enter ou o botão Entrar.
-- Em dispositivos de toque, oferecer botões de direção que respondem enquanto pressionados. Manter a opção Destinos em lista para acessar destinos liberados sem pilotagem e permitir sair da área de voo com Tab.
-- Interromper movimento e som ao perder foco, ocultar a aba, abrir ajustes ou mudar de tela. O voo tem controle direto, sem inércia ou obstáculos punitivos.
-- Concluir uma missão libera a seguinte. Continuar exploração e Voltar ao setor restauram a posição da visita, sem abrir automaticamente outra pergunta. Ao concluir o setor, o aluno pode voltar ao universo e visitar o próximo.
-- Manter destinos bloqueados identificados, voo livre no setor liberado e revisita às missões concluídas. O tutorial inclui prática opcional de pilotagem antes da introdução à álgebra.
-- Posições da nave são transitórias e ficam em memória durante a sessão. Recarregar abre o universo; Retomar exploração leva ao setor e às proximidades da próxima missão pendente. Reiniciar também limpa as posições da sessão.
+- `problems.json` é a fonte do catálogo padrão, validado por `mission-catalog.ts`. Preservar IDs, referências curriculares, origens, ordem dos setores e respostas matematicamente corretas. Alterações pedagógicas exigem resultados independentes e revisão documentada.
+- `src/game/room-catalog.ts` define o catálogo por sala. `rooms/{roomId}/catalog` guarda revisão e listas dos três setores como strings JSON, preservando arrays vazios. Não criar setores adicionais nem alterar o padrão ao personalizar uma sala.
+- Criar salas com catálogo, metadados e índice atomicamente. Salas antigas sem catálogo usam o padrão até a primeira alteração. Escritas usam ETag e revisão; conflitos exigem recarregar.
+- O aluno valida e carrega o catálogo uma vez antes do registro. A cópia fica em `StudentRoom.missions`, em memória; não adicionar polling ou assinatura de questões. Nova revisão exige nova entrada. Saves não contêm catálogo.
+- Regras puras recebem o catálogo como argumento; telas usam o contexto da partida. Totais, mapas e desbloqueios consideram essa cópia. Setores e salas vazios são válidos.
+- Adicionar, excluir e reordenar questões afeta apenas a sala. Reordenação por arraste ou teclado ocorre dentro do mesmo setor, preservando IDs e incrementando a revisão. Exclusões mantêm o histórico; ao reencontrar um aluno, acrescentar missões ausentes sem sobrescrever tentativas.
+- A autoria oferece Objetiva, Discursiva, Montagem e Criação guiada. `ChallengeKind.Text` corrige a resposta cadastrada ignorando maiúsculas e espaços extras; preservar `Number` e sua correção numérica nas questões antigas. Expressões opcionais de Objetiva/Discursiva usam árvores de operações, nunca `eval`. Montagens derivam a expressão da ordem principal e validam subconjuntos das peças disponíveis, repetições e equivalência algébrica. A criação guiada permanece em `2 × x + 4`.
+- Nas equações importadas, `formula` preserva a igualdade, `expression` é o lado esquerdo e `variable` é a solução; conferir a alternativa por `correctChoice`. O campo numérico aceita inteiros não negativos.
 
-## Som e controles
+## Experiência e inclusão
 
-O som de propulsão é gerado localmente pela Web Audio API após uma interação de pilotagem, sem baixar arquivos de áudio. Vem ligado por padrão e deve tocar somente durante o movimento. A ausência ou o bloqueio de áudio não pode impedir o voo.
+- Textos em português, breves e adequados à idade. Preservar teclado, foco, toque, texto ampliado, movimento reduzido e acesso aos destinos por lista.
+- O desbloqueio é sequencial. Retornar de uma missão restaura a posição da visita; não abrir automaticamente outra pergunta. Parar voo e som ao soltar controles, perder foco, ocultar a aba, abrir ajustes ou mudar de tela.
+- Som é opcional; botão, ajustes e atalho M compartilham `soundEnabled`. Ignorar o atalho durante edição, composição, repetição ou modificadores. Ausência de áudio ou voz não impede jogar; liberar recursos ao desmontar.
+- Preservar três dicas no catálogo padrão, exibindo o limite do setor: uma no lançamento/oficina e duas na base. Questões da sala aceitam zero a três dicas, objetivo/habilidade vazios e ausência de apoio visual; não renderizar apoios vazios. Concluir exige resposta correta; explicar após o acerto. Apoios não são penalizados. Não adicionar cronômetro, vidas ou competição, nem inferir diagnósticos ou domínio pedagógico pela conclusão.
 
-O botão na área de pilotagem, o ajuste Som da nave e o atalho M compartilham a preferência persistida `soundEnabled`. O atalho deve ignorar edição de campos, composição de texto, repetição de tecla e combinações com Ctrl, Alt ou Meta. Encerrar os recursos de áudio ao desmontar o controle de voo.
+## Salas, persistência e privacidade
 
-## Estrutura e responsabilidades
+- `/sign` escolhe perfil; `/students` registra o aluno em sala aberta; `/teachers` gerencia questões, alunos e acompanhamento. Reutilizar a normalização de `src/game/room-name.ts`.
+- A sessão da partida fica em memória. A autenticação anônima persiste em `sessionStorage` durante a sessão da aba, com fallback em memória se o armazenamento estiver bloqueado; aguardar sua restauração antes de criar outro usuário. Progresso local usa `sessionStorage`, chave `orbita-matematica:v1:room:{roomId}` e `SavedGame.version: 1`; retomar exige escolha explícita. Não importar o save legado compartilhado do `localStorage`.
+- Preservar conclusões por ID, compatibilidade histórica e migração explícita para mudanças incompatíveis. Armazenamento bloqueado permite jogar em memória com aviso. Reinício confirmado limpa progresso local e posições, preservando o histórico remoto.
+- Nomes e respostas são enviados ao Firebase, fora do save local. Não guardar diagnósticos ou credenciais. `.read: true` em `database.rules.json` permite leitura pública; não descrever os registros como privados. Escritas respeitam autenticação, propriedade e UID; remover aluno também bloqueia reenvios, excluir sala libera seu nome.
+- A fila de `src/pages/students/room-sync.ts` preserva ordem e identidade das tentativas, repete falhas transitórias e interrompe rejeições permanentes. Pendências são apenas em memória. Retomada não inventa respostas; cancelar o acompanhamento encerra a conexão.
+- Configuração pública vem de `VITE_FIREBASE_*`; salas exigem Database URL e autenticação anônima. Não expor valores de `.env` ou credenciais administrativas. Rever regras, validadores e sincronização juntos; publicar regras separadamente do frontend.
 
-- `src/content/problems.json`: fonte única das missões jogáveis, organizada em seções na versão 3 do catálogo.
-- `src/content/mission-catalog.ts`: valida o catálogo recebido como `unknown`, incluindo campos, expressões, IDs únicos e correspondência e ordem dos setores.
-- `src/content/missions.ts`: carrega o JSON por meio do validador e exporta `missions` e `missionById`.
-- `src/content/sectors.ts`: define os setores e sua ordem no percurso.
-- `src/game/`: tipos, avaliação matemática, progressão e reducer; manter as regras independentes de React e APIs do navegador.
-- `src/game/space.ts`: geometria do mundo, deslocamento, proximidade dos destinos e câmera, com funções puras. `validation.ts` reúne auxiliares de validação.
-- `src/infrastructure/`: validação e persistência do progresso; `storage.ts` usa uma porta de armazenamento e `gameStorage.ts` adapta o navegador e informa falhas.
-- `src/features/`: componentes, hooks e estilos por funcionalidade: mapa, tutorial, missões, descobertas e ajustes.
-- `src/features/map/`: cena, destinos, radar e painéis; `flightController.ts` controla a simulação e os eventos, `useSpaceFlight.ts` conecta o ciclo de vida React e `thrusterSound.ts` adapta o áudio. Manter posições transitórias fora do estado de renderização React.
-- `src/app/`: composição das telas, estado do jogo e conexão com a persistência.
-- `src/app/useMainFocus.ts`, `app-navigation.ts` e `useSoundShortcut.ts`: foco, navegação e atalho de som, separados da composição visual.
-- `src/components/`: ícones e ilustrações SVG compartilhados. Estilos globais ficam em `src/styles.css` e `src/styles/`.
-- `src/test/`: configuração e auxiliares de teste; testes de comportamento ficam próximos do código correspondente.
-- `public/`: arquivos estáticos; fontes são empacotadas localmente por dependências npm.
-- `e2e/`: percursos de navegador com Playwright e verificações de acessibilidade com axe.
-- `docs/`: documentos de referência e `pedagogia.md`, com objetivos, sequência e necessidades de revisão pedagógica.
+## Comandos e validação
 
-## Desenvolvimento e comandos
+Usar Node.js 20.19+ na linha 20 ou 22.12+, npm e `npm ci`; atualizar o lockfile ao mudar dependências.
 
-Usar Node.js 20.19+ na linha 20 ou 22.12+ e npm de forma consistente. Instalar com `npm ci` e atualizar `package-lock.json` quando houver alteração de dependências.
+- Desenvolvimento: `npm run dev`; build/prévia: `npm run build` e `npm run preview`.
+- Qualidade: `npm run lint`, `npm run format:check`; formatar apenas os arquivos necessários com Prettier.
+- Testes: `npm test` (Vitest, `*.test.ts/tsx` junto do código); `npm run test:e2e` (Playwright, incluindo `src/app/routes/*.spec.ts`). Instalar Chromium com `npx playwright install chromium`.
+- Complexidade: `npm run metrics:check`, limite 7 por unidade visível. Exige a extensão CodeMetrics ou `CODEMETRICS_EXTENSION`; não reduzir pesos ou excluir unidades para cumprir o limite.
 
-- `npm run dev`: iniciar o Vite em `127.0.0.1`; abrir a URL informada, sem abrir `index.html` diretamente.
-- `npm run build`: verificar TypeScript e gerar os arquivos estáticos em `dist/`.
-- `npm run preview`: servir o build para revisão local.
-- `npm run lint`: executar ESLint, incluindo verificações de React Hooks e Fast Refresh.
-- `npm run format:check`: verificar Prettier; `npm run format` aplica a formatação ao projeto.
-- `npm test`: executar Vitest e Testing Library; `npm run test:watch` mantém os testes em observação.
-- `npm test -- src/game/game.test.ts`: exemplo de execução direcionada.
-- `npm run test:e2e`: executar Playwright em Chromium. Instalar antes com `npx playwright install chromium`.
-- `npm run metrics`: medir a complexidade do código de produção com o motor da extensão CodeMetrics do VS Code; `npm run metrics:check` verifica o limite de 7 por unidade visível. `npm run metrics -- --json` exporta os valores.
+Para código/conteúdo, executar testes afetados, lint e build; para código de produção, verificar métricas quando disponíveis. Para UI, navegação ou persistência, executar os percursos Playwright pertinentes, incluindo autoria, reordenação, componentes e notificações quando afetados. Testar matemática independente, equivalências, catálogo inválido/vazio, progresso, isolamento de salas, falhas e acessibilidade. Mocks não validam o Firebase real. Mudanças de regras exigem emuladores com dados fictícios:
 
-O Playwright inicia o servidor de desenvolvimento na porta 5173 e pode reutilizar um servidor existente fora de CI. Para instalar o navegador e dependências em CI, usar `npx playwright install --with-deps chromium`. O Vite usa `base: './'` para permitir publicação em subdiretórios; preservar esse comportamento.
+```sh
+npx --yes firebase-tools@14 emulators:exec --project demo-orbita --only auth,database "node scripts/test-database-rules.mjs"
+```
 
-As métricas exigem a extensão `kisstkondoros.vscode-codemetrics` em `~/.vscode/extensions` ou seu diretório em `CODEMETRICS_EXTENSION`. Preservar os pesos e ajustes reais da extensão; não reduzir pesos nem excluir unidades para cumprir o limite. Essa medição inclui JSX e funções internas e difere da complexidade ciclomática do ESLint. Consultar `docs/complexidade.md` para o escopo e as decisões da refatoração.
-
-## Estilo e organização do código
-
-Usar dois espaços, aspas simples e ponto e vírgula. Componentes usam PascalCase; funções e variáveis, camelCase. Definir interfaces nomeadas para props e preferir enums para estados e variantes nomeados.
-
-Manter componentes e hooks específicos junto de sua funcionalidade. Importar módulos diretamente. Calcular valores derivados durante a renderização, evitando estado duplicado sincronizado por efeitos. Validar dados externos como `unknown` antes de utilizá-los.
-
-## Conteúdo e regras matemáticas
-
-- Adicionar missões em `problems.json`, na lista `problems` do setor correspondente. A ordem das seções e dos problemas define o percurso; o desbloqueio exige concluir todas as missões anteriores.
-- Preservar IDs existentes, numeração original dos exercícios importados, referências curriculares e metadados de origem. Novos setores precisam constar em `sectors.ts` e no catálogo na mesma ordem.
-- Seguir o contrato `Mission` de `src/game/types.ts`: objetivo, habilidade, enunciado, expressão, variável, fórmula, representação visual, três dicas e explicação, além dos campos específicos do formato.
-- Preservar as três dicas no catálogo, mas respeitar `Sector.hintLimit` na interface: lançamento e oficina exibem somente a primeira; a base exibe as duas primeiras. Não oferecer botão para revelar a solução ou concluir sem acertar. Apresentar a explicação após a resposta correta.
-- Representar expressões por nós `constant`, `variable` e `operation`. As operações são `add`, `subtract`, `multiply` e `divide`; a árvore deve preservar parênteses e prioridade. Nunca usar `eval` para calcular texto.
-- Nas equações importadas, `formula` preserva a igualdade e `expression` representa o lado esquerdo. `variable` contém a solução, mas a resposta é conferida por `correctChoice`; o valor do lado esquerdo não é necessariamente x.
-- Alternativas devem ter uma única resposta correta. Montagens devem registrar as ordens matematicamente equivalentes em `equivalentTokens`.
-- A criação guiada atual usa `2 × x + 4`, com escolhas delimitadas de contexto e valor. Novas propostas exigem revisar componente, regras e validação do progresso persistido.
-- O campo numérico atual aceita inteiros não negativos; soluções negativas do catálogo são respondidas por alternativas. Ampliar formatos de entrada exige revisar validação e testes.
-- Modelos visuais mantêm quantidades de objetos inteiras e não negativas; os modelos negativos usam objetos que representam −1 e precisam de revisão pedagógica.
-- Toda alteração de conteúdo requer resultados matemáticos calculados independentemente e registro das necessidades de revisão em `docs/pedagogia.md`. Atualizar o README e a documentação pedagógica quando catálogo ou sequência mudarem.
-
-## Inclusão e revisão pedagógica
-
-Manter textos para o aluno em português, curtos e adequados à idade. Preservar navegação por teclado, foco visível, rótulos acessíveis, texto ampliado, movimento reduzido e adaptação a telas menores.
-
-Objetos visuais e dicas dentro do limite do setor são apoios sem penalização. Não introduzir cronômetro, perda de vidas ou competição. O diário registra conclusões e apoios e preserva registros históricos de solução guiada, embora novas conclusões exijam resposta correta. Concluir com ajuda não comprova domínio independente da habilidade.
-
-Respeitar movimento reduzido dos ajustes ou do sistema, removendo brilhos animados; a câmera acompanha sem suavização. Preservar o acesso por lista para quem prefere evitar deslocamento contínuo. O cenário usa HTML, CSS e SVG, sem motor de jogo adicional.
-
-A leitura opcional usa `speechSynthesis` e vozes em português disponíveis no navegador. O jogo deve continuar utilizável quando a API ou as vozes não estiverem disponíveis. O eventual processamento remoto da voz depende do navegador e do sistema; não prometer funcionamento totalmente offline.
-
-O foco pedagógico usa EF08MA06, com introdução à variável pela EF07MA13 e equações referenciadas pela EF07MA18. A adequação dos enunciados, representações e progressão permanece sujeita à avaliação da professora; não inferir diagnósticos nem prometer resultados de aprendizagem.
-
-## Persistência e privacidade
-
-O armazenamento atual usa a chave `orbita-matematica:v1` e `SavedGame.version: 1`, independentes da versão 3 do catálogo. Salvar apenas conclusões, apoios, tentativas, criação guiada, estado do tutorial, última missão e preferências. Nunca armazenar nomes, diagnósticos ou credenciais.
-
-As preferências incluem `largeText`, `reducedMotion` e `soundEnabled`. Saves anteriores sem a preferência de som continuam válidos e recebem `soundEnabled: true`. Manter compatibilidade com registros históricos de até três dicas e com `guided`, sem reativar a conclusão guiada na interface atual.
-
-Preservar conclusões válidas por ID quando o catálogo crescer, mesmo que novas missões sejam inseridas antes delas; novas missões ficam pendentes e respeitam o desbloqueio sequencial. Mudanças incompatíveis no formato salvo exigem nova versão e migração explícita.
-
-Falhas ou bloqueio do armazenamento devem permitir continuar em memória, com aviso de que o progresso não será mantido. Reiniciar a expedição exige confirmação na interface. Em computadores compartilhados, o progresso pertence ao navegador e pode ser visto por outras pessoas; limpar os dados do navegador apaga o registro local.
-
-## Validação das alterações
-
-Colocar `*.test.ts` e `*.test.tsx` junto do comportamento coberto. Testar resultados matemáticos independentes, expressões equivalentes, catálogo inválido, desbloqueio, retomada, persistência corrompida ou indisponível e interações acessíveis. Não há percentual obrigatório de cobertura; os testes devem demonstrar comportamento relevante.
-
-Para alterações de código ou conteúdo, executar os testes afetados, `npm run lint` e `npm run build`. Em alterações de código de produção, executar também `npm run metrics:check` quando a extensão estiver disponível e informar sua ausência caso impeça a verificação.
-
-Para mudanças de interface, navegação, acessibilidade ou persistência, executar os percursos pertinentes de Playwright. Os percursos existentes cobrem as 52 missões, retomada, teclado, toque, câmera, radar, retorno à posição visitada, interrupções do voo, som, atalho M, ajustes, reinício confirmado, ausência de armazenamento, voz ou áudio, auditoria axe e telas menores. No retorno de missão, comparar a posição efetiva anterior à entrada com a posição restaurada. Uma auditoria automatizada não substitui avaliação manual ou pedagógica.
-
-Em alterações apenas de documentação, verificar os caminhos, comandos e afirmações contra os arquivos atuais e conferir a formatação dos arquivos modificados. Informar verificações executadas e limitações reais, sem afirmar que testes não executados passaram.
-
-## Commits e pull requests
-
-Usar títulos curtos no imperativo, como `Add guided algebra mission`. Descrever comportamento, validação, referências a issues quando existirem e capturas de tela para mudanças visuais. Verificar a disponibilidade e o estado do Git antes de criar commits ou pull requests; esta cópia local pode não conter metadados de repositório.
+Para documentação, conferir referências e formatação. Informar validações executadas e limitações. Preservar `base: './'`, meta `app-base`, basename e entradas HTML das rotas para publicação estática em subdiretórios. O workflow de Pages está em `.github/workflows/jekyll-gh-pages.yml`; conferir sua configuração antes de descrever o deploy. Usar commits curtos no imperativo e PRs com comportamento, validação e imagens para mudanças visuais.

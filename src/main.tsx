@@ -1,10 +1,21 @@
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
-import { App } from './app/App';
+import { AppRouter } from './app/routes/AppRouter/AppRouter';
+import { AppRoutes } from './app/routes/AppRoutes/AppRoutes';
+import { SessionProvider } from './app/contexts/SessionProvider/SessionProvider';
+import { FirebaseInitializer } from './infrastructure/firebase/FirebaseInitializer/FirebaseInitializer';
 import './styles.css';
+import { ToastNotificationsProvider } from './components/Toast/ToastNotificationsProvider/ToastNotificationsProvider';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <App />
+    <FirebaseInitializer />
+    <AppRouter>
+      <ToastNotificationsProvider>
+        <SessionProvider>
+          <AppRoutes />
+        </SessionProvider>
+      </ToastNotificationsProvider>
+    </AppRouter>
   </StrictMode>,
 );

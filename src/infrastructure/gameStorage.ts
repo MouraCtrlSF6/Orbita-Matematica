@@ -1,10 +1,15 @@
+import { missions } from '../content/missions';
 import { initialSave } from '../game/progress';
-import type { SavedGame } from '../game/types';
-import { loadGame, saveGame } from './storage';
+import type { Mission, SavedGame } from '../game/types';
+import { loadGame, saveGame, STORAGE_KEY } from './storage';
 
-function writeToBrowser(save: SavedGame): boolean {
+export function roomSaveKey(roomId: string) {
+  return `${STORAGE_KEY}:room:${roomId}`;
+}
+
+function writeToBrowser(key: string, save: SavedGame): boolean {
   try {
-    return saveGame(window.localStorage, save);
+    return saveGame(window.sessionStorage, save, key);
   } catch {
     return false;
   }
@@ -12,15 +17,22 @@ function writeToBrowser(save: SavedGame): boolean {
 class BrowserGameStorage {
   private available = true;
   private listeners = new Set<() => void>();
+  private currentSave?: SavedGame;
+  constructor(
+    private key: string,
+    private catalog: Mission[],
+  ) {}
   read() {
+    if (this.currentSave) return this.currentSave;
     try {
-      return loadGame(window.localStorage);
+      return loadGame(window.sessionStorage, this.key, this.catalog);
     } catch {
       return initialSave();
     }
   }
   write(save: SavedGame) {
-    const next = writeToBrowser(save);
+    this.currentSave = save;
+    const next = writeToBrowser(this.key, save);
     if (next === this.available) return;
     this.available = next;
     this.listeners.forEach((listener) => listener());
@@ -33,6 +45,8 @@ class BrowserGameStorage {
     };
   };
 }
-export function createBrowserGameStorage() {
-  return new BrowserGameStorage();
+export function createBrowserGameStorage(roomId: string, catalog: Mission[] = missions) {
+  return new BrowserGameStorage(roomSaveKey(roomId), catalog);
 }
+
+export type RoomGameStorage = ReturnType<typeof createBrowserGameStorage>;

@@ -1,0 +1,151 @@
+{
+  "rules": {
+    ".read": true,
+    ".write": false,
+    "roomNames": {
+      "$name": {
+        ".write": "auth != null && ((!newData.exists() && data.isString() && root.child('rooms').child(data.val()).child('meta/ownerUid').val() === auth.uid && !newData.parent().parent().child('rooms').child(data.val()).exists()) || (newData.isString() && (!data.exists() || data.val() === newData.val()) && newData.parent().parent().child('rooms').child(newData.val()).child('meta/ownerUid').val() === auth.uid && newData.parent().parent().child('rooms').child(newData.val()).child('meta/name').val() === $name))",
+        ".validate": "$name.matches(/^[a-z0-9][a-z0-9 -]{1,46}[a-z0-9]$/) && newData.val().matches(/^[a-f0-9]{8}(-[a-f0-9]{4}){3}-[a-f0-9]{12}$/)"
+      }
+    },
+    "rooms": {
+      "$roomId": {
+        ".write": "auth != null && data.child('meta/ownerUid').val() === auth.uid && !newData.exists() && (!data.child('meta/name').exists() || !newData.parent().parent().child('roomNames').child(data.child('meta/name').val()).exists())",
+        "meta": {
+          ".write": "auth != null && newData.exists() && (!data.exists() || (data.child('ownerUid').val() === auth.uid && data.child('name').val() === newData.child('name').val())) && newData.child('ownerUid').val() === auth.uid",
+          ".validate": "newData.hasChildren(['open', 'ownerUid', 'name']) && newData.child('open').val() === true && newData.parent().parent().parent().child('roomNames').child(newData.child('name').val()).val() === $roomId",
+          "open": {
+            ".validate": "newData.val() === true"
+          },
+          "ownerUid": {
+            ".validate": "newData.isString() && newData.val() === auth.uid"
+          },
+          "name": {
+            ".validate": "newData.isString() && newData.val().matches(/^[a-z0-9][a-z0-9 -]{1,46}[a-z0-9]$/)"
+          },
+          "$other": {
+            ".validate": false
+          }
+        },
+        "removedStudents": {
+          "$uid": {
+            ".write": "auth != null && root.child('rooms').child($roomId).child('meta/ownerUid').val() === auth.uid && newData.val() === true && !newData.parent().parent().child('students').child($uid).exists()",
+            ".validate": "newData.val() === true"
+          }
+        },
+        "students": {
+          "$uid": {
+            ".write": "auth != null && ((auth.uid === $uid && root.child('rooms').child($roomId).child('meta/open').val() === true && !root.child('rooms').child($roomId).child('removedStudents').child($uid).exists() && newData.exists()) || (root.child('rooms').child($roomId).child('meta/ownerUid').val() === auth.uid && !newData.exists() && newData.parent().parent().child('removedStudents').child($uid).val() === true))",
+            ".validate": "newData.hasChildren(['studentId', 'name', 'sectors'])",
+            "studentId": {
+              ".validate": "newData.isString() && newData.val() === $uid"
+            },
+            "name": {
+              ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 100 && (!data.exists() || newData.val() === data.val())"
+            },
+            "currentSector": {
+              ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 100"
+            },
+            "sectors": {
+              "$sectorId": {
+                ".validate": "($sectorId === 'launch' || $sectorId === 'workshop' || $sectorId === 'base') && newData.hasChildren(['sectorName', 'sectorStatus'])",
+                "sectorName": {
+                  ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 100"
+                },
+                "sectorStatus": {
+                  ".validate": "newData.val() === 'not_started' || newData.val() === 'in_progress' || newData.val() === 'completed'"
+                },
+                "missions": {
+                  "$missionId": {
+                    ".validate": "newData.hasChildren(['missionNumber', 'missionStatus', 'usedHints', 'usedVisuals'])",
+                    "missionNumber": {
+                      ".validate": "newData.isNumber() && newData.val() > 0 && newData.val() % 1 === 0"
+                    },
+                    "missionStatus": {
+                      ".validate": "newData.val() === 'not_started' || newData.val() === 'in_progress' || newData.val() === 'completed'"
+                    },
+                    "usedHints": {
+                      ".validate": "newData.isBoolean()"
+                    },
+                    "usedVisuals": {
+                      ".validate": "newData.isBoolean()"
+                    },
+                    "providedAnswers": {
+                      "$attemptId": {
+                        ".validate": "newData.hasChildren(['order', 'answer', 'correct'])",
+                        "order": {
+                          ".validate": "newData.isNumber() && newData.val() > 0 && newData.val() % 1 === 0 && $attemptId === 'attempt-' + newData.val()"
+                        },
+                        "answer": {
+                          ".validate": "newData.hasChildren(['label', 'value'])",
+                          "label": {
+                            ".validate": "newData.isString() && newData.val().length > 0"
+                          },
+                          "value": {
+                            ".validate": "newData.isString() && newData.val().length > 0"
+                          },
+                          "$other": {
+                            ".validate": false
+                          }
+                        },
+                        "correct": {
+                          ".validate": "newData.isBoolean()"
+                        },
+                        "context": {
+                          ".validate": "newData.isString() && newData.val().length > 0"
+                        },
+                        "variable": {
+                          ".validate": "newData.isNumber()"
+                        },
+                        "$other": {
+                          ".validate": false
+                        }
+                      }
+                    },
+                    "$other": {
+                      ".validate": false
+                    },
+                    "missionTitle": {
+                      ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 2000"
+                    }
+                  }
+                },
+                "$other": {
+                  ".validate": false
+                }
+              }
+            },
+            "$other": {
+              ".validate": false
+            }
+          }
+        },
+        "catalog": {
+          ".write": "auth != null && newData.exists() && newData.parent().child('meta/ownerUid').val() === auth.uid && newData.parent().child('meta/open').val() === true",
+          ".validate": "newData.hasChildren(['revision', 'sectors']) && ((!data.exists() && newData.child('revision').val() >= 0) || newData.child('revision').val() === data.child('revision').val() + 1)",
+          "revision": {
+            ".validate": "newData.isNumber() && newData.val() >= 0 && newData.val() % 1 === 0"
+          },
+          "sectors": {
+            ".validate": "newData.hasChildren(['launch', 'workshop', 'base'])",
+            "launch": {
+              ".validate": "newData.isString() && newData.val().length >= 2 && newData.val().length <= 500000"
+            },
+            "workshop": {
+              ".validate": "newData.isString() && newData.val().length >= 2 && newData.val().length <= 500000"
+            },
+            "base": {
+              ".validate": "newData.isString() && newData.val().length >= 2 && newData.val().length <= 500000"
+            },
+            "$other": {
+              ".validate": false
+            }
+          },
+          "$other": {
+            ".validate": false
+          }
+        }
+      }
+    }
+  }
+}

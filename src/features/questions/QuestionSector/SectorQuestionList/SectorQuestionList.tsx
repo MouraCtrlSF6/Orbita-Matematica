@@ -6,7 +6,7 @@ import { QuestionDetails } from './QuestionDetails/QuestionDetails';
 interface SectorQuestionListProps {
   items: Mission[];
   pending: boolean;
-  remove: (id: string) => void;
+  remove: (id: string) => Promise<boolean>;
 }
 
 const formatNames = {

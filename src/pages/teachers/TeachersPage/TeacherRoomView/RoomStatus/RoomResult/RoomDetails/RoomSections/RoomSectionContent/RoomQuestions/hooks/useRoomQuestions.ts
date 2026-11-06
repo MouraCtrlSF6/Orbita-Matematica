@@ -7,12 +7,6 @@ import type { Mission } from '../../../../../../../../../../../game/types';
 import { useCatalogLoad } from './useCatalogLoad';
 import { useCatalogWrite } from './useCatalogWrite';
 
-function confirmRemoval() {
-  return window.confirm(
-    'Excluir esta questão da sala? Os registros de respostas serão preservados.',
-  );
-}
-
 export function useRoomQuestions() {
   const { localSessionId } = useSession();
   const load = useCatalogLoad(localSessionId);
@@ -50,6 +44,6 @@ function removeQuestion(
   save: ReturnType<typeof useCatalogWrite>['save'],
   id: string,
 ) {
-  if (!snapshot || !confirmRemoval()) return;
-  void save(removeRoomMission(snapshot.catalog, id), 'Questão excluída.');
+  if (!snapshot) return Promise.resolve(false);
+  return save(removeRoomMission(snapshot.catalog, id), 'Questão excluída.');
 }

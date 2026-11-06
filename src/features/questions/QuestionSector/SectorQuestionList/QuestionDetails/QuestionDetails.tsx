@@ -1,12 +1,12 @@
 import type { Mission } from '../../../../../game/types';
 import { QuestionDescription } from './QuestionDescription/QuestionDescription';
 import { QuestionSolution } from './QuestionSolution/QuestionSolution';
-import { RemoveQuestionButton } from './RemoveQuestionButton/RemoveQuestionButton';
+import { RemoveQuestionDialog } from './RemoveQuestionDialog/RemoveQuestionDialog';
 
 interface QuestionDetailsProps {
   mission: Mission;
   pending: boolean;
-  remove: (id: string) => void;
+  remove: (id: string) => Promise<boolean>;
 }
 
 export function QuestionDetails({ mission, pending, remove }: QuestionDetailsProps) {
@@ -14,7 +14,7 @@ export function QuestionDetails({ mission, pending, remove }: QuestionDetailsPro
     <>
       <QuestionDescription mission={mission} />
       <QuestionSolution mission={mission} />
-      <RemoveQuestionButton
+      <RemoveQuestionDialog
         id={mission.id}
         title={mission.title}
         pending={pending}

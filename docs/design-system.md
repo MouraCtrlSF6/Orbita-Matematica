@@ -208,3 +208,9 @@ Além dos testes de comportamento, comparar as telas com as referências visuais
 Nesta revisão passaram 56 testes unitários, 21 percursos de comportamento no navegador e uma comparação pontual de 44 capturas com as referências anteriores. Também passaram lint, build, formatação dos arquivos alterados e CodeMetrics 1.26.1, com máximo 7 e nenhuma unidade acima do limite. A comparação visual pontual não foi incorporada à suíte permanente.
 
 O menu de `Select` abre com deslizamento e revelação gradual durante 220 ms e fecha com deslizamento e esmaecimento. O movimento acompanha o lado disponível quando o menu abre acima do gatilho. A preferência de movimento reduzido desativa essas animações; o posicionamento, a seleção e o foco continuam sob responsabilidade do Radix.
+
+## Confirmação de exclusão
+
+`DeleteConfirmationDialog` compõe o `Dialog` compartilhado com um botão como `Dialog.Trigger`, ações de cancelar e confirmar, estado de envio e mensagem de erro. Abrir ou cancelar não executa a operação; somente confirmar chama `onConfirm`. Durante o envio, bloqueia novas confirmações e o fechamento. Se a operação falhar ou retornar `false`, mantém o diálogo aberto; em caso de sucesso, fecha.
+
+`DeleteRoomDialog`, `RemoveStudentDialog` e `RemoveQuestionDialog` definem as mensagens e operações de sala, aluno e questão. A exclusão de questão preserva as respostas históricas. Seu gatilho fica à direita dos detalhes, com lixeira e o texto “Excluir questão”.

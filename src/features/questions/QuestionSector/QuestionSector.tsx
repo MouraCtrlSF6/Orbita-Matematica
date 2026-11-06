@@ -5,7 +5,7 @@ interface QuestionSectorProps {
   sector: Sector;
   missions: Mission[];
   pending: boolean;
-  remove: (id: string) => void;
+  remove: (id: string) => Promise<boolean>;
 }
 
 export function QuestionSector({ sector, missions, ...actions }: QuestionSectorProps) {

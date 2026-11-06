@@ -1,6 +1,6 @@
 import { Collapsible } from '../../../../../../../../../components/Collapsible/Collapsible';
 import type { RoomStudent } from '../../../../../../../../../game/room-progress';
-import { RemoveStudentButton } from './RemoveStudentButton/RemoveStudentButton';
+import { RemoveStudentDialog } from './RemoveStudentDialog/RemoveStudentDialog';
 import { StudentSectors } from './StudentSectors/StudentSectors';
 import { StudentLocation } from './StudentLocation/StudentLocation';
 
@@ -15,7 +15,7 @@ export function StudentDetails({ student }: StudentDetailsProps) {
       <StudentSectors student={student} />
 
       <div className="mt-4 flex items-center justify-end">
-        <RemoveStudentButton studentId={student.studentId} name={student.name} />
+        <RemoveStudentDialog studentId={student.studentId} name={student.name} />
       </div>
     </Collapsible>
   );

@@ -1,6 +1,6 @@
 import { Collapsible } from '../../../../../../../../../../../components/Collapsible/Collapsible';
 import type { RoomSector } from '../../../../../../../../../../../game/room-progress';
-import { statusLabels } from './statusLabels';
+import { SectorTitle } from './SectorTitle/SectorTitle';
 import { StudentMission } from './StudentMission/StudentMission';
 
 export interface StudentSectorProps {
@@ -9,7 +9,7 @@ export interface StudentSectorProps {
 
 export function StudentSector({ sector }: StudentSectorProps) {
   return (
-    <Collapsible title={`${sector.sectorName} · ${statusLabels[sector.sectorStatus]}`} keepMounted>
+    <Collapsible title={<SectorTitle sector={sector} />} keepMounted>
       {Object.entries(sector.missions)
         .sort(([, left], [, right]) => left.missionNumber - right.missionNumber)
         .map(([id, mission]) => (

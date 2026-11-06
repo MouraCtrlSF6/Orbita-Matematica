@@ -1,3 +1,4 @@
+import { sectors } from '../../../../../../../../../../content/sectors';
 import type { RoomStudent } from '../../../../../../../../../../game/room-progress';
 import { StudentSector } from './StudentSector/StudentSector';
 
@@ -6,7 +7,9 @@ export interface StudentSectorsProps {
 }
 
 export function StudentSectors({ student }: StudentSectorsProps) {
-  return Object.entries(student.sectors).map(([id, sector]) => (
-    <StudentSector key={id} sector={sector} />
-  ));
+  return sectors.map(({ id }) => {
+    const sector = student.sectors[id];
+
+    return sector ? <StudentSector key={id} sector={sector} /> : null;
+  });
 }

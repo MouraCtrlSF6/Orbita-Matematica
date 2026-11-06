@@ -1,4 +1,5 @@
-import { Button } from '../../../../../../../../../../components/Button/Button';
+import { TrashIcon } from '@radix-ui/react-icons';
+import { TooltipButton } from '../../../../../../../../../../components/Tooltip/TooltipButton/TooltipButton';
 import { ButtonVariant } from '../../../../../../../../../../components/Button/button-styles';
 import { useRemoveStudent } from './hooks/useRemoveStudent';
 
@@ -12,16 +13,17 @@ export function RemoveStudentButton({ studentId, name }: RemoveStudentButtonProp
 
   return (
     <form action={action}>
-      <Button
-        variant={ButtonVariant.DangerSolid}
-
+      <TooltipButton
+        variant={ButtonVariant.Danger}
+        tooltip="Remover aluno"
+        aria-busy={pending}
         disabled={pending}
         aria-label={`Remover ${name} da sala`}
         type="submit"
-        className="ds-down-mobile:[.exploration-toolbar_&]:[flex:1_1_auto] [.feedback_&]:mt-[1.0625rem] [.tutorial-card_&]:mt-6"
+        className="size-11 p-0"
       >
-        {pending ? 'Removendo…' : 'Remover aluno'}
-      </Button>
+        <TrashIcon className="size-5" aria-hidden="true" />
+      </TooltipButton>
       {error && <p role="alert">{error}</p>}
     </form>
   );

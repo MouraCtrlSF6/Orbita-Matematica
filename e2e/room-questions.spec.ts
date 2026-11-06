@@ -105,7 +105,9 @@ test('adds all four formats, validates builds and confirms removal', async ({ pa
   expect((await new AxeBuilder({ page }).analyze()).violations).toEqual([]);
   await page.setViewportSize({ width: 1440, height: 1000 });
   await choice.getByRole('button', { name: 'Adicionar questão à sala' }).click();
-  await expect(page.getByRole('status')).toHaveText('Questão adicionada.');
+  await expect(page.getByRole('status').filter({ hasText: 'Questão adicionada.' })).toHaveText(
+    'Questão adicionada.',
+  );
   await expectSectorCount(page, 'Estação de lançamento', 23);
 
   const number = await fillQuestion(page, 'Questão numérica', 'number');
@@ -133,26 +135,26 @@ test('adds all four formats, validates builds and confirms removal', async ({ pa
   await page.getByRole('button', { name: /Estação de lançamento · 26 questões/ }).click();
   const question = page
     .getByRole('button', { name: 'Questão de criação · Criação guiada', exact: true })
-    .locator('..');
+    .locator('xpath=ancestor::*[@data-accordion-value][1]');
   await question
     .getByRole('button', { name: 'Questão de criação · Criação guiada', exact: true })
     .click();
   await expect(question.getByText('Resposta esperada:', { exact: false })).toContainText(
     'x = 3 → 10',
   );
-  page.once('dialog', (dialog) => void dialog.dismiss());
-  await question
-    .getByRole('button', { name: 'Excluir questão Questão de criação', exact: true })
-    .click();
+  await question.getByRole('button', { name: 'Excluir questão', exact: true }).click();
+  await page.getByRole('dialog').getByRole('button', { name: 'Cancelar', exact: true }).click();
   await expect(question).toHaveCount(1);
-  page.once('dialog', (dialog) => void dialog.accept());
-  await question
-    .getByRole('button', { name: 'Excluir questão Questão de criação', exact: true })
+  await question.getByRole('button', { name: 'Excluir questão', exact: true }).click();
+  await page
+    .getByRole('dialog')
+    .getByRole('button', { name: 'Excluir questão', exact: true })
     .click();
-  await expect(page.getByRole('status')).toHaveText('Questão excluída.');
   await expectSectorCount(page, 'Estação de lançamento', 25);
   await page.getByRole('tab', { name: 'Alunos', exact: true }).click();
-  await expect(page.getByRole('status')).toHaveText('Registros de alunos: 0');
+  await expect(page.getByRole('status').filter({ hasText: 'Registros de alunos: 0' })).toHaveText(
+    'Registros de alunos: 0',
+  );
 });
 
 test('keeps the student snapshot until reentry and loads changed questions once', async ({
@@ -165,11 +167,14 @@ test('keeps the student snapshot until reentry and loads changed questions once'
   await expect(student.locator('.exploration-count')).toContainText('/ 52');
   await page.getByRole('button', { name: /Estação de lançamento · 22 questões/ }).click();
   await page.getByText('Adição · exercício 1 · Objetiva', { exact: true }).click();
-  page.once('dialog', (dialog) => void dialog.accept());
+  await page.getByRole('button', { name: 'Excluir questão', exact: true }).click();
   await page
-    .getByRole('button', { name: 'Excluir questão Adição · exercício 1', exact: true })
+    .getByRole('dialog')
+    .getByRole('button', { name: 'Excluir questão', exact: true })
     .click();
-  await expect(page.getByRole('status')).toHaveText('Questão excluída.');
+  await expect(page.getByRole('status').filter({ hasText: 'Questão excluída.' })).toHaveText(
+    'Questão excluída.',
+  );
   await expect(student.locator('.exploration-count')).toContainText('/ 52');
   await student.getByRole('link', { name: 'Sair da sala' }).click();
   await student.getByRole('link', { name: 'Sou aluno' }).click();
@@ -221,7 +226,9 @@ test('plays and restores a custom question using only the room catalog', async (
   const form = await fillQuestion(page, 'Questão exclusiva da sala', 'number');
   await form.getByLabel('Resposta esperada', { exact: true }).fill('2x');
   await form.getByRole('button', { name: 'Adicionar questão à sala' }).click();
-  await expect(page.getByRole('status')).toHaveText('Questão adicionada.');
+  await expect(page.getByRole('status').filter({ hasText: 'Questão adicionada.' })).toHaveText(
+    'Questão adicionada.',
+  );
   await page.evaluate(() => {
     const key = `mock-catalog-${localStorage.getItem('mock-room-id')}`;
     const catalog = JSON.parse(localStorage.getItem(key)!);
@@ -337,7 +344,9 @@ test('preserves format drafts, validates closed sections and supports optional a
   await form.getByLabel('Objetivo', { exact: true }).clear();
   await form.getByLabel('Habilidade', { exact: true }).clear();
   await form.getByRole('button', { name: 'Adicionar questão à sala' }).click();
-  await expect(page.getByRole('status')).toHaveText('Questão adicionada.');
+  await expect(page.getByRole('status').filter({ hasText: 'Questão adicionada.' })).toHaveText(
+    'Questão adicionada.',
+  );
   const saved = await page.evaluate(() => {
     const catalog = JSON.parse(
       localStorage.getItem('mock-catalog-' + localStorage.getItem('mock-room-id'))!,
@@ -382,5 +391,7 @@ test('lays out the form at all reference widths and assembles with touch control
   );
   expect((await new AxeBuilder({ page }).analyze()).violations).toEqual([]);
   await form.getByRole('button', { name: 'Adicionar questão à sala' }).click();
-  await expect(page.getByRole('status')).toHaveText('Questão adicionada.');
+  await expect(page.getByRole('status').filter({ hasText: 'Questão adicionada.' })).toHaveText(
+    'Questão adicionada.',
+  );
 });

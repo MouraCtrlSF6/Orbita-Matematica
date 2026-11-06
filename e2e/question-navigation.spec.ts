@@ -108,7 +108,9 @@ test('keeps failed submissions editable and shows the saved question after retur
   await expect(page.getByLabel('Título', { exact: true })).toHaveValue('Nova questão');
   await page.evaluate(() => localStorage.removeItem('mock-catalog-write-error'));
   await page.getByRole('button', { name: 'Adicionar questão à sala' }).click();
-  await expect(page.getByRole('status')).toHaveText('Questão adicionada.');
+  await expect(page.getByRole('status').filter({ hasText: 'Questão adicionada.' })).toHaveText(
+    'Questão adicionada.',
+  );
   await expect(page.getByLabel('Título', { exact: true })).toBeEmpty();
   await page.getByRole('button', { name: 'Voltar para a listagem de questões' }).click();
   await page.getByRole('button', { name: /Estação de lançamento · 23 questões/ }).click();

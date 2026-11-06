@@ -21,7 +21,7 @@ export function AccordionHeading({
 }: AccordionHeadingProps) {
   return (
     <AccordionPrimitive.Header asChild>
-      <Heading className="m-0 text-body tracking-normal">
+      <Heading className="m-0 min-w-0 flex-1 text-body tracking-normal">
         <AccordionTrigger {...triggerProps} variant={variant}>
           {title}
         </AccordionTrigger>

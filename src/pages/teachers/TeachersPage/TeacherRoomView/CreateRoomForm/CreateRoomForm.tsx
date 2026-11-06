@@ -2,6 +2,9 @@ import { useCreateRoom } from './hooks/useCreateRoom';
 import { roomNameMaxLength } from '../../../../../game/room-name';
 import { Button } from '../../../../../components/Button/Button';
 import { Input } from '../../../../../components/Input/Input';
+import { Spinner } from '../../../../../components/Spinner/Spinner';
+
+const loadingLabel = <Spinner label="Criando sala…" />;
 
 const nameField = (
   <>
@@ -19,8 +22,8 @@ export function CreateRoomForm() {
       action={action}
     >
       {nameField}
-      <Button type="submit" disabled={pending}>
-        {pending ? 'Criando…' : 'Criar sala'}
+      <Button type="submit" disabled={pending} aria-busy={pending}>
+        {pending ? loadingLabel : 'Criar sala'}
       </Button>
       {error && <p role="alert">{error}</p>}
     </form>

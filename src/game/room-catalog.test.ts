@@ -6,6 +6,7 @@ import {
   parseRoomCatalog,
   appendRoomMission,
   removeRoomMission,
+  reorderRoomMission,
 } from './room-catalog';
 import { initialSave, isSectorUnlocked, nextMission } from './progress';
 import { gameReducer, Screen, type GameState } from './reducer';
@@ -28,6 +29,31 @@ describe('room catalog snapshots', () => {
     expect(changed.revision).toBe(2);
     expect(changed.missions.filter((item) => item.sectorId === 'launch').at(-1)).toEqual(mission);
     expect(changed.missions.some((item) => item.id === missions[0].id)).toBe(false);
+  });
+
+  it('moves missions in both directions without changing IDs, other sectors or the original snapshot', () => {
+    const catalog = defaultRoomCatalog();
+    const [first, second, third] = catalog.missions;
+    const reordered = reorderRoomMission(catalog, first.id, third.id);
+
+    expect(reordered.missions.slice(0, 3)).toEqual([second, third, first]);
+    expect(reordered.missions.slice(3)).toEqual(catalog.missions.slice(3));
+    expect(reordered.revision).toBe(catalog.revision + 1);
+    expect(catalog.missions).toEqual(missions);
+    expect(parseRoomCatalog(storeRoomCatalog(reordered))).toEqual(reordered);
+    expect(reorderRoomMission(reordered, first.id, second.id).missions).toEqual(catalog.missions);
+    expect(reorderRoomMission(catalog, first.id, first.id)).toBe(catalog);
+  });
+
+  it('rejects missing missions, empty catalogs and movements between sectors', () => {
+    const catalog = defaultRoomCatalog();
+    const first = catalog.missions[0];
+    const other = catalog.missions.find((mission) => mission.sectorId !== first.sectorId)!;
+
+    expect(() => reorderRoomMission(catalog, first.id, other.id)).toThrow();
+    expect(() => reorderRoomMission(catalog, 'missing', first.id)).toThrow();
+    expect(() => reorderRoomMission(catalog, first.id, 'missing')).toThrow();
+    expect(() => reorderRoomMission({ revision: 0, missions: [] }, first.id, first.id)).toThrow();
   });
 
   it('supports empty sectors and a completely empty catalog', () => {

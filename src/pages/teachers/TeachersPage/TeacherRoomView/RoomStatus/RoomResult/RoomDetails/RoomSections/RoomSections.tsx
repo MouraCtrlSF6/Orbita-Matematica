@@ -1,25 +1,27 @@
 import { Tabs } from '../../../../../../../../components/Tabs/Tabs';
-import { useState } from 'react';
 import { ProfileBackLink } from '../../../../../ProfileBackLink/ProfileBackLink';
 import type { RoomStudent } from '../../../../../../../../game/room-progress';
 import { RoomSectionContent } from './RoomSectionContent/RoomSectionContent';
+import { RoomTab, useRoomTabs } from './hooks/useRoomTabs';
 
 interface RoomSectionsProps {
   students: RoomStudent[];
 }
 
 export function RoomSections({ students }: RoomSectionsProps) {
-  const [section, setSection] = useState('students');
+  const tabs = useRoomTabs();
   const items = [
     {
-      value: 'students',
+      value: RoomTab.Students,
       label: 'Alunos',
-      content: <RoomSectionContent section="students" students={students} />,
+      content: <RoomSectionContent section={RoomTab.Students} students={students} />,
+      keepMounted: tabs.visited.includes(RoomTab.Students),
     },
     {
-      value: 'questions',
+      value: RoomTab.Questions,
       label: 'Questões',
-      content: <RoomSectionContent section="questions" students={students} />,
+      content: <RoomSectionContent section={RoomTab.Questions} students={students} />,
+      keepMounted: tabs.visited.includes(RoomTab.Questions),
     },
   ];
 
@@ -28,7 +30,7 @@ export function RoomSections({ students }: RoomSectionsProps) {
       <div className="mb-4">
         <ProfileBackLink />
       </div>
-      <Tabs label="Seções da sala" value={section} onValueChange={setSection} items={items} />
+      <Tabs label="Seções da sala" value={tabs.section} onValueChange={tabs.select} items={items} />
     </section>
   );
 }

@@ -9,12 +9,12 @@ export interface RoomDetailsProps {
 }
 
 export function RoomDetails({ students }: RoomDetailsProps) {
-  const { deleteRoom } = useSession();
+  const { deleteRoom, localSessionId, teacherRoomName } = useSession();
 
   return (
     <>
       <RoomName />
-      <RoomSections students={students} />
+      <RoomSections key={`${localSessionId}:${teacherRoomName}`} students={students} />
       {deleteRoom && <DeleteRoomButton remove={deleteRoom} />}
     </>
   );

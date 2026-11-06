@@ -83,3 +83,11 @@ Versões fixadas no `package-lock.json`:
 | `npm run metrics:check` | Verificar o limite de complexidade 7       |
 
 Instale Chromium com `npx playwright install chromium` antes dos testes E2E. Métricas exigem CodeMetrics ou `CODEMETRICS_EXTENSION`. Consulte [contribuição e emuladores](AGENTS.md), [complexidade](docs/complexidade.md) e [design system](docs/design-system.md).
+
+### Relatório de acompanhamento em PDF
+
+Na aba **Alunos**, use **Exportar PDF** para baixar os registros da sala. A geração ocorre localmente em um worker, com fundo `#F7F8FA`, seções por setor e detalhamento de cada aluno, questão, respostas incorretas e uso de dicas. O arquivo não é enviado ao servidor. A captura dos alunos acontece no clique; o catálogo atual é carregado para a exportação.
+
+Uma questão é considerada certa somente se a tentativa de ordem 1 estiver correta. As taxas usam as participações aluno–questão com primeira tentativa conhecida. Acertos posteriores contam como conclusão após novas tentativas; todos os erros permanecem contabilizados separadamente. Não respondidas e conclusões antigas sem histórico não são erros presumidos. Os destaques mostram empates e bases de comparação; não representam diagnóstico de aprendizagem.
+
+“Usou dicas” indica apenas o registro por questão, sem quantidade ou momento de uso. O total de alunos corresponde a registros, sem presença online. Questões retiradas aparecem em histórico separado; enunciados antigos não são reconstruídos. Alunos com catálogos de entrada distintos podem ter questões atuais sem registro.

@@ -5,7 +5,11 @@ import { publishRouteEntries, routeInputs } from './src/app/routes/static-route-
 
 export default defineConfig({
   base: './',
-  plugins: [react(), tailwindcss(), publishRouteEntries()],
+  plugins: [
+    react({ exclude: [/node_modules/, /[\\/]features[\\/]room-report[\\/]/] }),
+    tailwindcss(),
+    publishRouteEntries(),
+  ],
   build: {
     rollupOptions: {
       input: routeInputs,

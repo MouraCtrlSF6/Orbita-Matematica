@@ -91,6 +91,7 @@ export function initialRoomStudent(
 const answerLabels = {
   [ChallengeKind.Choice]: 'Alternativa',
   [ChallengeKind.Number]: 'Resposta numérica',
+  [ChallengeKind.Text]: 'Resposta discursiva',
   [ChallengeKind.Build]: 'Expressão montada',
   [ChallengeKind.Create]: 'Problema criado',
 };

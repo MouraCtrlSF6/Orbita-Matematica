@@ -12,8 +12,9 @@ interface QuestionDetailsProps {
 }
 
 const formatNames = {
-  choice: 'Alternativas',
+  choice: 'Objetiva',
   number: 'Resposta numérica',
+  text: 'Discursiva',
   build: 'Montagem de expressão',
   create: 'Criação guiada',
 };

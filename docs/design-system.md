@@ -86,6 +86,14 @@ import { CollapsibleVariant } from '../components/Collapsible/collapsible-styles
 
 `ControlSize` oferece `Small`, `Medium` (padrão) e `Large`. Botões e campos mantêm altura mínima de `2.75rem`; o checkbox dimensiona o indicador dentro de um rótulo com essa altura mínima. `Input` e `Select` com `Invalid` expõem `aria-invalid`; fornecer o texto de erro por `aria-describedby` (no Select, via `triggerProps`). `Input` precisa de um `<label>` associado ou nome acessível explícito. `label` no Select e RadioGroup fornece o nome acessível; renderizar também um rótulo visível quando o contexto não o fornecer.
 
+`Textarea`, em `src/components/Textarea/Textarea.tsx`, compartilha os estilos, tamanhos e estados de erro de `Input`, com props nativas, altura inicial de seis rem e redimensionamento vertical. Deve ter rótulo associado e texto de erro acessível.
+
+O visual padrão de `Tabs` mantém o identificador `TabsVariant.Pills` por compatibilidade, mas apresenta abas sobre uma linha contínua: a ativa tem fundo lilás, texto roxo e sublinhado espesso. A variante `Underline` continua disponível. A seleção controlada, os painéis associados e a navegação por teclado permanecem sob responsabilidade do Radix.
+
+`Breadcrumb`, em `src/components/Breadcrumb/Breadcrumb.tsx`, recebe `items` com `id` e `label`, além de um rótulo acessível opcional para a navegação. O primeiro item recebe destaque roxo, as barras são decorativas e o último item usa `aria-current="page"`. Os itens são contextuais e não criam links. Na sala do professor, o breadcrumb e `Tabs` derivam da mesma seleção, começando por Alunos.
+
+Na autoria, campos obrigatórios têm asterisco vermelho e os opcionais têm o sufixo `(opcional)`. As seções recolhíveis preservam campos e abrem ao encontrar um campo inválido. Blocos matemáticos oferecem seleção, remoção e movimentação por botões além de arraste. Sobre fundo lilás, usar `text-primary-hover` para manter contraste de texto pequeno.
+
 ```tsx
 import { Button } from '../components/Button/Button';
 import { ButtonVariant } from '../components/Button/button-styles';

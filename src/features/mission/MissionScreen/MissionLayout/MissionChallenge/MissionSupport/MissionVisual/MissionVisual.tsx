@@ -14,5 +14,5 @@ export function MissionVisual() {
       }
     : mission.visual;
 
-  return <ObjectModel model={model} />;
+  return model ? <ObjectModel model={model} /> : null;
 }

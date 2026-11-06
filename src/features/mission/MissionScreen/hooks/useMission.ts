@@ -31,8 +31,8 @@ function initialMission(mission: Mission): MissionState {
 
 function retryMessage(mission: Mission): string {
   return mission.kind === ChallengeKind.Build
-    ? `Vamos ajustar a expressão. ${mission.hints[0]} Você pode usar Desfazer ou pedir uma pista.`
-    : `Ainda não chegamos ao resultado. ${mission.hints[0]} Tente novamente ou peça uma pista.`;
+    ? 'Vamos ajustar a expressão. Você pode usar Desfazer e conferir as peças.'
+    : 'Ainda não chegamos ao resultado. Confira sua resposta e tente novamente.';
 }
 
 function missionResult(state: MissionState, creation: boolean): MissionResult {
@@ -152,7 +152,10 @@ export function useMission(
 ) {
   const [state, setState] = useState(() => initialMission(mission));
 
-  const hintLimit = sectors.find((sector) => sector.id === mission.sectorId)!.hintLimit;
+  const hintLimit = Math.min(
+    mission.hints.length,
+    sectors.find((sector) => sector.id === mission.sectorId)!.hintLimit,
+  );
 
   const feedbackRef = useRef<HTMLDivElement>(null);
 
@@ -173,7 +176,7 @@ export function useMission(
     ...state,
     hintLimit,
     creation: mission.kind === ChallengeKind.Create,
-    expected: evaluate(mission.expression, state.variable),
+    expected: numericResult(mission, state.variable),
     feedbackRef,
     narration,
     checkAnswer: actions.checkAnswer,
@@ -187,3 +190,8 @@ export function useMission(
 }
 
 export type MissionSession = ReturnType<typeof useMission>;
+
+function numericResult(mission: Mission, variable: number) {
+  if (![ChallengeKind.Number, ChallengeKind.Create].includes(mission.kind)) return undefined;
+  return evaluate(mission.expression, variable);
+}

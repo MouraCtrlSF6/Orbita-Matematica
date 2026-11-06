@@ -9,8 +9,13 @@ export function QuestionSubmission({ error }: QuestionSubmissionProps) {
     <>
       <p>Confira o resultado, as dicas e a representação visual antes de adicionar.</p>
       {error && <p role="alert">{error}</p>}
-      <Button variant={ButtonVariant.Primary} type="submit">
-        Adicionar questão à sala
+      <Button
+        variant={ButtonVariant.Primary}
+        type="submit"
+        aria-label="Adicionar questão à sala"
+        className="justify-self-end ds-down-mobile:w-full"
+      >
+        Adicionar questão
       </Button>
     </>
   );

@@ -23,7 +23,7 @@ Consultar `README.md` para execução, controles, salas e publicação; `docs/pe
 - O aluno valida e carrega o catálogo uma vez antes do registro. A cópia fica em `StudentRoom.missions`, em memória; não adicionar polling ou assinatura de questões. Nova revisão exige nova entrada. Saves não contêm catálogo.
 - Regras puras recebem o catálogo como argumento; telas usam o contexto da partida. Totais, mapas e desbloqueios consideram essa cópia. Setores e salas vazios são válidos.
 - Exclusões preservam respostas e conclusões históricas por ID. Ao reencontrar um aluno, acrescentar missões ausentes sem sobrescrever tentativas.
-- Manter os quatro formatos existentes. Expressões usam árvores de operações, nunca `eval`. Montagens validam peças, repetições e equivalência algébrica. A criação guiada permanece em `2 × x + 4`.
+- A autoria oferece Objetiva, Discursiva, Montagem e Criação guiada. `ChallengeKind.Text` corrige a resposta cadastrada ignorando maiúsculas e espaços extras; preservar `Number` e sua correção numérica nas questões antigas. Expressões opcionais de Objetiva/Discursiva usam árvores de operações, nunca `eval`. Montagens derivam a expressão da ordem principal e validam subconjuntos das peças disponíveis, repetições e equivalência algébrica. A criação guiada permanece em `2 × x + 4`.
 - Nas equações importadas, `formula` preserva a igualdade, `expression` é o lado esquerdo e `variable` é a solução; conferir a alternativa por `correctChoice`. O campo numérico aceita inteiros não negativos.
 
 ## Experiência e inclusão
@@ -31,7 +31,7 @@ Consultar `README.md` para execução, controles, salas e publicação; `docs/pe
 - Textos em português, breves e adequados à idade. Preservar teclado, foco, toque, texto ampliado, movimento reduzido e acesso aos destinos por lista.
 - O desbloqueio é sequencial. Retornar de uma missão restaura a posição da visita; não abrir automaticamente outra pergunta. Parar voo e som ao soltar controles, perder foco, ocultar a aba, abrir ajustes ou mudar de tela.
 - Som é opcional; botão, ajustes e atalho M compartilham `soundEnabled`. Ignorar o atalho durante edição, composição, repetição ou modificadores. Ausência de áudio ou voz não impede jogar; liberar recursos ao desmontar.
-- Preservar três dicas no catálogo, exibindo o limite do setor: uma no lançamento/oficina e duas na base. Concluir exige resposta correta; explicar após o acerto. Apoios não são penalizados. Não adicionar cronômetro, vidas ou competição, nem inferir diagnósticos ou domínio pedagógico pela conclusão.
+- Preservar três dicas no catálogo padrão, exibindo o limite do setor: uma no lançamento/oficina e duas na base. Questões da sala aceitam zero a três dicas, objetivo/habilidade vazios e ausência de apoio visual; não renderizar apoios vazios. Concluir exige resposta correta; explicar após o acerto. Apoios não são penalizados. Não adicionar cronômetro, vidas ou competição, nem inferir diagnósticos ou domínio pedagógico pela conclusão.
 
 ## Salas, persistência e privacidade
 

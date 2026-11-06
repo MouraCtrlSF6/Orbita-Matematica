@@ -17,10 +17,14 @@ async function fillQuestion(page: Page, title: string, kind: string) {
     .locator('form')
     .filter({ has: page.getByRole('button', { name: 'Adicionar questão à sala' }) });
 
-  if (!(await form.isVisible())) await page.getByText('Adicionar questão', { exact: true }).click();
+  if (!(await form.isVisible()))
+    await page
+      .locator('summary')
+      .filter({ hasText: /^Adicionar questão$/ })
+      .click();
   const formats: Record<string, string> = {
-    choice: 'Alternativas',
-    number: 'Resposta numérica',
+    choice: 'Objetiva',
+    number: 'Discursiva',
     build: 'Montagem de expressão',
     create: 'Criação guiada',
   };
@@ -32,13 +36,14 @@ async function fillQuestion(page: Page, title: string, kind: string) {
     ['Enunciado', 'Calcule o total da expedição.'],
     ['Objetivo', 'Calcular expressões'],
     ['Habilidade', 'EF08MA06'],
-    ['Dica 1', 'Observe os números.'],
-    ['Dica 2', 'Substitua x.'],
-    ['Dica 3', 'Confira as operações.'],
-    ['Explicação', 'Faça as operações na ordem.'],
-    ['Descrição dos objetos visuais', 'Cristais'],
+    ['Explicação da resposta', 'Faça as operações na ordem.'],
   ])
     await form.getByLabel(label, { exact: true }).fill(value);
+  if (kind === 'number') await form.getByLabel('Resposta esperada', { exact: true }).fill('0');
+  if (kind === 'choice') {
+    await form.getByLabel('Alternativa 1', { exact: true }).fill('0');
+    await form.getByLabel('Alternativa 2', { exact: true }).fill('1');
+  }
   return form;
 }
 
@@ -67,10 +72,17 @@ test('switches teacher tabs with arrow keys and labels the active panel', async 
   const students = page.getByRole('tab', { name: 'Alunos', exact: true });
 
   await expect(page.getByRole('tablist', { name: 'Seções da sala' })).toBeVisible();
+  await expect(page.getByRole('navigation', { name: 'Localização atual' })).toContainText(
+    'turma teste',
+  );
+  await expect(page.getByRole('navigation').locator('[aria-current="page"]')).toHaveText(
+    'Questões',
+  );
   await questions.focus();
   await page.keyboard.press('ArrowLeft');
   await expect(students).toBeFocused();
   await expect(students).toHaveAttribute('aria-selected', 'true');
+  await expect(page.getByRole('navigation').locator('[aria-current="page"]')).toHaveText('Alunos');
   await expect(page.getByRole('tabpanel', { name: 'Alunos' })).toContainText(
     'Registros de alunos: 0',
   );
@@ -87,7 +99,6 @@ test('switches teacher tabs with arrow keys and labels the active panel', async 
 test('adds all four formats, validates builds and confirms removal', async ({ page }) => {
   await openTeacherQuestions(page);
   const choice = await fillQuestion(page, 'Questão de alternativas', 'choice');
-  await choice.getByLabel('Alternativas, uma por linha').fill('0\n1');
   await page.evaluate(() => window.scrollTo(0, 0));
   await page.screenshot({ path: test.info().outputPath('teacher-questions.png') });
   await page.setViewportSize({ width: 390, height: 844 });
@@ -109,14 +120,17 @@ test('adds all four formats, validates builds and confirms removal', async ({ pa
   ).toBeVisible();
 
   const build = await fillQuestion(page, 'Questão de montagem', 'build');
-  await build.getByRole('combobox', { name: 'Tipo de expressão', exact: true }).click();
-  await page.getByRole('option', { name: 'Operação', exact: true }).click();
-  await build.getByRole('combobox', { name: 'Tipo de expressão esquerda', exact: true }).click();
-  await page.getByRole('option', { name: 'Variável x', exact: true }).click();
-  await build.getByLabel('Valor de expressão direita', { exact: true }).fill('2');
-  await build.getByLabel('Peças disponíveis').fill('x | + | 2');
-  await build.getByLabel('Ordem correta das peças').fill('x | + | 2');
-  await build.getByLabel('Outras ordens equivalentes, uma por linha').fill('2 | + | x');
+  for (const token of ['x', '+', '2', '7']) {
+    await build.getByLabel('Peças disponíveis', { exact: true }).fill(token);
+    await build.getByRole('button', { name: 'Adicionar componente', exact: true }).click();
+  }
+  const order = build.locator('input[name="expectedTokens"]').locator('..');
+  for (const token of ['x', '+', '2'])
+    await order.getByRole('button', { name: 'Adicionar peça ' + token, exact: true }).click();
+  await build.getByRole('button', { name: 'Adicionar ordem equivalente', exact: true }).click();
+  const equivalent = build.locator('input[name="equivalentTokens"]').locator('..');
+  for (const token of ['2', '+', 'x'])
+    await equivalent.getByRole('button', { name: 'Adicionar peça ' + token, exact: true }).click();
   await build.getByRole('button', { name: 'Adicionar questão à sala' }).click();
   await expect(
     page.getByRole('heading', { name: 'Estação de lançamento · 25 questões' }),
@@ -161,7 +175,7 @@ test('keeps the student snapshot until reentry and loads changed questions once'
   const student = await context.newPage();
   await joinReadyStudent(student);
   await expect(student.locator('.exploration-count')).toContainText('/ 52');
-  await page.getByText('Adição · exercício 1 · Alternativas', { exact: true }).click();
+  await page.getByText('Adição · exercício 1 · Objetiva', { exact: true }).click();
   page.once('dialog', (dialog) => void dialog.accept());
   await page
     .getByRole('button', { name: 'Excluir questão Adição · exercício 1', exact: true })
@@ -220,6 +234,7 @@ test('plays and restores a custom question using only the room catalog', async (
 }) => {
   await openTeacherQuestions(page);
   const form = await fillQuestion(page, 'Questão exclusiva da sala', 'number');
+  await form.getByLabel('Resposta esperada', { exact: true }).fill('2x');
   await form.getByRole('button', { name: 'Adicionar questão à sala' }).click();
   await expect(page.getByRole('status')).toHaveText('Questão adicionada.');
   await page.evaluate(() => {
@@ -239,7 +254,14 @@ test('plays and restores a custom question using only the room catalog', async (
     .getByRole('button')
     .filter({ has: student.getByText('Questão exclusiva da sala', { exact: true }) })
     .click();
-  await student.getByRole('textbox', { name: 'Qual é o total?', exact: true }).fill('0');
+  await expect(student.getByRole('button', { name: 'Ver com objetos' })).toHaveCount(0);
+  await expect(student.getByText('Objetivo:', { exact: false })).toHaveCount(0);
+  await student.getByRole('textbox', { name: 'Sua resposta', exact: true }).fill('x+x');
+  await student.getByRole('button', { name: 'Conferir resposta' }).click();
+  await expect(
+    student.getByText('Ainda não chegamos ao resultado.', { exact: false }),
+  ).toBeVisible();
+  await student.getByRole('textbox', { name: 'Sua resposta', exact: true }).fill(' 2X ');
   await student.getByRole('button', { name: 'Conferir resposta' }).click();
   await expect(student.getByText('Boa descoberta! Você concluiu a missão.')).toBeVisible();
   await student.getByRole('link', { name: 'Sair da sala' }).click();
@@ -279,4 +301,101 @@ test('supports a completely empty room and prevents joining when questions canno
   ).toBeVisible();
   expect(registrations).toBe(1);
   await student.close();
+});
+
+test('preserves format drafts, validates closed sections and supports optional aids', async ({
+  page,
+}) => {
+  await openTeacherQuestions(page);
+  const form = await fillQuestion(page, 'Rascunho de questão', 'choice');
+  const format = form.getByRole('combobox', { name: 'Formato', exact: true });
+
+  await form.getByRole('button', { name: 'Adicionar alternativa', exact: true }).click();
+  await form.getByLabel('Alternativa 3', { exact: true }).fill('2');
+  await form.getByRole('radio', { name: 'Alternativa 3 correta', exact: true }).check();
+  await form.getByRole('button', { name: 'Excluir alternativa 3', exact: true }).click();
+  await form.getByRole('button', { name: 'Alternativas', exact: true }).click();
+  await form.getByRole('button', { name: 'Adicionar questão à sala' }).click();
+  await expect(form.getByRole('button', { name: 'Alternativas', exact: true })).toHaveAttribute(
+    'aria-expanded',
+    'true',
+  );
+  await expect(
+    form.getByRole('radio', { name: 'Alternativa 1 correta', exact: true }),
+  ).toBeFocused();
+  await form.getByRole('radio', { name: 'Alternativa 2 correta', exact: true }).check();
+  await format.click();
+  await page.getByRole('option', { name: 'Discursiva', exact: true }).click();
+  await form.getByLabel('Resposta esperada', { exact: true }).fill('2x');
+  await format.click();
+  await page.getByRole('option', { name: 'Objetiva', exact: true }).click();
+  await expect(form.getByLabel('Alternativa 2', { exact: true })).toHaveValue('1');
+  await expect(
+    form.getByRole('radio', { name: 'Alternativa 2 correta', exact: true }),
+  ).toBeChecked();
+  await format.click();
+  await page.getByRole('option', { name: 'Discursiva', exact: true }).click();
+  await expect(form.getByLabel('Resposta esperada', { exact: true })).toHaveValue('2x');
+  await form.getByRole('button', { name: 'Dicas (opcional)', exact: true }).click();
+  await form.getByLabel('Dica 1', { exact: true }).fill('Some os termos semelhantes.');
+  await form.getByRole('button', { name: 'Adicionar dica', exact: true }).click();
+  await form.getByRole('button', { name: 'Adicionar dica', exact: true }).click();
+  await expect(form.getByRole('button', { name: 'Adicionar dica', exact: true })).toBeDisabled();
+  await form.getByRole('button', { name: 'Dicas (opcional)', exact: true }).click();
+  await form.getByRole('button', { name: 'Dicas (opcional)', exact: true }).click();
+  await expect(form.getByLabel('Dica 1', { exact: true })).toHaveValue(
+    'Some os termos semelhantes.',
+  );
+  await form.getByRole('button', { name: 'Objetos visuais (opcional)', exact: true }).click();
+  await form.getByRole('checkbox', { name: 'Incluir apoio visual', exact: true }).check();
+  await expect(form.getByRole('region', { name: 'Representação com objetos' })).toBeVisible();
+  await form.getByLabel('Objetivo', { exact: true }).clear();
+  await form.getByLabel('Habilidade', { exact: true }).clear();
+  await form.getByRole('button', { name: 'Adicionar questão à sala' }).click();
+  await expect(page.getByRole('status')).toHaveText('Questão adicionada.');
+  const saved = await page.evaluate(() => {
+    const catalog = JSON.parse(
+      localStorage.getItem('mock-catalog-' + localStorage.getItem('mock-room-id'))!,
+    );
+    return catalog.missions.find((mission: { id: string }) => mission.id.startsWith('custom-'));
+  });
+
+  expect(saved.kind).toBe('text');
+  expect(saved.expectedAnswer).toBe('2x');
+  expect(saved.choices).toBeUndefined();
+  expect(saved.expression).toBeUndefined();
+  expect(saved.hints).toEqual(['Some os termos semelhantes.']);
+});
+
+test('lays out the form at all reference widths and assembles with touch controls', async ({
+  page,
+}) => {
+  await openTeacherQuestions(page);
+  const form = await fillQuestion(page, 'Montagem responsiva', 'build');
+
+  for (const token of ['2', '+', 'x', '7']) {
+    await form.getByLabel('Peças disponíveis', { exact: true }).fill(token);
+    await form.getByRole('button', { name: 'Adicionar componente', exact: true }).click();
+  }
+  const order = form.locator('input[name="expectedTokens"]').locator('..').locator('..');
+  for (const token of ['2', '+', 'x'])
+    await order.getByRole('button', { name: 'Adicionar peça ' + token, exact: true }).click();
+  await order.getByRole('button', { name: 'Selecionar peça 3: x', exact: true }).click();
+  await order.getByRole('button', { name: 'Mover peça para a esquerda', exact: true }).click();
+  await order.getByRole('button', { name: 'Mover peça para a direita', exact: true }).click();
+  for (const width of [390, 700, 1000, 1440]) {
+    await page.setViewportSize({ width, height: 1000 });
+    expect(
+      await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth),
+    ).toBe(true);
+    await form.screenshot({ path: test.info().outputPath('question-form-' + width + '.png') });
+  }
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.evaluate(() => (document.documentElement.style.fontSize = '125%'));
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(
+    true,
+  );
+  expect((await new AxeBuilder({ page }).analyze()).violations).toEqual([]);
+  await form.getByRole('button', { name: 'Adicionar questão à sala' }).click();
+  await expect(page.getByRole('status')).toHaveText('Questão adicionada.');
 });

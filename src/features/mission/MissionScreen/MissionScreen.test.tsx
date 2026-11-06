@@ -4,8 +4,45 @@ import { describe, expect, it, vi } from 'vitest';
 import { mission } from '../../../test/mission';
 import { MissionScreen } from './MissionScreen';
 import { useMission } from './hooks/useMission';
+import { ChallengeKind } from '../../../game/types';
+import { parseExpressionTokens } from '../../../game/token-expression';
 
 describe('mission interactions', () => {
+  it('corrects text independently of an optional formula and hides absent aids', async () => {
+    const onComplete = vi.fn();
+    const user = userEvent.setup();
+    const question = {
+      ...mission('launch-1'),
+      kind: ChallengeKind.Text,
+      choices: undefined,
+      correctChoice: undefined,
+      expectedAnswer: '2x',
+      objective: '',
+      skill: '',
+      hints: [],
+      visual: undefined,
+      expression: parseExpressionTokens(['1', '÷', 'x']),
+      formula: '',
+    };
+    const { container } = render(
+      <MissionScreen
+        mission={question}
+        onComplete={onComplete}
+        onNext={vi.fn()}
+        onBack={vi.fn()}
+      />,
+    );
+
+    expect(container.querySelector('.small-tag')).toBeNull();
+    expect(container.querySelector('.formula')).toBeNull();
+    expect(container.querySelector('.mission-aside')).toBeNull();
+    expect(screen.queryByRole('button', { name: 'Ver com objetos' })).not.toBeInTheDocument();
+    await user.type(screen.getByLabelText('Sua resposta'), ' 2X ');
+    await user.click(screen.getByRole('button', { name: 'Conferir resposta' }));
+    expect(onComplete).toHaveBeenCalledWith(
+      expect.objectContaining({ attempts: 1, hints: 0, visual: false }),
+    );
+  });
   it('offers retry feedback and completes only once a correct answer is submitted', async () => {
     const onComplete = vi.fn();
     const user = userEvent.setup();

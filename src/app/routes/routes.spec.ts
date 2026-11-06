@@ -5,7 +5,11 @@ import { enterRoom, test } from '../../../e2e/rooms-fixture';
 async function createRoom(page: Page) {
   await page.getByLabel('Nome da sala').fill('Turma Têste');
   await page.getByRole('button', { name: 'Criar sala' }).click();
-  await expect(page.getByText('turma teste', { exact: true })).toBeVisible();
+  await expect(
+    page
+      .getByRole('navigation', { name: 'Localização atual' })
+      .getByText('turma teste', { exact: true }),
+  ).toBeVisible();
 }
 
 test('opens profile selection and navigates the cards with the keyboard and history', async ({

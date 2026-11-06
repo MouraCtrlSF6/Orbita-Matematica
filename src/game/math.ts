@@ -15,7 +15,12 @@ export const multiply = (left: Expression, right: Expression): Expression => ({
   right,
 });
 
-export function evaluate(expression: Expression, value: number): number {
+export function evaluate(expression: Expression | undefined, value: number): number {
+  if (!expression) return NaN;
+  return evaluateExpression(expression, value);
+}
+
+function evaluateExpression(expression: Expression, value: number): number {
   if (expression.type === 'constant') return expression.value;
   if (expression.type === 'variable') return value;
   const left = evaluate(expression.left, value);
@@ -43,5 +48,15 @@ export function isCorrect(mission: Mission, answer: string, value = mission.vari
   if (mission.expectedTokens) {
     return hasEquivalentAnswer(mission, answer);
   }
+  return isWrittenAnswer(mission, answer, value);
+}
+
+function isWrittenAnswer(mission: Mission, answer: string, value: number): boolean {
+  if (mission.kind === 'text')
+    return normalizeAnswer(answer) === normalizeAnswer(mission.expectedAnswer ?? '');
   return /^\d+$/.test(answer.trim()) && Number(answer) === evaluate(mission.expression, value);
+}
+
+export function normalizeAnswer(answer: string): string {
+  return answer.trim().replace(/\s+/g, ' ').toLocaleLowerCase('pt-BR');
 }

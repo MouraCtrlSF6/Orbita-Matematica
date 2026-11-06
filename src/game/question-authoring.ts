@@ -2,7 +2,7 @@ import { isMission } from '../content/mission-catalog';
 import { evaluate, add, multiply, constant, variable } from './math';
 import { sectors } from '../content/sectors';
 import { ChallengeKind, type Expression, type Mission } from './types';
-import { validateBuildMission } from './token-expression';
+import { validateBuildMission, validateExpression } from './token-expression';
 
 export const creationExpression = () => add(multiply(constant(2), variable), constant(4));
 
@@ -22,6 +22,8 @@ function validateChoices(mission: Mission) {
   const choices = mission.choices ?? [];
   const labels = choices.map((choice) => choice.label.trim());
   const values = choices.map((choice) => choice.value);
+
+  requireCondition(choices.length >= 2 && choices.length <= 10, 'Informe de 2 a 10 alternativas.');
 
   requireCondition(new Set(labels).size === labels.length, 'As alternativas devem ser diferentes.');
   requireCondition(
@@ -62,30 +64,34 @@ function validateCreation(mission: Mission) {
 const formatValidators = {
   [ChallengeKind.Choice]: validateChoices,
   [ChallengeKind.Number]: validateNumber,
+  [ChallengeKind.Text]: validateText,
   [ChallengeKind.Build]: validateBuildMission,
   [ChallengeKind.Create]: validateCreation,
 };
 
 export function validateAuthoredMission(value: unknown): Mission {
-  requireCondition(
-    isMission(value),
-    'Preencha todos os campos da questão, incluindo as três dicas.',
-  );
+  requireCondition(isMission(value), 'Preencha os campos obrigatórios da questão.');
   requireCondition(
     sectors.some((sector) => sector.id === value.sectorId),
     'Selecione um setor existente.',
   );
-  requireCondition(
-    Number.isFinite(evaluate(value.expression, value.variable)),
-    'A expressão precisa produzir um resultado finito.',
-  );
+  if (value.expression) validateExpression(value.expression);
   validateVisualBounds(value);
   formatValidators[value.kind](value);
   return value;
 }
 
 function validateVisualBounds(mission: Mission) {
+  if (!mission.visual) return;
   const { groups, perGroup, extra } = mission.visual;
 
   requireCondition(groups * perGroup + extra <= 200, 'Use até 200 objetos no apoio visual.');
+}
+
+function validateText(mission: Mission) {
+  requireCondition(mission.expectedAnswer?.trim(), 'Informe a resposta esperada.');
+  requireCondition(
+    mission.correctChoice === undefined,
+    'Questões discursivas não usam alternativas.',
+  );
 }

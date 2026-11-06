@@ -1,5 +1,5 @@
 import { Operation, type Expression, type Mission } from './types';
-import { constant, variable, evaluate } from './math';
+import { constant, variable } from './math';
 
 const operators: Record<string, Operation> = {
   '+': Operation.Add,
@@ -60,7 +60,7 @@ class TokenParser {
 
 function atomicToken(token: string): Expression {
   if (token === 'x') return variable;
-  if (/^-?\d+$/.test(token)) return constant(Number(token));
+  if (/^-?\d+$/.test(token) && Number.isSafeInteger(Number(token))) return constant(Number(token));
   throw new Error('Use peças numéricas, x, operações e parênteses.');
 }
 
@@ -105,11 +105,17 @@ const fractionOperations: Record<Operation, (a: Fraction, b: Fraction) => Fracti
     numerator: polynomialMultiply(a.numerator, b.numerator),
     denominator: polynomialMultiply(a.denominator, b.denominator),
   }),
-  divide: (a, b) => ({
+  divide: fractionDivide,
+};
+
+function fractionDivide(a: Fraction, b: Fraction): Fraction {
+  if (b.numerator.every((value) => value === 0))
+    throw new Error('A expressão não pode dividir por zero.');
+  return {
     numerator: polynomialMultiply(a.numerator, b.denominator),
     denominator: polynomialMultiply(a.denominator, b.numerator),
-  }),
-};
+  };
+}
 
 function fractionSum(a: Fraction, b: Fraction, sign: number): Fraction {
   return {
@@ -136,8 +142,10 @@ function equivalent(left: Expression, right: Expression) {
 
 function validateOrder(tokens: string[], mission: Mission) {
   if (tokens.length > 30) throw new Error('Use até 30 peças por montagem.');
-  if (tokens.slice().sort().join('|') !== mission.tokens!.slice().sort().join('|'))
-    throw new Error('Cada ordem deve usar exatamente as peças disponíveis.');
+  if (!usesAvailableTokens(tokens, mission.tokens!))
+    throw new Error(
+      'Cada ordem deve usar somente as peças disponíveis, respeitando as repetições.',
+    );
   if (!validEquivalent(tokens, mission))
     throw new Error('A montagem deve ser matematicamente equivalente à expressão.');
 }
@@ -148,9 +156,34 @@ export function validateBuildMission(mission: Mission) {
 }
 
 function validEquivalent(tokens: string[], mission: Mission) {
+  const expression = parseExpressionTokens(tokens);
+
+  return !!mission.expression && equivalent(expression, mission.expression);
+}
+
+export function usesAvailableTokens(order: string[], available: string[]): boolean {
+  const remaining = [...available];
+
+  return order.every((token) => {
+    const index = remaining.indexOf(token);
+
+    if (index < 0) return false;
+    remaining.splice(index, 1);
+    return true;
+  });
+}
+
+export function parseExpressionTokens(tokens: string[]): Expression {
+  if (tokens.length > 30) throw new Error('Use até 30 peças por montagem.');
   const expression = new TokenParser(tokens).parse();
 
-  if (!Number.isFinite(evaluate(expression, mission.variable)))
-    throw new Error('A montagem deve ter resultado finito.');
-  return equivalent(expression, mission.expression);
+  validateExpression(expression);
+  return expression;
+}
+
+export function validateExpression(expression: Expression): void {
+  const result = fraction(expression);
+
+  if (result.denominator.every((value) => value === 0))
+    throw new Error('A expressão não pode dividir por zero.');
 }

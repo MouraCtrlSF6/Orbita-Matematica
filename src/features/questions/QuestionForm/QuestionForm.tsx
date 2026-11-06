@@ -8,7 +8,7 @@ export interface QuestionFormProps {
 
 export function QuestionForm(props: QuestionFormProps) {
   return (
-    <details className="border border-line rounded-card p-4">
+    <details className="border border-line bg-white rounded-card p-6 ds-down-mobile:p-4">
       <summary>Adicionar questão</summary>
       <QuestionFormBody {...props} />
     </details>

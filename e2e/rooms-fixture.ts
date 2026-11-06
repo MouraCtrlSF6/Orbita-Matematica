@@ -9,6 +9,7 @@ export async function mockRoomBackend(page: Page) {
       body: `
       import { defaultRoomCatalog } from '/src/game/room-catalog.ts';
       export async function loadRoomCatalog(id) {
+        await window.recordCatalogLoad?.(id);
         if (localStorage.getItem('mock-catalog-read-error')) throw new Error('Falha ao carregar questões.');
         const saved = localStorage.getItem('mock-catalog-' + id);
         return { catalog: saved ? JSON.parse(saved) : defaultRoomCatalog(), etag: 'test-etag' };

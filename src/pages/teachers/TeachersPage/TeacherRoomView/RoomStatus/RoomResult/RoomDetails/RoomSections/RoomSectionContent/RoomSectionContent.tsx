@@ -8,10 +8,12 @@ interface RoomSectionContentProps {
 }
 
 export function RoomSectionContent({ section, students }: RoomSectionContentProps) {
+  if (section === 'questions') return <RoomQuestions />;
+
   return (
     <>
-      <h2>{section === 'students' ? 'Alunos' : 'Questões'}</h2>
-      {section === 'students' ? <RoomStudents students={students} /> : <RoomQuestions />}
+      <h2>Alunos</h2>
+      <RoomStudents students={students} />
     </>
   );
 }

@@ -9,13 +9,14 @@ interface QuestionDescriptionProps {
 export function QuestionDescription({ mission }: QuestionDescriptionProps) {
   const facts = [
     mission.prompt,
-    `Expressão: ${mission.formula} · x = ${mission.variable}`,
-    `Objetivo: ${mission.objective} · Habilidade: ${mission.skill}`,
+    mission.formula ? `Expressão: ${mission.formula}` : '',
+    mission.objective ? `Objetivo: ${mission.objective}` : '',
+    mission.skill ? `Habilidade: ${mission.skill}` : '',
   ];
 
   return (
     <>
-      <QuestionFacts facts={facts} />
+      <QuestionFacts facts={facts.filter(Boolean)} />
       <QuestionChoices choices={mission.choices} />
     </>
   );

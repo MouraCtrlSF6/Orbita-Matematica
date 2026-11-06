@@ -40,7 +40,7 @@ function isVisual(value: unknown): boolean {
   );
 }
 function isHints(value: unknown): boolean {
-  return isTextArray(value) && value.length === 3;
+  return isTextArray(value) && value.length <= 3;
 }
 function isChoice(value: unknown): boolean {
   return isRecord(value) && matchesFields(value, { label: isText, value: isText });
@@ -76,16 +76,17 @@ const missionFields = {
   id: isText,
   sectorId: isText,
   title: isText,
-  objective: isText,
-  skill: isText,
+  objective: (value: unknown) => typeof value === 'string',
+  skill: (value: unknown) => typeof value === 'string',
   prompt: isText,
-  formula: isText,
+  formula: (value: unknown) => typeof value === 'string',
   explanation: isText,
-  expression: isExpression,
+  expression: optional(isExpression),
   variable: isFiniteNumber,
   kind: (value: unknown) => Object.values(ChallengeKind).includes(value as ChallengeKind),
   hints: isHints,
-  visual: isVisual,
+  visual: optional(isVisual),
+  expectedAnswer: optional(isText),
   choices: optional(isChoices),
   tokens: optional(isTextArray),
   expectedTokens: optional(isTextArray),
@@ -95,7 +96,18 @@ export function isMission(value: unknown): value is Mission {
   return isRecord(value) && matchesFields(value, missionFields) && hasMissionFormat(value);
 }
 function hasMissionFormat(value: Record<string, unknown>): boolean {
-  return hasCorrectChoice(value) && hasChoiceFormat(value) && hasBuildFormat(value);
+  return (
+    hasCorrectChoice(value) &&
+    hasChoiceFormat(value) &&
+    hasBuildFormat(value) &&
+    hasAnswerFormat(value)
+  );
+}
+
+function hasAnswerFormat(value: Record<string, unknown>): boolean {
+  if (value.kind === ChallengeKind.Text) return isText(value.expectedAnswer);
+  if (value.kind === ChallengeKind.Choice) return true;
+  return isExpression(value.expression);
 }
 function requireValid(condition: unknown, message: string): asserts condition {
   if (!condition) throw new Error(message);
@@ -124,6 +136,7 @@ function sectionProblems(section: unknown, id: string, index: number): unknown[]
 function parseProblem(problem: unknown, sectorId: string, ids: Set<string>): Mission {
   if (!isMission(problem) || problem.sectorId !== sectorId)
     throw new Error(`Problema inválido no setor ${sectorId}.`);
+  requireStandardHints(problem);
   if (ids.has(problem.id)) throw new Error(`Identificador de problema duplicado: ${problem.id}.`);
   ids.add(problem.id);
   return problem;
@@ -135,4 +148,8 @@ export function parseMissionCatalog(value: unknown, sectorIds: readonly string[]
       parseProblem(problem, sectorIds[index], ids),
     ),
   );
+}
+
+function requireStandardHints(problem: Mission) {
+  if (problem.hints.length !== 3) throw new Error('O catálogo padrão exige três dicas.');
 }

@@ -2,6 +2,7 @@ import { Collapsible } from '../../../../../../../../../components/Collapsible/C
 import type { RoomStudent } from '../../../../../../../../../game/room-progress';
 import { RemoveStudentButton } from './RemoveStudentButton/RemoveStudentButton';
 import { StudentSectors } from './StudentSectors/StudentSectors';
+import { StudentLocation } from './StudentLocation/StudentLocation';
 
 export interface StudentDetailsProps {
   student: RoomStudent;
@@ -10,10 +11,7 @@ export interface StudentDetailsProps {
 export function StudentDetails({ student }: StudentDetailsProps) {
   return (
     <Collapsible title={student.name} keepMounted>
-      <p>
-        Setor atual ·{' '}
-        <span className="text-focus font-bold">{student.currentSector ?? 'Fora dos setores'}</span>
-      </p>
+      <StudentLocation sector={student.currentSector} />
       <StudentSectors student={student} />
 
       <div className="mt-4 flex items-center justify-end">

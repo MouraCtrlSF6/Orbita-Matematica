@@ -1,4 +1,5 @@
 import { useId } from 'react';
+import { FieldLabel } from '../FieldLabel/FieldLabel';
 import { Select, type SelectProps } from '../../../../../../components/Select/Select';
 
 interface SelectFieldProps extends Omit<SelectProps, 'onValueChange'> {
@@ -18,7 +19,9 @@ export function SelectField({
 
   return (
     <div className="grid gap-1">
-      <label htmlFor={controlId}>{label}</label>
+      <label htmlFor={controlId}>
+        <FieldLabel label={label} />
+      </label>
       <Select
         {...input}
         id={controlId}

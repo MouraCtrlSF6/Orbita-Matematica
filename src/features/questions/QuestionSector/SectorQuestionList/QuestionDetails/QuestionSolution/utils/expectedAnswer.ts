@@ -3,6 +3,7 @@ import { evaluate } from '../../../../../../../game/math';
 
 function choiceAnswer(mission: Mission) {
   return (
+    mission.expectedAnswer ??
     mission.choices?.find((choice) => choice.value === mission.correctChoice)?.label ??
     String(evaluate(mission.expression, mission.variable))
   );

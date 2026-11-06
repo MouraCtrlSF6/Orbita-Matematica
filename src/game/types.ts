@@ -1,6 +1,7 @@
 export enum ChallengeKind {
   Choice = 'choice',
   Number = 'number',
+  Text = 'text',
   Build = 'build',
   Create = 'create',
 }
@@ -37,7 +38,7 @@ export interface Mission {
   skill: string;
   prompt: string;
   kind: ChallengeKind;
-  expression: Expression;
+  expression?: Expression;
   variable: number;
   formula: string;
   choices?: Choice[];
@@ -45,9 +46,10 @@ export interface Mission {
   tokens?: string[];
   expectedTokens?: string[];
   equivalentTokens?: string[][];
-  hints: [string, string, string];
+  hints: string[];
   explanation: string;
-  visual: VisualModel;
+  visual?: VisualModel;
+  expectedAnswer?: string;
 }
 
 export interface Sector {

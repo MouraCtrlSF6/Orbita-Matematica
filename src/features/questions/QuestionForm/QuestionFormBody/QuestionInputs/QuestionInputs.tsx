@@ -1,20 +1,24 @@
+import { useState } from 'react';
 import type { QuestionFormState } from '../hooks/useQuestionForm';
+import { sectors } from '../../../../../content/sectors';
 import { QuestionSelectors } from './QuestionSelectors/QuestionSelectors';
 import { QuestionFields } from './QuestionFields/QuestionFields';
-import { FormatFields } from './FormatFields/FormatFields';
-import { QuestionExpression } from './QuestionExpression/QuestionExpression';
+import { FormatConfiguration } from './FormatConfiguration/FormatConfiguration';
+import { QuestionSupports } from './QuestionSupports/QuestionSupports';
 
 interface QuestionInputsProps {
   form: QuestionFormState;
 }
 
 export function QuestionInputs({ form }: QuestionInputsProps) {
+  const [sectorId, setSectorId] = useState(sectors[0].id);
+
   return (
     <>
-      <QuestionSelectors kind={form.kind} setKind={form.setKind} />
+      <QuestionSelectors sectorId={sectorId} onChange={setSectorId} />
       <QuestionFields />
-      <FormatFields kind={form.kind} />
-      <QuestionExpression kind={form.kind} value={form.expression} onChange={form.setExpression} />
+      <FormatConfiguration kind={form.kind} setKind={form.setKind} />
+      <QuestionSupports sectorId={sectorId} />
     </>
   );
 }

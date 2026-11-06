@@ -9,6 +9,7 @@ export interface TabItem {
   label: ReactNode;
   content: ReactNode;
   disabled?: boolean;
+  keepMounted?: boolean;
 }
 
 export interface TabsProps extends ComponentProps<typeof TabsPrimitive.Root> {
@@ -22,7 +23,12 @@ export function Tabs({ label, items, variant, className, ...props }: TabsProps) 
     <TabsPrimitive.Root {...props} className={mergeClasses('grid gap-4', className)}>
       <TabList label={label} items={items} variant={variant} />
       {items.map((item) => (
-        <TabsPrimitive.Content key={item.value} value={item.value}>
+        <TabsPrimitive.Content
+          key={item.value}
+          value={item.value}
+          forceMount={item.keepMounted || undefined}
+          className="data-[state=inactive]:hidden"
+        >
           {item.content}
         </TabsPrimitive.Content>
       ))}

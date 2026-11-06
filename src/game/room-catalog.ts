@@ -1,4 +1,4 @@
-import { evaluate } from './math';
+import { validateExpression } from './token-expression';
 import { missionById, missions } from '../content/missions';
 import { sectors } from '../content/sectors';
 import { validateAuthoredMission } from './question-authoring';
@@ -101,8 +101,7 @@ function requireSectorText(value: unknown): asserts value is string {
 }
 
 function validatePlayableMission(item: Mission) {
-  if (!Number.isFinite(evaluate(item.expression, item.variable)))
-    throw new Error('Expressão inválida.');
+  if (item.expression) validateExpression(item.expression);
   return item.id.startsWith('custom-') ? validateAuthoredMission(item) : item;
 }
 

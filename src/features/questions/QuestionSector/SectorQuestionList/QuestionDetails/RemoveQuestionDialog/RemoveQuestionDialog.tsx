@@ -17,6 +17,7 @@ export function RemoveQuestionDialog({ id, title, pending, remove }: RemoveQuest
         title="Excluir questão?"
         description={`Excluir a questão “${title}” da sala? Os registros de respostas serão preservados.`}
         confirmLabel="Excluir questão"
+        successMessage="Questão excluída com sucesso."
         errorMessage="Não foi possível excluir a questão. Confira os avisos do catálogo e tente novamente."
         pending={pending}
         onConfirm={() => remove(id)}

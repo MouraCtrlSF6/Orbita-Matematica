@@ -23,7 +23,9 @@ test('opens profile selection and navigates the cards with the keyboard and hist
   await page.getByRole('button', { name: 'Criar sala' }).click();
   await expect(page.getByRole('alert')).toContainText('Já existe uma sala');
   await createRoom(page);
-  await expect(page.getByRole('status')).toHaveText('Registros de alunos: 0');
+  await expect(page.getByRole('status').filter({ hasText: 'Registros de alunos: 0' })).toHaveText(
+    'Registros de alunos: 0',
+  );
   await page.evaluate(() =>
     window.dispatchEvent(
       new CustomEvent('mock-room-update', {
@@ -84,12 +86,17 @@ test('opens profile selection and navigates the cards with the keyboard and hist
     path: test.info().outputPath('student-collapsibles-mobile.png'),
     fullPage: true,
   });
-  page.once('dialog', (dialog) => void dialog.dismiss());
   await page.getByRole('button', { name: 'Remover Aluno de teste da sala' }).click();
+  await page.getByRole('dialog').getByRole('button', { name: 'Cancelar', exact: true }).click();
   await expect(studentTrigger).toBeVisible();
-  page.once('dialog', (dialog) => void dialog.accept());
   await page.getByRole('button', { name: 'Remover Aluno de teste da sala' }).click();
-  await expect(page.getByRole('status')).toHaveText('Registros de alunos: 0');
+  await page
+    .getByRole('dialog')
+    .getByRole('button', { name: 'Remover aluno', exact: true })
+    .click();
+  await expect(page.getByRole('status').filter({ hasText: 'Registros de alunos: 0' })).toHaveText(
+    'Registros de alunos: 0',
+  );
 
   await page.goBack();
   await expect(page).toHaveURL(/\/sign$/);
@@ -129,7 +136,9 @@ test('places plain profile navigation below the form and shows the button in the
   );
   await page.getByLabel('Nome da sala').fill('Turma Têste');
   await submit.click();
-  await expect(page.getByRole('status')).toHaveText('Registros de alunos: 0');
+  await expect(page.getByRole('status').filter({ hasText: 'Registros de alunos: 0' })).toHaveText(
+    'Registros de alunos: 0',
+  );
   await expect(backLink).toHaveCount(1);
   await expect(backLink).toHaveClass(/button/);
   await expect(backLink.locator('svg')).toBeVisible();
@@ -140,12 +149,14 @@ test('places plain profile navigation below the form and shows the button in the
 test('allows a new room after deletion and returning to the teacher route', async ({ page }) => {
   await page.goto('/teachers');
   await createRoom(page);
-  page.once('dialog', (dialog) => void dialog.accept());
-  await page.getByRole('button', { name: 'Excluir sala' }).click();
-  await expect(page.getByRole('status')).toHaveText('Sala excluída.');
+  await page.getByRole('button', { name: 'Excluir sala', exact: true }).click();
+  await page.getByRole('dialog').getByRole('button', { name: 'Excluir sala', exact: true }).click();
+  await expect(page.locator('.toast')).toContainText('Sala excluída com sucesso.');
   await page.getByRole('link', { name: 'Voltar à escolha de perfil' }).click();
   await page.getByRole('link', { name: 'Sou Professor' }).click();
   await expect(page.getByLabel('Nome da sala')).toBeVisible();
   await createRoom(page);
-  await expect(page.getByRole('status')).toHaveText('Registros de alunos: 0');
+  await expect(page.getByRole('status').filter({ hasText: 'Registros de alunos: 0' })).toHaveText(
+    'Registros de alunos: 0',
+  );
 });

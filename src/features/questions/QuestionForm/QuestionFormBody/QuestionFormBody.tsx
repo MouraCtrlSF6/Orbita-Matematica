@@ -24,7 +24,7 @@ export function QuestionFormBody({ add, pending }: QuestionFormProps) {
       >
         <RequiredFieldsNote />
         <QuestionInputs key={form.version} form={form} />
-        <QuestionSubmission error={form.error} />
+        <QuestionSubmission error={form.error} pending={isPending(pending, form.pending)} />
       </fieldset>
     </form>
   );

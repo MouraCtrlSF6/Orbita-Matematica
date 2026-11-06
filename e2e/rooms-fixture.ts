@@ -38,6 +38,7 @@ export async function mockRoomBackend(page: Page) {
               localStorage.setItem('mock-room-id', id);
             }
             export async function removeStudent() {
+              if (localStorage.getItem('mock-student-delete-error')) throw new Error('Delete failed');
               window.dispatchEvent(new CustomEvent('mock-room-update', { detail: [] }));
             }
             export async function registerStudent(id, name, save, signal, catalog) {
@@ -48,7 +49,9 @@ export async function mockRoomBackend(page: Page) {
             export async function updateStudent(id, uid, patch) {
               await window.recordRoomPatch?.(patch);
             }
-            export async function deleteRoom() {}
+            export async function deleteRoom() {
+              if (localStorage.getItem('mock-room-delete-error')) throw new Error('Delete failed');
+            }
             export async function watchRoom(id, signal, onUpdate) {
               signal.throwIfAborted();
               onUpdate([]);

@@ -2,6 +2,7 @@ import { createRoot } from 'react-dom/client';
 import { useState } from 'react';
 import '../../src/styles.css';
 import { Button } from '../../src/components/Button/Button';
+import { Spinner } from '../../src/components/Spinner/Spinner';
 import { ButtonVariant } from '../../src/components/Button/button-styles';
 import { Input } from '../../src/components/Input/Input';
 import { Select } from '../../src/components/Select/Select';
@@ -17,6 +18,8 @@ import { Collapsible } from '../../src/components/Collapsible/Collapsible';
 import { CollapsibleVariant } from '../../src/components/Collapsible/collapsible-styles';
 import { Accordion } from '../../src/components/Accordion/Accordion';
 import { AccordionVariant } from '../../src/components/Accordion/accordion-styles';
+import { ToastProvider } from '../../src/components/Toast/ToastProvider/ToastProvider';
+import { ToastExample } from './ToastExample/ToastExample';
 
 export function ComponentFixture() {
   const [result, setResult] = useState('');
@@ -25,6 +28,9 @@ export function ComponentFixture() {
   return (
     <main ref={setTooltipContainer} className="max-w-200 pb-8">
       <h1>Componentes compartilhados</h1>
+      <Button disabled aria-busy>
+        <Spinner label="Carregando dados…" />
+      </Button>
       <form
         className="grid gap-5 mt-6"
         onSubmit={(event) => {
@@ -145,8 +151,13 @@ export function ComponentFixture() {
           ]}
         />
       </section>
+      <ToastExample />
     </main>
   );
 }
 
-createRoot(document.getElementById('root')!).render(<ComponentFixture />);
+createRoot(document.getElementById('root')!).render(
+  <ToastProvider>
+    <ComponentFixture />
+  </ToastProvider>,
+);

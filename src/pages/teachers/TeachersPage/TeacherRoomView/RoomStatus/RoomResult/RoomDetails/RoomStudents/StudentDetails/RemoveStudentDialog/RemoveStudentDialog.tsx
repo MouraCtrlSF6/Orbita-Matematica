@@ -18,6 +18,7 @@ export function RemoveStudentDialog({ studentId, name }: RemoveStudentDialogProp
       title="Remover aluno?"
       description={`Remover ${name} da sala? O registro será apagado e o jogo continuará aberto para o aluno.`}
       confirmLabel="Remover aluno"
+      successMessage="Aluno removido com sucesso."
       errorMessage="Não foi possível remover o aluno. Tente novamente."
       onConfirm={() => removeStudent(localSessionId, studentId)}
       trigger={

@@ -5,6 +5,19 @@ test.beforeEach(async ({ page }) => {
   await page.goto('/e2e/fixtures/components.html');
 });
 
+test('uses a spinner as a loading button label and respects reduced motion', async ({ page }) => {
+  const button = page.getByRole('button', { name: 'Carregando dados…' });
+  const icon = button.locator('svg');
+
+  await page.emulateMedia({ reducedMotion: 'no-preference' });
+  await expect(button).toBeDisabled();
+  await expect(button).toHaveAttribute('aria-busy', 'true');
+  await expect(icon).toHaveCSS('animation-name', 'spin');
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await expect(icon).toHaveCSS('animation-name', 'none');
+  await expect(button).toHaveAccessibleName('Carregando dados…');
+});
+
 test('supports keyboard selection, form submission and tab navigation', async ({ page }) => {
   await page.getByRole('textbox', { name: 'Nome', exact: true }).fill('Explorador');
   const select = page.getByRole('combobox', { name: 'Setor' });
@@ -182,4 +195,73 @@ test('keeps multiple accordion sections open and preserves mounted content on sm
   await expect(group.getByRole('textbox')).toHaveValue('Revisar expressão');
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
   await group.screenshot({ path: 'test-results/accordion-mobile.png' });
+});
+
+test('shows toast variants with accessible contrast and closes each notification', async ({
+  page,
+}) => {
+  for (const variant of ['default', 'success', 'error', 'warning', 'flight']) {
+    await page.getByRole('button', { name: `Mostrar ${variant}`, exact: true }).click();
+    const toast = page.locator('.toast');
+
+    await expect(toast).toHaveCount(1);
+    await expect(toast).toBeVisible();
+    await expect(toast).toContainText(`Notificação ${variant}`);
+    await expect(page.locator('.toast-viewport')).toBeVisible();
+    await expect(page.getByRole('region', { name: 'Notificações (F8)' })).toContainText(
+      `Notificação ${variant}`,
+    );
+    expect(
+      (await new AxeBuilder({ page }).include('.toast-viewport').analyze()).violations,
+    ).toEqual([]);
+    await toast.getByRole('button', { name: 'Fechar notificação' }).click();
+    await expect(toast).toHaveCount(0);
+  }
+});
+
+test('pauses automatic toast dismissal over the viewport and resumes after leaving', async ({
+  page,
+}) => {
+  await page.bringToFront();
+  await page.getByRole('button', { name: 'Mostrar notificação temporária', exact: true }).click();
+  const toast = page.locator('.toast');
+
+  await toast.hover();
+  // Wait longer than the configured 450 ms to verify that interaction pauses the timer.
+  await page.waitForTimeout(700);
+  await expect(toast).toBeVisible();
+  await page.mouse.move(0, 0);
+  await expect(toast).toHaveCount(0);
+});
+
+test('supports the toast hotkey, optional action, Escape and swipe on narrow screens', async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await page.addStyleTag({ content: 'html { font-size: 125%; }' });
+  await page.getByRole('button', { name: 'Mostrar success', exact: true }).click();
+  await page.keyboard.press('F8');
+  await expect(page.locator('.toast-viewport')).toBeFocused();
+  await page.locator('.toast').getByRole('button', { name: 'Repetir ação' }).focus();
+  await page.keyboard.press('Enter');
+  await expect(page.getByLabel('Ações executadas')).toHaveText('1');
+  await expect(page.locator('.toast')).toHaveCount(0);
+  await page.getByRole('button', { name: 'Mostrar error', exact: true }).click();
+  await page.locator('.toast').focus();
+  await page.keyboard.press('Escape');
+  await expect(page.locator('.toast')).toHaveCount(0);
+  await page.getByRole('button', { name: 'Mostrar flight', exact: true }).click();
+  const toast = page.locator('.toast');
+  const box = await toast.boundingBox();
+
+  expect(box!.x).toBeGreaterThanOrEqual(0);
+  expect(box!.x + box!.width).toBeLessThanOrEqual(390);
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+  await page.screenshot({ path: 'test-results/toast-mobile.png' });
+  await page.mouse.move(box!.x + 30, box!.y + 30);
+  await page.mouse.down();
+  await page.mouse.move(box!.x + 210, box!.y + 30, { steps: 5 });
+  await page.mouse.up();
+  await expect(toast).toHaveCount(0);
 });

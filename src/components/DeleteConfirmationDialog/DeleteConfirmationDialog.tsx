@@ -1,15 +1,14 @@
 import type { ReactNode } from 'react';
-import { TrashIcon } from '@radix-ui/react-icons';
 import { Dialog } from '../Dialog/Dialog';
-import { Button } from '../Button/Button';
-import { ButtonVariant } from '../Button/button-styles';
 import { useDeleteConfirmation } from './hooks/useDeleteConfirmation';
+import { DeleteConfirmationActions } from './DeleteConfirmationActions/DeleteConfirmationActions';
 
 interface DeleteConfirmationDialogProps {
   title: string;
   description: string;
   confirmLabel: string;
   errorMessage: string;
+  successMessage: string;
   trigger: ReactNode;
   onConfirm: () => Promise<boolean | void>;
   pending?: boolean;
@@ -20,12 +19,12 @@ export function DeleteConfirmationDialog({
   description,
   confirmLabel,
   errorMessage,
+  successMessage,
   trigger,
   onConfirm,
   pending = false,
 }: DeleteConfirmationDialogProps) {
-  const confirmation = useDeleteConfirmation(onConfirm, errorMessage, pending);
-  const busy = pending || confirmation.pending;
+  const confirmation = useDeleteConfirmation(onConfirm, errorMessage, pending, successMessage);
 
   return (
     <Dialog
@@ -41,19 +40,12 @@ export function DeleteConfirmationDialog({
           {confirmation.error}
         </p>
       )}
-      <div className="flex flex-wrap justify-end gap-3" aria-busy={busy}>
-        <Button
-          variant={ButtonVariant.Secondary}
-          disabled={busy}
-          onClick={() => confirmation.changeOpen(false)}
-        >
-          Cancelar
-        </Button>
-        <Button variant={ButtonVariant.DangerSolid} disabled={busy} onClick={confirmation.confirm}>
-          <TrashIcon aria-hidden="true" className="size-5 shrink-0" />
-          {busy ? 'Excluindo…' : confirmLabel}
-        </Button>
-      </div>
+      <DeleteConfirmationActions
+        pending={confirmation.pending}
+        confirmLabel={confirmLabel}
+        cancel={() => confirmation.changeOpen(false)}
+        confirm={confirmation.confirm}
+      />
     </Dialog>
   );
 }

@@ -55,9 +55,9 @@ test('loads questions on first visit and preserves drafts, expansions and live s
 
   await page.getByRole('button', { name: 'Adicionar questão', exact: true }).click();
   await page.getByLabel('Título', { exact: true }).fill('Rascunho da sala antiga');
-  page.once('dialog', (dialog) => void dialog.accept());
   await page.getByRole('button', { name: 'Excluir sala', exact: true }).click();
-  await expect(page.getByRole('status')).toHaveText('Sala excluída.');
+  await page.getByRole('dialog').getByRole('button', { name: 'Excluir sala', exact: true }).click();
+  await expect(page.locator('.toast')).toContainText('Sala excluída com sucesso.');
   await page.getByRole('link', { name: 'Voltar à escolha de perfil' }).click();
   await page.getByRole('link', { name: 'Sou Professor', exact: true }).click();
   await page.getByLabel('Nome da sala').fill('Outra turma');

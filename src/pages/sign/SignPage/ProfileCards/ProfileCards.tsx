@@ -1,10 +1,25 @@
-import { Link } from 'react-router';
+import { IconName } from '../../../../components/icon-names';
+import { ProfileCard } from './ProfileCard/ProfileCard';
 
 export function ProfileCards() {
   return (
-    <div className="profile-cards grid [grid-template-columns:repeat(auto-fit,_minmax(min(100%,_13.75rem),_1fr))] gap-5 [width:min(100%,_31.25rem)] mt-3 [&_a]:grid [&_a]:place-items-center [&_a]:min-h-32.5 [&_a]:p-5 [&_a]:[border:1px_solid_#cbbce4] [&_a]:rounded-dialog [&_a]:bg-white [&_a]:text-ink [&_a]:text-profile [&_a]:font-bold [&_a]:no-underline [&_a:hover]:bg-selected [&_a:hover]:underline">
-      <Link to="/teachers">Sou Professor</Link>
-      <Link to="/students">Sou aluno</Link>
+    <div className="profile-cards relative grid w-full max-w-[47rem] grid-cols-2 gap-6 ds-down-mobile:max-w-[24rem] ds-down-mobile:grid-cols-1 ds-down-mobile:gap-4">
+      <ProfileCard
+        to="/teachers"
+        title="Sou Professor"
+        description="Organize salas e acompanhe seus alunos."
+        icon={IconName.Book}
+        iconClassName="bg-selected"
+        id="teacher-profile"
+      />
+      <ProfileCard
+        to="/students"
+        title="Sou aluno"
+        description="Entre na sua sala e explore as missões."
+        icon={IconName.Rocket}
+        iconClassName="bg-success"
+        id="student-profile"
+      />
     </div>
   );
 }

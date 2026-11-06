@@ -151,6 +151,34 @@ Dialog fornece título, descrição, botão de fechamento, Escape e controle de 
 
 Os portais de Select e Dialog usam `document.body` por padrão. Quando precisarem herdar preferências ou estilos limitados a um ancestral, passar `portalContainer` para um elemento nesse contexto. Os controles não adicionam animações; o botão respeita `ds-reduced-motion`, e o CSS global continua atendendo a preferência do sistema. A fixture `e2e/fixtures/components.html` é usada somente nos testes locais e não é uma entrada do build de produção.
 
+## Accordion
+
+`src/components/Accordion/Accordion.tsx` usa `@radix-ui/react-accordion` para agrupar seções expansíveis. Os títulos são botões gerenciados pelo Radix, com chevron de Radix Icons, foco visível, altura mínima de `2.75rem` e relações acessíveis entre gatilhos e regiões de conteúdo. Não há animação adicional; a indicação de expansão muda diretamente, respeitando movimento reduzido.
+
+`AccordionVariant`, em `Accordion/accordion-styles.ts`, oferece `Default` (borda de seleção e raio de opção), `Card` (superfície branca, borda `line` e raio de card), `Ghost` (separador inferior sem moldura) e `Flight` (cores do painel de voo e foco claro). As classes usam os tokens existentes de cor, tipografia e espaçamento, sem folhas CSS específicas.
+
+```tsx
+import { Accordion } from '../components/Accordion/Accordion';
+import { AccordionVariant } from '../components/Accordion/accordion-styles';
+
+<Accordion
+  label="Informações da expedição"
+  type="single"
+  collapsible
+  variant={AccordionVariant.Card}
+  items={[
+    { value: 'mission', title: 'Missão', content: <p>Enunciado da missão.</p> },
+    { value: 'support', title: 'Apoios', content: <p>Dicas disponíveis.</p> },
+  ]}
+/>;
+```
+
+`type="single"` mantém no máximo uma seção aberta e recebe `value`/`defaultValue` do tipo string; `collapsible` permite fechar a seção selecionada. Sem essa opção, ela permanece aberta até outra seção ser escolhida. `type="multiple"` recebe arrays de strings e permite abrir e fechar cada seção independentemente. `onValueChange` acompanha o tipo do modo escolhido. O estado fica no primitivo ou no chamador quando controlado; não alternar entre esses modos durante a mesma montagem.
+
+`label` nomeia o grupo. `heading` configura o nível dos títulos de `h2` a `h6`, com `h3` por padrão. `items` aceita valores únicos e não vazios, `title`, `content`, `disabled`, `keepMounted`, `className`, `triggerProps` e `contentProps`. Os títulos devem conter texto ou conteúdo não interativo; ações ficam no corpo. A raiz recebe os demais atributos do Radix, `className` e `ref`, incluindo `disabled`, `orientation` e `dir`. `triggerProps` e `contentProps` encaminham atributos, eventos e refs às partes correspondentes.
+
+Conteúdo fechado é desmontado por padrão. `keepMounted` preserva campos e componentes internos e oculta a seção fechada com `data-[state=closed]:hidden`, removendo-a do teclado e da árvore de acessibilidade. Enter e espaço alternam a seção; setas, Home e End movem o foco entre títulos habilitados conforme a orientação do primitivo. Os gatilhos usam `type="button"`, sem enviar formulários. Um catálogo vazio de itens é válido. Esta inclusão disponibiliza o componente compartilhado sem substituir automaticamente as listagens que usam Collapsible.
+
 ## Tooltip
 
 `src/components/Tooltip/Tooltip.tsx` encapsula `@radix-ui/react-tooltip`, incluindo Provider, gatilho, portal, conteúdo e seta. `TooltipVariant`, em `Tooltip/tooltip-styles.ts`, oferece `Default` (fundo `ink`, texto branco), `Light` (superfície branca, borda `line`, texto `ink`) e `Flight` (painel e texto do voo). As variantes usam `rounded-control`, `text-small`, espaçamento em `rem` e os tokens existentes, sem animações adicionais.

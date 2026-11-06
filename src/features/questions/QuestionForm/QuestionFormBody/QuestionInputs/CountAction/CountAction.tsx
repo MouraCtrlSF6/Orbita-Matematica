@@ -13,11 +13,7 @@ export function CountAction({ count, limit, label, onAdd }: CountActionProps) {
       <span>
         {count} de {limit}
       </span>
-      <AddButton
-        aria-label={label}
-        disabled={count >= limit}
-        onClick={onAdd}
-      />
+      <AddButton aria-label={label} disabled={count >= limit} onClick={onAdd} />
     </div>
   );
 }

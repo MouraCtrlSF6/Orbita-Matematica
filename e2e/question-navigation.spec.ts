@@ -12,6 +12,44 @@ async function openQuestions(page: Page) {
   ).toBeVisible();
 }
 
+test('slides both panels in opposite directions when entering and leaving creation', async ({
+  page,
+}) => {
+  await page.emulateMedia({ reducedMotion: 'no-preference' });
+  await openQuestions(page);
+  const viewport = page.locator('[data-question-viewport]');
+
+  for (const label of ['Adicionar questão', 'Voltar para a listagem de questões']) {
+    const positions = await viewport.evaluate(async (element, buttonLabel) => {
+      const button = document.querySelector<HTMLButtonElement>(
+        `button[aria-label="${buttonLabel}"]`,
+      );
+      button!.click();
+      await new Promise(requestAnimationFrame);
+      await new Promise(requestAnimationFrame);
+      const animations = element.getAnimations({ subtree: true });
+
+      for (const animation of animations) {
+        animation.pause();
+        animation.currentTime = 225;
+      }
+      const bounds = element.getBoundingClientRect();
+      const offsets = Array.from(element.firstElementChild!.children).map(
+        (panel) => panel.getBoundingClientRect().left - bounds.left,
+      );
+
+      for (const animation of animations) animation.finish();
+      return { count: animations.length, offsets, width: bounds.width };
+    }, label);
+
+    expect(positions.count).toBe(1);
+    expect(positions.offsets[0]).toBeGreaterThan(0);
+    expect(positions.offsets[0]).toBeLessThan(positions.width);
+    expect(positions.offsets[1]).toBeLessThan(0);
+    expect(positions.offsets[1]).toBeGreaterThan(-positions.width);
+  }
+});
+
 test('opens a separate creation view and preserves drafts and list expansion on return', async ({
   page,
 }) => {
@@ -26,9 +64,9 @@ test('opens a separate creation view and preserves drafts and list expansion on 
   expect(
     await page
       .getByRole('region', { name: 'Adicionar questão', exact: true })
-      .locator('..')
+      .locator('../..')
       .evaluate((element) => getComputedStyle(element).transitionProperty),
-  ).toContain('translate');
+  ).toContain('transform');
   await expect(page.getByRole('tab', { name: 'Questões', exact: true })).toHaveAttribute(
     'aria-selected',
     'true',
@@ -101,7 +139,7 @@ test('supports reduced motion, narrow screens and accessible creation controls',
   });
   expect((await new AxeBuilder({ page }).analyze()).violations).toEqual([]);
   expect(
-    await form.locator('..').evaluate((element) => getComputedStyle(element).transitionDuration),
+    await form.locator('../..').evaluate((element) => getComputedStyle(element).transitionDuration),
   ).toBe('0s');
   await page.getByRole('button', { name: 'Voltar para a listagem de questões' }).click();
   await expect(page.getByRole('heading', { name: 'Questões', exact: true })).toBeVisible();

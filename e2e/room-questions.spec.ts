@@ -131,7 +131,9 @@ test('adds all four formats, validates builds and confirms removal', async ({ pa
   await create.getByRole('button', { name: 'Adicionar questão à sala' }).click();
   await expectSectorCount(page, 'Estação de lançamento', 26);
   await page.getByRole('button', { name: /Estação de lançamento · 26 questões/ }).click();
-  const question = page.getByRole('button', { name: 'Questão de criação · Criação guiada', exact: true }).locator('..');
+  const question = page
+    .getByRole('button', { name: 'Questão de criação · Criação guiada', exact: true })
+    .locator('..');
   await question
     .getByRole('button', { name: 'Questão de criação · Criação guiada', exact: true })
     .click();
@@ -183,7 +185,9 @@ test('selects a sector with the shared control and resets it after saving', asyn
 
   await sector.focus();
   await page.keyboard.press('Enter');
+  await expect(page.getByRole('option', { name: /Estação de lançamento/ })).toBeFocused();
   await page.keyboard.press('End');
+  await expect(page.getByRole('option', { name: /Base de exploração/ })).toBeFocused();
   await page.keyboard.press('Enter');
   await expect(sector).toContainText('Base de exploração');
   await form.getByRole('button', { name: 'Adicionar questão à sala' }).click();

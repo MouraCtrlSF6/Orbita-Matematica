@@ -8,11 +8,7 @@ export interface DeleteButtonProps {
 
 export function DeleteButton({ pending }: DeleteButtonProps) {
   return (
-    <Button
-      variant={ButtonVariant.DangerSolid}
-      disabled={pending}
-      type="submit"
-    >
+    <Button variant={ButtonVariant.DangerSolid} disabled={pending} type="submit">
       <TrashIcon aria-hidden="true" className="size-5 shrink-0" />
       {pending ? 'Excluindo…' : 'Excluir sala'}
     </Button>

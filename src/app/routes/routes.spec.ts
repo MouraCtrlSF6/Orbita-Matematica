@@ -5,9 +5,7 @@ import { enterRoom, test } from '../../../e2e/rooms-fixture';
 async function createRoom(page: Page) {
   await page.getByLabel('Nome da sala').fill('Turma Têste');
   await page.getByRole('button', { name: 'Criar sala' }).click();
-  await expect(
-    page.getByRole('code').filter({ hasText: /^turma teste$/ }),
-  ).toBeVisible();
+  await expect(page.getByRole('code').filter({ hasText: /^turma teste$/ })).toBeVisible();
 }
 
 test('opens profile selection and navigates the cards with the keyboard and history', async ({
@@ -15,6 +13,7 @@ test('opens profile selection and navigates the cards with the keyboard and hist
 }) => {
   await page.goto('/');
   await expect(page).toHaveURL(/\/sign$/);
+  await expect(page.getByRole('link', { name: 'Sou Professor' })).toBeVisible();
   await page.keyboard.press('Tab');
   await expect(page.getByRole('link', { name: 'Sou Professor' })).toBeFocused();
   await page.keyboard.press('Enter');

@@ -37,5 +37,4 @@ function roomTabItems(students: RoomStudent[], visited: RoomTab[]): TabItem[] {
       keepMounted: visited.includes(RoomTab.Questions),
     },
   ];
-
 }

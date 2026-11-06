@@ -1,9 +1,10 @@
-import { sectors } from '../../../../../../../../../../../../content/sectors';
+import { QuestionSectors } from './QuestionSectors/QuestionSectors';
 import type { CatalogSnapshot } from '../../../../../../../../../../../../infrastructure/firebase/room-catalog';
 import type { useRoomQuestions } from '../../hooks/useRoomQuestions';
-import { QuestionSector } from '../../../../../../../../../../../../features/questions/QuestionSector/QuestionSector';
 import { QuestionForm } from '../../../../../../../../../../../../features/questions/QuestionForm/QuestionForm';
 import type { QuestionCreation } from '../../hooks/useQuestionCreation';
+import { QuestionPanel } from './QuestionPanel/QuestionPanel';
+import { QuestionTransition } from './QuestionTransition/QuestionTransition';
 
 interface QuestionCatalogContentProps {
   questions: ReturnType<typeof useRoomQuestions>;
@@ -17,22 +18,13 @@ export function QuestionCatalogContent({
   creation,
 }: QuestionCatalogContentProps) {
   return (
-    <>
-      <QuestionForm
-        add={questions.add}
-        pending={questions.pending}
-        id={creation.id}
-        open={creation.open}
-      />
-      {sectors.map((sector) => (
-        <QuestionSector
-          key={sector.id}
-          sector={sector}
-          missions={snapshot.catalog.missions}
-          remove={questions.remove}
-          pending={questions.pending}
-        />
-      ))}
-    </>
+    <QuestionTransition open={creation.open}>
+      <QuestionPanel active={creation.open} className="translate-x-full">
+        <QuestionForm add={questions.add} pending={questions.pending} id={creation.id} />
+      </QuestionPanel>
+      <QuestionPanel active={!creation.open} className="translate-x-0">
+        <QuestionSectors questions={questions} snapshot={snapshot} />
+      </QuestionPanel>
+    </QuestionTransition>
   );
 }

@@ -16,7 +16,6 @@ export function QuestionForm({ id, open = true, ...props }: QuestionFormProps) {
       aria-label="Adicionar questão"
       className="border border-line bg-white rounded-card p-6 ds-down-mobile:p-4"
     >
-      <h3>Adicionar questão</h3>
       <QuestionFormBody {...props} />
     </section>
   );

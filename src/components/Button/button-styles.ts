@@ -37,7 +37,7 @@ export const buttonStyles = cva(
         [ButtonVariant.OutlinePrimary]:
           'border border-primary bg-transparent text-primary hover:bg-selected',
         [ButtonVariant.Addition]:
-          'border border-amber-600 bg-transparent text-amber-600 hover:border-amber-700 hover:bg-retry hover:text-amber-700',
+          'border border-amber-600 bg-transparent text-amber-700 hover:border-amber-700 hover:bg-retry',
         [ButtonVariant.Secondary]: 'border border-line bg-white text-ink hover:bg-selected',
         [ButtonVariant.Peach]: 'peach-button bg-peach text-peach-ink hover:bg-peach-hover',
         [ButtonVariant.Danger]: 'danger border border-danger bg-white text-danger hover:bg-retry',

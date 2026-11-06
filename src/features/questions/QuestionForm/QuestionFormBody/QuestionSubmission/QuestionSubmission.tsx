@@ -11,7 +11,7 @@ export function QuestionSubmission({ error }: QuestionSubmissionProps) {
       <AddButton
         type="submit"
         aria-label="Adicionar questão à sala"
-        className="justify-self-end ds-down-mobile:w-full"
+        className="justify-self-end text-amber-700 ds-down-mobile:w-full"
       >
         Adicionar questão
       </AddButton>

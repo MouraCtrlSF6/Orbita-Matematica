@@ -12,13 +12,18 @@ test('supports keyboard selection, form submission and tab navigation', async ({
   await select.focus();
   await page.keyboard.press('Enter');
   await expect(page.getByRole('option', { name: 'Indisponível' })).toBeDisabled();
+  await expect(page.getByRole('option', { name: 'Lançamento', exact: true })).toBeFocused();
   await page.keyboard.press('End');
+  await expect(page.getByRole('option', { name: 'Base', exact: true })).toBeFocused();
   await page.keyboard.press('Enter');
   await expect(select).toHaveText('Base');
   await page.getByRole('checkbox').focus();
   await page.keyboard.press('Space');
   await page.getByRole('radio', { name: 'Quatro' }).focus();
-  await page.keyboard.press('ArrowDown');
+  await expect(page.getByRole('radio', { name: 'Quatro' })).toBeFocused();
+  await page.keyboard.down('ArrowDown');
+  await expect(page.getByRole('radio', { name: 'Seis' })).toBeFocused();
+  await page.keyboard.up('ArrowDown');
   await expect(page.getByRole('radio', { name: 'Seis' })).toBeChecked();
   await page.getByRole('button', { name: 'Salvar', exact: true }).click();
   await expect(page.getByLabel('Valores salvos')).toHaveText(

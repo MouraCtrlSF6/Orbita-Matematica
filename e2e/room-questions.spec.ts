@@ -7,8 +7,15 @@ async function openTeacherQuestions(page: Page) {
   await page.getByLabel('Nome da sala').fill('Turma teste');
   await page.getByRole('button', { name: 'Criar sala' }).click();
   await page.getByRole('tab', { name: 'Questões', exact: true }).click();
+  await expectSectorCount(page, 'Estação de lançamento', 22);
+}
+
+async function expectSectorCount(page: Page, sector: string, count: number) {
+  const back = page.getByRole('button', { name: 'Voltar para a listagem de questões' });
+
+  if (await back.isVisible()) await back.click();
   await expect(
-    page.getByRole('heading', { name: 'Estação de lançamento · 22 questões' }),
+    page.getByRole('heading', { name: new RegExp(sector + ' · ' + count + ' questões$') }),
   ).toBeVisible();
 }
 
@@ -18,10 +25,7 @@ async function fillQuestion(page: Page, title: string, kind: string) {
     .filter({ has: page.getByRole('button', { name: 'Adicionar questão à sala' }) });
 
   if (!(await form.isVisible()))
-    await page
-      .locator('summary')
-      .filter({ hasText: /^Adicionar questão$/ })
-      .click();
+    await page.getByRole('button', { name: 'Adicionar questão', exact: true }).click();
   const formats: Record<string, string> = {
     choice: 'Objetiva',
     number: 'Discursiva',
@@ -72,17 +76,12 @@ test('switches teacher tabs with arrow keys and labels the active panel', async 
   const students = page.getByRole('tab', { name: 'Alunos', exact: true });
 
   await expect(page.getByRole('tablist', { name: 'Seções da sala' })).toBeVisible();
-  await expect(page.getByRole('navigation', { name: 'Localização atual' })).toContainText(
-    'turma teste',
-  );
-  await expect(page.getByRole('navigation').locator('[aria-current="page"]')).toHaveText(
-    'Questões',
-  );
+  await expect(page.getByRole('code')).toHaveText('turma teste');
+  await expect(page.getByRole('navigation', { name: 'Localização atual' })).toHaveCount(0);
   await questions.focus();
   await page.keyboard.press('ArrowLeft');
   await expect(students).toBeFocused();
   await expect(students).toHaveAttribute('aria-selected', 'true');
-  await expect(page.getByRole('navigation').locator('[aria-current="page"]')).toHaveText('Alunos');
   await expect(page.getByRole('tabpanel', { name: 'Alunos' })).toContainText(
     'Registros de alunos: 0',
   );
@@ -90,9 +89,7 @@ test('switches teacher tabs with arrow keys and labels the active panel', async 
   await page.keyboard.press('ArrowRight');
   await expect(questions).toBeFocused();
   await expect(questions).toHaveAttribute('aria-selected', 'true');
-  await expect(page.getByRole('tabpanel', { name: 'Questões' })).toContainText(
-    'Recarregar questões',
-  );
+  await expect(page.getByRole('button', { name: 'Recarregar questões' })).toBeVisible();
   await expect(page.getByRole('tabpanel', { name: 'Alunos' })).toBeHidden();
 });
 
@@ -109,15 +106,11 @@ test('adds all four formats, validates builds and confirms removal', async ({ pa
   await page.setViewportSize({ width: 1440, height: 1000 });
   await choice.getByRole('button', { name: 'Adicionar questão à sala' }).click();
   await expect(page.getByRole('status')).toHaveText('Questão adicionada.');
-  await expect(
-    page.getByRole('heading', { name: 'Estação de lançamento · 23 questões' }),
-  ).toBeVisible();
+  await expectSectorCount(page, 'Estação de lançamento', 23);
 
   const number = await fillQuestion(page, 'Questão numérica', 'number');
   await number.getByRole('button', { name: 'Adicionar questão à sala' }).click();
-  await expect(
-    page.getByRole('heading', { name: 'Estação de lançamento · 24 questões' }),
-  ).toBeVisible();
+  await expectSectorCount(page, 'Estação de lançamento', 24);
 
   const build = await fillQuestion(page, 'Questão de montagem', 'build');
   for (const token of ['x', '+', '2', '7']) {
@@ -132,18 +125,15 @@ test('adds all four formats, validates builds and confirms removal', async ({ pa
   for (const token of ['2', '+', 'x'])
     await equivalent.getByRole('button', { name: 'Adicionar peça ' + token, exact: true }).click();
   await build.getByRole('button', { name: 'Adicionar questão à sala' }).click();
-  await expect(
-    page.getByRole('heading', { name: 'Estação de lançamento · 25 questões' }),
-  ).toBeVisible();
+  await expectSectorCount(page, 'Estação de lançamento', 25);
 
   const create = await fillQuestion(page, 'Questão de criação', 'create');
   await create.getByRole('button', { name: 'Adicionar questão à sala' }).click();
-  await expect(
-    page.getByRole('heading', { name: 'Estação de lançamento · 26 questões' }),
-  ).toBeVisible();
-  const question = page.locator('.collapsible').filter({
-    has: page.getByRole('button', { name: 'Questão de criação · Criação guiada', exact: true }),
-  });
+  await expectSectorCount(page, 'Estação de lançamento', 26);
+  await page.getByRole('button', { name: /Estação de lançamento · 26 questões/ }).click();
+  const question = page
+    .getByRole('button', { name: 'Questão de criação · Criação guiada', exact: true })
+    .locator('..');
   await question
     .getByRole('button', { name: 'Questão de criação · Criação guiada', exact: true })
     .click();
@@ -160,9 +150,7 @@ test('adds all four formats, validates builds and confirms removal', async ({ pa
     .getByRole('button', { name: 'Excluir questão Questão de criação', exact: true })
     .click();
   await expect(page.getByRole('status')).toHaveText('Questão excluída.');
-  await expect(
-    page.getByRole('heading', { name: 'Estação de lançamento · 25 questões' }),
-  ).toBeVisible();
+  await expectSectorCount(page, 'Estação de lançamento', 25);
   await page.getByRole('tab', { name: 'Alunos', exact: true }).click();
   await expect(page.getByRole('status')).toHaveText('Registros de alunos: 0');
 });
@@ -175,6 +163,7 @@ test('keeps the student snapshot until reentry and loads changed questions once'
   const student = await context.newPage();
   await joinReadyStudent(student);
   await expect(student.locator('.exploration-count')).toContainText('/ 52');
+  await page.getByRole('button', { name: /Estação de lançamento · 22 questões/ }).click();
   await page.getByText('Adição · exercício 1 · Objetiva', { exact: true }).click();
   page.once('dialog', (dialog) => void dialog.accept());
   await page
@@ -196,14 +185,14 @@ test('selects a sector with the shared control and resets it after saving', asyn
 
   await sector.focus();
   await page.keyboard.press('Enter');
+  await expect(page.getByRole('option', { name: /Estação de lançamento/ })).toBeFocused();
   await page.keyboard.press('End');
+  await expect(page.getByRole('option', { name: /Base de exploração/ })).toBeFocused();
   await page.keyboard.press('Enter');
   await expect(sector).toContainText('Base de exploração');
   await form.getByRole('button', { name: 'Adicionar questão à sala' }).click();
-  await expect(
-    page.getByRole('heading', { name: 'Base de exploração · 16 questões' }),
-  ).toBeVisible();
   await expect(sector).toContainText('Estação de lançamento');
+  await expectSectorCount(page, 'Base de exploração', 16);
 });
 
 test('preserves the form on write failure and allows retrying load and save', async ({ page }) => {
@@ -215,17 +204,13 @@ test('preserves the form on write failure and allows retrying load and save', as
   await expect(form.getByLabel('Título', { exact: true })).toHaveValue('Questão para repetir');
   await page.evaluate(() => localStorage.removeItem('mock-catalog-write-error'));
   await form.getByRole('button', { name: 'Adicionar questão à sala' }).click();
-  await expect(
-    page.getByRole('heading', { name: 'Estação de lançamento · 23 questões' }),
-  ).toBeVisible();
+  await expectSectorCount(page, 'Estação de lançamento', 23);
   await page.evaluate(() => localStorage.setItem('mock-catalog-read-error', 'true'));
   await page.getByRole('button', { name: 'Recarregar questões' }).click();
   await expect(page.getByRole('alert').first()).toContainText('Não foi possível carregar');
   await page.evaluate(() => localStorage.removeItem('mock-catalog-read-error'));
   await page.getByRole('button', { name: 'Recarregar questões' }).click();
-  await expect(
-    page.getByRole('heading', { name: 'Estação de lançamento · 23 questões' }),
-  ).toBeVisible();
+  await expectSectorCount(page, 'Estação de lançamento', 23);
 });
 
 test('plays and restores a custom question using only the room catalog', async ({

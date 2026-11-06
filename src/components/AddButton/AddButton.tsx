@@ -1,8 +1,5 @@
 import { PlusIcon } from '@radix-ui/react-icons';
-import {
-  TooltipButton,
-  type TooltipButtonProps,
-} from '../Tooltip/TooltipButton/TooltipButton';
+import { TooltipButton, type TooltipButtonProps } from '../Tooltip/TooltipButton/TooltipButton';
 import { ButtonVariant } from '../Button/button-styles';
 import { mergeClasses } from '../utils/merge-classes';
 

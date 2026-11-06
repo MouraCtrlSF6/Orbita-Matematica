@@ -1,3 +1,4 @@
+import { QuestionDescription } from './QuestionDescription/QuestionDescription';
 import { useRoomQuestions } from './hooks/useRoomQuestions';
 import { useQuestionCreation } from './hooks/useQuestionCreation';
 import { QuestionFeedback } from './QuestionFeedback/QuestionFeedback';
@@ -16,10 +17,7 @@ export function RoomQuestions() {
         reload={questions.reload}
         creation={creation}
       />
-      <p>
-        As alterações valem para os alunos na próxima entrada na sala. Quem já está jogando mantém
-        as questões carregadas.
-      </p>
+      <QuestionDescription creating={creation.open} />
       <QuestionFeedback error={questions.error} message={questions.message} />
       <QuestionCatalog questions={questions} creation={creation} />
     </div>

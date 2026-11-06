@@ -10,16 +10,8 @@ export function ExpeditionToolbar({ expedition }: ExpeditionViewProps) {
       <Button
         variant={ButtonVariant.FlightSecondary}
 
-        onClick={expedition.props.onTutorial}
-        className="ds-down-mobile:[.exploration-toolbar_&]:[flex:1_1_auto] [.feedback_&]:mt-[1.0625rem] [.tutorial-card_&]:mt-6"
-      >
-        Como pilotar e jogar
-      </Button>
-      <Button
-        variant={ButtonVariant.FlightSecondary}
-
         onClick={expedition.props.onSummary}
-        className="ds-down-mobile:[.exploration-toolbar_&]:[flex:1_1_auto] [.feedback_&]:mt-[1.0625rem] [.tutorial-card_&]:mt-6"
+        className="ds-down-mobile:[.exploration-toolbar_&]:[flex:1_1_auto] [.feedback_&]:mt-[1.0625rem]"
       >
         Ver descobertas
       </Button>

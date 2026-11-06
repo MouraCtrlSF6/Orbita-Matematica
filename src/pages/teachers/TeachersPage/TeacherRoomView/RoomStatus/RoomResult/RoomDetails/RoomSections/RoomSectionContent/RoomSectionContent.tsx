@@ -1,5 +1,5 @@
 import type { RoomStudent } from '../../../../../../../../../game/room-progress';
-import { RoomStudents } from '../../RoomStudents/RoomStudents';
+import { StudentSection } from './StudentSection/StudentSection';
 import { RoomQuestions } from './RoomQuestions/RoomQuestions';
 
 interface RoomSectionContentProps {
@@ -10,10 +10,5 @@ interface RoomSectionContentProps {
 export function RoomSectionContent({ section, students }: RoomSectionContentProps) {
   if (section === 'questions') return <RoomQuestions />;
 
-  return (
-    <>
-      <h2>Alunos</h2>
-      <RoomStudents students={students} />
-    </>
-  );
+  return <StudentSection students={students} />;
 }

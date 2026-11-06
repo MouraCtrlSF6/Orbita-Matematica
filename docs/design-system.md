@@ -240,7 +240,7 @@ O portal usa `document.body`. `portalContainer` permite herdar o contexto de pre
 
 `TooltipButton`, em `src/components/Tooltip/TooltipButton/TooltipButton.tsx`, compõe `Button` com o Tooltip genérico e preserva props, ref, eventos e variantes. O conteúdo usa a prop `tooltip`, o `aria-label` ou o texto do botão, nessa ordem. `AddButton` também usa essa composição. Os controles de inclusão, exclusão, seleção e ordenação de peças, limpeza e envio do formulário de questões usam esses tooltips, mantendo os nomes acessíveis nos botões. Não envolver `AddButton` ou `TooltipButton` em outro Tooltip.
 
-Além dos testes de comportamento, comparar as telas com as referências visuais anteriores em 390, 700, 1000 e 1440px. O teste `e2e/typography.spec.ts` verifica que fonte e altura dos controles acompanham o aumento da fonte raiz e que a entrada e o tutorial permanecem utilizáveis em tela estreita. Essas verificações não substituem avaliação manual ou pedagógica.
+Além dos testes de comportamento, comparar as telas com as referências visuais anteriores em 390, 700, 1000 e 1440px. O teste `e2e/typography.spec.ts` verifica que fonte e altura dos controles acompanham o aumento da fonte raiz e que a entrada e a exploração permanecem utilizáveis em tela estreita. Essas verificações não substituem avaliação manual ou pedagógica.
 
 Nesta revisão passaram 56 testes unitários, 21 percursos de comportamento no navegador e uma comparação pontual de 44 capturas com as referências anteriores. Também passaram lint, build, formatação dos arquivos alterados e CodeMetrics 1.26.1, com máximo 7 e nenhuma unidade acima do limite. A comparação visual pontual não foi incorporada à suíte permanente.
 

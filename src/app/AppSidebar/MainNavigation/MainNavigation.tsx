@@ -22,12 +22,6 @@ export function MainNavigation() {
       onClick: navigation.summary,
       count: Object.keys(state.save.completed).length,
     },
-    {
-      active: state.screen === Screen.Tutorial,
-      icon: IconName.Book,
-      label: 'Como jogar',
-      onClick: navigation.tutorial,
-    },
   ];
 
   return (

@@ -14,7 +14,7 @@ Saiba mais no [percurso pedagógico](docs/pedagogia.md).
 
 ## 🪐 O que ele disponibiliza
 
-- **Exploração espacial:** três setores, tutorial, radar e catálogo padrão de 52 missões, com desbloqueio progressivo.
+- **Exploração espacial:** três setores, radar e catálogo padrão de 52 missões, com desbloqueio progressivo.
 - **Desafios variados:** alternativas, respostas numéricas, discursivas, montagem de expressões e criação guiada.
 - **Área do professor:** salas, acompanhamento de respostas e apoios em tempo real e remoção de alunos.
 - **Questões por sala:** inclusão, exclusão e reordenação no mesmo setor por arraste ou teclado, sem alterar o catálogo padrão.
@@ -59,7 +59,7 @@ Versões fixadas no `package-lock.json`:
 
 **Perfis:** `/sign` escolhe aluno ou professor; `/teachers` gerencia a sala; `/students` recebe o nome da sala e o nome completo do aluno.
 
-**Sessão:** progresso em `sessionStorage`, por aba e sala, com retomada explícita. A identidade anônima fica em memória: recarregar exige nova entrada e não recupera a propriedade da sala. Exclua a sala ao encerrar a aula, antes de fechar ou recarregar o painel.
+**Sessão:** progresso em `sessionStorage`, por aba e sala, com retomada explícita. A identidade anônima persiste durante a sessão da aba, usando `sessionStorage` pelo SDK do Firebase, com fallback em memória quando o armazenamento estiver bloqueado. Recarregar exige nova entrada e reutiliza o registro do aluno na mesma sala, preservando o histórico; a retomada do progresso continua sendo uma escolha explícita. Outra sessão de aba ou dispositivo não tem reconhecimento garantido. Duplicatas antigas não são unidas automaticamente. O UID do professor também persiste na aba, mas o painel não recupera automaticamente a sala após recarregar. Exclua a sala ao encerrar a aula, antes de fechar ou recarregar o painel.
 
 **Dados:** o Firebase recebe nomes, progresso e respostas. As regras atuais permitem leitura pública e restringem escritas por autenticação e permissões da sala. Não versione `.env` nem use credenciais administrativas em `VITE_*`: esses valores entram no JavaScript público.
 
@@ -83,3 +83,11 @@ Versões fixadas no `package-lock.json`:
 | `npm run metrics:check` | Verificar o limite de complexidade 7       |
 
 Instale Chromium com `npx playwright install chromium` antes dos testes E2E. Métricas exigem CodeMetrics ou `CODEMETRICS_EXTENSION`. Consulte [contribuição e emuladores](AGENTS.md), [complexidade](docs/complexidade.md) e [design system](docs/design-system.md).
+
+### Relatório de acompanhamento em PDF
+
+Na aba **Alunos**, use **Exportar PDF** para baixar os registros da sala. A geração ocorre localmente em um worker, com fundo `#F7F8FA`, seções por setor e detalhamento de cada aluno, questão, respostas incorretas e uso de dicas. O arquivo não é enviado ao servidor. A captura dos alunos acontece no clique; o catálogo atual é carregado para a exportação.
+
+Uma questão é considerada certa somente se a tentativa de ordem 1 estiver correta. As taxas usam as participações aluno–questão com primeira tentativa conhecida. Acertos posteriores contam como conclusão após novas tentativas; todos os erros permanecem contabilizados separadamente. Não respondidas e conclusões antigas sem histórico não são erros presumidos. Os destaques mostram empates e bases de comparação; não representam diagnóstico de aprendizagem.
+
+“Usou dicas” indica apenas o registro por questão, sem quantidade ou momento de uso. O total de alunos corresponde a registros, sem presença online. Questões retiradas aparecem em histórico separado; enunciados antigos não são reconstruídos. Alunos com catálogos de entrada distintos podem ter questões atuais sem registro.

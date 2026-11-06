@@ -4,9 +4,9 @@ import AxeBuilder from '@axe-core/playwright';
 import { missions } from '../src/content/missions';
 import { sectors } from '../src/content/sectors';
 
-async function seed(page: Page, completedCount = 0) {
+async function seed(page: Page, completedCount = 0, tutorialDone = true) {
   await page.addInitScript(
-    ({ ids, next }) =>
+    ({ ids, next, tutorialDone }) =>
       sessionStorage.setItem(
         'orbita-matematica:v1:room:b12ae140-fc6a-4690-ab61-5bfbb91a8d19',
         JSON.stringify({
@@ -14,12 +14,13 @@ async function seed(page: Page, completedCount = 0) {
           completed: Object.fromEntries(
             ids.map((id) => [id, { hints: 0, visual: false, attempts: 1, guided: false }]),
           ),
-          tutorialDone: true,
+          tutorialDone,
           lastMissionId: next,
           preferences: { largeText: false, reducedMotion: false },
         }),
       ),
     {
+      tutorialDone,
       ids: missions.slice(0, completedCount).map((item) => item.id),
       next: missions[completedCount]?.id ?? null,
     },
@@ -133,23 +134,19 @@ test('stops on release, blur, hidden tab and settings, and moves the camera and 
   await page.getByRole('button', { name: 'Voltar ao mapa', exact: true }).click();
   await page.getByRole('button', { name: 'Retomar exploração' }).click();
   expect(await position(page)).toEqual(hidden);
-  await page.getByRole('button', { name: 'Como pilotar e jogar' }).click();
-  await page.getByRole('button', { name: 'Voltar ao mapa' }).click();
-  await page.getByRole('button', { name: 'Retomar exploração' }).click();
-  expect(await position(page)).toEqual(hidden);
   await page.getByRole('button', { name: 'Ajustes da expedição' }).click();
   await page.getByRole('button', { name: 'Reiniciar expedição' }).click();
   await page.getByRole('button', { name: 'Sim, apagar progresso' }).click();
   await expect.poll(async () => (await position(page)).x).toBe(260);
   expect((await position(page)).y).toBe(390);
-  await expect(page.getByRole('button', { name: 'Vamos explorar' })).toBeVisible();
+  await expect(page.getByRole('button', { name: 'Retomar exploração' })).toBeVisible();
 });
 
 test('restores an existing save near the pending mission and exposes every destination accessibly', async ({
   page,
 }) => {
   const count = missions.filter((item) => item.sectorId === sectors[0].id).length;
-  await seed(page, count);
+  await seed(page, count, false);
   await page.goto('/students');
   await enterRoom(page);
   await expect(page.getByRole('heading', { name: 'O universo espera por você.' })).toBeVisible();
@@ -207,16 +204,18 @@ test('supports a real touch hold on a small screen with enlarged text', async ({
   await context.close();
 });
 
-test('allows completing the pilot practice with the keyboard', async ({ page }) => {
+test('opens the first mission directly with the keyboard without a tutorial', async ({ page }) => {
   await page.goto('/students');
-  await enterRoom(page);
-  await page.getByRole('button', { name: 'Vamos explorar' }).click();
+  await enterRoom(page, { resume: false });
+  await expect(page.getByRole('button', { name: 'Como jogar', exact: true })).toHaveCount(0);
+  await expect(page.getByRole('button', { name: 'Como pilotar e jogar' })).toHaveCount(0);
   const pilot = page.getByRole('region', { name: 'Área de pilotagem' });
+
   await pilot.focus();
-  await page.keyboard.down('ArrowUp');
-  await expect(page.getByRole('button', { name: 'Entrar', exact: true })).toBeEnabled();
-  await page.keyboard.up('ArrowUp');
   await page.keyboard.press('Enter');
-  await expect(page.getByRole('heading', { name: 'Oi! Eu sou a Luma.' })).toBeVisible();
-  await expect(page.locator('.tutorial-card')).toBeFocused();
+  await expect(page.getByRole('heading', { name: sectors[0].name, exact: true })).toBeVisible();
+  await expect(pilot).toBeFocused();
+  await page.keyboard.press('Enter');
+  await expect(page.getByRole('heading', { name: missions[0].title, exact: true })).toBeVisible();
+  await expect(page.getByRole('button', { name: 'Conferir resposta' })).toBeVisible();
 });

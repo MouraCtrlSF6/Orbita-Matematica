@@ -125,8 +125,7 @@ describe('progression', () => {
     expect(gameReducer(muted, { type: 'toggle-sound' })).toEqual(state);
   });
   it('gates sectors and returns to the visited sector without starting another mission', () => {
-    expect(gameReducer(initial(), { type: 'enter-sector', id: 'launch' })).toEqual(initial());
-    let state = gameReducer(initial(), { type: 'tutorial-done' });
+    let state = initial();
     expect(gameReducer(state, { type: 'enter-sector', id: 'workshop' })).toBe(state);
     expect(gameReducer(state, { type: 'enter-sector', id: 'missing' })).toBe(state);
     state = gameReducer(state, { type: 'enter-sector', id: 'launch' });
@@ -173,11 +172,10 @@ describe('progression', () => {
     expect(Object.keys(state.save.completed)).toHaveLength(52);
     expect(state.save.completed['launch-1'].guided).toBe(false);
   });
-  it('remembers the current unfinished mission, preferences and tutorial, then resets', () => {
-    let state = gameReducer(initial(), { type: 'tutorial-done' });
+  it('remembers the current unfinished mission and preferences, then resets', () => {
+    let state = initial();
     state = gameReducer(state, { type: 'preference', key: 'largeText', value: true });
     state = gameReducer(state, { type: 'start', id: missions[0].id });
-    expect(state.save.tutorialDone).toBe(true);
     expect(state.save.preferences.largeText).toBe(true);
     expect(nextMission(state.save)).toBe(missions[0].id);
     expect(gameReducer(state, { type: 'reset' })).toEqual(initial());

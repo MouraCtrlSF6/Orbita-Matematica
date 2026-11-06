@@ -74,6 +74,7 @@ export interface MissionResult {
 export interface SavedGame {
   version: 1;
   completed: Record<string, MissionResult>;
+  // Retained for compatibility with version 1 saves; no longer gates exploration.
   tutorialDone: boolean;
   lastMissionId: string | null;
   preferences: { largeText: boolean; reducedMotion: boolean; soundEnabled: boolean };

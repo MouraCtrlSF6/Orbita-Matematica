@@ -12,7 +12,6 @@ export interface ExpeditionMapProps {
   onStart: (id: string) => void;
   onSector: (id: string) => void;
   onUniverse: () => void;
-  onTutorial: () => void;
   onSummary: () => void;
   onSoundChange: (enabled: boolean) => void;
 }
@@ -110,7 +109,6 @@ export class Expedition {
     return this.allComplete ? undefined : this.nextMission?.sectorId;
   }
   get resumeLabel() {
-    if (!this.props.save.tutorialDone) return 'Vamos explorar';
     return this.allComplete ? 'Explorar novamente' : 'Retomar exploração';
   }
   private ensurePosition() {
@@ -126,16 +124,11 @@ export class Expedition {
   }
 
   resume = () => {
-    if (!this.props.save.tutorialDone) {
-      this.props.onTutorial();
-      return;
-    }
     this.ensurePosition();
     this.props.onSector(this.nextMission?.sectorId ?? sectors[0].id);
   };
   visit = (id: string) => {
-    if (!this.props.save.tutorialDone) this.props.onTutorial();
-    else if (this.props.sectorId) this.props.onStart(id);
+    if (this.props.sectorId) this.props.onStart(id);
     else this.props.onSector(id);
   };
   rememberPosition = (position: Point) => this.props.positions.set(this.mapKey, position);

@@ -4,7 +4,6 @@ const titles: Record<Screen, string> = {
   [Screen.Map]: 'Mapa do universo',
   [Screen.Sector]: 'Exploração do setor',
   [Screen.Summary]: 'Minhas descobertas',
-  [Screen.Tutorial]: 'Como jogar',
   [Screen.Mission]: 'Missão em andamento',
 };
 

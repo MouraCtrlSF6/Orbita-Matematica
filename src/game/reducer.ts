@@ -5,7 +5,6 @@ import type { Mission, MissionResult, SavedGame } from './types';
 export enum Screen {
   Map = 'map',
   Sector = 'sector',
-  Tutorial = 'tutorial',
   Mission = 'mission',
   Summary = 'summary',
 }
@@ -18,12 +17,11 @@ export interface GameState {
 }
 
 export type GameAction =
-  | { type: 'navigate'; screen: Screen.Map | Screen.Tutorial | Screen.Summary }
+  | { type: 'navigate'; screen: Screen.Map | Screen.Summary }
   | { type: 'start'; id: string }
   | { type: 'enter-sector'; id: string }
   | { type: 'return-sector' }
   | { type: 'complete'; result: MissionResult }
-  | { type: 'tutorial-done' }
   | { type: 'preference'; key: keyof SavedGame['preferences']; value: boolean }
   | { type: 'toggle-sound' }
   | { type: 'reset' };
@@ -44,8 +42,7 @@ function enterSector(
   action: ActionOf<'enter-sector'>,
   catalog: Mission[],
 ): GameState {
-  if (!state.save.tutorialDone || !isSectorUnlocked(action.id, state.save.completed, catalog))
-    return state;
+  if (!isSectorUnlocked(action.id, state.save.completed, catalog)) return state;
   return { ...state, screen: Screen.Sector, sectorId: action.id, missionId: null };
 }
 function startMission(state: GameState, action: ActionOf<'start'>, catalog: Mission[]): GameState {
@@ -80,11 +77,6 @@ const handlers: ActionHandlers = {
     ...state,
     screen: state.sectorId ? Screen.Sector : Screen.Map,
     missionId: null,
-  }),
-  'tutorial-done': (state) => ({
-    ...state,
-    screen: Screen.Map,
-    save: { ...state.save, tutorialDone: true },
   }),
   'toggle-sound': (state) => ({
     ...state,

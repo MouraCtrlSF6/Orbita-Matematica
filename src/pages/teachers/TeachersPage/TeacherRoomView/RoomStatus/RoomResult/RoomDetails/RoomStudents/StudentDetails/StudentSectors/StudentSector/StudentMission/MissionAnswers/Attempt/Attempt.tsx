@@ -7,8 +7,11 @@ export interface AttemptProps {
 
 export function Attempt({ attempt }: AttemptProps) {
   return (
-    <li>
-      {attempt.answer.label} · {attempt.answer.value} · {attempt.correct ? 'Correta' : 'Incorreta'}
+    <li className="my-2 text-black">
+      {attempt.answer.label} · {attempt.answer.value} ·{' '}
+      <span className={attempt.correct ? 'text-lime-600' : 'text-danger'}>
+        {attempt.correct ? 'Correta' : 'Incorreta'}
+      </span>
       <AttemptContext attempt={attempt} />
     </li>
   );

@@ -49,12 +49,19 @@ export function Collapsible({
         {...contentProps}
         forceMount={keepMounted || undefined}
         className={mergeClasses(
-          'collapsible-content data-[state=closed]:hidden',
-          collapsibleContentStyles[variant],
-          contentProps?.className,
+          'collapsible-content overflow-hidden ds-reduced-motion:animate-none',
+          keepMounted && 'collapsible-content-persistent',
         )}
       >
-        {children}
+        <div className="collapsible-content-layout ds-reduced-motion:transition-none">
+          <div className="min-h-0 overflow-hidden">
+            <div
+              className={mergeClasses(collapsibleContentStyles[variant], contentProps?.className)}
+            >
+              {children}
+            </div>
+          </div>
+        </div>
       </CollapsiblePrimitive.Content>
     </CollapsiblePrimitive.Root>
   );

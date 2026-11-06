@@ -155,3 +155,116 @@
 @custom-variant ds-down-desktop (@media (max-width: theme(--breakpoint-desktop)));
 @custom-variant ds-down-tablet (@media (max-width: theme(--breakpoint-tablet)));
 @custom-variant ds-down-mobile (@media (max-width: theme(--breakpoint-mobile)));
+
+@keyframes accordion-slide-down {
+  from {
+    height: 0;
+  }
+  to {
+    height: var(--radix-accordion-content-height);
+  }
+}
+
+@keyframes accordion-slide-up {
+  from {
+    height: var(--radix-accordion-content-height);
+  }
+  to {
+    height: 0;
+  }
+}
+
+@layer components {
+  .accordion-content:not(.accordion-content-persistent)[data-state='open'] {
+    animation: accordion-slide-down 220ms ease-out;
+  }
+
+  .accordion-content:not(.accordion-content-persistent)[data-state='closed'] {
+    animation: accordion-slide-up 220ms ease-in;
+  }
+
+  .accordion-content-persistent > .accordion-content-layout,
+  .collapsible-content-persistent > .collapsible-content-layout {
+    display: grid;
+    transition:
+      grid-template-rows 220ms ease,
+      visibility 220ms;
+  }
+
+  .accordion-content-persistent[data-state='open'] > .accordion-content-layout,
+  .collapsible-content-persistent[data-state='open'] > .collapsible-content-layout {
+    grid-template-rows: 1fr;
+    visibility: visible;
+  }
+
+  .accordion-content-persistent[data-state='closed'] > .accordion-content-layout,
+  .collapsible-content-persistent[data-state='closed'] > .collapsible-content-layout {
+    grid-template-rows: 0fr;
+    visibility: hidden;
+  }
+}
+
+@keyframes collapsible-slide-down {
+  from {
+    height: 0;
+  }
+  to {
+    height: var(--radix-collapsible-content-height);
+  }
+}
+
+@keyframes collapsible-slide-up {
+  from {
+    height: var(--radix-collapsible-content-height);
+  }
+  to {
+    height: 0;
+  }
+}
+
+@keyframes select-slide-down {
+  from {
+    opacity: 0;
+    transform: translateY(var(--select-slide-offset, -0.5rem));
+    clip-path: var(--select-slide-clip, inset(0 0 100% 0));
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+    clip-path: inset(0);
+  }
+}
+
+@keyframes select-slide-up {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(var(--select-slide-offset, -0.5rem));
+  }
+}
+
+@layer components {
+  .collapsible-content:not(.collapsible-content-persistent)[data-state='open'] {
+    animation: collapsible-slide-down 220ms ease-out;
+  }
+
+  .collapsible-content:not(.collapsible-content-persistent)[data-state='closed'] {
+    animation: collapsible-slide-up 220ms ease-in;
+  }
+
+  .select-content[data-state='open'] {
+    animation: select-slide-down 220ms ease-out;
+  }
+
+  .select-content[data-state='closed'] {
+    animation: select-slide-up 220ms ease-in;
+  }
+
+  .select-content[data-side='top'] {
+    --select-slide-offset: 0.5rem;
+    --select-slide-clip: inset(100% 0 0 0);
+  }
+}

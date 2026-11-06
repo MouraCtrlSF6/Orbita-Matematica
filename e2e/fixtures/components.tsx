@@ -15,6 +15,8 @@ import { Tooltip } from '../../src/components/Tooltip/Tooltip';
 import { TooltipVariant } from '../../src/components/Tooltip/tooltip-styles';
 import { Collapsible } from '../../src/components/Collapsible/Collapsible';
 import { CollapsibleVariant } from '../../src/components/Collapsible/collapsible-styles';
+import { Accordion } from '../../src/components/Accordion/Accordion';
+import { AccordionVariant } from '../../src/components/Accordion/accordion-styles';
 
 export function ComponentFixture() {
   const [result, setResult] = useState('');
@@ -104,6 +106,45 @@ export function ComponentFixture() {
           <Button className="mt-4">Confirmar</Button>
         </Dialog>
       </div>
+      <section aria-label="Demonstração de accordions" className="mt-6 grid gap-4">
+        <h2>Accordion</h2>
+        {Object.values(AccordionVariant).map((variant) => (
+          <Accordion
+            key={variant}
+            label={`Accordion ${variant}`}
+            type="single"
+            collapsible
+            variant={variant}
+            items={[
+              { value: 'mission', title: `Missão ${variant}`, content: 'Enunciado da missão.' },
+              {
+                value: 'disabled',
+                title: `Indisponível ${variant}`,
+                content: 'Conteúdo bloqueado.',
+                disabled: true,
+              },
+              { value: 'support', title: `Apoios ${variant}`, content: 'Dicas da missão.' },
+            ]}
+          />
+        ))}
+        <Accordion
+          label="Seções combinadas"
+          type="multiple"
+          items={[
+            {
+              value: 'notes',
+              title: 'Anotações da expedição',
+              content: <Input aria-label="Anotações da expedição" />,
+              keepMounted: true,
+            },
+            {
+              value: 'progress',
+              title: 'Progresso da expedição',
+              content: <p>Descobertas registradas.</p>,
+            },
+          ]}
+        />
+      </section>
     </main>
   );
 }

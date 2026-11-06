@@ -1,5 +1,7 @@
+import { Accordion } from '../../../../../../../../../../components/Accordion/Accordion';
 import { sectors } from '../../../../../../../../../../content/sectors';
 import type { RoomStudent } from '../../../../../../../../../../game/room-progress';
+import { SectorTitle } from './SectorTitle/SectorTitle';
 import { StudentSector } from './StudentSector/StudentSector';
 
 export interface StudentSectorsProps {
@@ -7,9 +9,20 @@ export interface StudentSectorsProps {
 }
 
 export function StudentSectors({ student }: StudentSectorsProps) {
-  return sectors.map(({ id }) => {
+  const items = sectors.flatMap(({ id }) => {
     const sector = student.sectors[id];
 
-    return sector ? <StudentSector key={id} sector={sector} /> : null;
+    return sector
+      ? [
+          {
+            value: id,
+            title: <SectorTitle sector={sector} />,
+            content: <StudentSector sector={sector} />,
+            keepMounted: true,
+          },
+        ]
+      : [];
   });
+
+  return <Accordion label={`Setores de ${student.name}`} type="single" collapsible items={items} />;
 }

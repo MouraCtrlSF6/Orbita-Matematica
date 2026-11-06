@@ -71,13 +71,13 @@ Importar cada componente diretamente de `src/components/Component/Component.tsx`
 
 Os ícones comuns são componentes de [Radix Icons](https://www.radix-ui.com/icons), via `@radix-ui/react-icons`. `Icon` preserva o contrato `IconName` e o tamanho solicitado, traduzindo os nomes existentes para os equivalentes disponíveis na biblioteca. Chevron, seleção, estado indeterminado, fechamento e som também usam a biblioteca. Ícones decorativos recebem `aria-hidden`; o nome acessível fica no controle. O símbolo orbital da marca e os desenhos do cenário, nave, destinos e radar mantêm seus SVGs específicos, sem equivalente direto no catálogo de ícones.
 
-`Collapsible` fica em `src/components/Collapsible/Collapsible.tsx`. Recebe `title`, `children`, `open`/`defaultOpen`, `onOpenChange`, `disabled`, `className`, `triggerProps` e `contentProps`. `CollapsibleVariant`, em `Collapsible/collapsible-styles.ts`, oferece `Default` (borda de seleção e raio de opção), `Card` (superfície branca, borda e raio de card) e `Ghost` (sem borda). Todas usam os tokens existentes, gatilho com altura mínima de `2.75rem`, indicador de expansão e foco visível, sem animação.
+`Collapsible` fica em `src/components/Collapsible/Collapsible.tsx`. Recebe `title`, `children`, `open`/`defaultOpen`, `onOpenChange`, `disabled`, `className`, `triggerProps` e `contentProps`. `CollapsibleVariant`, em `Collapsible/collapsible-styles.ts`, oferece `Default` (borda de seleção e raio de opção), `Card` (superfície branca, borda e raio de card) e `Ghost` (sem borda). Todas usam os tokens existentes, gatilho com altura mínima de `2.75rem`, indicador de expansão e foco visível. A abertura e o fechamento deslizam durante 220 ms, respeitando movimento reduzido.
 
 O gatilho é um botão nativo com `type="button"`, `aria-expanded` e `aria-controls` gerenciados pelo Radix; Enter e espaço alternam a expansão. `title` deve conter texto ou conteúdo não interativo. Ações como remover um aluno ou excluir uma questão ficam no conteúdo, fora do botão. Refs e atributos específicos podem ser passados por `triggerProps` e `contentProps`; props de Root, incluindo `ref`, são encaminhadas pelo componente.
 
 A prop opcional `heading` (`h2`, `h3` ou `h4`) envolve o gatilho no título semântico correspondente. Os setores de questões usam `heading="h3"`, variante `Card` e `keepMounted`, começando recolhidos e preservando os detalhes de questões já abertos.
 
-Por padrão, o conteúdo interno é desmontado ao fechar. `keepMounted` preserva seus campos e expansões internas e o oculta com `data-[state=closed]:hidden`, removendo os controles fechados da navegação por teclado e da árvore de acessibilidade. O acompanhamento usa essa opção para preservar setores e missões abertos ao recolher um aluno; as questões usam a variante `Card`.
+Por padrão, o conteúdo interno é desmontado ao fechar. `keepMounted` preserva seus campos e expansões internas e o recolhe com uma transição de grid em um elemento interno, isolado da medição do Radix, removendo os controles fechados da navegação por teclado e da árvore de acessibilidade. O acompanhamento usa essa opção para preservar setores e missões abertos ao recolher um aluno; as questões usam a variante `Card`.
 
 ```tsx
 import { Collapsible } from '../components/Collapsible/Collapsible';
@@ -151,6 +151,34 @@ Dialog fornece título, descrição, botão de fechamento, Escape e controle de 
 
 Os portais de Select e Dialog usam `document.body` por padrão. Quando precisarem herdar preferências ou estilos limitados a um ancestral, passar `portalContainer` para um elemento nesse contexto. Os controles não adicionam animações; o botão respeita `ds-reduced-motion`, e o CSS global continua atendendo a preferência do sistema. A fixture `e2e/fixtures/components.html` é usada somente nos testes locais e não é uma entrada do build de produção.
 
+## Accordion
+
+`src/components/Accordion/Accordion.tsx` usa `@radix-ui/react-accordion` para agrupar seções expansíveis. Os títulos são botões gerenciados pelo Radix, com chevron de Radix Icons, foco visível, altura mínima de `2.75rem` e relações acessíveis entre gatilhos e regiões de conteúdo. A abertura e o fechamento deslizam durante 220 ms; as preferências de movimento reduzido do sistema e do jogo desativam a animação.
+
+`AccordionVariant`, em `Accordion/accordion-styles.ts`, oferece `Default` (borda de seleção e raio de opção), `Card` (superfície branca, borda `line` e raio de card), `Ghost` (separador inferior sem moldura) e `Flight` (cores do painel de voo e foco claro). As classes usam os tokens existentes de cor, tipografia e espaçamento, sem folhas CSS específicas.
+
+```tsx
+import { Accordion } from '../components/Accordion/Accordion';
+import { AccordionVariant } from '../components/Accordion/accordion-styles';
+
+<Accordion
+  label="Informações da expedição"
+  type="single"
+  collapsible
+  variant={AccordionVariant.Card}
+  items={[
+    { value: 'mission', title: 'Missão', content: <p>Enunciado da missão.</p> },
+    { value: 'support', title: 'Apoios', content: <p>Dicas disponíveis.</p> },
+  ]}
+/>;
+```
+
+`type="single"` mantém no máximo uma seção aberta e recebe `value`/`defaultValue` do tipo string; `collapsible` permite fechar a seção selecionada. Sem essa opção, ela permanece aberta até outra seção ser escolhida. `type="multiple"` recebe arrays de strings e permite abrir e fechar cada seção independentemente. `onValueChange` acompanha o tipo do modo escolhido. O estado fica no primitivo ou no chamador quando controlado; não alternar entre esses modos durante a mesma montagem.
+
+`label` nomeia o grupo. `heading` configura o nível dos títulos de `h2` a `h6`, com `h3` por padrão. `items` aceita valores únicos e não vazios, `title`, `content`, `disabled`, `keepMounted`, `className`, `triggerProps` e `contentProps`. Os títulos devem conter texto ou conteúdo não interativo; ações ficam no corpo. A raiz recebe os demais atributos do Radix, `className` e `ref`, incluindo `disabled`, `orientation` e `dir`. `triggerProps` e `contentProps` encaminham atributos, eventos e refs às partes correspondentes.
+
+Conteúdo fechado é desmontado por padrão. `keepMounted` preserva campos e componentes internos e recolhe a seção com uma transição de linhas de grid em um elemento interno, isolado dos estilos temporários de medição do Radix, ocultando-a ao final do fechamento e removendo-a do teclado e da árvore de acessibilidade. Sem `keepMounted`, a altura é animada com `--radix-accordion-content-height`, e o Radix aguarda o término da animação antes de desmontar o conteúdo. O espaçamento fica em um elemento interno para recolher junto do conteúdo. Enter e espaço alternam a seção; setas, Home e End movem o foco entre títulos habilitados conforme a orientação do primitivo. Os gatilhos usam `type="button"`, sem enviar formulários. Um catálogo vazio de itens é válido. Esta inclusão disponibiliza o componente compartilhado sem substituir automaticamente as listagens que usam Collapsible.
+
 ## Tooltip
 
 `src/components/Tooltip/Tooltip.tsx` encapsula `@radix-ui/react-tooltip`, incluindo Provider, gatilho, portal, conteúdo e seta. `TooltipVariant`, em `Tooltip/tooltip-styles.ts`, oferece `Default` (fundo `ink`, texto branco), `Light` (superfície branca, borda `line`, texto `ink`) e `Flight` (painel e texto do voo). As variantes usam `rounded-control`, `text-small`, espaçamento em `rem` e os tokens existentes, sem animações adicionais.
@@ -178,3 +206,5 @@ O portal usa `document.body`. `portalContainer` permite herdar o contexto de pre
 Além dos testes de comportamento, comparar as telas com as referências visuais anteriores em 390, 700, 1000 e 1440px. O teste `e2e/typography.spec.ts` verifica que fonte e altura dos controles acompanham o aumento da fonte raiz e que a entrada e o tutorial permanecem utilizáveis em tela estreita. Essas verificações não substituem avaliação manual ou pedagógica.
 
 Nesta revisão passaram 56 testes unitários, 21 percursos de comportamento no navegador e uma comparação pontual de 44 capturas com as referências anteriores. Também passaram lint, build, formatação dos arquivos alterados e CodeMetrics 1.26.1, com máximo 7 e nenhuma unidade acima do limite. A comparação visual pontual não foi incorporada à suíte permanente.
+
+O menu de `Select` abre com deslizamento e revelação gradual durante 220 ms e fecha com deslizamento e esmaecimento. O movimento acompanha o lado disponível quando o menu abre acima do gatilho. A preferência de movimento reduzido desativa essas animações; o posicionamento, a seleção e o foco continuam sob responsabilidade do Radix.

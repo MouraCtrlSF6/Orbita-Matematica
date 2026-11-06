@@ -15,7 +15,7 @@ export function SelectContent({ options, className, ...props }: SelectContentPro
       sideOffset={4}
       {...props}
       className={mergeClasses(
-        'z-50 max-h-[var(--radix-select-content-available-height)] min-w-[var(--radix-select-trigger-width)] overflow-hidden rounded-control border border-line bg-white p-1 shadow-lg',
+        'select-content ds-reduced-motion:animate-none z-50 max-h-[var(--radix-select-content-available-height)] min-w-[var(--radix-select-trigger-width)] overflow-hidden rounded-control border border-line bg-white p-1 shadow-lg',
         className,
       )}
     >

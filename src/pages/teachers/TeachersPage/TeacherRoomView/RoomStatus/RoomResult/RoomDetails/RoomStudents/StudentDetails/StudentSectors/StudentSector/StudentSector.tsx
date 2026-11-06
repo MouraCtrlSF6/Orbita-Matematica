@@ -1,6 +1,6 @@
-import { Collapsible } from '../../../../../../../../../../../components/Collapsible/Collapsible';
+import { Accordion } from '../../../../../../../../../../../components/Accordion/Accordion';
 import type { RoomSector } from '../../../../../../../../../../../game/room-progress';
-import { SectorTitle } from './SectorTitle/SectorTitle';
+import { MissionTitle } from './MissionTitle/MissionTitle';
 import { StudentMission } from './StudentMission/StudentMission';
 
 export interface StudentSectorProps {
@@ -9,12 +9,21 @@ export interface StudentSectorProps {
 
 export function StudentSector({ sector }: StudentSectorProps) {
   return (
-    <Collapsible title={<SectorTitle sector={sector} />} keepMounted>
-      {Object.entries(sector.missions)
+    <Accordion
+      label={`Missões de ${sector.sectorName}`}
+      type="single"
+      collapsible
+      heading="h4"
+      items={Object.entries(sector.missions)
         .sort(([, left], [, right]) => left.missionNumber - right.missionNumber)
-        .map(([id, mission]) => (
-          <StudentMission key={id} mission={mission} />
-        ))}
-    </Collapsible>
+        .map(([id, mission]) => ({
+          value: id,
+          title: <MissionTitle mission={mission} />,
+          content: <StudentMission mission={mission} />,
+          className: 'bg-selected',
+          triggerProps: { className: '[&>span]:flex-1' },
+          keepMounted: true,
+        }))}
+    />
   );
 }

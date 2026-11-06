@@ -124,3 +124,62 @@ test('describes a focused tooltip trigger and fits the narrow viewport with enla
   await trigger.press('Tab');
   await expect(page.getByRole('button', { name: 'Ajuda light', exact: true })).toBeFocused();
 });
+
+test('supports accordion variants, exclusive expansion and keyboard navigation past disabled items', async ({
+  page,
+}) => {
+  for (const variant of ['default', 'card', 'ghost', 'flight']) {
+    const group = page.getByRole('group', { name: `Accordion ${variant}`, exact: true });
+    const mission = group.getByRole('button', { name: `Missão ${variant}`, exact: true });
+    const support = group.getByRole('button', { name: `Apoios ${variant}`, exact: true });
+
+    await expect(
+      group.getByRole('button', { name: `Indisponível ${variant}`, exact: true }),
+    ).toBeDisabled();
+    await mission.focus();
+    await page.keyboard.press('Enter');
+    await expect(group.getByRole('region', { name: `Missão ${variant}` })).toHaveText(
+      'Enunciado da missão.',
+    );
+    await page.keyboard.press('ArrowDown');
+    await expect(support).toBeFocused();
+    await page.keyboard.press('Space');
+    await expect(mission).toHaveAttribute('aria-expanded', 'false');
+    await expect(group.getByRole('region', { name: `Apoios ${variant}` })).toHaveText(
+      'Dicas da missão.',
+    );
+    expect((await new AxeBuilder({ page }).include('.accordion').analyze()).violations).toEqual([]);
+    await page.keyboard.press('Home');
+    await expect(mission).toBeFocused();
+    await page.keyboard.press('End');
+    await expect(support).toBeFocused();
+    await page.keyboard.press('Enter');
+    await expect(group.getByRole('region')).toHaveCount(0);
+  }
+});
+
+test('keeps multiple accordion sections open and preserves mounted content on small screens', async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await page.addStyleTag({ content: 'html { font-size: 125%; }' });
+  const group = page.getByRole('group', { name: 'Seções combinadas', exact: true });
+  const notes = group.getByRole('button', { name: 'Anotações da expedição', exact: true });
+
+  await notes.click();
+  await group.getByRole('textbox', { name: 'Anotações da expedição' }).fill('Revisar expressão');
+  await group.getByRole('button', { name: 'Progresso da expedição', exact: true }).click();
+  await expect(group.getByRole('region')).toHaveCount(2);
+  await notes.click();
+  await expect(group.getByRole('textbox')).toBeHidden();
+  await notes.focus();
+  await page.keyboard.press('Tab');
+  await expect(
+    group.getByRole('button', { name: 'Progresso da expedição', exact: true }),
+  ).toBeFocused();
+  await notes.click();
+  await expect(group.getByRole('textbox')).toHaveValue('Revisar expressão');
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+  await group.screenshot({ path: 'test-results/accordion-mobile.png' });
+});

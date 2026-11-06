@@ -67,11 +67,15 @@ Importar cada componente diretamente de `src/components/Component/Component.tsx`
 
 `ButtonVariant.Text` atende ações de texto; `Subtle`, os apoios; `Navigation`, a barra lateral escura; e `Icon`, ações circulares com nome acessível explícito. `Danger` mantém a versão com contorno, enquanto `DangerSolid` atende confirmações destrutivas com fundo vermelho. As dimensões próprias dessas variantes são preservadas quando `size` é omitido; um `size` explícito substitui suas medidas. Classes identificadoras como `button`, `nav-item`, `subtle-button` e `icon-button` continuam disponíveis. Contextos de layout e os controles especiais de voo mantêm seus ajustes locais.
 
+`ButtonVariant.OutlinePrimary` usa fundo transparente, contorno e texto roxos, com fundo lilás no hover. `ButtonVariant.Addition` também usa fundo transparente, com contorno e texto em `amber-600`, passando a `amber-700` e fundo suave no hover. Os tokens âmbar mantêm os valores padrão do Tailwind CSS 4, registrados explicitamente porque o tema redefine a paleta. `AddButton`, em `src/components/AddButton/AddButton.tsx`, aplica a variante de inclusão e o `PlusIcon` do Radix. Sem filhos, ocupa um quadrado de `2.75rem` e exige um nome acessível; com filhos, exibe o ícone junto ao texto. A aba Questões e os controles de inclusão do formulário compartilham esse componente.
+
 Os ícones comuns são componentes de [Radix Icons](https://www.radix-ui.com/icons), via `@radix-ui/react-icons`. `Icon` preserva o contrato `IconName` e o tamanho solicitado, traduzindo os nomes existentes para os equivalentes disponíveis na biblioteca. Chevron, seleção, estado indeterminado, fechamento e som também usam a biblioteca. Ícones decorativos recebem `aria-hidden`; o nome acessível fica no controle. O símbolo orbital da marca e os desenhos do cenário, nave, destinos e radar mantêm seus SVGs específicos, sem equivalente direto no catálogo de ícones.
 
 `Collapsible` fica em `src/components/Collapsible/Collapsible.tsx`. Recebe `title`, `children`, `open`/`defaultOpen`, `onOpenChange`, `disabled`, `className`, `triggerProps` e `contentProps`. `CollapsibleVariant`, em `Collapsible/collapsible-styles.ts`, oferece `Default` (borda de seleção e raio de opção), `Card` (superfície branca, borda e raio de card) e `Ghost` (sem borda). Todas usam os tokens existentes, gatilho com altura mínima de `2.75rem`, indicador de expansão e foco visível, sem animação.
 
 O gatilho é um botão nativo com `type="button"`, `aria-expanded` e `aria-controls` gerenciados pelo Radix; Enter e espaço alternam a expansão. `title` deve conter texto ou conteúdo não interativo. Ações como remover um aluno ou excluir uma questão ficam no conteúdo, fora do botão. Refs e atributos específicos podem ser passados por `triggerProps` e `contentProps`; props de Root, incluindo `ref`, são encaminhadas pelo componente.
+
+A prop opcional `heading` (`h2`, `h3` ou `h4`) envolve o gatilho no título semântico correspondente. Os setores de questões usam `heading="h3"`, variante `Card` e `keepMounted`, começando recolhidos e preservando os detalhes de questões já abertos.
 
 Por padrão, o conteúdo interno é desmontado ao fechar. `keepMounted` preserva seus campos e expansões internas e o oculta com `data-[state=closed]:hidden`, removendo os controles fechados da navegação por teclado e da árvore de acessibilidade. O acompanhamento usa essa opção para preservar setores e missões abertos ao recolher um aluno; as questões usam a variante `Card`.
 
@@ -90,7 +94,7 @@ import { CollapsibleVariant } from '../components/Collapsible/collapsible-styles
 
 O visual padrão de `Tabs` mantém o identificador `TabsVariant.Pills` por compatibilidade, mas apresenta abas sobre uma linha contínua: a ativa tem fundo lilás, texto roxo e sublinhado espesso. A variante `Underline` continua disponível. A seleção controlada, os painéis associados e a navegação por teclado permanecem sob responsabilidade do Radix.
 
-`Breadcrumb`, em `src/components/Breadcrumb/Breadcrumb.tsx`, recebe `items` com `id` e `label`, além de um rótulo acessível opcional para a navegação. O primeiro item recebe destaque roxo, as barras são decorativas e o último item usa `aria-current="page"`. Os itens são contextuais e não criam links. Na sala do professor, o breadcrumb e `Tabs` derivam da mesma seleção, começando por Alunos.
+`Breadcrumb`, em `src/components/Breadcrumb/Breadcrumb.tsx`, recebe `items` com `id` e `label`, além de um rótulo acessível opcional para a navegação. O primeiro item recebe destaque roxo, as barras são decorativas e o último item usa `aria-current="page"`. Os itens são contextuais e não criam links. O painel do professor não exibe breadcrumb: apenas o valor do nome da sala recebe `text-primary` e negrito, mantendo o rótulo na cor normal. O botão de excluir sala fica alinhado à direita, abaixo das abas.
 
 Na autoria, campos obrigatórios têm asterisco vermelho e os opcionais têm o sufixo `(opcional)`. As seções recolhíveis preservam campos e abrem ao encontrar um campo inválido. Blocos matemáticos oferecem seleção, remoção e movimentação por botões além de arraste. Sobre fundo lilás, usar `text-primary-hover` para manter contraste de texto pequeno.
 
@@ -141,7 +145,29 @@ Dialog fornece título, descrição, botão de fechamento, Escape e controle de 
 
 Os portais de Select e Dialog usam `document.body` por padrão. Quando precisarem herdar preferências ou estilos limitados a um ancestral, passar `portalContainer` para um elemento nesse contexto. Os controles não adicionam animações; o botão respeita `ds-reduced-motion`, e o CSS global continua atendendo a preferência do sistema. A fixture `e2e/fixtures/components.html` é usada somente nos testes locais e não é uma entrada do build de produção.
 
+## Tooltip
+
+`src/components/Tooltip/Tooltip.tsx` encapsula `@radix-ui/react-tooltip`, incluindo Provider, gatilho, portal, conteúdo e seta. `TooltipVariant`, em `Tooltip/tooltip-styles.ts`, oferece `Default` (fundo `ink`, texto branco), `Light` (superfície branca, borda `line`, texto `ink`) e `Flight` (painel e texto do voo). As variantes usam `rounded-control`, `text-small`, espaçamento em `rem` e os tokens existentes, sem animações adicionais.
+
+```tsx
+import { Tooltip } from '../components/Tooltip/Tooltip';
+import { TooltipVariant } from '../components/Tooltip/tooltip-styles';
+import { Button } from '../components/Button/Button';
+
+<Tooltip content="Veja as informações desta missão." variant={TooltipVariant.Default}>
+  <Button>Informações</Button>
+</Tooltip>;
+```
+
+Fornecer um único filho focável que aceite props e ref, como `Button` ou um link. O componente usa `asChild`, sem acrescentar outro botão. Conteúdo complementar abre por foco ou ponteiro e fecha com Escape; o ponteiro pode entrar no conteúdo sem fechá-lo. Manter o nome acessível no gatilho e não colocar ações interativas ou informações essenciais exclusivamente no tooltip, especialmente para acesso por toque.
+
+A API aceita `content`, `variant`, `className`, `open`/`defaultOpen`, `onOpenChange`, `delayDuration` e `disableHoverableContent`. Cada instância inclui seu próprio Provider, com atraso de 400ms por padrão; `providerProps` configura os tempos desse Provider. `triggerProps` encaminha atributos, eventos e ref ao gatilho. `contentProps` permite configurar `side`, `align`, afastamento, colisões, atributos ARIA, eventos e ref do conteúdo. Por padrão, o afastamento e a margem de colisão são de 8 unidades de posicionamento do Radix.
+
+O portal usa `document.body`. `portalContainer` permite herdar o contexto de preferências de um ancestral específico. A largura é limitada pelo espaço disponível e por `18rem`, com quebra de textos longos e tratamento de colisões do Radix. Os botões de recarregar e adicionar no cabeçalho de Questões usam `Tooltip`, preservando os nomes acessíveis e sem o atributo `title` nativo.
+
 ## Verificação
+
+`TooltipButton`, em `src/components/Tooltip/TooltipButton/TooltipButton.tsx`, compõe `Button` com o Tooltip genérico e preserva props, ref, eventos e variantes. O conteúdo usa a prop `tooltip`, o `aria-label` ou o texto do botão, nessa ordem. `AddButton` também usa essa composição. Os controles de inclusão, exclusão, seleção e ordenação de peças, limpeza e envio do formulário de questões usam esses tooltips, mantendo os nomes acessíveis nos botões. Não envolver `AddButton` ou `TooltipButton` em outro Tooltip.
 
 Além dos testes de comportamento, comparar as telas com as referências visuais anteriores em 390, 700, 1000 e 1440px. O teste `e2e/typography.spec.ts` verifica que fonte e altura dos controles acompanham o aumento da fonte raiz e que a entrada e o tutorial permanecem utilizáveis em tela estreita. Essas verificações não substituem avaliação manual ou pedagógica.
 

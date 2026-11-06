@@ -1,4 +1,4 @@
-import { Button } from '../../../../../../../../../components/Button/Button';
+import { TooltipButton } from '../../../../../../../../../components/Tooltip/TooltipButton/TooltipButton';
 import { ButtonVariant } from '../../../../../../../../../components/Button/button-styles';
 import { TrashIcon } from '@radix-ui/react-icons';
 import { orderAvailability } from './order-availability';
@@ -18,14 +18,14 @@ export function OrderActions({ selected, count, move, remove }: OrderActionsProp
     <div className="flex flex-wrap gap-2">
       <MovePieceButton direction={-1} disabled={!available.left} move={move} />
       <MovePieceButton direction={1} disabled={!available.right} move={move} />
-      <Button
+      <TooltipButton
         aria-label="Remover peça selecionada"
         disabled={!available.remove}
         variant={ButtonVariant.Danger}
         onClick={remove}
       >
         <TrashIcon aria-hidden />
-      </Button>
+      </TooltipButton>
     </div>
   );
 }

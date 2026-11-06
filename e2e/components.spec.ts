@@ -82,3 +82,40 @@ test('hides mounted collapsible content from keyboard navigation and preserves n
   );
   await expect(page.getByRole('textbox', { name: 'Anotação' })).toHaveValue('Revisar expressão');
 });
+
+test('opens tooltip variants on hover, stays open over content and dismisses with Escape', async ({
+  page,
+}) => {
+  for (const variant of ['default', 'light', 'flight']) {
+    await page.getByRole('button', { name: `Ajuda ${variant}`, exact: true }).hover();
+    await expect(page.getByRole('tooltip')).toContainText(`Ajuda da missão ${variant}`);
+    await page.locator('.tooltip-content').hover();
+    await expect(page.locator('.tooltip-content')).toBeVisible();
+    expect(
+      (await new AxeBuilder({ page }).include('.tooltip-content').analyze()).violations,
+    ).toEqual([]);
+    await page.keyboard.press('Escape');
+    await expect(page.getByRole('tooltip')).toHaveCount(0);
+  }
+});
+
+test('describes a focused tooltip trigger and fits the narrow viewport with enlarged text', async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await page.addStyleTag({ content: 'html { font-size: 125%; }' });
+  const trigger = page.getByRole('button', { name: 'Ajuda default', exact: true });
+
+  await trigger.focus();
+  await expect(trigger).toHaveAccessibleDescription('Ajuda da missão default');
+  const box = await page.locator('.tooltip-content').boundingBox();
+
+  expect(box!.x).toBeGreaterThanOrEqual(0);
+  expect(box!.x + box!.width).toBeLessThanOrEqual(390);
+  await page.keyboard.press('Escape');
+  await expect(page.getByRole('tooltip')).toHaveCount(0);
+  await expect(trigger).toBeFocused();
+  await trigger.press('Tab');
+  await expect(page.getByRole('button', { name: 'Ajuda light', exact: true })).toBeFocused();
+});

@@ -1,6 +1,6 @@
 import { useNumberPiece } from './hooks/useNumberPiece';
 import { Input } from '../../../../../../../../components/Input/Input';
-import { Button } from '../../../../../../../../components/Button/Button';
+import { AddButton } from '../../../../../../../../components/AddButton/AddButton';
 
 interface NumberPieceProps {
   onAdd: (token: string) => void;
@@ -15,13 +15,11 @@ export function NumberPiece({ onAdd }: NumberPieceProps) {
         Número
         <Input className="w-28" value={field.value} onChange={field.change} inputMode="numeric" />
       </label>
-      <Button
+      <AddButton
         aria-label="Adicionar número à expressão"
         disabled={field.disabled}
         onClick={field.add}
-      >
-        +
-      </Button>
+      />
     </div>
   );
 }

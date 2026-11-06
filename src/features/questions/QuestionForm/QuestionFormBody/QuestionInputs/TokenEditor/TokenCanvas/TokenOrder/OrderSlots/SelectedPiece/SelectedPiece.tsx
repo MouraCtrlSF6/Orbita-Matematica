@@ -1,4 +1,4 @@
-import { Button } from '../../../../../../../../../../components/Button/Button';
+import { TooltipButton } from '../../../../../../../../../../components/Tooltip/TooltipButton/TooltipButton';
 import { ButtonVariant } from '../../../../../../../../../../components/Button/button-styles';
 
 interface SelectedPieceProps {
@@ -10,13 +10,13 @@ interface SelectedPieceProps {
 
 export function SelectedPiece({ token, index, selected, onSelect }: SelectedPieceProps) {
   return (
-    <Button
+    <TooltipButton
       aria-label={'Selecionar peça ' + (index + 1) + ': ' + token}
       aria-pressed={selected}
       variant={selected ? ButtonVariant.Primary : ButtonVariant.Secondary}
       onClick={() => onSelect(index)}
     >
       {token}
-    </Button>
+    </TooltipButton>
   );
 }

@@ -1,6 +1,6 @@
 import { usePieceEntry } from './hooks/usePieceEntry';
 import { Input } from '../../../../../../../../../../components/Input/Input';
-import { Button } from '../../../../../../../../../../components/Button/Button';
+import { AddButton } from '../../../../../../../../../../components/AddButton/AddButton';
 import { FieldLabel } from '../../../../../FieldLabel/FieldLabel';
 
 interface PieceEntryProps {
@@ -22,9 +22,7 @@ export function PieceEntry({ count, onAdd }: PieceEntryProps) {
           placeholder="Número, x, operação ou parêntese"
         />
       </label>
-      <Button aria-label="Adicionar componente" disabled={field.disabled} onClick={field.add}>
-        +
-      </Button>
+      <AddButton aria-label="Adicionar componente" disabled={field.disabled} onClick={field.add} />
     </div>
   );
 }

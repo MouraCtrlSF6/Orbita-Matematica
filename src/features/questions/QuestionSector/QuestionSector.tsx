@@ -1,5 +1,7 @@
 import type { Mission, Sector } from '../../../game/types';
 import { SectorQuestionList } from './SectorQuestionList/SectorQuestionList';
+import { Collapsible } from '../../../components/Collapsible/Collapsible';
+import { CollapsibleVariant } from '../../../components/Collapsible/collapsible-styles';
 
 interface QuestionSectorProps {
   sector: Sector;
@@ -13,10 +15,16 @@ export function QuestionSector({ sector, missions, ...actions }: QuestionSectorP
 
   return (
     <section aria-label={sector.name} className="grid gap-3">
-      <h3>
-        {sector.name} · {items.length} questões
-      </h3>
-      <SectorQuestionList items={items} {...actions} />
+      <Collapsible
+        title={`${sector.number} — ${sector.name} · ${items.length} questões`}
+        heading="h3"
+        variant={CollapsibleVariant.Card}
+        keepMounted
+      >
+        <div className="grid gap-3">
+          <SectorQuestionList items={items} {...actions} />
+        </div>
+      </Collapsible>
     </section>
   );
 }

@@ -1,5 +1,5 @@
 import { TrashIcon } from '@radix-ui/react-icons';
-import { Button } from '../../../../../../../../../../../../components/Button/Button';
+import { TooltipButton } from '../../../../../../../../../../../../components/Tooltip/TooltipButton/TooltipButton';
 import { ButtonVariant } from '../../../../../../../../../../../../components/Button/button-styles';
 import { FormField } from '../../../../../../../FormField/FormField';
 import { CorrectChoice } from './CorrectChoice/CorrectChoice';
@@ -18,14 +18,14 @@ export function ChoiceRow({ id, number, checked, canRemove, onSelect, onRemove }
     <div className="flex items-end gap-3 min-w-0">
       <CorrectChoice id={id} number={number} checked={checked} onSelect={onSelect} />
       <FormField name={'choice-' + id} label={'Alternativa ' + number} />
-      <Button
+      <TooltipButton
         variant={ButtonVariant.Danger}
         aria-label={'Excluir alternativa ' + number}
         disabled={!canRemove}
         onClick={onRemove}
       >
         <TrashIcon aria-hidden />
-      </Button>
+      </TooltipButton>
     </div>
   );
 }

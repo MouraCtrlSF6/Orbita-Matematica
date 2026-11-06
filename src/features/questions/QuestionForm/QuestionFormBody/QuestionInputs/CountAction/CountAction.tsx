@@ -1,5 +1,4 @@
-import { Button } from '../../../../../../components/Button/Button';
-import { ButtonVariant } from '../../../../../../components/Button/button-styles';
+import { AddButton } from '../../../../../../components/AddButton/AddButton';
 
 interface CountActionProps {
   count: number;
@@ -14,14 +13,11 @@ export function CountAction({ count, limit, label, onAdd }: CountActionProps) {
       <span>
         {count} de {limit}
       </span>
-      <Button
+      <AddButton
         aria-label={label}
         disabled={count >= limit}
-        variant={ButtonVariant.Secondary}
         onClick={onAdd}
-      >
-        +
-      </Button>
+      />
     </div>
   );
 }

@@ -1,4 +1,4 @@
-import { Button } from '../../../../../../../components/Button/Button';
+import { TooltipButton } from '../../../../../../../components/Tooltip/TooltipButton/TooltipButton';
 import { ButtonVariant } from '../../../../../../../components/Button/button-styles';
 
 interface TokenPreviewProps {
@@ -16,9 +16,9 @@ export function TokenPreview({ formula, count, onClear }: TokenPreviewProps) {
       >
         Prévia: {formula || 'Adicione as peças da expressão.'}
       </p>
-      <Button variant={ButtonVariant.Text} disabled={!count} onClick={onClear}>
+      <TooltipButton variant={ButtonVariant.Text} disabled={!count} onClick={onClear}>
         Limpar expressão
-      </Button>
+      </TooltipButton>
     </>
   );
 }

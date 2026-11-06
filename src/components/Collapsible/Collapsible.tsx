@@ -1,10 +1,8 @@
 import type { ComponentProps, ReactNode } from 'react';
 import * as CollapsiblePrimitive from '@radix-ui/react-collapsible';
 import { mergeClasses } from '../utils/merge-classes';
-import {
-  CollapsibleTrigger,
-  type CollapsibleTriggerProps,
-} from './CollapsibleTrigger/CollapsibleTrigger';
+import type { CollapsibleTriggerProps } from './CollapsibleTrigger/CollapsibleTrigger';
+import { CollapsibleHeading } from './CollapsibleHeading/CollapsibleHeading';
 import {
   CollapsibleVariant,
   collapsibleStyles,
@@ -18,6 +16,7 @@ export interface CollapsibleProps extends Omit<
   title: ReactNode;
   variant?: CollapsibleVariant;
   keepMounted?: boolean;
+  heading?: 'h2' | 'h3' | 'h4';
   triggerProps?: Omit<CollapsibleTriggerProps, 'title' | 'variant'>;
   contentProps?: Omit<
     ComponentProps<typeof CollapsiblePrimitive.Content>,
@@ -29,6 +28,7 @@ export function Collapsible({
   title,
   variant = CollapsibleVariant.Default,
   keepMounted = false,
+  heading,
   className,
   triggerProps,
   contentProps,
@@ -44,7 +44,7 @@ export function Collapsible({
         className,
       )}
     >
-      <CollapsibleTrigger {...triggerProps} title={title} variant={variant} />
+      <CollapsibleHeading {...triggerProps} heading={heading} title={title} variant={variant} />
       <CollapsiblePrimitive.Content
         {...contentProps}
         forceMount={keepMounted || undefined}

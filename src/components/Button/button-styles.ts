@@ -3,6 +3,8 @@ import { ControlSize } from '../utils/control-styles';
 
 export enum ButtonVariant {
   Primary = 'primary',
+  OutlinePrimary = 'outline-primary',
+  Addition = 'addition',
   DangerSolid = 'danger-solid',
   Text = 'text',
   Subtle = 'subtle',
@@ -32,6 +34,10 @@ export const buttonStyles = cva(
         [ButtonVariant.DangerSolid]: 'danger bg-danger text-white',
         [ButtonVariant.Primary]:
           'primary bg-primary text-white hover:bg-primary-hover hover:[transform:translateY(-0.0625rem)]',
+        [ButtonVariant.OutlinePrimary]:
+          'border border-primary bg-transparent text-primary hover:bg-selected',
+        [ButtonVariant.Addition]:
+          'border border-amber-600 bg-transparent text-amber-600 hover:border-amber-700 hover:bg-retry hover:text-amber-700',
         [ButtonVariant.Secondary]: 'border border-line bg-white text-ink hover:bg-selected',
         [ButtonVariant.Peach]: 'peach-button bg-peach text-peach-ink hover:bg-peach-hover',
         [ButtonVariant.Danger]: 'danger border border-danger bg-white text-danger hover:bg-retry',

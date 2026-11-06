@@ -3,16 +3,27 @@ import type { CatalogSnapshot } from '../../../../../../../../../../../../infras
 import type { useRoomQuestions } from '../../hooks/useRoomQuestions';
 import { QuestionSector } from '../../../../../../../../../../../../features/questions/QuestionSector/QuestionSector';
 import { QuestionForm } from '../../../../../../../../../../../../features/questions/QuestionForm/QuestionForm';
+import type { QuestionCreation } from '../../hooks/useQuestionCreation';
 
 interface QuestionCatalogContentProps {
   questions: ReturnType<typeof useRoomQuestions>;
   snapshot: CatalogSnapshot;
+  creation: QuestionCreation;
 }
 
-export function QuestionCatalogContent({ questions, snapshot }: QuestionCatalogContentProps) {
+export function QuestionCatalogContent({
+  questions,
+  snapshot,
+  creation,
+}: QuestionCatalogContentProps) {
   return (
     <>
-      <QuestionForm add={questions.add} pending={questions.pending} />
+      <QuestionForm
+        add={questions.add}
+        pending={questions.pending}
+        id={creation.id}
+        open={creation.open}
+      />
       {sectors.map((sector) => (
         <QuestionSector
           key={sector.id}

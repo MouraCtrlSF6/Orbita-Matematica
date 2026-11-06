@@ -1,4 +1,4 @@
-import { Button } from '../../../../../../../../../../../components/Button/Button';
+import { TooltipButton } from '../../../../../../../../../../../components/Tooltip/TooltipButton/TooltipButton';
 import { ButtonVariant } from '../../../../../../../../../../../components/Button/button-styles';
 import { TokenEditor } from '../../../../../../TokenEditor/TokenEditor';
 
@@ -16,9 +16,9 @@ export function EquivalentOrder({ tokens, number, onRemove }: EquivalentOrderPro
         label={'Ordem equivalente ' + number}
         available={tokens}
       />
-      <Button variant={ButtonVariant.Danger} onClick={onRemove}>
+      <TooltipButton variant={ButtonVariant.Danger} onClick={onRemove}>
         Excluir ordem equivalente {number}
-      </Button>
+      </TooltipButton>
     </div>
   );
 }

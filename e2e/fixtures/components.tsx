@@ -11,14 +11,17 @@ import { RadioGroup } from '../../src/components/RadioGroup/RadioGroup';
 import { RadioGroupVariant } from '../../src/components/RadioGroup/radio-group-styles';
 import { Tabs } from '../../src/components/Tabs/Tabs';
 import { Dialog } from '../../src/components/Dialog/Dialog';
+import { Tooltip } from '../../src/components/Tooltip/Tooltip';
+import { TooltipVariant } from '../../src/components/Tooltip/tooltip-styles';
 import { Collapsible } from '../../src/components/Collapsible/Collapsible';
 import { CollapsibleVariant } from '../../src/components/Collapsible/collapsible-styles';
 
 export function ComponentFixture() {
   const [result, setResult] = useState('');
+  const [tooltipContainer, setTooltipContainer] = useState<HTMLElement | null>(null);
 
   return (
-    <main className="max-w-200 pb-8">
+    <main ref={setTooltipContainer} className="max-w-200 pb-8">
       <h1>Componentes compartilhados</h1>
       <form
         className="grid gap-5 mt-6"
@@ -56,6 +59,18 @@ export function ComponentFixture() {
         <Button type="submit">Salvar</Button>
       </form>
       <output aria-label="Valores salvos">{result}</output>
+      <div className="my-4 flex flex-wrap gap-3">
+        {Object.values(TooltipVariant).map((variant) => (
+          <Tooltip
+            key={variant}
+            variant={variant}
+            content={`Ajuda da missão ${variant}`}
+            portalContainer={tooltipContainer}
+          >
+            <Button>Ajuda {variant}</Button>
+          </Tooltip>
+        ))}
+      </div>
       <div className="my-6 flex flex-wrap gap-3">
         {Object.values(ButtonVariant).map((variant) => (
           <div

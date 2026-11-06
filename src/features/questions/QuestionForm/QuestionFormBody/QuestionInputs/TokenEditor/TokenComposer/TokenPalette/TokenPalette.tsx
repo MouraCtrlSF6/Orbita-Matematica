@@ -1,4 +1,4 @@
-import { Button } from '../../../../../../../../components/Button/Button';
+import { TooltipButton } from '../../../../../../../../components/Tooltip/TooltipButton/TooltipButton';
 import { ButtonVariant } from '../../../../../../../../components/Button/button-styles';
 
 interface TokenPaletteProps {
@@ -10,7 +10,7 @@ export function TokenPalette({ tokens, onAdd }: TokenPaletteProps) {
   return (
     <div className="flex flex-wrap gap-2" aria-label="Banco de peças">
       {tokens.map((token, index) => (
-        <Button
+        <TooltipButton
           key={index}
           variant={ButtonVariant.Secondary}
           draggable
@@ -19,7 +19,7 @@ export function TokenPalette({ tokens, onAdd }: TokenPaletteProps) {
           onClick={() => onAdd(token)}
         >
           {token}
-        </Button>
+        </TooltipButton>
       ))}
     </div>
   );

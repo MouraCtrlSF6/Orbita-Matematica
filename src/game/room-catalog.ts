@@ -108,3 +108,31 @@ function validatePlayableMission(item: Mission) {
 function isCatalogId(id: string) {
   return missionById.has(id) || /^custom-[a-f0-9]{8}-(?:[a-f0-9]{4}-){3}[a-f0-9]{12}$/.test(id);
 }
+
+export function reorderRoomMission(
+  catalog: RoomCatalog,
+  id: string,
+  targetId: string,
+): RoomCatalog {
+  const sourceIndex = catalog.missions.findIndex((mission) => mission.id === id);
+  const targetIndex = catalog.missions.findIndex((mission) => mission.id === targetId);
+  const source = catalog.missions[sourceIndex];
+  const target = catalog.missions[targetIndex];
+
+  validateReorder(source, target);
+  if (sourceIndex === targetIndex) return catalog;
+  const items = [...catalog.missions];
+
+  items.splice(sourceIndex, 1);
+  items.splice(targetIndex, 0, source);
+  return { revision: catalog.revision + 1, missions: items };
+}
+
+function validateReorder(
+  source: Mission | undefined,
+  target: Mission | undefined,
+): asserts source is Mission {
+  if (!source || !target || source.sectorId !== target.sectorId) {
+    throw new Error('Escolha duas questões do mesmo setor.');
+  }
+}

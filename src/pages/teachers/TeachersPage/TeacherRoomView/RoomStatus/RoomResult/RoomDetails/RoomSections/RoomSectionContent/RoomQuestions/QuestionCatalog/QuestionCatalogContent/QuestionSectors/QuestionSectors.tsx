@@ -26,6 +26,7 @@ export function QuestionSectors({ questions, snapshot }: QuestionSectorsProps) {
             sector={sector}
             missions={snapshot.catalog.missions}
             remove={questions.remove}
+            reorder={questions.reorder}
             pending={questions.pending}
           />
         ),

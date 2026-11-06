@@ -6,6 +6,7 @@ interface QuestionSectorProps {
   missions: Mission[];
   pending: boolean;
   remove: (id: string) => Promise<boolean>;
+  reorder: (id: string, targetId: string) => Promise<boolean>;
 }
 
 export function QuestionSector({ sector, missions, ...actions }: QuestionSectorProps) {

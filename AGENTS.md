@@ -2,7 +2,7 @@
 
 ## Visão geral e referências
 
-Órbita Matemática é um jogo de álgebra para o 8º ano, com exploração espacial, salas de aula e acompanhamento pelo professor. Usa React, TypeScript, Vite, React Router, Tailwind CSS 4 e Firebase. O catálogo padrão tem 52 missões em três setores; cada sala pode personalizar suas questões.
+Órbita Matemática é um jogo de álgebra para o 8º ano, com exploração espacial, salas de aula e acompanhamento pelo professor. Usa React, TypeScript, Vite, React Router, Tailwind CSS 4, Radix UI e Firebase. O catálogo padrão tem 52 missões em três setores; cada sala pode personalizar suas questões.
 
 Consultar `README.md` para execução, controles, salas e publicação; `docs/pedagogia.md` para currículo e revisão pedagógica; `docs/design-system.md` para estilos; `docs/complexidade.md` para métricas. Conferir a implementação antes de afirmar o estado de serviços remotos.
 
@@ -13,6 +13,7 @@ Consultar `README.md` para execução, controles, salas e publicação; `docs/pe
 - Usar `Component/Component.tsx`; filhos exclusivos, hooks, contextos e utilitários ficam junto do proprietário. Compartilhados ficam no ancestral comum. Importar diretamente, sem arquivos de reexportação.
 - Usar dois espaços, aspas simples, ponto e vírgula, componentes PascalCase, funções camelCase, interfaces nomeadas para props e preferir enums para estados e variantes. Validar dados externos como `unknown`; calcular valores derivados sem duplicar estado.
 - Consumir os contextos de missão, jogo e catálogo; evitar repassar sessões por componentes de layout. Posições transitórias de voo ficam fora do estado de renderização React.
+- Reutilizar os controles de `src/components/`, variantes CVA e `mergeClasses`; preservar semântica, foco e teclado das primitivas Radix. Usar `useToast` para notificações de ações e manter confirmações destrutivas em diálogos. A área do professor é carregada sob demanda por `lazy`/`Suspense`.
 - Usar utilitários Tailwind completos em `className`, tokens e variantes `ds-*`. CSS somente em `src/styles.css` e `src/styles/design-system.css`, sem Preflight. Preferir `rem`; preservar breakpoints inclusivos, classes usadas por controles/testes e geometria do voo.
 
 ## Conteúdo e catálogo por sala
@@ -22,7 +23,7 @@ Consultar `README.md` para execução, controles, salas e publicação; `docs/pe
 - Criar salas com catálogo, metadados e índice atomicamente. Salas antigas sem catálogo usam o padrão até a primeira alteração. Escritas usam ETag e revisão; conflitos exigem recarregar.
 - O aluno valida e carrega o catálogo uma vez antes do registro. A cópia fica em `StudentRoom.missions`, em memória; não adicionar polling ou assinatura de questões. Nova revisão exige nova entrada. Saves não contêm catálogo.
 - Regras puras recebem o catálogo como argumento; telas usam o contexto da partida. Totais, mapas e desbloqueios consideram essa cópia. Setores e salas vazios são válidos.
-- Exclusões preservam respostas e conclusões históricas por ID. Ao reencontrar um aluno, acrescentar missões ausentes sem sobrescrever tentativas.
+- Adicionar, excluir e reordenar questões afeta apenas a sala. Reordenação por arraste ou teclado ocorre dentro do mesmo setor, preservando IDs e incrementando a revisão. Exclusões mantêm o histórico; ao reencontrar um aluno, acrescentar missões ausentes sem sobrescrever tentativas.
 - A autoria oferece Objetiva, Discursiva, Montagem e Criação guiada. `ChallengeKind.Text` corrige a resposta cadastrada ignorando maiúsculas e espaços extras; preservar `Number` e sua correção numérica nas questões antigas. Expressões opcionais de Objetiva/Discursiva usam árvores de operações, nunca `eval`. Montagens derivam a expressão da ordem principal e validam subconjuntos das peças disponíveis, repetições e equivalência algébrica. A criação guiada permanece em `2 × x + 4`.
 - Nas equações importadas, `formula` preserva a igualdade, `expression` é o lado esquerdo e `variable` é a solução; conferir a alternativa por `correctChoice`. O campo numérico aceita inteiros não negativos.
 
@@ -51,7 +52,7 @@ Usar Node.js 20.19+ na linha 20 ou 22.12+, npm e `npm ci`; atualizar o lockfile 
 - Testes: `npm test` (Vitest, `*.test.ts/tsx` junto do código); `npm run test:e2e` (Playwright, incluindo `src/app/routes/*.spec.ts`). Instalar Chromium com `npx playwright install chromium`.
 - Complexidade: `npm run metrics:check`, limite 7 por unidade visível. Exige a extensão CodeMetrics ou `CODEMETRICS_EXTENSION`; não reduzir pesos ou excluir unidades para cumprir o limite.
 
-Para código/conteúdo, executar testes afetados, lint e build; para código de produção, verificar métricas quando disponíveis. Para UI, navegação ou persistência, executar os percursos Playwright pertinentes. Testar matemática independente, equivalências, catálogo inválido/vazio, progresso, isolamento de salas, falhas e acessibilidade. Mocks não validam o Firebase real. Mudanças de regras exigem emuladores com dados fictícios:
+Para código/conteúdo, executar testes afetados, lint e build; para código de produção, verificar métricas quando disponíveis. Para UI, navegação ou persistência, executar os percursos Playwright pertinentes, incluindo autoria, reordenação, componentes e notificações quando afetados. Testar matemática independente, equivalências, catálogo inválido/vazio, progresso, isolamento de salas, falhas e acessibilidade. Mocks não validam o Firebase real. Mudanças de regras exigem emuladores com dados fictícios:
 
 ```sh
 npx --yes firebase-tools@14 emulators:exec --project demo-orbita --only auth,database "node scripts/test-database-rules.mjs"

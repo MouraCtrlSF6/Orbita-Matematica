@@ -1,21 +1,17 @@
-import { ReloadIcon } from '@radix-ui/react-icons';
-import { TooltipButton } from '../../../../../../../../../../../../components/Tooltip/TooltipButton/TooltipButton';
-import { ButtonVariant } from '../../../../../../../../../../../../components/Button/button-styles';
 import { AddButton } from '../../../../../../../../../../../../components/AddButton/AddButton';
 import type { QuestionHeaderProps } from '../QuestionHeader';
+import { ReloadQuestionsButton } from './ReloadQuestionsButton/ReloadQuestionsButton';
 
-export function QuestionListActions({ pending, ready, reload, creation }: QuestionHeaderProps) {
+export function QuestionListActions({
+  pending,
+  loading,
+  ready,
+  reload,
+  creation,
+}: QuestionHeaderProps) {
   return (
     <div hidden={creation.open} className="ml-auto shrink-0 space-x-2">
-      <TooltipButton
-        variant={ButtonVariant.OutlinePrimary}
-        className="size-11 p-0"
-        aria-label="Recarregar questões"
-        disabled={pending}
-        onClick={reload}
-      >
-        <ReloadIcon aria-hidden="true" className="size-5" />
-      </TooltipButton>
+      <ReloadQuestionsButton pending={pending} loading={loading} reload={reload} />
       <AddButton
         tooltip="Adicionar questão"
         aria-label="Adicionar questão"

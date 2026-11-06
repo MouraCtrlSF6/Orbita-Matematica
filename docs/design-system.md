@@ -179,6 +179,43 @@ import { AccordionVariant } from '../components/Accordion/accordion-styles';
 
 Conteúdo fechado é desmontado por padrão. `keepMounted` preserva campos e componentes internos e recolhe a seção com uma transição de linhas de grid em um elemento interno, isolado dos estilos temporários de medição do Radix, ocultando-a ao final do fechamento e removendo-a do teclado e da árvore de acessibilidade. Sem `keepMounted`, a altura é animada com `--radix-accordion-content-height`, e o Radix aguarda o término da animação antes de desmontar o conteúdo. O espaçamento fica em um elemento interno para recolher junto do conteúdo. Enter e espaço alternam a seção; setas, Home e End movem o foco entre títulos habilitados conforme a orientação do primitivo. Os gatilhos usam `type="button"`, sem enviar formulários. Um catálogo vazio de itens é válido. Esta inclusão disponibiliza o componente compartilhado sem substituir automaticamente as listagens que usam Collapsible.
 
+## Toast
+
+`src/components/Toast/Toast.tsx` usa `@radix-ui/react-toast` para notificações temporárias. `ToastVariant`, em `Toast/toast-styles.ts`, oferece `Default`, `Success`, `Error`, `Warning` e `Flight`, com as superfícies, cores de texto e bordas dos tokens existentes. O componente usa `rounded-card`, espaçamento em `rem`, tipografia do projeto, foco visível e botão de fechamento com Radix Icons, sem animação adicional.
+
+`ToastProvider`, em `Toast/ToastProvider/ToastProvider.tsx`, deve envolver a área que usa notificações. Ele inclui um único viewport compartilhado, posicionado no canto inferior direito, com largura limitada ao espaço disponível, rolagem para pilhas maiores e rótulos em português. A duração padrão é de 6000ms. O Radix pausa o prazo durante interação com o viewport e perda de foco da janela, retomando-o depois. O atalho padrão F8 move o foco para a área de notificações; informar esse atalho na interface quando houver notificações.
+
+```tsx
+import { useState } from 'react';
+import { Button } from '../components/Button/Button';
+import { Toast } from '../components/Toast/Toast';
+import { ToastVariant } from '../components/Toast/toast-styles';
+import { ToastProvider } from '../components/Toast/ToastProvider/ToastProvider';
+
+function NotificationExample() {
+  const [open, setOpen] = useState(false);
+
+  return (
+    <ToastProvider>
+      <Button onClick={() => setOpen(true)}>Mostrar notificação</Button>
+      <Toast
+        title="Alterações salvas"
+        description="As informações foram registradas."
+        variant={ToastVariant.Success}
+        open={open}
+        onOpenChange={setOpen}
+      />
+    </ToastProvider>
+  );
+}
+```
+
+`Toast` aceita `title`, `description`, `variant`, `closeLabel`, `className`, `ref` e as props de Root do Radix, incluindo `open`/`defaultOpen`, `onOpenChange`, `duration`, `type`, eventos de pausa e eventos de swipe. `type="foreground"`, padrão do Radix, anuncia a resposta a uma ação do usuário com prioridade imediata; `type="background"` anuncia atualizações passivas com prioridade polida. O estado controlado permite reutilizar a mesma mensagem; por padrão, uma instância sem controle começa aberta. O componente não cria fila, persistência ou serviço global de mensagens.
+
+A ação opcional recebe `action={{ label, altText, onClick }}` e fecha a notificação após a interação. `altText` descreve uma forma alternativa de executar a ação para quem não consegue alcançar o botão a tempo. Decisões obrigatórias pertencem a um diálogo; a ação do toast deve poder ser ignorada. O fechamento manual usa `Fechar notificação` por padrão; Escape também fecha, conforme o foco e a pilha do Radix. Swipes seguem a direção configurada no Provider, com deslocamento direto e retorno sem animação.
+
+`ToastProvider` encaminha `duration`, `swipeDirection`, `swipeThreshold`, `label` e `announcerContainer` ao primitivo. `viewportProps` configura `hotkey`, `label`, `className`, ref e eventos do viewport. Colocar o Provider perto da raiz da aplicação, fora de ancestrais com transformação, para manter a posição fixa. `portalContainer` permite mover o viewport para um elemento explícito; considerar o contexto de preferências e, dentro de diálogos modais, também o destino de anúncios. Notificações de voos usam os mesmos controles e comportamento, com a variante `Flight`. A disponibilização do componente não substitui os feedbacks existentes automaticamente.
+
 ## Tooltip
 
 `src/components/Tooltip/Tooltip.tsx` encapsula `@radix-ui/react-tooltip`, incluindo Provider, gatilho, portal, conteúdo e seta. `TooltipVariant`, em `Tooltip/tooltip-styles.ts`, oferece `Default` (fundo `ink`, texto branco), `Light` (superfície branca, borda `line`, texto `ink`) e `Flight` (painel e texto do voo). As variantes usam `rounded-control`, `text-small`, espaçamento em `rem` e os tokens existentes, sem animações adicionais.
@@ -214,3 +251,15 @@ O menu de `Select` abre com deslizamento e revelação gradual durante 220 ms e 
 `DeleteConfirmationDialog` compõe o `Dialog` compartilhado com um botão como `Dialog.Trigger`, ações de cancelar e confirmar, estado de envio e mensagem de erro. Abrir ou cancelar não executa a operação; somente confirmar chama `onConfirm`. Durante o envio, bloqueia novas confirmações e o fechamento. Se a operação falhar ou retornar `false`, mantém o diálogo aberto; em caso de sucesso, fecha.
 
 `DeleteRoomDialog`, `RemoveStudentDialog` e `RemoveQuestionDialog` definem as mensagens e operações de sala, aluno e questão. A exclusão de questão preserva as respostas históricas. Seu gatilho fica à direita dos detalhes, com lixeira e o texto “Excluir questão”.
+
+## Ordem das questões da sala
+
+Na aba Questões, cada missão oferece uma alça à esquerda, fora da borda do card, para arrastar com mouse ou toque. A própria alça permite subir ou descer com as teclas de direção, sem botões adicionais. O card acompanha o ponteiro na vertical, limitado à área da lista, e o destino fica destacado; soltar fora das questões, pressionar Escape, perder foco ou ocultar a aba cancela o arraste. A movimentação fica restrita ao mesmo setor.
+
+A ordem é persistida automaticamente no catálogo da sala, incrementando a revisão e usando a escrita com ETag existente. A lista muda após a gravação bem-sucedida; falhas preservam a ordem anterior e exibem um aviso. Uma nova entrada do aluno carrega a ordem atualizada, enquanto partidas em andamento preservam sua cópia do catálogo.
+
+`AccordionSection.actions` permite controles irmãos do título, fora do botão de expansão. `data-accordion-value` identifica cada item para localizar o destino do arraste sem depender do texto do título.
+
+`AccordionSection.leading` oferece um controle à esquerda do item. O chamador reserva espaço com padding na lista. Durante o arraste, a posição transitória é aplicada diretamente ao elemento; as posições originais identificam o destino sem interferência do card sobreposto. Ao cancelar ou desmontar, o transform original é restaurado.
+
+Durante a gravação da reordenação, `QuestionOrderOverlay` apresenta um backdrop de 20% e o `Spinner` compartilhado centralizado na tela. O overlay bloqueia interações até a operação terminar, inclusive em caso de erro, e restaura o foco ao fechar. Não é exibido para as demais operações do catálogo.

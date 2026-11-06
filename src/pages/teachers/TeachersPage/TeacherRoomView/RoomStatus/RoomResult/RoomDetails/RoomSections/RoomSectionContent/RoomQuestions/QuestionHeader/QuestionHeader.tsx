@@ -5,6 +5,7 @@ import { QuestionListActions } from './QuestionListActions/QuestionListActions';
 
 export interface QuestionHeaderProps {
   pending: boolean;
+  loading: boolean;
   ready: boolean;
   reload: () => void;
   creation: QuestionCreation;

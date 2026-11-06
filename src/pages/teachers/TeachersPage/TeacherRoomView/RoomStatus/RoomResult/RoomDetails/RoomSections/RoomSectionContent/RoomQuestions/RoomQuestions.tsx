@@ -13,6 +13,7 @@ export function RoomQuestions() {
     <div className="grid gap-5">
       <QuestionHeader
         pending={questions.pending}
+        loading={questions.loading}
         ready={!!questions.snapshot}
         reload={questions.reload}
         creation={creation}

@@ -5,11 +5,7 @@ import { enterRoom, test } from '../../../e2e/rooms-fixture';
 async function createRoom(page: Page) {
   await page.getByLabel('Nome da sala').fill('Turma Têste');
   await page.getByRole('button', { name: 'Criar sala' }).click();
-  await expect(
-    page
-      .getByRole('navigation', { name: 'Localização atual' })
-      .getByText('turma teste', { exact: true }),
-  ).toBeVisible();
+  await expect(page.locator('code').getByText('turma teste', { exact: true })).toBeVisible();
 }
 
 test('opens profile selection and navigates the cards with the keyboard and history', async ({
@@ -110,6 +106,28 @@ test('opens profile selection and navigates the cards with the keyboard and hist
   await expect(page.locator('main#main')).toHaveCount(0);
   await enterRoom(page);
   await expect(page.locator('main#main')).toBeVisible();
+});
+
+test('places plain profile navigation below the form and shows the button in the dashboard', async ({
+  page,
+}) => {
+  await page.goto('/teachers');
+  const backLink = page.getByRole('link', { name: 'Voltar à escolha de perfil' });
+  const submit = page.getByRole('button', { name: 'Criar sala' });
+
+  await expect(backLink).toBeVisible();
+  await expect(backLink).not.toHaveClass(/button/);
+  expect((await backLink.boundingBox())!.y).toBeGreaterThan(
+    (await submit.boundingBox())!.y + (await submit.boundingBox())!.height,
+  );
+  await page.getByLabel('Nome da sala').fill('Turma Têste');
+  await submit.click();
+  await expect(page.getByRole('status')).toHaveText('Registros de alunos: 0');
+  await expect(backLink).toHaveCount(1);
+  await expect(backLink).toHaveClass(/button/);
+  await expect(backLink.locator('svg')).toBeVisible();
+  await backLink.click();
+  await expect(page).toHaveURL(/\/sign$/);
 });
 
 test('allows a new room after deletion and returning to the teacher route', async ({ page }) => {

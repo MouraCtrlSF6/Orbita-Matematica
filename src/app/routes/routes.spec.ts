@@ -6,9 +6,7 @@ async function createRoom(page: Page) {
   await page.getByLabel('Nome da sala').fill('Turma Têste');
   await page.getByRole('button', { name: 'Criar sala' }).click();
   await expect(
-    page
-      .getByRole('navigation', { name: 'Localização atual' })
-      .getByText('turma teste', { exact: true }),
+    page.getByRole('code').filter({ hasText: /^turma teste$/ }),
   ).toBeVisible();
 }
 

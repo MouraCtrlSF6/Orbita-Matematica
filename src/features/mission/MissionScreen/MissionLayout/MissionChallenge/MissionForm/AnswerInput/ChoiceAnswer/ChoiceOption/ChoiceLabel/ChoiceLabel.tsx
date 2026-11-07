@@ -1,4 +1,5 @@
 import type { Choice } from '../../../../../../../../../../game/types';
+import { missionChoiceLabel } from '../../../../../../../utils/mission-choice-label';
 
 export interface ChoiceLabelProps {
   choice: Choice;
@@ -12,7 +13,7 @@ export function ChoiceLabel({ choice, index }: ChoiceLabelProps) {
         className="option-letter text-caption text-[#82778e] [border:1px_solid_#e3dce9] rounded-xs py-0.5 px-1.5"
         aria-hidden="true"
       >
-        {String.fromCharCode(65 + index)}
+        {missionChoiceLabel(index)}
       </span>
       <span>{choice.label}</span>
     </>

@@ -1,6 +1,6 @@
 import { TrashIcon } from '@radix-ui/react-icons';
-import { TooltipButton } from '../../../../../../../../../../components/Tooltip/TooltipButton/TooltipButton';
 import { ButtonVariant } from '../../../../../../../../../../components/Button/button-styles';
+import { TooltipButton } from '../../../../../../../../../../components/Tooltip/TooltipButton/TooltipButton';
 
 interface PieceListProps {
   tokens: string[];

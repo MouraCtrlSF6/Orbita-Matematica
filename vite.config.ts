@@ -10,6 +10,10 @@ export default defineConfig({
     tailwindcss(),
     publishRouteEntries(),
   ],
+  optimizeDeps: {
+    entries: [...routeInputs, 'e2e/fixtures/components.html'],
+    include: ['@react-pdf/renderer'],
+  },
   build: {
     rollupOptions: {
       input: routeInputs,

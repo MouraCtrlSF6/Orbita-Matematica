@@ -5,7 +5,7 @@ const preferenceDefinitions: PreferenceDefinition[] = [
   {
     key: 'largeText',
     title: 'Texto maior',
-    description: 'Amplia os textos de toda a expedição.',
+    description: 'Textos ampliados em caixa alta. Modo de acessibilidade para baixa visão.',
   },
   {
     key: 'reducedMotion',

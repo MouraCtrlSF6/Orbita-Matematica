@@ -19,7 +19,7 @@ export enum ButtonVariant {
 }
 
 export const buttonStyles = cva(
-  'button min-h-11 px-5 py-3 text-small inline-flex shrink-0 items-center justify-center gap-[0.6875rem] rounded-control border-0 font-bold no-underline disabled:cursor-not-allowed disabled:opacity-[0.48] disabled:transform-none! ds-reduced-motion:transition-none',
+  'button min-h-11 px-5 py-3 text-small inline-flex shrink-0 items-center justify-center gap-[0.6875rem] rounded-control border-0 font-bold no-underline disabled:cursor-not-allowed disabled:opacity-[0.48] ds-large-text:disabled:opacity-100 disabled:transform-none! ds-reduced-motion:transition-none',
   {
     variants: {
       variant: {
@@ -53,6 +53,30 @@ export const buttonStyles = cva(
         [ControlSize.Large]: 'min-h-13.5 px-6 py-3 text-body',
       },
     },
+    compoundVariants: [
+      {
+        variant: [
+          ButtonVariant.Primary,
+          ButtonVariant.OutlinePrimary,
+          ButtonVariant.Addition,
+          ButtonVariant.DangerSolid,
+          ButtonVariant.Text,
+          ButtonVariant.Subtle,
+          ButtonVariant.Icon,
+          ButtonVariant.Secondary,
+          ButtonVariant.Peach,
+          ButtonVariant.Danger,
+          ButtonVariant.Ghost,
+        ],
+        className:
+          'ds-large-text:disabled:bg-selected! ds-large-text:disabled:text-primary-hover! ds-large-text:disabled:border-selected-border!',
+      },
+      {
+        variant: [ButtonVariant.FlightPrimary, ButtonVariant.FlightSecondary],
+        className:
+          'ds-large-text:disabled:bg-flight-secondary! ds-large-text:disabled:text-flight-secondary-ink! ds-large-text:disabled:border-flight-secondary-border!',
+      },
+    ],
     defaultVariants: { variant: ButtonVariant.Primary, size: undefined },
   },
 );

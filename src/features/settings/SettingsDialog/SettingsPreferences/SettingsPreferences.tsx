@@ -4,8 +4,9 @@ import { PreferenceSetting } from './PreferenceSetting/PreferenceSetting';
 const preferenceDefinitions: PreferenceDefinition[] = [
   {
     key: 'largeText',
-    title: 'Texto maior',
-    description: 'Textos ampliados em caixa alta. Modo de acessibilidade para baixa visão.',
+    title: 'Texto maior e mais contraste',
+    description:
+      'Amplia os textos, usa caixa alta e aumenta o contraste de botões, alternativas e dicas.',
   },
   {
     key: 'reducedMotion',

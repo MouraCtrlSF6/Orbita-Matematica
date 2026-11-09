@@ -17,6 +17,8 @@ async function mockIdentityBackend(page: Page) {
           return initializeApp({ apiKey: 'identity-test', projectId: 'demo-orbita',
             appId: 'identity-test', databaseURL: 'https://identity.example.test/' });
         }
+        export function initializeFirebaseAnalytics() { initializeFirebase(); }
+        export async function logFirebaseEvent() {}
       `,
     }),
   );

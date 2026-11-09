@@ -1,6 +1,9 @@
-import { loadRoomCatalog } from '../../../../../../infrastructure/firebase/room-catalog';
 import { useActionState, useEffect, useRef } from 'react';
 import { useSession } from '../../../../../../app/contexts/hooks/useSession';
+import { initialSave } from '../../../../../../game/progress';
+import { invalidRoomName, normalizeRoomName } from '../../../../../../game/room-name';
+import { logFirebaseEvent } from '../../../../../../infrastructure/firebase/firebase-app';
+import { loadRoomCatalog } from '../../../../../../infrastructure/firebase/room-catalog';
 import {
   findRoomByName,
   registerStudent,
@@ -8,8 +11,6 @@ import {
 } from '../../../../../../infrastructure/firebase/rooms';
 import { createBrowserGameStorage } from '../../../../../../infrastructure/gameStorage';
 import { StudentRoom } from '../../../../room-sync';
-import { initialSave } from '../../../../../../game/progress';
-import { invalidRoomName, normalizeRoomName } from '../../../../../../game/room-name';
 
 async function joinStudent(roomName: string, form: FormData, signal: AbortSignal) {
   const name = readName(form);
@@ -50,7 +51,13 @@ async function enterOpenRoom(
 ) {
   return joinStudent(roomId, form, signal)
     .then((room) => {
-      if (!signal.aborted) setStudentRoom(room);
+      if (!signal.aborted) {
+        setStudentRoom(room);
+
+        void logFirebaseEvent('student_room_entrance', {
+          room_id: room.roomId,
+        });
+      }
       return '';
     })
     .catch(joinErrorMessage);

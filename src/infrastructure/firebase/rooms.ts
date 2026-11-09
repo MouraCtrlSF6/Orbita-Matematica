@@ -8,7 +8,7 @@ import {
   signInAnonymously,
   type User,
 } from 'firebase/auth';
-import { initializeFirebase } from './firebase-app';
+import { initializeFirebase, logFirebaseEvent } from './firebase-app';
 import { initialRoomStudent, type RoomStudent } from '../../game/room-progress';
 import type { Mission, SavedGame } from '../../game/types';
 import { readRoomStudent, readRoomStudents } from './room-records';
@@ -152,6 +152,7 @@ export async function deleteRoom(roomId: string, name: string) {
     const response = await roomRequest(`/rooms/${roomId}/meta/open`, user, {});
     if ((await response.json()) !== null) throw error;
   }
+  void logFirebaseEvent('room_deleted', { room_id: roomId });
 }
 
 async function readRoomId(name: string, user: User, signal?: AbortSignal) {
@@ -184,6 +185,7 @@ export async function createRoom(roomId: string, name: string) {
   await roomRequest('', user, patch).catch((error: unknown) =>
     confirmCreation(name, roomId, user, error),
   );
+  void logFirebaseEvent('room_created', { room_id: roomId });
 }
 
 export async function watchRoom(

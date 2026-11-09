@@ -66,9 +66,8 @@ test('shows ordered sectors, mission summaries, supports and answer feedback', a
 
   await student.click();
   const sectors = page
-    .locator('.room-students .collapsible-content')
-    .first()
-    .locator(':scope > .collapsible > .collapsible-trigger');
+    .getByRole('group', { name: 'Setores de Aluno de teste', exact: true })
+    .locator(':scope > .accordion-item > div > h3 > .accordion-trigger');
 
   await expect(sectors).toHaveText([
     'Estação de lançamento · Em andamento',

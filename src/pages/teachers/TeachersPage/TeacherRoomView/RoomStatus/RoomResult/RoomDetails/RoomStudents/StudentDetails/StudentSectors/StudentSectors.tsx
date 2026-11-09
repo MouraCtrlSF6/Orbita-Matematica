@@ -9,20 +9,22 @@ export interface StudentSectorsProps {
 }
 
 export function StudentSectors({ student }: StudentSectorsProps) {
-  const items = sectors.flatMap(({ id }) => {
-    const sector = student.sectors[id];
-
-    return sector
-      ? [
-          {
-            value: id,
-            title: <SectorTitle sector={sector} />,
-            content: <StudentSector sector={sector} />,
-            keepMounted: true,
-          },
-        ]
-      : [];
-  });
+  const items = sectors.flatMap(({ id }) => sectorSection(student, id));
 
   return <Accordion label={`Setores de ${student.name}`} type="single" collapsible items={items} />;
+}
+
+function sectorSection(student: RoomStudent, id: (typeof sectors)[number]['id']) {
+  const sector = student.sectors[id];
+
+  return sector
+    ? [
+        {
+          value: id,
+          title: <SectorTitle sector={sector} />,
+          content: <StudentSector sector={sector} />,
+          keepMounted: true,
+        },
+      ]
+    : [];
 }

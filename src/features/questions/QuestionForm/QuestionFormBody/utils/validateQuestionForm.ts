@@ -3,14 +3,17 @@ export function validateQuestionForm(form: HTMLFormElement): boolean {
   if (form.checkValidity()) return true;
   const invalid = form.querySelector<HTMLElement>(':invalid:not(fieldset)');
 
-  requestAnimationFrame(() => {
-    const target = invalid?.dataset.focusId
-      ? document.getElementById(invalid.dataset.focusId)
-      : invalid;
-
-    target?.focus();
-  });
+  // Allow invalid handlers to reopen collapsed sections before moving focus.
+  requestAnimationFrame(() => requestAnimationFrame(() => focusInvalidControl(invalid)));
   return false;
+}
+
+function focusInvalidControl(invalid: HTMLElement | null) {
+  const target = invalid?.dataset.focusId
+    ? document.getElementById(invalid.dataset.focusId)
+    : invalid;
+
+  target?.focus();
 }
 
 function validateRequiredText(element: Element) {

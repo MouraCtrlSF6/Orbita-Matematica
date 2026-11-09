@@ -1,15 +1,16 @@
 import { Button } from '../../../../../../../components/Button/Button';
 import { ButtonVariant } from '../../../../../../../components/Button/button-styles';
 import type { FlightViewProps } from '../../../../flight-scene-types';
+import type { ControlKey } from '../../../flight-panels-types';
 
 export interface FlightControlProps {
-  control: string[];
+  control: ControlKey;
   controller: FlightViewProps['controller'];
   paused?: boolean;
 }
 
 export function FlightControl({
-  control: [key, symbol, label],
+  control: { key, symbol, label },
   controller,
   paused,
 }: FlightControlProps) {

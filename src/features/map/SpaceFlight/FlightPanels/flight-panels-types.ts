@@ -1,3 +1,4 @@
+import type { ReactNode } from 'react';
 import type { FlightViewProps } from '../flight-scene-types';
 
 export interface FlightPanelsProps {
@@ -7,4 +8,10 @@ export interface FlightPanelsProps {
   nextId?: string;
   nearId?: string;
   paused?: boolean;
+}
+
+export interface ControlKey {
+  key: string;
+  symbol: ReactNode;
+  label: string;
 }

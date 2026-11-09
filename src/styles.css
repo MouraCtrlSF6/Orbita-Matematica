@@ -43,6 +43,7 @@
   }
   button {
     @apply cursor-pointer;
+    text-transform: inherit;
   }
   button {
     transition:

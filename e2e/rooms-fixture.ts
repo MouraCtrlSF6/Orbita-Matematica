@@ -3,6 +3,19 @@ import { test as base, type Page } from '@playwright/test';
 const roomId = 'b12ae140-fc6a-4690-ab61-5bfbb91a8d19';
 
 export async function mockRoomBackend(page: Page) {
+  await page.route('**/src/infrastructure/firebase/firebase-app.ts*', (route) =>
+    route.fulfill({
+      contentType: 'text/javascript',
+      body: `
+        export function initializeFirebaseAnalytics() {}
+        export async function logFirebaseEvent(name, parameters) {
+          const events = JSON.parse(sessionStorage.getItem('mock-analytics-events') ?? '[]');
+          sessionStorage.setItem('mock-analytics-events', JSON.stringify([...events, { name, parameters }]));
+        }
+      `,
+    }),
+  );
+
   await page.route('**/src/infrastructure/firebase/room-catalog.ts*', (route) =>
     route.fulfill({
       contentType: 'text/javascript',

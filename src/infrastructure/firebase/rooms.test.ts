@@ -2,6 +2,7 @@ import { defaultRoomCatalog, storeRoomCatalog } from '../../game/room-catalog';
 import { afterEach, beforeEach, expect, it, vi } from 'vitest';
 import {
   createRoom,
+  deleteRoom,
   findRoomByName,
   getRoomUser,
   registerStudent,
@@ -11,6 +12,7 @@ import {
 import { browserSessionPersistence, inMemoryPersistence, initializeAuth } from 'firebase/auth';
 import { initialSave } from '../../game/progress';
 import { initialRoomStudent } from '../../game/room-progress';
+import { logFirebaseEvent } from './firebase-app';
 
 const { signIn, unsubscribe, goOffline, subscribe, auth } = vi.hoisted(() => ({
   signIn: vi.fn(),
@@ -22,6 +24,7 @@ const { signIn, unsubscribe, goOffline, subscribe, auth } = vi.hoisted(() => ({
 
 vi.mock('./firebase-app', () => ({
   initializeFirebase: () => ({ options: { databaseURL: 'https://rooms.example.test/' } }),
+  logFirebaseEvent: vi.fn(),
 }));
 
 vi.mock('firebase/auth', () => ({
@@ -42,6 +45,7 @@ vi.mock('firebase/database', () => ({
 afterEach(() => vi.unstubAllGlobals());
 
 beforeEach(() => {
+  vi.mocked(logFirebaseEvent).mockClear();
   auth.currentUser = null;
   auth.authStateReady.mockReset().mockResolvedValue(undefined);
   signIn.mockReset();
@@ -76,6 +80,7 @@ it('grava os metadados da sala com o UID autenticado sem sobrescrever os alunos'
 
   await createRoom('room-id', 'turma teste');
 
+  expect(logFirebaseEvent).toHaveBeenCalledExactlyOnceWith('room_created', { room_id: 'room-id' });
   expect(fetch).toHaveBeenCalledWith(
     new URL('https://rooms.example.test/.json?auth=test-token'),
     expect.objectContaining({
@@ -88,6 +93,34 @@ it('grava os metadados da sala com o UID autenticado sem sobrescrever os alunos'
     }),
   );
 });
+
+it.each([
+  {
+    operation: createRoom,
+    event: 'room_created',
+    confirmed: '11111111-1111-4111-8111-111111111111',
+    rejected: null,
+  },
+  { operation: deleteRoom, event: 'room_deleted', confirmed: null, rejected: true },
+])(
+  'logs $event only after the room operation is confirmed',
+  async ({ operation, event, confirmed, rejected }) => {
+    const roomId = '11111111-1111-4111-8111-111111111111';
+    const fetch = vi
+      .fn()
+      .mockRejectedValueOnce(new Error('PATCH failed'))
+      .mockResolvedValueOnce(new Response(JSON.stringify(rejected)))
+      .mockRejectedValueOnce(new Error('Response lost'))
+      .mockResolvedValueOnce(new Response(JSON.stringify(confirmed)));
+    vi.stubGlobal('fetch', fetch);
+
+    await expect(operation(roomId, 'turma teste')).rejects.toThrow('PATCH failed');
+    expect(logFirebaseEvent).not.toHaveBeenCalled();
+
+    await operation(roomId, 'turma teste');
+    expect(logFirebaseEvent).toHaveBeenCalledExactlyOnceWith(event, { room_id: roomId });
+  },
+);
 
 it('busca por nome no índice sem ler a coleção de salas', async () => {
   const roomId = '11111111-1111-4111-8111-111111111111';

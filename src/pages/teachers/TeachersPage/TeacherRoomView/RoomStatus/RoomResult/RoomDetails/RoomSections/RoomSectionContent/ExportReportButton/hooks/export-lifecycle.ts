@@ -1,4 +1,5 @@
 import type { MutableRefObject } from 'react';
+import { logFirebaseEvent } from '../../../../../../../../../../../infrastructure/firebase/firebase-app';
 import { loadRoomCatalog } from '../../../../../../../../../../../infrastructure/firebase/room-catalog';
 import type { ReportSnapshot } from '../../../../../../../../../../../game/report-types';
 import type { ReportResponse } from '../../../../../../../../../../../features/room-report/report-worker-types';
@@ -37,6 +38,7 @@ function receive(
   try {
     downloadReport(event.data.blob, snapshot);
     finish(lifecycle);
+    void logFirebaseEvent('room_report_pdf_generated', { room_id: snapshot.roomId });
   } catch {
     failure(lifecycle);
   }

@@ -15,3 +15,39 @@ export function initializeFirebase() {
   const { apiKey, projectId, appId } = firebaseConfig;
   if (apiKey && projectId && appId) return initializeApp(firebaseConfig);
 }
+
+async function loadFirebaseAnalytics() {
+  try {
+    const app = initializeFirebase();
+
+    if (!app) return;
+
+    const { getAnalytics, isSupported, logEvent } = await import('firebase/analytics');
+
+    const supported = await isSupported();
+
+    if (supported)
+      return {
+        analytics: getAnalytics(app),
+        logEvent,
+      };
+  } catch {
+    /* empty */
+  }
+}
+
+let analyticsPromise: ReturnType<typeof loadFirebaseAnalytics> | undefined;
+
+export function initializeFirebaseAnalytics() {
+  return (analyticsPromise ??= loadFirebaseAnalytics());
+}
+
+export async function logFirebaseEvent(name: string, parameters: Record<string, string>) {
+  try {
+    const sdk = await initializeFirebaseAnalytics();
+
+    sdk?.logEvent(sdk.analytics, name, parameters);
+  } catch {
+    // Collection failures must not affect the action that triggered the event.
+  }
+}

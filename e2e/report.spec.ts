@@ -49,6 +49,10 @@ test('downloads the actual worker-generated PDF, shows loading and keeps the UI 
   expect(result.suggestedFilename()).toMatch(/^orbita-relatorio-turma-teste-.*\.pdf$/);
   await result.saveAs(test.info().outputPath('report.pdf'));
   await expect(button).toBeEnabled();
+  const roomId = await page.evaluate(() => localStorage.getItem('mock-room-id'));
+  expect(
+    await page.evaluate(() => JSON.parse(sessionStorage.getItem('mock-analytics-events') ?? '[]')),
+  ).toEqual([{ name: 'room_report_pdf_generated', parameters: { room_id: roomId } }]);
   await page.setViewportSize({ width: 390, height: 844 });
   await expect(button).toBeInViewport();
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
@@ -66,6 +70,7 @@ test('exports an empty room and recovers from a catalog failure', async ({ page 
     page.getByText('Não foi possível gerar o PDF. Tente novamente.', { exact: true }),
   ).toBeVisible();
   await expect(button).toBeEnabled();
+  expect(await page.evaluate(() => sessionStorage.getItem('mock-analytics-events'))).toBeNull();
   await page.evaluate(() => localStorage.removeItem('mock-catalog-read-error'));
   const download = page.waitForEvent('download');
   await button.click();

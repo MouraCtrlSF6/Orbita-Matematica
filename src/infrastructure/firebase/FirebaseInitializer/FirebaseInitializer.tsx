@@ -1,9 +1,9 @@
 import { useEffect } from 'react';
-import { initializeFirebase } from '../firebase-app';
+import { initializeFirebaseAnalytics } from '../firebase-app';
 
 export function FirebaseInitializer() {
   useEffect(() => {
-    initializeFirebase();
+    void initializeFirebaseAnalytics();
   }, []);
   return null;
 }

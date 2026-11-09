@@ -118,8 +118,13 @@ test('opens profile selection and navigates the cards with the keyboard and hist
   await page.getByRole('button', { name: 'Entrar na sala' }).click();
   await expect(page.getByRole('alert')).toContainText('Sala não encontrada');
   await expect(page.locator('main#main')).toHaveCount(0);
+  expect(await page.evaluate(() => sessionStorage.getItem('mock-analytics-events'))).toBeNull();
   await enterRoom(page);
   await expect(page.locator('main#main')).toBeVisible();
+  const roomId = await page.evaluate(() => localStorage.getItem('mock-room-id'));
+  expect(
+    await page.evaluate(() => JSON.parse(sessionStorage.getItem('mock-analytics-events') ?? '[]')),
+  ).toEqual([{ name: 'student_room_entrance', parameters: { room_id: roomId } }]);
 });
 
 test('places plain profile navigation below the form and shows the button in the dashboard', async ({

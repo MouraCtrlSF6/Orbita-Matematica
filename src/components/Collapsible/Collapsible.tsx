@@ -1,13 +1,10 @@
+import { CollapsibleContent } from './CollapsibleContent/CollapsibleContent';
 import type { ComponentProps, ReactNode } from 'react';
 import * as CollapsiblePrimitive from '@radix-ui/react-collapsible';
 import { mergeClasses } from '../utils/merge-classes';
 import type { CollapsibleTriggerProps } from './CollapsibleTrigger/CollapsibleTrigger';
 import { CollapsibleHeading } from './CollapsibleHeading/CollapsibleHeading';
-import {
-  CollapsibleVariant,
-  collapsibleStyles,
-  collapsibleContentStyles,
-} from './collapsible-styles';
+import { CollapsibleVariant, collapsibleStyles } from './collapsible-styles';
 
 export interface CollapsibleProps extends Omit<
   ComponentProps<typeof CollapsiblePrimitive.Root>,
@@ -45,24 +42,9 @@ export function Collapsible({
       )}
     >
       <CollapsibleHeading {...triggerProps} heading={heading} title={title} variant={variant} />
-      <CollapsiblePrimitive.Content
-        {...contentProps}
-        forceMount={keepMounted || undefined}
-        className={mergeClasses(
-          'collapsible-content overflow-hidden ds-reduced-motion:animate-none',
-          keepMounted && 'collapsible-content-persistent',
-        )}
-      >
-        <div className="collapsible-content-layout ds-reduced-motion:transition-none">
-          <div className="min-h-0 overflow-hidden">
-            <div
-              className={mergeClasses(collapsibleContentStyles[variant], contentProps?.className)}
-            >
-              {children}
-            </div>
-          </div>
-        </div>
-      </CollapsiblePrimitive.Content>
+      <CollapsibleContent variant={variant} keepMounted={keepMounted} contentProps={contentProps}>
+        {children}
+      </CollapsibleContent>
     </CollapsiblePrimitive.Root>
   );
 }

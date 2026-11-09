@@ -4,8 +4,9 @@ import { PreferenceSetting } from './PreferenceSetting/PreferenceSetting';
 const preferenceDefinitions: PreferenceDefinition[] = [
   {
     key: 'largeText',
-    title: 'Texto maior',
-    description: 'Amplia os textos de toda a expedição.',
+    title: 'Texto maior e mais contraste',
+    description:
+      'Amplia os textos, usa caixa alta e aumenta o contraste de botões, alternativas e dicas.',
   },
   {
     key: 'reducedMotion',

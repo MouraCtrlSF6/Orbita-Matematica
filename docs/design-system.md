@@ -38,6 +38,8 @@ As variantes `ds-down-*` e `ds-up-wide` preservam comparações inclusivas. O `r
 
 ## Exceções intencionais
 
+Os botões herdam `text-transform` do contexto. Assim, a opção Texto maior e mais contraste aplica caixa alta também à navegação, aos apoios e aos controles de voo, sem alterar os textos armazenados nem a capitalização no modo padrão.
+
 - Bordas finas de 1px continuam em pixels para manter o traço original.
 - Posições, dimensões do mundo e transformações calculadas pelo controle de voo continuam no sistema de coordenadas em pixels da simulação. Converter esses números isoladamente alteraria câmera, radar e proximidade dos destinos.
 - Coordenadas e espessuras internas de SVG pertencem ao `viewBox` ou aos contratos dos ícones. Não são uma escala de espaçamento da interface.
@@ -66,6 +68,8 @@ Importar cada componente diretamente de `src/components/Component/Component.tsx`
 | `RadioGroup` | `label`, `options`, `value`/`defaultValue`, `onValueChange`, `name`, `required`, `disabled`, `orientation` | `RadioGroupVariant`: `Default` (padrão), `Cards`, em `RadioGroup/radio-group-styles.ts`                                                                                                               |
 
 `ButtonVariant.Text` atende ações de texto; `Subtle`, os apoios; `Navigation`, a barra lateral escura; e `Icon`, ações circulares com nome acessível explícito. `Danger` mantém a versão com contorno, enquanto `DangerSolid` atende confirmações destrutivas com fundo vermelho. As dimensões próprias dessas variantes são preservadas quando `size` é omitido; um `size` explícito substitui suas medidas. Classes identificadoras como `button`, `nav-item`, `subtle-button` e `icon-button` continuam disponíveis. Contextos de layout e os controles especiais de voo mantêm seus ajustes locais.
+
+Com a opção Texto maior e mais contraste ativa, a variante `ds-large-text` aplica os ajustes de contraste abaixo. Sem ela, os botões desabilitados mantêm a opacidade de 48% e as letras das alternativas e os números das dicas mantêm suas cores originais. No modo ampliado, botões desabilitados preservam a opacidade do texto. Nas variantes de superfície clara, usam fundo `selected`, texto `primary-hover` e borda `selected-border`, inclusive sob hover. As variantes de voo usam `flight-secondary`, `flight-secondary-ink` e `flight-secondary-border`; a navegação mantém suas cores na barra lateral. O estado continua indicado pelo atributo `disabled`, pelo cursor e pela ausência de deslocamento. As letras das alternativas e os números das dicas também usam `primary-hover`, para manter contraste de pelo menos 4,5:1 sobre branco e os respectivos fundos lilás, incluindo alternativas selecionadas.
 
 `ButtonVariant.OutlinePrimary` usa fundo transparente, contorno e texto roxos, com fundo lilás no hover. `ButtonVariant.Addition` também usa fundo transparente, com contorno em `amber-600` e texto em `amber-700` para manter o contraste; no hover, o contorno passa a `amber-700` e o fundo recebe uma cor suave. Os tokens âmbar mantêm os valores padrão do Tailwind CSS 4, registrados explicitamente porque o tema redefine a paleta. `AddButton`, em `src/components/AddButton/AddButton.tsx`, aplica a variante de inclusão e o `PlusIcon` do Radix. Sem filhos, ocupa um quadrado de `2.75rem` e exige um nome acessível; com filhos, exibe o ícone junto ao texto. A aba Questões e os controles de inclusão do formulário compartilham esse componente.
 

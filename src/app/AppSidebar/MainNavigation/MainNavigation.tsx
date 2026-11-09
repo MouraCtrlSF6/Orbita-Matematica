@@ -1,6 +1,6 @@
-import { useStudentGame } from '../../../pages/students/hooks/useStudentGame';
 import { IconName } from '../../../components/icon-names';
 import { Screen } from '../../../game/reducer';
+import { useStudentGame } from '../../../pages/students/hooks/useStudentGame';
 import { isExploration } from '../../app-navigation';
 import type { NavigationItemProps } from './NavigationItem/NavigationItem';
 import { NavigationItem } from './NavigationItem/NavigationItem';
@@ -25,10 +25,7 @@ export function MainNavigation() {
   ];
 
   return (
-    <nav
-      className="min-w-0 [grid-template-columns:minmax(0,_1fr)]"
-      aria-label="Navegação principal"
-    >
+    <nav className="min-w-0 grid-cols-[minmax(0,1fr)]" aria-label="Navegação principal">
       {items.map((item) => (
         <NavigationItem key={item.label} {...item} />
       ))}

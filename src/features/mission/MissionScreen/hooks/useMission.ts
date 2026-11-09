@@ -1,9 +1,15 @@
 import { useRef, useState, type Dispatch, type RefObject, type SetStateAction } from 'react';
-import { evaluate, isCorrect } from '../../../../game/math';
-import { ChallengeKind, type Mission, type MissionResult } from '../../../../game/types';
-import { useNarration } from './useNarration';
 import { sectors } from '../../../../content/sectors';
+import { evaluate, isCorrect } from '../../../../game/math';
 import { submittedAnswer, type MissionActivity } from '../../../../game/room-progress';
+import {
+  ChallengeKind,
+  type Choice,
+  type Mission,
+  type MissionResult,
+} from '../../../../game/types';
+import { missionChoiceLabel } from '../utils/mission-choice-label';
+import { useNarration } from './useNarration';
 interface MissionState {
   answer: string;
   hints: number;
@@ -51,8 +57,26 @@ function narrationDetail(mission: Mission, state: MissionState): string {
   return mission.kind === ChallengeKind.Build ? '' : mission.formula;
 }
 
+function narrationChoices(choices: Choice[]): string {
+  const options = choices.map(({ label }, index) => `Opção ${missionChoiceLabel(index)}: ${label}`);
+
+  return `Escolha sua resposta:
+${options.join('\n')}`;
+}
+
+function narrationAnswer(mission: Mission): string {
+  if (mission.kind === ChallengeKind.Choice && mission.choices?.length) {
+    return narrationChoices(mission.choices);
+  }
+
+  return '';
+}
+
 function narrationText(mission: Mission, state: MissionState): string {
-  return `${mission.prompt} ${narrationDetail(mission, state)}`
+  return `${mission.prompt} ${narrationDetail(mission, state)}. ${narrationAnswer(mission)}`
+    .replaceAll('/', ' dividido por ')
+    .replaceAll('÷', ' dividido por ')
+    .replaceAll('-', ' menos ')
     .replaceAll('×', ' vezes ')
     .replaceAll('+', ' mais ')
     .replaceAll('=', ' igual a ');

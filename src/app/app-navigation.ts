@@ -1,8 +1,8 @@
 import type { Dispatch, SetStateAction } from 'react';
 import { Screen, type GameAction, type GameState } from '../game/reducer';
-import type { MissionResult, SavedGame } from '../game/types';
-import type { Point } from '../game/space';
 import type { MissionActivity } from '../game/room-progress';
+import type { Point } from '../game/space';
+import type { MissionResult, SavedGame } from '../game/types';
 export interface FlightSession {
   positions: Map<string, Point>;
   id: number;
@@ -47,7 +47,7 @@ export function appClassName(state: GameState): string {
     'app-shell flex min-h-[100vh] ds-down-mobile:block': true,
     'exploration-shell bg-space text-space-ink [&_main]:max-w-none [&_main]:pt-7 [&_main]:pr-7 [&_main]:pb-0 [&_main]:pl-7 ds-down-mobile:[&_main]:pt-5.5 ds-down-mobile:[&_main]:pr-3 ds-down-mobile:[&_main]:pb-0 ds-down-mobile:[&_main]:pl-3':
       isExploration(state.screen),
-    'large-text': state.save.preferences.largeText,
+    'large-text uppercase font-[Arial,Verdana]': state.save.preferences.largeText,
     'reduce-motion': state.save.preferences.reducedMotion,
   };
 

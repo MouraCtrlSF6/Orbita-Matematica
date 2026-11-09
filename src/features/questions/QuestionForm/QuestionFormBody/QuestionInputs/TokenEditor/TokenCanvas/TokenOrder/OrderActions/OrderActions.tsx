@@ -1,8 +1,8 @@
-import { TooltipButton } from '../../../../../../../../../components/Tooltip/TooltipButton/TooltipButton';
-import { ButtonVariant } from '../../../../../../../../../components/Button/button-styles';
 import { TrashIcon } from '@radix-ui/react-icons';
-import { orderAvailability } from './order-availability';
+import { ButtonVariant } from '../../../../../../../../../components/Button/button-styles';
+import { TooltipButton } from '../../../../../../../../../components/Tooltip/TooltipButton/TooltipButton';
 import { MovePieceButton } from './MovePieceButton/MovePieceButton';
+import { orderAvailability } from './order-availability';
 
 interface OrderActionsProps {
   selected: number;
@@ -24,7 +24,7 @@ export function OrderActions({ selected, count, move, remove }: OrderActionsProp
         variant={ButtonVariant.Danger}
         onClick={remove}
       >
-        <TrashIcon aria-hidden />
+        <TrashIcon aria-hidden className="size-5" />
       </TooltipButton>
     </div>
   );

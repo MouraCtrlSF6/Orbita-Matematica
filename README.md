@@ -55,7 +55,13 @@ Versões fixadas no `package-lock.json`:
    ```
 
 4. Habilite o provedor **Anônimo** no Firebase Authentication e publique as [regras do Realtime Database](database.rules.json).
-5. Execute `npm run dev` e abra a URL informada pelo Vite, normalmente `http://127.0.0.1:5173/`.
+5. Para usar salas, registre o app Web no Firebase App Check com reCAPTCHA Enterprise e configure em `.env.local` a mesma Site Key pública usada nesse registro:
+
+   ```dotenv
+   VITE_FIREBASE_RECAPTCHA_ENTERPRISE_SITE_KEY=sua-site-key-publica
+   ```
+
+6. Execute `npm run dev` e abra a URL informada pelo Vite, normalmente `http://127.0.0.1:5173/`. Com App Check obrigatório, valide as salas em um domínio autorizado. Para testar as salas em localhost, consulte o [guia do provedor de depuração](https://firebase.google.com/docs/app-check/web/debug-provider) e mantenha o token de depuração fora do repositório e do build público.
 
 **Perfis:** `/sign` escolhe aluno ou professor; `/teachers` gerencia a sala; `/students` recebe o nome da sala e o nome completo do aluno.
 
@@ -63,7 +69,7 @@ Versões fixadas no `package-lock.json`:
 
 **Dados:** o Firebase recebe nomes, progresso e respostas. As regras atuais permitem leitura pública e restringem escritas por autenticação e permissões da sala. Não versione `.env` nem use credenciais administrativas em `VITE_*`: esses valores entram no JavaScript público.
 
-**Publicação:** o build em `dist/` suporta as três rotas e subdiretórios. O [workflow do GitHub Pages](.github/workflows/jekyll-gh-pages.yml) publica o frontend; forneça as variáveis Firebase no build e publique as regras do banco separadamente.
+**Publicação:** o build em `dist/` suporta as três rotas e subdiretórios. O [workflow do GitHub Pages](.github/workflows/jekyll-gh-pages.yml) publica o frontend. Cadastre a Site Key como variável do GitHub Actions com o mesmo nome usado no Vite e publique as regras do banco separadamente.
 
 ## ▶️ Comandos
 

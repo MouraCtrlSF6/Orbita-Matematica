@@ -1,20 +1,23 @@
 {
   "rules": {
-    ".read": true,
+    ".read": false,
     ".write": false,
     "roomNames": {
       "$name": {
+        ".read": "auth != null",
         ".write": "auth != null && ((!newData.exists() && data.isString() && root.child('rooms').child(data.val()).child('meta/ownerUid').val() === auth.uid && !newData.parent().parent().child('rooms').child(data.val()).exists()) || (newData.isString() && (!data.exists() || data.val() === newData.val()) && newData.parent().parent().child('rooms').child(newData.val()).child('meta/ownerUid').val() === auth.uid && newData.parent().parent().child('rooms').child(newData.val()).child('meta/name').val() === $name))",
         ".validate": "$name.matches(/^[a-z0-9][a-z0-9 -]{1,46}[a-z0-9]$/) && newData.val().matches(/^[a-f0-9]{8}(-[a-f0-9]{4}){3}-[a-f0-9]{12}$/)"
       }
     },
     "rooms": {
       "$roomId": {
+        ".read": "auth != null && data.child('meta/ownerUid').val() === auth.uid",
         ".write": "auth != null && data.child('meta/ownerUid').val() === auth.uid && !newData.exists() && (!data.child('meta/name').exists() || !newData.parent().parent().child('roomNames').child(data.child('meta/name').val()).exists())",
         "meta": {
           ".write": "auth != null && newData.exists() && (!data.exists() || (data.child('ownerUid').val() === auth.uid && data.child('name').val() === newData.child('name').val())) && newData.child('ownerUid').val() === auth.uid",
           ".validate": "newData.hasChildren(['open', 'ownerUid', 'name']) && newData.child('open').val() === true && newData.parent().parent().parent().child('roomNames').child(newData.child('name').val()).val() === $roomId",
           "open": {
+            ".read": "auth != null && !data.parent().parent().exists()",
             ".validate": "newData.val() === true"
           },
           "ownerUid": {
@@ -35,6 +38,7 @@
         },
         "students": {
           "$uid": {
+            ".read": "auth != null && auth.uid === $uid && root.child('rooms').child($roomId).child('meta/open').val() === true && !root.child('rooms').child($roomId).child('removedStudents').child($uid).exists()",
             ".write": "auth != null && ((auth.uid === $uid && root.child('rooms').child($roomId).child('meta/open').val() === true && !root.child('rooms').child($roomId).child('removedStudents').child($uid).exists() && newData.exists()) || (root.child('rooms').child($roomId).child('meta/ownerUid').val() === auth.uid && !newData.exists() && newData.parent().parent().child('removedStudents').child($uid).val() === true))",
             ".validate": "newData.hasChildren(['studentId', 'name', 'sectors'])",
             "studentId": {
@@ -121,6 +125,7 @@
           }
         },
         "catalog": {
+          ".read": "auth != null && data.parent().child('meta/open').val() === true && !data.parent().child('removedStudents').child(auth.uid).exists()",
           ".write": "auth != null && newData.exists() && newData.parent().child('meta/ownerUid').val() === auth.uid && newData.parent().child('meta/open').val() === true",
           ".validate": "newData.hasChildren(['revision', 'sectors']) && ((!data.exists() && newData.child('revision').val() >= 0) || newData.child('revision').val() === data.child('revision').val() + 1)",
           "revision": {

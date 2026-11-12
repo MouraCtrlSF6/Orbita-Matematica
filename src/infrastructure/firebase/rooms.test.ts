@@ -7,9 +7,11 @@ import {
   getRoomUser,
   registerStudent,
   removeStudent,
+  roomRequest,
   watchRoom,
 } from './rooms';
 import { browserSessionPersistence, inMemoryPersistence, initializeAuth } from 'firebase/auth';
+import { getToken, initializeAppCheck } from 'firebase/app-check';
 import { initialSave } from '../../game/progress';
 import { initialRoomStudent } from '../../game/room-progress';
 import { logFirebaseEvent } from './firebase-app';
@@ -34,6 +36,14 @@ vi.mock('firebase/auth', () => ({
   signInAnonymously: signIn,
 }));
 
+vi.mock('firebase/app-check', () => ({
+  initializeAppCheck: vi.fn(() => ({})),
+  ReCaptchaEnterpriseProvider: class {
+    constructor(readonly siteKey: string) {}
+  },
+  getToken: vi.fn(),
+}));
+
 vi.mock('firebase/database', () => ({
   getDatabase: () => 'database',
   goOffline,
@@ -42,9 +52,14 @@ vi.mock('firebase/database', () => ({
   onValue: subscribe,
 }));
 
-afterEach(() => vi.unstubAllGlobals());
+afterEach(() => {
+  vi.unstubAllGlobals();
+  vi.unstubAllEnvs();
+});
 
 beforeEach(() => {
+  vi.stubEnv('VITE_FIREBASE_RECAPTCHA_ENTERPRISE_SITE_KEY', 'test-site-key');
+  vi.mocked(getToken).mockReset().mockResolvedValue({ token: 'test-app-check-token' });
   vi.mocked(logFirebaseEvent).mockClear();
   auth.currentUser = null;
   auth.authStateReady.mockReset().mockResolvedValue(undefined);
@@ -54,16 +69,62 @@ beforeEach(() => {
 
 it('aguarda a restauração do UID antes de autenticar e prioriza persistência na aba', async () => {
   let restore: () => void = () => {};
-  auth.authStateReady.mockImplementation(() => new Promise<void>((resolve) => (restore = resolve)));
+  auth.authStateReady.mockImplementationOnce(
+    () => new Promise<void>((resolve) => (restore = resolve)),
+  );
   const pending = getRoomUser();
   expect(signIn).not.toHaveBeenCalled();
   auth.currentUser = { uid: 'restored-student' };
   restore();
   await expect(pending).resolves.toBe(auth.currentUser);
+  await expect(getRoomUser()).resolves.toBe(auth.currentUser);
+  expect(initializeAppCheck).toHaveBeenCalledExactlyOnceWith(expect.anything(), {
+    provider: expect.objectContaining({ siteKey: 'test-site-key' }),
+    isTokenAutoRefreshEnabled: true,
+  });
+  expect(initializeAppCheck).toHaveBeenCalledBefore(vi.mocked(initializeAuth));
   expect(signIn).not.toHaveBeenCalled();
   expect(initializeAuth).toHaveBeenCalledWith(expect.anything(), {
     persistence: [browserSessionPersistence, inMemoryPersistence],
   });
+});
+
+it('requires a configured site key before initializing room authentication', async () => {
+  vi.stubEnv('VITE_FIREBASE_RECAPTCHA_ENTERPRISE_SITE_KEY', ' ');
+  vi.mocked(initializeAuth).mockClear();
+
+  await expect(getRoomUser()).rejects.toThrow(
+    'A verificação de segurança das salas precisa ser configurada.',
+  );
+  expect(initializeAuth).not.toHaveBeenCalled();
+});
+
+it('does not send a room request when App Check cannot verify it', async () => {
+  const fetch = vi.fn();
+  vi.stubGlobal('fetch', fetch);
+  vi.mocked(getToken).mockRejectedValueOnce(new Error('reCAPTCHA unavailable'));
+  const user = await getRoomUser();
+
+  await expect(roomRequest('/roomNames/turma', user, {})).rejects.toThrow(
+    'Não foi possível verificar o acesso à sala.',
+  );
+  expect(fetch).not.toHaveBeenCalled();
+});
+
+it('does not send a room request canceled during verification', async () => {
+  const fetch = vi.fn();
+  vi.stubGlobal('fetch', fetch);
+  const controller = new AbortController();
+  vi.mocked(getToken).mockImplementationOnce(async () => {
+    controller.abort();
+    return { token: 'test-app-check-token' };
+  });
+  const user = await getRoomUser();
+
+  await expect(
+    roomRequest('/roomNames/turma', user, { signal: controller.signal }),
+  ).rejects.toThrow(expect.objectContaining({ name: 'AbortError' }));
+  expect(fetch).not.toHaveBeenCalled();
 });
 
 it('compartilha uma autenticação entre chamadas simultâneas e permite repetir após falha', async () => {
@@ -82,7 +143,7 @@ it('grava os metadados da sala com o UID autenticado sem sobrescrever os alunos'
 
   expect(logFirebaseEvent).toHaveBeenCalledExactlyOnceWith('room_created', { room_id: 'room-id' });
   expect(fetch).toHaveBeenCalledWith(
-    new URL('https://rooms.example.test/.json?auth=test-token'),
+    new URL('https://rooms.example.test/.json?auth=test-token&ac=test-app-check-token'),
     expect.objectContaining({
       method: 'PATCH',
       body: JSON.stringify({
@@ -134,7 +195,9 @@ it('busca por nome no índice sem ler a coleção de salas', async () => {
   await expect(findRoomByName('turma teste', signal)).resolves.toBe(roomId);
   await expect(findRoomByName('missing', signal)).resolves.toBe(null);
   expect(fetch).toHaveBeenCalledWith(
-    new URL('https://rooms.example.test/roomNames/turma%20teste.json?auth=test-token'),
+    new URL(
+      'https://rooms.example.test/roomNames/turma%20teste.json?auth=test-token&ac=test-app-check-token',
+    ),
     expect.objectContaining({ cache: 'no-store' }),
   );
 });
@@ -144,7 +207,9 @@ it('apaga o registro e bloqueia reenvios na mesma operação', async () => {
   vi.stubGlobal('fetch', fetch);
   await removeStudent('room-id', 'student-id');
   expect(fetch).toHaveBeenCalledWith(
-    new URL('https://rooms.example.test/rooms/room-id.json?auth=test-token'),
+    new URL(
+      'https://rooms.example.test/rooms/room-id.json?auth=test-token&ac=test-app-check-token',
+    ),
     expect.objectContaining({
       method: 'PATCH',
       body: JSON.stringify({ 'removedStudents/student-id': true, 'students/student-id': null }),
@@ -170,7 +235,7 @@ it('confirma o registro existente após reenvio do PUT condicional', async () =>
 
   expect(student).toEqual(previous);
   const path = new URL(
-    'https://rooms.example.test/rooms/room-id/students/teacher-uid.json?auth=test-token',
+    'https://rooms.example.test/rooms/room-id/students/teacher-uid.json?auth=test-token&ac=test-app-check-token',
   );
   expect(fetch).toHaveBeenNthCalledWith(
     1,

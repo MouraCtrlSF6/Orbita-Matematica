@@ -67,6 +67,7 @@ await request('', teacher, 'PATCH', { [`${room}/meta`]: meta, [indexPath]: roomI
 await request('', other, 'PATCH', duplicate, 401);
 await request(`${room}/catalog`, teacher, 'PUT', catalog, 401);
 await request(`${room}/catalog`, student, 'GET', undefined, 200);
+await request(`${room}/catalog`, null, 'GET', undefined, 401);
 await request(`${room}/catalog`, student, 'PUT', { ...catalog, revision: 1 }, 401);
 await request(`${room}/catalog`, other, 'PUT', { ...catalog, revision: 1 }, 401);
 await request(`${room}/catalog`, null, 'PUT', { ...catalog, revision: 1 }, 401);
@@ -96,8 +97,12 @@ await request(`${room}/catalog`, teacher, 'PUT', { ...catalog, revision: 1 }, 20
 await request(`${room}/catalog`, teacher, 'DELETE', undefined, 401);
 
 assert.equal(await request(indexPath, student, 'GET', undefined, 200), roomId);
-assert.equal((await request('roomNames', null, 'GET', undefined, 200))[roomName], roomId);
-await request(`${room}/meta/open`, student, 'GET', undefined, 200);
+await request(indexPath, null, 'GET', undefined, 401);
+await request('roomNames', null, 'GET', undefined, 401);
+await request('roomNames', student, 'GET', undefined, 401);
+await request('roomNames', teacher, 'GET', undefined, 401);
+assert.equal(await request(`${room}/meta/open`, teacher, 'GET', undefined, 200), true);
+await request(`${room}/meta/open`, student, 'GET', undefined, 401);
 await request(entry, student, 'PUT', profile, 200, { 'If-Match': 'null_etag' });
 await request(entry, student, 'PUT', profile, 412, { 'If-Match': 'null_etag' });
 assert.equal((await request(entry, student, 'GET', undefined, 200)).name, profile.name);
@@ -118,19 +123,22 @@ await request(
   { 'sectors/base': { sectorName: 'Base', sectorStatus: 'completed' } },
   200,
 );
-assert.equal((await request(entry, other, 'GET', undefined, 200)).name, profile.name);
+await request(entry, other, 'GET', undefined, 401);
+await request(entry, null, 'GET', undefined, 401);
 await request(entry, other, 'PATCH', patch, 401);
 await request(entry, null, 'PATCH', patch, 401);
-await request(`${room}/students`, student, 'GET', undefined, 200);
+await request(`${room}/students`, student, 'GET', undefined, 401);
+await request(`${room}/students`, null, 'GET', undefined, 401);
+await request('', null, 'GET', undefined, 401);
+await request('', teacher, 'GET', undefined, 401);
+await request('rooms', teacher, 'GET', undefined, 401);
+await request(room, other, 'GET', undefined, 401);
+await request(room, student, 'GET', undefined, 401);
+assert.equal((await request(room, teacher, 'GET', undefined, 200)).meta.ownerUid, teacher.localId);
 assert.equal(
-  (await request(`${room}/students`, null, 'GET', undefined, 200))[student.localId].name,
+  (await request(`${room}/students`, teacher, 'GET', undefined, 200))[student.localId].name,
   profile.name,
 );
-assert.equal(
-  (await request('', null, 'GET', undefined, 200)).rooms[roomId].students[student.localId].name,
-  profile.name,
-);
-await request(`${room}/students`, teacher, 'GET', undefined, 200);
 await request(`${room}/meta/open`, student, 'PUT', false, 401);
 await request(room, student, 'DELETE', undefined, 401);
 await request(room, teacher, 'DELETE', undefined, 401);
@@ -143,13 +151,18 @@ await request(entry, teacher, 'DELETE', undefined, 401);
 await request(room, other, 'PATCH', removal, 401);
 await request(room, teacher, 'PATCH', removal, 200);
 assert.equal(await request(entry, teacher, 'GET', undefined, 200), null);
+await request(entry, student, 'GET', undefined, 401);
+await request(`${room}/catalog`, student, 'GET', undefined, 401);
 await request(entry, student, 'PATCH', patch, 401);
 await request(entry, student, 'PUT', profile, 401);
 await request('', teacher, 'PATCH', { [room]: null, [indexPath]: null }, 200);
 assert.equal(await request(indexPath, student, 'GET', undefined, 200), null);
 await request('', other, 'PATCH', duplicate, 200);
 assert.equal(await request(indexPath, student, 'GET', undefined, 200), nextRoomId);
+await request(`rooms/${nextRoomId}`, teacher, 'GET', undefined, 401);
+assert.equal(await request(`rooms/${nextRoomId}/catalog`, student, 'GET', undefined, 200), null);
 await request(entry, student, 'PATCH', patch, 401);
 await request(entry, student, 'PUT', profile, 401);
-assert.equal(await request(`${room}/meta/open`, student, 'GET', undefined, 200), null);
+assert.equal(await request(`${room}/meta/open`, teacher, 'GET', undefined, 200), null);
+await request(`${room}/meta/open`, null, 'GET', undefined, 401);
 console.log('Regras de entrada, leitura, atualização e exclusão verificadas.');

@@ -9,6 +9,8 @@ import {
   type User,
 } from 'firebase/auth';
 import { initializeFirebase, logFirebaseEvent } from './firebase-app';
+import { getRoomAppCheck } from './firebase-app-check';
+import { getToken, type AppCheck } from 'firebase/app-check';
 import { initialRoomStudent, type RoomStudent } from '../../game/room-progress';
 import type { Mission, SavedGame } from '../../game/types';
 import { readRoomStudent, readRoomStudents } from './room-records';
@@ -28,7 +30,11 @@ function getRoomBackend() {
   const app = initializeFirebase();
   if (!app?.options.databaseURL)
     throw new RoomError('O banco de dados das salas precisa ser configurado.');
-  return { app, databaseURL: app.options.databaseURL };
+  const appCheck = getRoomAppCheck(app);
+
+  if (!appCheck)
+    throw new RoomError('A verificação de segurança das salas precisa ser configurada.');
+  return { app, appCheck, databaseURL: app.options.databaseURL };
 }
 
 export async function getRoomUser() {
@@ -53,9 +59,31 @@ export async function roomRequest(
   options: RequestInit,
   acceptedStatus = 0,
 ) {
-  const { databaseURL } = getRoomBackend();
+  const { appCheck, databaseURL } = getRoomBackend();
   const url = new URL(`${path}.json`, databaseURL);
-  url.searchParams.set('auth', await user.getIdToken());
+  options.signal?.throwIfAborted();
+  const [authToken, appCheckToken] = await Promise.all([
+    user.getIdToken(),
+    getRoomAppCheckToken(appCheck),
+  ]);
+
+  options.signal?.throwIfAborted();
+  url.searchParams.set('auth', authToken);
+  url.searchParams.set('ac', appCheckToken);
+  return fetchRoom(url, options, acceptedStatus);
+}
+
+async function getRoomAppCheckToken(appCheck: AppCheck) {
+  try {
+    const { token } = await getToken(appCheck);
+
+    return token;
+  } catch {
+    throw new RoomError('Não foi possível verificar o acesso à sala. Tente novamente.');
+  }
+}
+
+async function fetchRoom(url: URL, options: RequestInit, acceptedStatus: number) {
   const timeout = AbortSignal.timeout(12_000);
   const signal = options.signal ? AbortSignal.any([options.signal, timeout]) : timeout;
   const response = await fetch(url, { ...options, signal, cache: 'no-store' });

@@ -1,6 +1,11 @@
 import type { Plugin } from 'vite';
 import { fixedRoutes } from './fixed-routes';
 
+function getPublishedBase() {
+  const path = (process.env.PAGES_BASE_PATH ?? '').replace(/^\/+|\/+$/g, '');
+  return path ? `/${path}/` : '/';
+}
+
 function htmlForBase(html: string, base: string) {
   return html
     .replace('<meta name="app-base" content="./"', `<meta name="app-base" content="${base}"`)
@@ -27,6 +32,11 @@ export function publishRouteEntries(): Plugin {
             source: htmlForBase(entry.source, '../'.repeat(depth)),
           });
         }
+        this.emitFile({
+          type: 'asset',
+          fileName: '404.html',
+          source: htmlForBase(entry.source, getPublishedBase()),
+        });
       },
     },
   };

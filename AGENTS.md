@@ -58,4 +58,4 @@ Para código/conteúdo, executar testes afetados, lint e build; para código de 
 npx --yes firebase-tools@14 emulators:exec --project demo-orbita --only auth,database "node scripts/test-database-rules.mjs"
 ```
 
-Para documentação, conferir referências e formatação. Informar validações executadas e limitações. Preservar `base: './'`, meta `app-base`, basename e entradas HTML das rotas para publicação estática em subdiretórios. O workflow de Pages está em `.github/workflows/jekyll-gh-pages.yml`; conferir sua configuração antes de descrever o deploy. Usar commits curtos no imperativo e PRs com comportamento, validação e imagens para mudanças visuais.
+Para documentação, conferir referências e formatação. Informar validações executadas e limitações. Preservar `base: './'`, meta `app-base`, basename, entradas HTML geradas para rotas fixas e fallback `404.html` para publicação estática em subdiretórios. O workflow de Pages está em `.github/workflows/jekyll-gh-pages.yml`; conferir sua configuração antes de descrever o deploy. Usar commits curtos no imperativo e PRs com comportamento, validação e imagens para mudanças visuais.

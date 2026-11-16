@@ -69,7 +69,7 @@ Versões fixadas no `package-lock.json`:
 
 **Dados:** o Firebase recebe nomes, progresso e respostas. As regras do repositório exigem autenticação para ler dados. Somente o proprietário pode ler a sala inteira e listar seus alunos. Para entrar e jogar, usuários autenticados podem buscar o nome exato da sala, carregar o catálogo de uma sala aberta e reler o próprio registro, conforme as permissões da sala. Não versione `.env` nem use credenciais administrativas em `VITE_*`: esses valores entram no JavaScript público.
 
-**Publicação:** o build em `dist/` suporta as três rotas e subdiretórios. O [workflow do GitHub Pages](.github/workflows/jekyll-gh-pages.yml) publica o frontend. Cadastre a Site Key como variável do GitHub Actions com o mesmo nome usado no Vite e publique as regras do banco separadamente.
+**Publicação:** o build em `dist/` gera HTML para os caminhos fixos e um `404.html` que carrega as rotas dinâmicas. No Pages a abertura direta dessas rotas carrega a aplicação com status HTTP 404. Use `PAGES_BASE_PATH` no build para testar o fallback em um subdiretório. O [workflow do GitHub Pages](.github/workflows/jekyll-gh-pages.yml) publica o frontend. Cadastre a Site Key como variável do GitHub Actions com o mesmo nome usado no Vite e publique as regras do banco separadamente.
 
 ## ▶️ Comandos
 

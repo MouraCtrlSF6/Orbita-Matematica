@@ -20,9 +20,12 @@ async function openMission(page: Page, mission: Mission) {
   const sector = sectors.find((item) => item.id === mission.sectorId)!;
   if (!(await page.getByRole('heading', { name: sector.name, exact: true }).isVisible())) {
     await page.getByRole('button', { name: 'Mapa da expedição', exact: true }).click();
+    await expect(page.getByRole('heading', { name: 'O universo espera por você.' })).toBeVisible();
     await visitDestination(page, sector.name);
+    await expect(page.getByRole('heading', { name: sector.name, exact: true })).toBeVisible();
   }
   await visitDestination(page, mission.title);
+  await expect(page.getByRole('heading', { name: mission.title, exact: true })).toBeVisible();
 }
 
 interface Response {
@@ -164,7 +167,7 @@ test('isolates progress for students in the same room and browser', async ({ pag
   await page.reload();
   await enterRoom(page, { name: 'Terceira aluna', resume: false });
   await expect(page.locator('main#main')).toBeVisible();
-  await page.getByRole('button', { name: 'Retomar exploração' }).click();
+  await page.getByRole('button', { name: 'Voltar ao setor' }).click();
   await expect(page.locator(`[data-destination="${mission.id}"]`)).not.toHaveClass(
     /(^|\s)complete(\s|$)/,
   );
@@ -174,6 +177,7 @@ test('supports keyboard, preferences, reduced motion and confirmed reset', async
   await page.emulateMedia({ reducedMotion: 'reduce' });
   await page.goto('/students');
   await enterRoom(page);
+  await expect(page.locator('main#main')).toBeVisible();
   await page.keyboard.press('Tab');
   await expect(page.getByRole('link', { name: 'Pular para o conteúdo' })).toBeFocused();
   await page.keyboard.press('Enter');

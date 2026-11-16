@@ -38,9 +38,9 @@ test('opens both profiles with the keyboard', async ({ page }) => {
   await page.keyboard.press('Tab');
   await expect(page.getByRole('link', { name: 'Sou Professor', exact: true })).toBeFocused();
   await page.keyboard.press('Enter');
-  await expect(page).toHaveURL(/\/teachers$/);
+  await expect(page).toHaveURL(/\/teachers\/rooms\/create$/);
   await page.goBack();
   await page.getByRole('link', { name: 'Sou aluno', exact: true }).focus();
   await page.keyboard.press('Enter');
-  await expect(page).toHaveURL(/\/students$/);
+  await expect(page).toHaveURL(/\/students\/rooms\/enter$/);
 });

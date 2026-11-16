@@ -1,15 +1,20 @@
 import { useState } from 'react';
 import type { LocalSession } from '../../session';
-import type { StudentRoom } from '../../../../pages/students/room-sync';
+import type { StudentRoom } from '../../../../modules/students/session/room-sync';
 import { useSessionRole } from './useSessionRole';
-import { useTeacherRoomState } from './useTeacherRoomState';
 
 export function useLocalSession(): LocalSession {
   const [localSessionId] = useState(() => crypto.randomUUID());
-  const [studentRoom, setStudentRoom] = useState<StudentRoom | null>(null);
+  const [student, setStudent] = useState<{ room: StudentRoom; name: string } | null>(null);
   const role = useSessionRole();
-  const teacher = useTeacherRoomState(role === 'teacher');
 
-  if (role !== 'student' && studentRoom) setStudentRoom(null);
-  return { role, localSessionId, studentRoom, setStudentRoom, ...teacher };
+  if (role !== 'student' && student) setStudent(null);
+
+  return {
+    role,
+    localSessionId,
+    studentRoom: student?.room ?? null,
+    studentRoomName: student?.name ?? null,
+    setStudentRoom: (room, name) => setStudent({ room, name }),
+  };
 }

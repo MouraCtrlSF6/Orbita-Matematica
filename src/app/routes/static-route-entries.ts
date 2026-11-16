@@ -1,10 +1,27 @@
 import type { Plugin } from 'vite';
+import { fixedRoutes } from './fixed-routes';
+import { getHomeUrl, homeWithSeo, sitemapFor, utilityPageWithSeo } from './static-seo';
 
-const routeEntries = ['sign/index.html', 'students/index.html', 'teachers/index.html'];
+const routeTitles: Record<keyof typeof fixedRoutes, string> = {
+  sign: 'Escolher perfil',
+  teachers: 'Área do professor',
+  teacherRooms: 'Salas do professor',
+  createRoom: 'Criar sala',
+  students: 'Área do aluno',
+  studentRooms: 'Salas do aluno',
+  enterRoom: 'Entrar na sala',
+};
 
-const pagesDirectory = 'src/pages/';
+function getPublishedBase() {
+  const path = (process.env.PAGES_BASE_PATH ?? '').replace(/^\/+|\/+$/g, '');
+  return path ? `/${path}/` : '/';
+}
 
-export const routeInputs = ['index.html', ...routeEntries.map((entry) => pagesDirectory + entry)];
+function htmlForBase(html: string, base: string) {
+  return html
+    .replace('<meta name="app-base" content="./"', `<meta name="app-base" content="${base}"`)
+    .replaceAll(/((?:href|src)=")\.\//g, (_match, prefix: string) => prefix + base);
+}
 
 export function publishRouteEntries(): Plugin {
   return {
@@ -13,25 +30,38 @@ export function publishRouteEntries(): Plugin {
     generateBundle: {
       order: 'post',
       handler(_options, bundle) {
-        for (const fileName of routeEntries) {
-          const originalPath = pagesDirectory + fileName;
+        const entry = bundle['index.html'];
 
-          const entry = bundle[originalPath];
-
-          if (entry?.type !== 'asset' || typeof entry.source !== 'string') {
-            this.error(`Entrada HTML ausente: ${originalPath}`);
-          }
-
-          // Removing src/pages/ moves the HTML two levels closer to its assets.
-          const source = entry.source.replaceAll(/((?:href|src)=")\.\.\/\.\.\/\.\.\//g, '$1../');
-
-          bundle[fileName] = {
-            ...entry,
-            fileName,
-            source,
-          };
-          delete bundle[originalPath];
+        if (entry?.type !== 'asset' || typeof entry.source !== 'string') {
+          return this.error('Entrada HTML ausente: index.html');
         }
+        const homeUrl = getHomeUrl();
+        const template = entry.source;
+
+        for (const route of Object.keys(fixedRoutes) as (keyof typeof fixedRoutes)[]) {
+          const path = fixedRoutes[route];
+          const depth = path.split('/').length - 1;
+          this.emitFile({
+            type: 'asset',
+            fileName: `${path.slice(1)}/index.html`,
+            source: utilityPageWithSeo(
+              htmlForBase(template, '../'.repeat(depth)),
+              routeTitles[route],
+            ),
+          });
+        }
+        this.emitFile({
+          type: 'asset',
+          fileName: '404.html',
+          source: utilityPageWithSeo(htmlForBase(template, getPublishedBase()), 'Acesso direto'),
+        });
+        entry.source = homeWithSeo(template, homeUrl);
+        this.emitFile({ type: 'asset', fileName: 'sitemap.xml', source: sitemapFor(homeUrl) });
+        this.emitFile({
+          type: 'asset',
+          fileName: 'robots.txt',
+          source: `User-agent: *\nAllow: /\n\nSitemap: ${new URL('sitemap.xml', homeUrl).href}\n`,
+        });
       },
     },
   };

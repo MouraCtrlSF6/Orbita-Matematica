@@ -1,9 +1,9 @@
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { expect, it, vi } from 'vitest';
-import { Button } from '../Button/Button';
-import { Tooltip } from './Tooltip';
-import { TooltipVariant } from './tooltip-styles';
+import { Button } from '../../Button/Button';
+import { Tooltip } from '../Tooltip';
+import { TooltipVariant } from '../tooltip-styles';
 
 it.each(Object.values(TooltipVariant))(
   'describes the focused trigger and dismisses with Escape for variant %s',

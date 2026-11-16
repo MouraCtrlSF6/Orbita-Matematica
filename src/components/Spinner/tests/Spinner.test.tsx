@@ -2,8 +2,8 @@ import { createRef } from 'react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { describe, expect, it, vi } from 'vitest';
-import { Button } from '../Button/Button';
-import { Spinner } from './Spinner';
+import { Button } from '../../Button/Button';
+import { Spinner } from '../Spinner';
 
 describe('Spinner', () => {
   it('provides a default status and forwards sizing, classes and refs', () => {

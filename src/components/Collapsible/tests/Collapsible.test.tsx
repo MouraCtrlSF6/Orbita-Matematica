@@ -2,8 +2,8 @@ import { createRef } from 'react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { expect, it, vi } from 'vitest';
-import { Collapsible } from './Collapsible';
-import { CollapsibleVariant } from './collapsible-styles';
+import { Collapsible } from '../Collapsible';
+import { CollapsibleVariant } from '../collapsible-styles';
 
 it.each(Object.values(CollapsibleVariant))(
   'supports keyboard toggling and linked content with variant %s',

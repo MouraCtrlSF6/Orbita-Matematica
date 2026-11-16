@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import { expect, it } from 'vitest';
-import { Breadcrumb } from './Breadcrumb';
+import { Breadcrumb } from '../Breadcrumb';
 
 it('marks the current section without inventing navigation links', () => {
   const { rerender } = render(

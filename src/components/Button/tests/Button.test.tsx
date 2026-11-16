@@ -2,7 +2,7 @@ import { createRef } from 'react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { describe, expect, it, vi } from 'vitest';
-import { Button } from './Button';
+import { Button } from '../Button';
 
 describe('Button', () => {
   it('defaults to a non-submitting button and forwards refs', async () => {

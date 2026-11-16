@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { expect, it, vi } from 'vitest';
-import { Checkbox } from './Checkbox';
+import { Checkbox } from '../Checkbox';
 
 it('submits named values and supports toggling through its label', async () => {
   render(

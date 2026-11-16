@@ -1,7 +1,7 @@
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { expect, it } from 'vitest';
-import { RadioGroup } from './RadioGroup';
+import { RadioGroup } from '../RadioGroup';
 
 it('moves selection with arrow keys, skips disabled options and submits one value', async () => {
   const user = userEvent.setup();

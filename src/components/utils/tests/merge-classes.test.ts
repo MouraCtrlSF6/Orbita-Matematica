@@ -1,5 +1,5 @@
 import { expect, it } from 'vitest';
-import { mergeClasses } from './merge-classes';
+import { mergeClasses } from '../merge-classes';
 
 it('keeps theme typography independent of colors and supports utility overrides', () => {
   expect(mergeClasses('text-white text-small', 'px-3 px-5')).toBe('text-white text-small px-5');

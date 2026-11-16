@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import { expect, it, vi } from 'vitest';
-import { Select } from './Select';
+import { Select } from '../Select';
 
 const options = [
   { value: 'launch', label: 'Lançamento' },

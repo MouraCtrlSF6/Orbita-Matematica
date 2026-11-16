@@ -2,7 +2,7 @@ import { createRef } from 'react';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { expect, it, vi } from 'vitest';
-import { Accordion } from './Accordion';
+import { Accordion } from '../Accordion';
 
 const items = [
   { value: 'mission', title: 'Missão', content: 'Enunciado da missão' },

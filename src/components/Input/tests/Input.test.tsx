@@ -1,8 +1,8 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { expect, it } from 'vitest';
-import { Input } from './Input';
-import { ControlVariant } from '../utils/control-styles';
+import { Input } from '../Input';
+import { ControlVariant } from '../../utils/control-styles';
 
 it('preserves native form values, labeling and invalid descriptions', async () => {
   render(

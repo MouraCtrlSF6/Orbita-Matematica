@@ -2,8 +2,8 @@ import { createRef } from 'react';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { afterAll, beforeAll, expect, it, vi } from 'vitest';
-import { Toast } from './Toast';
-import { ToastProvider } from './ToastProvider/ToastProvider';
+import { Toast } from '../Toast';
+import { ToastProvider } from '../ToastProvider/ToastProvider';
 
 const pointerCaptureDescriptor = Object.getOwnPropertyDescriptor(
   HTMLElement.prototype,

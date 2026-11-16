@@ -1,9 +1,9 @@
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { expect, it } from 'vitest';
-import { Dialog } from './Dialog';
-import { Button } from '../Button/Button';
-import { Input } from '../Input/Input';
+import { Dialog } from '../Dialog';
+import { Button } from '../../Button/Button';
+import { Input } from '../../Input/Input';
 
 it('labels the modal, traps focus and restores focus when dismissed with Escape', async () => {
   const user = userEvent.setup();

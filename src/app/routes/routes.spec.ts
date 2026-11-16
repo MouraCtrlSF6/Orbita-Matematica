@@ -12,8 +12,8 @@ test('opens profile selection and navigates the cards with the keyboard and hist
   page,
 }) => {
   await page.goto('/');
-  await expect(page).toHaveURL(/\/sign$/);
   await expect(page.getByRole('link', { name: 'Sou Professor' })).toBeVisible();
+  await expect(page).toHaveURL('/');
   await page.keyboard.press('Tab');
   await expect(page.getByRole('link', { name: 'Sou Professor' })).toBeFocused();
   await page.keyboard.press('Enter');
@@ -102,7 +102,7 @@ test('opens profile selection and navigates the cards with the keyboard and hist
   await page.goBack();
   await expect(page).toHaveURL(/panel\?tab=questions&list=true$/);
   await page.goBack();
-  await expect(page).toHaveURL(/\/sign$/);
+  await expect(page).toHaveURL('/');
   await page.goForward();
   await expect(page).toHaveURL(/panel\?tab=questions&list=true$/);
   await page.getByRole('link', { name: 'Voltar à escolha de perfil' }).click();

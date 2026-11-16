@@ -46,6 +46,7 @@ jobs:
         run: npm run build
         env:
           PAGES_BASE_PATH: ${{ steps.pages.outputs.base_path }}
+          PAGES_BASE_URL: ${{ steps.pages.outputs.base_url }}
           VITE_FIREBASE_API_KEY: ${{ vars.VITE_FIREBASE_API_KEY }}
           VITE_FIREBASE_AUTH_DOMAIN: ${{ vars.VITE_FIREBASE_AUTH_DOMAIN }}
           VITE_FIREBASE_PROJECT_ID: ${{ vars.VITE_FIREBASE_PROJECT_ID }}
@@ -72,3 +73,15 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v5
+      - name: Verificar publicação
+        env:
+          PAGE_URL: ${{ steps.deployment.outputs.page_url }}
+        run: |
+          base_url="${PAGE_URL%/}"
+          for path in / /sign/ /students/ /students/rooms/ /students/rooms/enter/ /teachers/ /teachers/rooms/ /teachers/rooms/create/ /sitemap.xml /robots.txt /orbita-compartilhamento.png; do
+            status=$(curl --fail --silent --show-error --retry 5 --retry-all-errors --max-time 15 --output /dev/null --write-out '%{http_code}' "${base_url}${path}")
+            if [ "$status" != '200' ]; then
+              printf 'HTTP %s em %s\n' "$status" "$path" >&2
+              exit 1
+            fi
+          done

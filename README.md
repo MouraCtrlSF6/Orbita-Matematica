@@ -71,6 +71,10 @@ Versões fixadas no `package-lock.json`:
 
 **Publicação:** o build em `dist/` gera HTML para os caminhos fixos e um `404.html` que carrega as rotas dinâmicas. No Pages a abertura direta dessas rotas carrega a aplicação com status HTTP 404. Use `PAGES_BASE_PATH` no build para testar o fallback em um subdiretório. O [workflow do GitHub Pages](.github/workflows/jekyll-gh-pages.yml) publica o frontend. Cadastre a Site Key como variável do GitHub Actions com o mesmo nome usado no Vite e publique as regras do banco separadamente.
 
+O build usa `PAGES_BASE_URL` para o canonical da home, a prévia de compartilhamento e o sitemap. O workflow recebe a URL do Pages automaticamente. Após publicar, confirme HTTP 200 na home, nas rotas fixas, no sitemap e na imagem de compartilhamento. Envie `sitemap.xml` na propriedade com prefixo da URL do projeto e inspecione a home no Search Console.
+
+No GitHub Pages, este projeto publica `robots.txt` em `/Orbita-Matematica/robots.txt`. Para o Google ler o arquivo, publique-o também em `/robots.txt` pelo site de usuário `mouractrlsf6.github.io`. O sitemap pode ser enviado pelo Search Console enquanto o arquivo da raiz estiver indisponível.
+
 ## ▶️ Comandos
 
 | Comando                 | Finalidade                                 |

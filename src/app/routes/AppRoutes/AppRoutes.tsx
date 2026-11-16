@@ -28,6 +28,8 @@ const loadingTeacher = (
 );
 
 const routes = [
+  { path: '/', element: <SignPage /> },
+  { path: '/index.html', element: <SignPage /> },
   { path: fixedRoutes.sign, element: <SignPage /> },
   { path: fixedRoutes.teachers, element: <Navigate replace to={fixedRoutes.createRoom} /> },
   { path: fixedRoutes.teacherRooms, element: <Navigate replace to={fixedRoutes.createRoom} /> },

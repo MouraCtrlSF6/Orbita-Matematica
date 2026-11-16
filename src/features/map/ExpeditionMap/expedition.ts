@@ -127,9 +127,11 @@ export class Expedition {
     this.ensurePosition();
     this.props.onSector(this.nextMission?.sectorId ?? sectors[0].id);
   };
+
   visit = (id: string) => {
     if (this.props.sectorId) this.props.onStart(id);
     else this.props.onSector(id);
   };
+
   rememberPosition = (position: Point) => this.props.positions.set(this.mapKey, position);
 }

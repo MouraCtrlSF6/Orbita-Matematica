@@ -7,7 +7,7 @@ import { Breadcrumb } from './Breadcrumb/Breadcrumb';
 const topbarRight = (
   <div className="topbar-right flex items-center gap-6.5">
     <span className="learning-label text-micro font-semibold tracking-[0.0625rem] text-[#626575] flex items-center gap-2 ds-down-tablet:hidden [.exploration-shell_&]:text-[#aebbd5]">
-      <span className="live-dot w-1.5 h-1.5 rounded-full [background:#aee0c8] inline-block shrink-0 [.pill_&]:w-1 [.pill_&]:h-1" />{' '}
+      <span className="live-dot w-1.5 h-1.5 rounded-full [background:#aee0c8] inline-block shrink-0 in-[.pill]:w-1 in-[.pill]:h-1" />{' '}
       APRENDER. EXPLORAR. DESCOBRIR.
     </span>
     <span
@@ -27,8 +27,8 @@ export interface AppWorkspaceProps {
 
 export function AppWorkspace({ screen, children }: AppWorkspaceProps) {
   return (
-    <div className="workspace ml-60 min-w-0 [width:calc(100%_-_15rem)] ds-down-desktop:ml-52 ds-down-desktop:[width:calc(100%_-_13rem)] ds-down-tablet:ml-[11.5625rem] ds-down-tablet:[width:calc(100%_-_11.5625rem)] ds-down-mobile:m-0 ds-down-mobile:w-full">
-      <header className="topbar h-[5.1875rem] [border-bottom:1px_solid_var(--line)] flex justify-between items-center py-0 px-11 bg-white ds-down-desktop:py-0 ds-down-desktop:px-7 ds-down-mobile:h-[3.4375rem] ds-down-mobile:py-0 ds-down-mobile:px-5 [.exploration-shell_&]:[background:#0d1328] [.exploration-shell_&]:[border-color:#28304d]">
+    <div className="workspace ml-60 min-w-0 w-[calc(100%-15rem)] ds-down-desktop:ml-52 ds-down-desktop:w-[calc(100%-13rem)] ds-down-tablet:ml-46.25 ds-down-tablet:w-[calc(100%-11.5625rem)] ds-down-mobile:m-0 ds-down-mobile:w-full">
+      <header className="topbar h-20.75 [border-bottom:1px_solid_var(--line)] flex justify-between items-center py-0 px-11 bg-white ds-down-desktop:py-0 ds-down-desktop:px-7 ds-down-mobile:h-13.75 ds-down-mobile:py-0 ds-down-mobile:px-5 in-[.exploration-shell]:[background:#0d1328] in-[.exploration-shell]:border-[#28304d]">
         <Breadcrumb screen={screen} />
         {topbarRight}
       </header>

@@ -69,12 +69,14 @@ export class FlightController {
     onVisit: () => {},
   };
   private thruster = createThrusterSound();
+
   constructor(
     readonly world: SpaceWorld,
     initialPosition?: Point,
   ) {
     this.position = initialPosition ?? approach(world.destinations[0]);
   }
+
   configure(options: FlightOptions) {
     this.options = options;
     this.thruster.setEnabled(options.soundEnabled);
@@ -91,6 +93,7 @@ export class FlightController {
     this.keys.clear();
     this.thruster.setMoving(false);
   };
+
   dispose() {
     this.stop();
     this.thruster.dispose();
@@ -109,13 +112,17 @@ export class FlightController {
         this.lastTime ? (time - this.lastTime) / 1000 : 0,
         this.world,
       );
+
     this.thruster.setMoving(hasMoved(before, this.position));
+
     this.lastTime = time;
+
     return direction;
   }
 
   private renderCamera() {
     if (!this.viewport) return;
+
     const camera = cameraPosition(this.position, this.world, {
       x: this.viewport.clientWidth,
       y: this.viewport.clientHeight,
@@ -129,6 +136,7 @@ export class FlightController {
   private renderShip(direction: Point) {
     if (direction.x || direction.y)
       this.heading = (Math.atan2(direction.y, direction.x) * 180) / Math.PI + 90;
+
     const ship = this.viewport?.querySelector<HTMLElement>('.player-ship');
 
     if (ship)
@@ -187,23 +195,32 @@ export class FlightController {
 
   keyDown = (event: KeyboardEvent<HTMLDivElement>) => {
     if (!isPilotEvent(event) || this.options.paused) return;
+
     this.press(normalizeKey(event.key), event);
   };
+
   keyUp = (event: KeyboardEvent<HTMLDivElement>) => {
     this.keys.delete(normalizeKey(event.key));
+
     if (!this.keys.size) this.thruster.setMoving(false);
   };
+
   pointerDown(key: string, event: PointerEvent<HTMLButtonElement>) {
     this.thruster.unlock();
+
     event.currentTarget.setPointerCapture(event.pointerId);
+
     this.keys.clear();
+
     this.keys.add(key);
   }
 
   controlKeyDown(key: string, event: KeyboardEvent<HTMLButtonElement>) {
     if (event.key === ' ' || event.key === 'Enter') {
       event.preventDefault();
+
       this.thruster.unlock();
+
       this.keys.add(key);
     }
   }
@@ -212,13 +229,19 @@ export class FlightController {
     const near = nearbyDestination(this.position, this.world);
 
     if (!near || !this.options.statuses[near.id]?.unlocked || this.options.paused) return;
+
     this.stop();
+
     this.options.onVisit(near.id);
   };
+
   visitDirect(id: string) {
     this.position = approach(this.world.destinations.find((item) => item.id === id));
+
     this.options.onPosition?.({ ...this.position });
+
     this.stop();
+
     this.options.onVisit(id);
   }
 }
@@ -228,15 +251,22 @@ export function attachFlight(
   onNearby: (id?: string) => void,
 ) {
   if (!viewport) return;
+
   controller.connect(viewport, onNearby);
+
   const cancel = animateFlight(controller);
 
   window.addEventListener('blur', controller.stop);
+
   document.addEventListener('visibilitychange', controller.stop);
+
   return () => {
     cancel();
+
     controller.dispose();
+
     window.removeEventListener('blur', controller.stop);
+
     document.removeEventListener('visibilitychange', controller.stop);
   };
 }
@@ -250,5 +280,6 @@ function animateFlight(controller: FlightController) {
   };
 
   frame = requestAnimationFrame(tick);
+
   return () => cancelAnimationFrame(frame);
 }

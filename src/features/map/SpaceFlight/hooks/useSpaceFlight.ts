@@ -13,7 +13,9 @@ export function useSpaceFlight(
   const [nearId, setNearId] = useState<string>();
 
   useEffect(() => controller.configure(options), [controller, options]);
+
   useEffect(() => attachFlight(controller, viewportRef.current, setNearId), [controller]);
+
   return {
     controller,
     viewportRef,

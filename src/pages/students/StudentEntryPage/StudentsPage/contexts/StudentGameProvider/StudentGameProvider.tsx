@@ -1,10 +1,10 @@
 import { useState, type ReactNode } from 'react';
-import { useGame } from './hooks/useGame';
-import { useSoundShortcut } from './hooks/useSoundShortcut';
-import { useRoomProgress } from './hooks/useRoomProgress';
-import type { StudentRoom } from '../../../../room-sync';
 import { AppNavigation, type FlightSession } from '../../../../../../app/app-navigation';
 import { StudentGameContext } from '../../../../contexts/student-game-context';
+import type { StudentRoom } from '../../../../room-sync';
+import { useGame } from './hooks/useGame';
+import { useRoomProgress } from './hooks/useRoomProgress';
+import { useSoundShortcut } from './hooks/useSoundShortcut';
 
 export interface StudentGameProviderProps {
   room: StudentRoom;
@@ -23,6 +23,7 @@ export function StudentGameProvider({ room, children }: StudentGameProviderProps
 
   useSoundShortcut(game.dispatch);
   useRoomProgress(room, game.state);
+
   const navigation = new AppNavigation(
     game.dispatch,
     setSettingsOpen,

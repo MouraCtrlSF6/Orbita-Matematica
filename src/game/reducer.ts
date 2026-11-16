@@ -49,6 +49,7 @@ function startMission(state: GameState, action: ActionOf<'start'>, catalog: Miss
   const mission = catalog.find((item) => item.id === action.id);
 
   if (!mission || !isMissionUnlocked(action.id, state.save.completed, catalog)) return state;
+
   return {
     ...state,
     screen: Screen.Mission,
@@ -94,6 +95,7 @@ const handlers: ActionHandlers = {
   }),
   reset: () => ({ save: initialSave(), screen: Screen.Map, missionId: null, sectorId: null }),
 };
+
 export function gameReducer(
   state: GameState,
   action: GameAction,
@@ -105,5 +107,6 @@ export function gameReducer(
     action: GameAction,
     catalog: Mission[],
   ) => GameState;
+
   return handler(state, action, catalog);
 }

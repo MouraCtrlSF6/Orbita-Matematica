@@ -1,6 +1,6 @@
 import { useMissionContext } from '../hooks/useMissionContext';
-import { MissionGuide } from './MissionGuide/MissionGuide';
 import { MissionChallenge } from './MissionChallenge/MissionChallenge';
+import { MissionGuide } from './MissionGuide/MissionGuide';
 
 export function MissionLayout() {
   const { mission, session } = useMissionContext();
@@ -8,7 +8,7 @@ export function MissionLayout() {
   return (
     <div
       style={session.hintLimit === 0 ? { gridTemplateColumns: '1fr' } : undefined}
-      className="mission-layout grid [grid-template-columns:minmax(0,_1fr)_17.5rem] gap-6 items-start ds-down-desktop:[grid-template-columns:minmax(0,_1fr)_14.6875rem] ds-down-desktop:gap-4.5 ds-down-tablet:[grid-template-columns:1fr]"
+      className="mission-layout grid grid-cols-[minmax(0,1fr)_17.5rem] gap-6 items-start ds-down-desktop:grid-cols-[minmax(0,1fr)_14.6875rem] ds-down-desktop:gap-4.5 ds-down-tablet:grid-cols-[1fr]"
     >
       <MissionChallenge />
       {session.hintLimit > 0 && (

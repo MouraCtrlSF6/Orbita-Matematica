@@ -1,15 +1,12 @@
-import { useStudentGame } from '../../../hooks/useStudentGame';
 import { appClassName } from '../../../../../app/app-navigation';
 import { AppSidebar } from '../../../../../app/AppSidebar/AppSidebar';
 import { AppWorkspace } from '../../../../../app/AppWorkspace/AppWorkspace';
 import { SettingsOverlay } from '../../../../../app/SettingsOverlay/SettingsOverlay';
+import { useStudentGame } from '../../../hooks/useStudentGame';
 import { AppContent } from './AppContent/AppContent';
 
 const skipLink = (
-  <a
-    className="skip-link fixed -top-25 left-5 [z-index:10] bg-white py-3 px-5 focus:top-3"
-    href="#main"
-  >
+  <a className="skip-link fixed -top-25 left-5 z-10 bg-white py-3 px-5 focus:top-3" href="#main">
     Pular para o conteúdo
   </a>
 );

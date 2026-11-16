@@ -1,7 +1,7 @@
-import { useMissionCatalog } from '../../../../../hooks/useMissionCatalog';
 import { useEffect, useReducer, useSyncExternalStore } from 'react';
 import { gameReducer, Screen, type GameState } from '../../../../../../../game/reducer';
 import type { RoomGameStorage } from '../../../../../../../infrastructure/gameStorage';
+import { useMissionCatalog } from '../../../../../hooks/useMissionCatalog';
 
 export function useGame(repository: RoomGameStorage) {
   const catalog = useMissionCatalog();
@@ -22,6 +22,7 @@ export function useGame(repository: RoomGameStorage) {
   useEffect(() => {
     repository.write(state.save);
   }, [repository, state.save]);
+
   return {
     state,
     dispatch,

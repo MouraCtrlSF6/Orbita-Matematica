@@ -1,5 +1,6 @@
 import { lazy, Suspense } from 'react';
 import { Navigate, useRoutes } from 'react-router';
+import { Spinner } from '../../../components/Spinner/Spinner';
 import { SignPage } from '../../../pages/sign/SignPage/SignPage';
 import { ActiveMissionPage } from '../../../pages/students/ActiveMissionPage/ActiveMissionPage';
 import { EnterRoomPage } from '../../../pages/students/EnterRoomPage/EnterRoomPage';
@@ -20,7 +21,11 @@ const TeacherPanelPage = lazy(() =>
     }),
   ),
 );
-const loadingTeacher = <p role="status">Carregando área do professor…</p>;
+const loadingTeacher = (
+  <div className="grid min-h-dvh place-items-center">
+    <Spinner role="status" label="Carregando área do professor…" size="2rem" />
+  </div>
+);
 
 const routes = [
   { path: fixedRoutes.sign, element: <SignPage /> },

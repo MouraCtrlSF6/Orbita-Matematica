@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { Screen, type GameState } from '../../../reducer';
+import { Screen, type GameState } from '../../../reducer-types';
 import type { StudentRoom } from '../../../room-sync';
 
 export function useRoomProgress(room: StudentRoom, state: GameState) {

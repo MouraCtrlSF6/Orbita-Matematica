@@ -1,4 +1,4 @@
-import { Screen } from './reducer';
+import { Screen } from './reducer-types';
 
 export const studentRoomEntry = '/students/rooms/enter';
 

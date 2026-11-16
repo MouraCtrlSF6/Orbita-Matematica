@@ -1,5 +1,5 @@
 import type { Dispatch, SetStateAction } from 'react';
-import { Screen, type GameAction } from './reducer';
+import { GameActionType, Screen, type GameAction } from './reducer-types';
 import type { MissionActivity } from '../../../game/room-progress';
 import type { Point } from '../../../game/space';
 import type { MissionResult, SavedGame } from '../../../game/types';
@@ -25,10 +25,10 @@ export class StudentNavigation {
   returnSector = () =>
     this.goTo(this.sectorId ? Screen.Sector : Screen.Map, this.sectorId ?? undefined);
   enterSector = (id: string) => this.goTo(Screen.Sector, id);
-  complete = (result: MissionResult) => this.dispatch({ type: 'complete', result });
+  complete = (result: MissionResult) => this.dispatch({ type: GameActionType.Complete, result });
   preference = (key: keyof SavedGame['preferences'], value: boolean) =>
     this.dispatch({
-      type: 'preference',
+      type: GameActionType.Preference,
       key,
       value,
     });
@@ -40,7 +40,7 @@ export class StudentNavigation {
   };
   reset = () => {
     this.session((session) => ({ positions: new Map(), id: session.id + 1 }));
-    this.dispatch({ type: 'reset' });
+    this.dispatch({ type: GameActionType.Reset });
     this.map();
   };
 }

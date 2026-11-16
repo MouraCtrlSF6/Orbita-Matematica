@@ -1,5 +1,5 @@
 import { useLocation, useMatch } from 'react-router';
-import { Screen, type RoomDestination } from '../../../reducer';
+import { Screen, type RoomDestination } from '../../../reducer-types';
 
 export function useStudentDestination(): RoomDestination {
   const { key } = useLocation();

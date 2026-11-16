@@ -1,7 +1,8 @@
 import { describe, expect, it } from 'vitest';
 import { missions } from '../../../../content/missions';
 import { initialSave } from '../../../../game/progress';
-import { gameReducer, Screen, type GameState, type RoomDestination } from '../reducer';
+import { gameReducer } from '../reducer';
+import { GameActionType, Screen, type GameState, type RoomDestination } from '../reducer-types';
 
 function visit(destination: RoomDestination) {
   const state: GameState = {
@@ -10,7 +11,7 @@ function visit(destination: RoomDestination) {
     sectorId: null,
     missionId: null,
   };
-  return gameReducer(state, { type: 'resolve-route', destination });
+  return gameReducer(state, { type: GameActionType.ResolveRoute, destination });
 }
 
 describe('student room routes', () => {

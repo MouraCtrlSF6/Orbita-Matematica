@@ -1,4 +1,4 @@
-import { Screen } from '../../../../../session/reducer';
+import { Screen } from '../../../../../session/reducer-types';
 
 const titles: Record<Screen, string> = {
   [Screen.Map]: 'Mapa do universo',

@@ -1,5 +1,5 @@
 import type { SavedGame } from '../../../../../game/types';
-import type { Screen } from '../../../session/reducer';
+import type { Screen } from '../../../session/reducer-types';
 import { isExploration } from '../../../session/student-navigation';
 
 export function studentGameClassName(

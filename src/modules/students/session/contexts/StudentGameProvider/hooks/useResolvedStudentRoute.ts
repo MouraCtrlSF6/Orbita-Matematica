@@ -1,5 +1,5 @@
 import type { Dispatch } from 'react';
-import type { GameAction, GameState } from '../../../reducer';
+import { GameActionType, type GameAction, type GameState } from '../../../reducer-types';
 import { studentDestinationPath } from '../../../student-routes';
 import { useStudentDestination } from './useStudentDestination';
 
@@ -11,7 +11,7 @@ export function useResolvedStudentRoute(
   const destination = useStudentDestination();
 
   if (state.validatedVisitKey !== destination.key) {
-    dispatch({ type: 'resolve-route', destination });
+    dispatch({ type: GameActionType.ResolveRoute, destination });
     return null;
   }
   if (state.screen !== destination.screen) {

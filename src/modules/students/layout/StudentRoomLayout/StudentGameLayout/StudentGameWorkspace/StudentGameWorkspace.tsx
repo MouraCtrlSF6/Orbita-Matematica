@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react';
 import { Icon } from '../../../../../../components/Icon/Icon';
 import { IconName } from '../../../../../../components/icon-names';
-import { Screen } from '../../../../session/reducer';
+import { Screen } from '../../../../session/reducer-types';
 import { StudentGameBreadcrumb } from './StudentGameBreadcrumb/StudentGameBreadcrumb';
 
 const topbarRight = (

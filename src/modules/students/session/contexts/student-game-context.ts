@@ -1,5 +1,5 @@
 import { createContext } from 'react';
-import type { GameState } from '../reducer';
+import type { GameState } from '../reducer-types';
 import type { StudentNavigation, FlightSession } from '../student-navigation';
 import type { StudentRoom } from '../room-sync';
 

@@ -1,5 +1,5 @@
 import { IconName } from '../../../../../../../components/icon-names';
-import { Screen } from '../../../../../session/reducer';
+import { Screen } from '../../../../../session/reducer-types';
 import { useStudentGame } from '../../../../../session/hooks/useStudentGame';
 import { isExploration } from '../../../../../session/student-navigation';
 import type { NavigationItemProps } from './NavigationItem/NavigationItem';

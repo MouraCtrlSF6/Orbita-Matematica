@@ -1,5 +1,6 @@
 import { useEffect, useReducer, useSyncExternalStore } from 'react';
-import { gameReducer, Screen, type GameState } from '../../../reducer';
+import { gameReducer } from '../../../reducer';
+import { Screen, type GameState } from '../../../reducer-types';
 import type { RoomGameStorage } from '../../../../../../infrastructure/gameStorage';
 import { useMissionCatalog } from '../../../hooks/useMissionCatalog';
 

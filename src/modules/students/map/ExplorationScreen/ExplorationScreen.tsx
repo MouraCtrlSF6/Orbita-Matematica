@@ -1,5 +1,5 @@
 import { useStudentGame } from '../../session/hooks/useStudentGame';
-import { Screen } from '../../session/reducer';
+import { Screen } from '../../session/reducer-types';
 import { ExpeditionMap } from '../ExpeditionMap/ExpeditionMap';
 
 export function ExplorationScreen() {

@@ -1,5 +1,5 @@
 import { useEffect, type Dispatch } from 'react';
-import type { GameAction } from '../../../reducer';
+import { GameActionType, type GameAction } from '../../../reducer-types';
 function hasModifier(event: KeyboardEvent): boolean {
   return event.ctrlKey || event.altKey || event.metaKey;
 }
@@ -31,7 +31,7 @@ function soundListener(dispatch: Dispatch<GameAction>) {
   return (event: KeyboardEvent) => {
     if (!isSoundShortcut(event)) return;
     event.preventDefault();
-    dispatch({ type: 'toggle-sound' });
+    dispatch({ type: GameActionType.ToggleSound });
   };
 }
 

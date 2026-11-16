@@ -1,23 +1,18 @@
 import { defineConfig } from 'vitest/config';
 import react from '@vitejs/plugin-react';
 import tailwindcss from '@tailwindcss/vite';
-import { publishRouteEntries, routeInputs } from './src/app/routes/static-route-entries';
+import { publishRouteEntries } from './src/app/routes/static-route-entries';
 
 export default defineConfig({
   base: './',
   plugins: [
-    react({ exclude: [/node_modules/, /[\\/]features[\\/]room-report[\\/]/] }),
+    react({ exclude: [/node_modules/, /[\\/]teachers[\\/]room-report[\\/]/] }),
     tailwindcss(),
     publishRouteEntries(),
   ],
   optimizeDeps: {
-    entries: [...routeInputs, 'e2e/fixtures/components.html'],
+    entries: ['index.html', 'e2e/fixtures/components.html'],
     include: ['@react-pdf/renderer'],
-  },
-  build: {
-    rollupOptions: {
-      input: routeInputs,
-    },
   },
   test: {
     environment: 'jsdom',

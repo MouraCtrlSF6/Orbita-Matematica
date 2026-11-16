@@ -8,6 +8,7 @@ async function createRoom(page: import('@playwright/test').Page) {
   await page.goto('/teachers');
   await page.getByLabel('Nome da sala').fill('Turma teste');
   await page.getByRole('button', { name: 'Criar sala' }).click();
+  await page.getByRole('tab', { name: 'Alunos', exact: true }).click();
 }
 
 test('downloads the actual worker-generated PDF, shows loading and keeps the UI responsive', async ({

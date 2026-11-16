@@ -133,7 +133,7 @@ test('stops on release, blur, hidden tab and settings, and moves the camera and 
   await page.getByRole('button', { name: /Minhas descobertas/ }).click();
   await page.getByRole('button', { name: 'Voltar ao mapa', exact: true }).click();
   await page.getByRole('button', { name: 'Retomar exploração' }).click();
-  expect(await position(page)).toEqual(hidden);
+  await expect.poll(() => position(page)).toEqual(hidden);
   await page.getByRole('button', { name: 'Ajustes da expedição' }).click();
   await page.getByRole('button', { name: 'Reiniciar expedição' }).click();
   await page.getByRole('button', { name: 'Sim, apagar progresso' }).click();

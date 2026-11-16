@@ -1,10 +1,16 @@
 import type { Plugin } from 'vite';
+import { fixedRoutes } from './fixed-routes';
 
-const routeEntries = ['sign/index.html', 'students/index.html', 'teachers/index.html'];
+function getPublishedBase() {
+  const path = (process.env.PAGES_BASE_PATH ?? '').replace(/^\/+|\/+$/g, '');
+  return path ? `/${path}/` : '/';
+}
 
-const pagesDirectory = 'src/pages/';
-
-export const routeInputs = ['index.html', ...routeEntries.map((entry) => pagesDirectory + entry)];
+function htmlForBase(html: string, base: string) {
+  return html
+    .replace('<meta name="app-base" content="./"', `<meta name="app-base" content="${base}"`)
+    .replaceAll(/((?:href|src)=")\.\//g, (_match, prefix: string) => prefix + base);
+}
 
 export function publishRouteEntries(): Plugin {
   return {
@@ -13,25 +19,24 @@ export function publishRouteEntries(): Plugin {
     generateBundle: {
       order: 'post',
       handler(_options, bundle) {
-        for (const fileName of routeEntries) {
-          const originalPath = pagesDirectory + fileName;
+        const entry = bundle['index.html'];
 
-          const entry = bundle[originalPath];
-
-          if (entry?.type !== 'asset' || typeof entry.source !== 'string') {
-            this.error(`Entrada HTML ausente: ${originalPath}`);
-          }
-
-          // Removing src/pages/ moves the HTML two levels closer to its assets.
-          const source = entry.source.replaceAll(/((?:href|src)=")\.\.\/\.\.\/\.\.\//g, '$1../');
-
-          bundle[fileName] = {
-            ...entry,
-            fileName,
-            source,
-          };
-          delete bundle[originalPath];
+        if (entry?.type !== 'asset' || typeof entry.source !== 'string') {
+          return this.error('Entrada HTML ausente: index.html');
         }
+        for (const path of Object.values(fixedRoutes)) {
+          const depth = path.split('/').length - 1;
+          this.emitFile({
+            type: 'asset',
+            fileName: `${path.slice(1)}/index.html`,
+            source: htmlForBase(entry.source, '../'.repeat(depth)),
+          });
+        }
+        this.emitFile({
+          type: 'asset',
+          fileName: '404.html',
+          source: htmlForBase(entry.source, getPublishedBase()),
+        });
       },
     },
   };

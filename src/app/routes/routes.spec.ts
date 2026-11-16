@@ -17,12 +17,13 @@ test('opens profile selection and navigates the cards with the keyboard and hist
   await page.keyboard.press('Tab');
   await expect(page.getByRole('link', { name: 'Sou Professor' })).toBeFocused();
   await page.keyboard.press('Enter');
-  await expect(page).toHaveURL(/\/teachers$/);
+  await expect(page).toHaveURL(/\/teachers\/rooms\/create$/);
   await expect(page.getByRole('heading', { name: 'Área do professor' })).toBeVisible();
   await page.getByLabel('Nome da sala').fill('Sala ocupada');
   await page.getByRole('button', { name: 'Criar sala' }).click();
   await expect(page.getByRole('alert')).toContainText('Já existe uma sala');
   await createRoom(page);
+  await page.getByRole('tab', { name: 'Alunos', exact: true }).click();
   await expect(page.getByRole('status').filter({ hasText: 'Registros de alunos: 0' })).toHaveText(
     'Registros de alunos: 0',
   );
@@ -99,15 +100,17 @@ test('opens profile selection and navigates the cards with the keyboard and hist
   );
 
   await page.goBack();
+  await expect(page).toHaveURL(/panel\?tab=questions&list=true$/);
+  await page.goBack();
   await expect(page).toHaveURL(/\/sign$/);
   await page.goForward();
-  await expect(page).toHaveURL(/\/teachers$/);
+  await expect(page).toHaveURL(/panel\?tab=questions&list=true$/);
   await page.getByRole('link', { name: 'Voltar à escolha de perfil' }).click();
 
   const studentCard = page.getByRole('link', { name: 'Sou aluno' });
   await studentCard.focus();
   await studentCard.press('Enter');
-  await expect(page).toHaveURL(/\/students$/);
+  await expect(page).toHaveURL(/\/students\/rooms\/enter$/);
   await expect(page.locator('main#main')).toHaveCount(0);
   await page.getByLabel('Nome da sala').fill('!!!');
   await page.getByLabel('Nome completo').fill('Aluno de teste');
@@ -141,6 +144,7 @@ test('places plain profile navigation below the form and shows the button in the
   );
   await page.getByLabel('Nome da sala').fill('Turma Têste');
   await submit.click();
+  await page.getByRole('tab', { name: 'Alunos', exact: true }).click();
   await expect(page.getByRole('status').filter({ hasText: 'Registros de alunos: 0' })).toHaveText(
     'Registros de alunos: 0',
   );
@@ -161,6 +165,7 @@ test('allows a new room after deletion and returning to the teacher route', asyn
   await page.getByRole('link', { name: 'Sou Professor' }).click();
   await expect(page.getByLabel('Nome da sala')).toBeVisible();
   await createRoom(page);
+  await page.getByRole('tab', { name: 'Alunos', exact: true }).click();
   await expect(page.getByRole('status').filter({ hasText: 'Registros de alunos: 0' })).toHaveText(
     'Registros de alunos: 0',
   );

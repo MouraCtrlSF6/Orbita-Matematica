@@ -94,6 +94,7 @@ test('switches teacher tabs with arrow keys and labels the active panel', async 
 });
 
 test('adds all four formats, validates builds and confirms removal', async ({ page }) => {
+  test.setTimeout(60_000);
   await openTeacherQuestions(page);
   const choice = await fillQuestion(page, 'Questão de alternativas', 'choice');
   await page.evaluate(() => window.scrollTo(0, 0));

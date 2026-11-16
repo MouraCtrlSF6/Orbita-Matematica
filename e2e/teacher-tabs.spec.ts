@@ -5,10 +5,9 @@ test('loads questions on first visit and preserves drafts, expansions and live s
   page,
 }) => {
   const loads: string[] = [];
+  await page.addInitScript(() => localStorage.setItem('mock-room-turma teste', 'existing-room'));
   await page.exposeFunction('recordCatalogLoad', (id: string) => loads.push(id));
-  await page.goto('/teachers');
-  await page.getByLabel('Nome da sala').fill('Turma teste');
-  await page.getByRole('button', { name: 'Criar sala' }).click();
+  await page.goto('/teachers/rooms/turma%20teste/panel?tab=students');
   await expect(page.getByRole('status')).toHaveText('Registros de alunos: 0');
   expect(loads).toHaveLength(0);
 
@@ -62,9 +61,7 @@ test('loads questions on first visit and preserves drafts, expansions and live s
   await page.getByRole('link', { name: 'Sou Professor', exact: true }).click();
   await page.getByLabel('Nome da sala').fill('Outra turma');
   await page.getByRole('button', { name: 'Criar sala' }).click();
-  await expect(students).toHaveAttribute('aria-selected', 'true');
-  expect(loads).toHaveLength(reloadCount);
-  await questions.click();
+  await expect(questions).toHaveAttribute('aria-selected', 'true');
   await expect(sector).toBeVisible();
   await expect.poll(() => loads.length).toBeGreaterThan(reloadCount);
   await page.getByRole('button', { name: 'Adicionar questão', exact: true }).click();

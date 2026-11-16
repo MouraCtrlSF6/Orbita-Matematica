@@ -63,7 +63,7 @@ Versões fixadas no `package-lock.json`:
 
 6. Execute `npm run dev` e abra a URL informada pelo Vite, normalmente `http://127.0.0.1:5173/`. Com App Check obrigatório, valide as salas em um domínio autorizado. Para testar as salas em localhost, consulte o [guia do provedor de depuração](https://firebase.google.com/docs/app-check/web/debug-provider) e mantenha o token de depuração fora do repositório e do build público.
 
-**Perfis:** `/sign` escolhe aluno ou professor; `/teachers` gerencia a sala; `/students` recebe o nome da sala e o nome completo do aluno.
+**Perfis:** `/sign` escolhe aluno ou professor; `/teachers` leva à criação da sala e `/students` leva ao formulário de entrada. Após a entrada, as URLs do painel e da partida incluem o nome da sala.
 
 **Sessão:** progresso em `sessionStorage`, por aba e sala, com retomada explícita. A identidade anônima persiste durante a sessão da aba, usando `sessionStorage` pelo SDK do Firebase, com fallback em memória quando o armazenamento estiver bloqueado. Recarregar exige nova entrada e reutiliza o registro do aluno na mesma sala, preservando o histórico; a retomada do progresso continua sendo uma escolha explícita. Outra sessão de aba ou dispositivo não tem reconhecimento garantido. Duplicatas antigas não são unidas automaticamente. O UID do professor também persiste na aba, mas o painel não recupera automaticamente a sala após recarregar. Exclua a sala ao encerrar a aula, antes de fechar ou recarregar o painel.
 

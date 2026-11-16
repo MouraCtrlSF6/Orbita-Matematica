@@ -5,6 +5,7 @@ async function createRoom(page: Page) {
   await page.goto('/teachers');
   await page.getByLabel('Nome da sala').fill('Turma teste');
   await page.getByRole('button', { name: 'Criar sala' }).click();
+  await page.getByRole('tab', { name: 'Alunos', exact: true }).click();
   await expect(page.getByRole('status')).toHaveText('Registros de alunos: 0');
 }
 

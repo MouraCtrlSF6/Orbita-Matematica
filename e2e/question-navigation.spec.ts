@@ -25,9 +25,11 @@ test('slides both panels in opposite directions when entering and leaving creati
         `button[aria-label="${buttonLabel}"]`,
       );
       button!.click();
-      await new Promise(requestAnimationFrame);
-      await new Promise(requestAnimationFrame);
-      const animations = element.getAnimations({ subtree: true });
+      let animations = element.getAnimations({ subtree: true });
+      for (let frame = 0; frame < 20 && !animations.length; frame++) {
+        await new Promise(requestAnimationFrame);
+        animations = element.getAnimations({ subtree: true });
+      }
 
       for (const animation of animations) {
         animation.pause();

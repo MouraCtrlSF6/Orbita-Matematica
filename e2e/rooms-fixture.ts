@@ -44,11 +44,17 @@ export async function mockRoomBackend(page: Page) {
             const studentId = crypto.randomUUID();
             export class RoomError extends Error {}
             export async function findRoomByName(name) {
-              return name === 'turma teste' ? (localStorage.getItem('mock-room-id') ?? ${JSON.stringify(roomId)}) : null;
+              return localStorage.getItem('mock-room-' + name) ?? (name === 'turma teste' ? ${JSON.stringify(roomId)} : null);
+            }
+            export async function findOwnedRoomByName(name) {
+              const id = await findRoomByName(name);
+              if (!id) throw new RoomError('Sala nao encontrada.');
+              return id;
             }
             export async function createRoom(id, name) {
               if (name === 'sala ocupada') throw new RoomError('Já existe uma sala com esse nome.');
               localStorage.setItem('mock-room-id', id);
+              localStorage.setItem('mock-room-' + name, id);
             }
             export async function removeStudent() {
               if (localStorage.getItem('mock-student-delete-error')) throw new Error('Delete failed');

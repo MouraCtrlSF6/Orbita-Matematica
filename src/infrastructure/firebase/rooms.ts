@@ -196,6 +196,18 @@ export async function findRoomByName(name: string, signal: AbortSignal) {
   return readRoomId(name, await getRoomUser(), signal);
 }
 
+export async function findOwnedRoomByName(name: string, signal: AbortSignal) {
+  const user = await getRoomUser();
+  const id = await readRoomId(name, user, signal);
+
+  if (!id) throw new RoomError('Sala não encontrada.');
+  const response = await roomRequest(`/rooms/${id}/meta/ownerUid`, user, { signal });
+  const owner: unknown = await response.json();
+
+  if (owner !== user.uid) throw new RoomError('Você não tem acesso a esta sala.');
+  return id;
+}
+
 async function confirmCreation(name: string, roomId: string, user: User, error: unknown) {
   const existing = await readRoomId(name, user);
   if (existing === roomId) return;

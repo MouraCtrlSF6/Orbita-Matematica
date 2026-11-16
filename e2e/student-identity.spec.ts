@@ -22,6 +22,18 @@ async function mockIdentityBackend(page: Page) {
       `,
     }),
   );
+  await page.route('**/src/infrastructure/firebase/firebase-app-check.ts*', (route) =>
+    route.fulfill({
+      contentType: 'text/javascript',
+      body: 'export function getRoomAppCheck() { return {}; }',
+    }),
+  );
+  await page.route('**/node_modules/.vite/deps/firebase_app-check.js*', (route) =>
+    route.fulfill({
+      contentType: 'text/javascript',
+      body: 'export async function getToken() { return { token: "test-app-check" }; }',
+    }),
+  );
   await page.route('https://identitytoolkit.googleapis.com/**', async (route) => {
     if (route.request().url().includes('accounts:signUp')) {
       signIns += 1;
@@ -69,7 +81,7 @@ async function recordAttempt(page: Page, id = roomId) {
   await page.evaluate(async (room) => {
     const roomsModule = '/src/infrastructure/firebase/rooms.ts';
     const progressModule = '/src/game/progress.ts';
-    const syncModule = '/src/pages/students/room-sync.ts';
+    const syncModule = '/src/modules/students/session/room-sync.ts';
     const { registerStudent } = await import(/* @vite-ignore */ roomsModule);
     const { initialSave } = await import(/* @vite-ignore */ progressModule);
     const { StudentRoom } = await import(/* @vite-ignore */ syncModule);

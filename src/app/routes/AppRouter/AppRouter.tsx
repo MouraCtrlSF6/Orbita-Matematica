@@ -12,5 +12,9 @@ function getBasename() {
 }
 
 export function AppRouter({ children }: AppRouterProps) {
-  return <BrowserRouter basename={getBasename()}>{children}</BrowserRouter>;
+  return (
+    <BrowserRouter basename={getBasename()} useTransitions={false}>
+      {children}
+    </BrowserRouter>
+  );
 }

@@ -657,7 +657,7 @@
             }
           },
           "variable": 5,
-          "formula": "□ + 3 = 8",
+          "formula": "🍎 + 3 = 8",
           "choices": [
             {
               "label": "5",
@@ -674,16 +674,16 @@
           ],
           "correctChoice": "5",
           "hints": [
-            "□ representa um número que deixa os dois lados da igualdade com o mesmo valor.",
-            "Faça as mesmas operações nos dois lados para reunir os termos. Uma equação equivalente é 1 × □ = 5.",
-            "Divida os dois lados por 1: □ = 5. Confira esse valor na igualdade original."
+            "🍎 representa um número que deixa os dois lados da igualdade com o mesmo valor.",
+            "Faça as mesmas operações nos dois lados para reunir os termos. Uma equação equivalente é 1 × 🍎 = 5.",
+            "Divida os dois lados por 1: 🍎 = 5. Confira esse valor na igualdade original."
           ],
-          "explanation": "A equação equivale a 1 × □ = 5. Dividindo os dois lados por 1, obtemos □ = 5. Na igualdade original, os dois lados valem 8.",
+          "explanation": "A equação equivale a 1 × 🍎 = 5. Dividindo os dois lados por 1, obtemos 🍎 = 5. Na igualdade original, os dois lados valem 8.",
           "visual": {
             "groups": 1,
             "perGroup": 5,
             "extra": 0,
-            "label": "unidades do valor de □"
+            "label": "unidades do valor de 🍎"
           }
         },
         {
@@ -706,7 +706,7 @@
             }
           },
           "variable": 10,
-          "formula": "□ − 4 = 6",
+          "formula": "🍫 − 4 = 6",
           "choices": [
             {
               "label": "11",
@@ -723,16 +723,16 @@
           ],
           "correctChoice": "10",
           "hints": [
-            "□ representa um número que deixa os dois lados da igualdade com o mesmo valor.",
-            "Faça as mesmas operações nos dois lados para reunir os termos. Uma equação equivalente é 1 × □ = 10.",
-            "Divida os dois lados por 1: □ = 10. Confira esse valor na igualdade original."
+            "🍫 representa um número que deixa os dois lados da igualdade com o mesmo valor.",
+            "Faça as mesmas operações nos dois lados para reunir os termos. Uma equação equivalente é 1 × 🍫 = 10.",
+            "Divida os dois lados por 1: 🍫 = 10. Confira esse valor na igualdade original."
           ],
-          "explanation": "A equação equivale a 1 × □ = 10. Dividindo os dois lados por 1, obtemos □ = 10. Na igualdade original, os dois lados valem 6.",
+          "explanation": "A equação equivale a 1 × 🍫 = 10. Dividindo os dois lados por 1, obtemos 🍫 = 10. Na igualdade original, os dois lados valem 6.",
           "visual": {
             "groups": 1,
             "perGroup": 10,
             "extra": 0,
-            "label": "unidades do valor de □"
+            "label": "unidades do valor de 🍫"
           }
         },
         {
@@ -755,7 +755,7 @@
             }
           },
           "variable": 5,
-          "formula": "3 × □ = 15",
+          "formula": "3 × 🍌 = 15",
           "choices": [
             {
               "label": "4",
@@ -772,16 +772,16 @@
           ],
           "correctChoice": "5",
           "hints": [
-            "□ representa um número que deixa os dois lados da igualdade com o mesmo valor.",
-            "Faça as mesmas operações nos dois lados para reunir os termos. Uma equação equivalente é 3 × □ = 15.",
-            "Divida os dois lados por 3: □ = 5. Confira esse valor na igualdade original."
+            "🍌 representa um número que deixa os dois lados da igualdade com o mesmo valor.",
+            "Faça as mesmas operações nos dois lados para reunir os termos. Uma equação equivalente é 3 × 🍌 = 15.",
+            "Divida os dois lados por 3: 🍌 = 5. Confira esse valor na igualdade original."
           ],
-          "explanation": "A equação equivale a 3 × □ = 15. Dividindo os dois lados por 3, obtemos □ = 5. Na igualdade original, os dois lados valem 15.",
+          "explanation": "A equação equivale a 3 × 🍌 = 15. Dividindo os dois lados por 3, obtemos 🍌 = 5. Na igualdade original, os dois lados valem 15.",
           "visual": {
             "groups": 1,
             "perGroup": 5,
             "extra": 0,
-            "label": "unidades do valor de □"
+            "label": "unidades do valor de 🍌"
           }
         },
         {
@@ -804,7 +804,7 @@
             }
           },
           "variable": 14,
-          "formula": "□ ÷ 2 = 7",
+          "formula": "🍐 ÷ 2 = 7",
           "choices": [
             {
               "label": "14",
@@ -821,16 +821,16 @@
           ],
           "correctChoice": "14",
           "hints": [
-            "□ representa um número que deixa os dois lados da igualdade com o mesmo valor.",
-            "Faça as mesmas operações nos dois lados para reunir os termos. Uma equação equivalente é 1 × □ = 14.",
-            "Divida os dois lados por 1: □ = 14. Confira esse valor na igualdade original."
+            "🍐 representa um número que deixa os dois lados da igualdade com o mesmo valor.",
+            "Faça as mesmas operações nos dois lados para reunir os termos. Uma equação equivalente é 1 × 🍐 = 14.",
+            "Divida os dois lados por 1: 🍐 = 14. Confira esse valor na igualdade original."
           ],
-          "explanation": "A equação equivale a 1 × □ = 14. Dividindo os dois lados por 1, obtemos □ = 14. Na igualdade original, os dois lados valem 7.",
+          "explanation": "A equação equivale a 1 × 🍐 = 14. Dividindo os dois lados por 1, obtemos 🍐 = 14. Na igualdade original, os dois lados valem 7.",
           "visual": {
             "groups": 1,
             "perGroup": 14,
             "extra": 0,
-            "label": "unidades do valor de □"
+            "label": "unidades do valor de 🍐"
           }
         },
         {
@@ -861,7 +861,7 @@
             }
           },
           "variable": 4,
-          "formula": "2 × □ + 1 = 9",
+          "formula": "2 × 🍓 + 1 = 9",
           "choices": [
             {
               "label": "5",
@@ -878,16 +878,16 @@
           ],
           "correctChoice": "4",
           "hints": [
-            "□ representa um número que deixa os dois lados da igualdade com o mesmo valor.",
-            "Faça as mesmas operações nos dois lados para reunir os termos. Uma equação equivalente é 2 × □ = 8.",
-            "Divida os dois lados por 2: □ = 4. Confira esse valor na igualdade original."
+            "🍓 representa um número que deixa os dois lados da igualdade com o mesmo valor.",
+            "Faça as mesmas operações nos dois lados para reunir os termos. Uma equação equivalente é 2 × 🍓 = 8.",
+            "Divida os dois lados por 2: 🍓 = 4. Confira esse valor na igualdade original."
           ],
-          "explanation": "A equação equivale a 2 × □ = 8. Dividindo os dois lados por 2, obtemos □ = 4. Na igualdade original, os dois lados valem 9.",
+          "explanation": "A equação equivale a 2 × 🍓 = 8. Dividindo os dois lados por 2, obtemos 🍓 = 4. Na igualdade original, os dois lados valem 9.",
           "visual": {
             "groups": 1,
             "perGroup": 4,
             "extra": 0,
-            "label": "unidades do valor de □"
+            "label": "unidades do valor de 🍓"
           }
         },
         {
@@ -975,10 +975,10 @@
         {
           "id": "launch-3",
           "sectorId": "launch",
-          "title": "Uma letra na equipe",
+          "title": "Um emoji na equipe",
           "objective": "Reconhecer uma variável",
           "skill": "EF07MA13 · apoio à EF08MA06",
-          "prompt": "Em 3 × x, a letra x representa a quantidade de robôs. O que pode mudar?",
+          "prompt": "Em 3 × 🍎, o emoji 🍎 representa a quantidade de robôs. O que pode mudar?",
           "kind": "choice",
           "expression": {
             "type": "operation",
@@ -992,7 +992,7 @@
             }
           },
           "variable": 2,
-          "formula": "3 × x",
+          "formula": "3 × 🍎",
           "choices": [
             {
               "label": "A quantidade de robôs",
@@ -1009,11 +1009,11 @@
           ],
           "correctChoice": "robots",
           "hints": [
-            "A letra representa uma quantidade que pode variar.",
+            "O emoji representa uma quantidade que pode variar.",
             "Cada robô sempre usa 3 baterias. Podemos enviar 2, 3 ou mais robôs.",
-            "x é a quantidade de robôs. Essa quantidade pode mudar."
+            "🍎 é a quantidade de robôs. Essa quantidade pode mudar."
           ],
-          "explanation": "x é uma variável: pode representar diferentes quantidades de robôs. O número 3 continua sendo as baterias por robô.",
+          "explanation": "🍎 é uma variável: pode representar diferentes quantidades de robôs. O número 3 continua sendo as baterias por robô.",
           "visual": {
             "groups": 2,
             "perGroup": 3,
@@ -1027,7 +1027,7 @@
           "title": "Monte o plano",
           "objective": "Representar uma situação",
           "skill": "EF07MA13 · apoio à EF08MA06",
-          "prompt": "Cada robô usa 3 baterias e x é a quantidade de robôs. Monte a expressão do total.",
+          "prompt": "Cada robô usa 3 baterias e 🍎 é a quantidade de robôs. Monte a expressão do total.",
           "kind": "build",
           "expression": {
             "type": "operation",
@@ -1041,16 +1041,16 @@
             }
           },
           "variable": 2,
-          "formula": "3 × x",
-          "tokens": ["x", "3", "+", "×"],
-          "expectedTokens": ["3", "×", "x"],
-          "equivalentTokens": [["x", "×", "3"]],
+          "formula": "3 × 🍎",
+          "tokens": ["🍎", "3", "+", "×"],
+          "expectedTokens": ["3", "×", "🍎"],
+          "equivalentTokens": [["🍎", "×", "3"]],
           "hints": [
             "Precisamos repetir o grupo de 3 para cada robô.",
-            "Use 3, o sinal de multiplicação e a letra x.",
-            "A expressão é 3 × x. Você também pode encontrar a escrita 3x: significa a mesma multiplicação."
+            "Use 3, o sinal de multiplicação e o emoji 🍎.",
+            "A expressão é 3 × 🍎."
           ],
-          "explanation": "3 × x representa 3 baterias para cada robô. A forma abreviada 3x significa 3 × x.",
+          "explanation": "3 × 🍎 representa 3 baterias para cada robô.",
           "visual": {
             "groups": 2,
             "perGroup": 3,
@@ -1064,7 +1064,7 @@
           "title": "Prontos para partir",
           "objective": "Substituir a variável",
           "skill": "EF08MA06",
-          "prompt": "O plano é 3 × x baterias. Se x = 4 robôs, qual é o total?",
+          "prompt": "O plano é 3 × 🍎 baterias. Se 🍎 = 4 robôs, qual é o total?",
           "kind": "number",
           "expression": {
             "type": "operation",
@@ -1078,13 +1078,13 @@
             }
           },
           "variable": 4,
-          "formula": "3 × x, com x = 4",
+          "formula": "3 × 🍎, com 🍎 = 4",
           "hints": [
-            "Troque a letra x pelo número de robôs: 4.",
+            "Troque o emoji 🍎 pelo número de robôs: 4.",
             "A expressão fica 3 × 4.",
             "3 + 3 + 3 + 3 = 12 baterias."
           ],
-          "explanation": "Substituímos x por 4: 3 × 4 = 12. Esse é o valor numérico da expressão.",
+          "explanation": "Substituímos 🍎 por 4: 3 × 4 = 12. Esse é o valor numérico da expressão.",
           "visual": {
             "groups": 4,
             "perGroup": 3,
@@ -1103,9 +1103,9 @@
           "id": "equations-18",
           "sectorId": "workshop",
           "title": "Equação · exercício 18",
-          "objective": "Resolver uma equação com x",
+          "objective": "Resolver uma equação com 🍫",
           "skill": "EF07MA18",
-          "prompt": "A oficina tinha x peças e recebeu mais 5, ficando com 12. Quantas peças havia antes da entrega?",
+          "prompt": "A oficina tinha 🍫 peças e recebeu mais 5, ficando com 12. Quantas peças havia antes da entrega?",
           "kind": "choice",
           "expression": {
             "type": "operation",
@@ -1119,7 +1119,7 @@
             }
           },
           "variable": 7,
-          "formula": "x + 5 = 12",
+          "formula": "🍫 + 5 = 12",
           "choices": [
             {
               "label": "6",
@@ -1136,25 +1136,25 @@
           ],
           "correctChoice": "7",
           "hints": [
-            "x representa um número que deixa os dois lados da igualdade com o mesmo valor.",
-            "Faça as mesmas operações nos dois lados para reunir os termos. Uma equação equivalente é 1 × x = 7.",
-            "Divida os dois lados por 1: x = 7. Confira esse valor na igualdade original."
+            "🍫 representa um número que deixa os dois lados da igualdade com o mesmo valor.",
+            "Faça as mesmas operações nos dois lados para reunir os termos. Uma equação equivalente é 1 × 🍫 = 7.",
+            "Divida os dois lados por 1: 🍫 = 7. Confira esse valor na igualdade original."
           ],
-          "explanation": "A equação equivale a 1 × x = 7. Dividindo os dois lados por 1, obtemos x = 7. Na igualdade original, os dois lados valem 12.",
+          "explanation": "A equação equivale a 1 × 🍫 = 7. Dividindo os dois lados por 1, obtemos 🍫 = 7. Na igualdade original, os dois lados valem 12.",
           "visual": {
             "groups": 1,
             "perGroup": 7,
             "extra": 0,
-            "label": "unidades do valor de x"
+            "label": "unidades do valor de 🍫"
           }
         },
         {
           "id": "equations-19",
           "sectorId": "workshop",
           "title": "Equação · exercício 19",
-          "objective": "Resolver uma equação com x",
+          "objective": "Resolver uma equação com 🍌",
           "skill": "EF07MA18",
-          "prompt": "A oficina usou 6 peças de um estoque de x e ainda tem 9. Qual era o estoque antes do reparo?",
+          "prompt": "A oficina usou 6 peças de um estoque de 🍌 peças e ainda tem 9. Qual era o estoque antes do reparo?",
           "kind": "choice",
           "expression": {
             "type": "operation",
@@ -1168,7 +1168,7 @@
             }
           },
           "variable": 15,
-          "formula": "x − 6 = 9",
+          "formula": "🍌 − 6 = 9",
           "choices": [
             {
               "label": "15",
@@ -1185,25 +1185,25 @@
           ],
           "correctChoice": "15",
           "hints": [
-            "x representa um número que deixa os dois lados da igualdade com o mesmo valor.",
-            "Faça as mesmas operações nos dois lados para reunir os termos. Uma equação equivalente é 1 × x = 15.",
-            "Divida os dois lados por 1: x = 15. Confira esse valor na igualdade original."
+            "🍌 representa um número que deixa os dois lados da igualdade com o mesmo valor.",
+            "Faça as mesmas operações nos dois lados para reunir os termos. Uma equação equivalente é 1 × 🍌 = 15.",
+            "Divida os dois lados por 1: 🍌 = 15. Confira esse valor na igualdade original."
           ],
-          "explanation": "A equação equivale a 1 × x = 15. Dividindo os dois lados por 1, obtemos x = 15. Na igualdade original, os dois lados valem 9.",
+          "explanation": "A equação equivale a 1 × 🍌 = 15. Dividindo os dois lados por 1, obtemos 🍌 = 15. Na igualdade original, os dois lados valem 9.",
           "visual": {
             "groups": 1,
             "perGroup": 15,
             "extra": 0,
-            "label": "unidades do valor de x"
+            "label": "unidades do valor de 🍌"
           }
         },
         {
           "id": "equations-20",
           "sectorId": "workshop",
           "title": "Equação · exercício 20",
-          "objective": "Resolver uma equação com x",
+          "objective": "Resolver uma equação com 🍐",
           "skill": "EF07MA18",
-          "prompt": "Quatro motores recebem x cristais cada, usando 20 ao todo. Quantos cristais cada motor recebe?",
+          "prompt": "Quatro motores recebem 🍐 cristais cada, usando 20 ao todo. Quantos cristais cada motor recebe?",
           "kind": "choice",
           "expression": {
             "type": "operation",
@@ -1217,7 +1217,7 @@
             }
           },
           "variable": 5,
-          "formula": "4x = 20",
+          "formula": "4 × 🍐 = 20",
           "choices": [
             {
               "label": "6",
@@ -1234,25 +1234,25 @@
           ],
           "correctChoice": "5",
           "hints": [
-            "x representa um número que deixa os dois lados da igualdade com o mesmo valor.",
-            "Faça as mesmas operações nos dois lados para reunir os termos. Uma equação equivalente é 4 × x = 20.",
-            "Divida os dois lados por 4: x = 5. Confira esse valor na igualdade original."
+            "🍐 representa um número que deixa os dois lados da igualdade com o mesmo valor.",
+            "Faça as mesmas operações nos dois lados para reunir os termos. Uma equação equivalente é 4 × 🍐 = 20.",
+            "Divida os dois lados por 4: 🍐 = 5. Confira esse valor na igualdade original."
           ],
-          "explanation": "A equação equivale a 4 × x = 20. Dividindo os dois lados por 4, obtemos x = 5. Na igualdade original, os dois lados valem 20.",
+          "explanation": "A equação equivale a 4 × 🍐 = 20. Dividindo os dois lados por 4, obtemos 🍐 = 5. Na igualdade original, os dois lados valem 20.",
           "visual": {
             "groups": 1,
             "perGroup": 5,
             "extra": 0,
-            "label": "unidades do valor de x"
+            "label": "unidades do valor de 🍐"
           }
         },
         {
           "id": "equations-21",
           "sectorId": "workshop",
           "title": "Equação · exercício 21",
-          "objective": "Resolver uma equação com x",
+          "objective": "Resolver uma equação com 🍓",
           "skill": "EF07MA18",
-          "prompt": "A oficina divide x baterias igualmente entre 3 robôs, com 6 para cada um. Quantas baterias havia ao todo?",
+          "prompt": "A oficina divide 🍓 baterias igualmente entre 3 robôs, com 6 para cada um. Quantas baterias havia ao todo?",
           "kind": "choice",
           "expression": {
             "type": "operation",
@@ -1266,7 +1266,7 @@
             }
           },
           "variable": 18,
-          "formula": "x/3 = 6",
+          "formula": "🍓/3 = 6",
           "choices": [
             {
               "label": "17",
@@ -1283,25 +1283,25 @@
           ],
           "correctChoice": "18",
           "hints": [
-            "x representa um número que deixa os dois lados da igualdade com o mesmo valor.",
-            "Faça as mesmas operações nos dois lados para reunir os termos. Uma equação equivalente é 1 × x = 18.",
-            "Divida os dois lados por 1: x = 18. Confira esse valor na igualdade original."
+            "🍓 representa um número que deixa os dois lados da igualdade com o mesmo valor.",
+            "Faça as mesmas operações nos dois lados para reunir os termos. Uma equação equivalente é 1 × 🍓 = 18.",
+            "Divida os dois lados por 1: 🍓 = 18. Confira esse valor na igualdade original."
           ],
-          "explanation": "A equação equivale a 1 × x = 18. Dividindo os dois lados por 1, obtemos x = 18. Na igualdade original, os dois lados valem 6.",
+          "explanation": "A equação equivale a 1 × 🍓 = 18. Dividindo os dois lados por 1, obtemos 🍓 = 18. Na igualdade original, os dois lados valem 6.",
           "visual": {
             "groups": 1,
             "perGroup": 18,
             "extra": 0,
-            "label": "unidades do valor de x"
+            "label": "unidades do valor de 🍓"
           }
         },
         {
           "id": "equations-22",
           "sectorId": "workshop",
           "title": "Equação · exercício 22",
-          "objective": "Resolver uma equação com x",
+          "objective": "Resolver uma equação com 🍇",
           "skill": "EF07MA18",
-          "prompt": "A oficina tinha x cristais e recebeu 8, ficando com 8 ao todo. Quantos cristais havia antes?",
+          "prompt": "A oficina tinha 🍇 cristais e recebeu 8, ficando com 8 ao todo. Quantos cristais havia antes?",
           "kind": "choice",
           "expression": {
             "type": "operation",
@@ -1315,7 +1315,7 @@
             }
           },
           "variable": 0,
-          "formula": "x + 8 = 8",
+          "formula": "🍇 + 8 = 8",
           "choices": [
             {
               "label": "0",
@@ -1332,11 +1332,11 @@
           ],
           "correctChoice": "0",
           "hints": [
-            "x representa um número que deixa os dois lados da igualdade com o mesmo valor.",
-            "Faça as mesmas operações nos dois lados para reunir os termos. Uma equação equivalente é 1 × x = 0.",
-            "Divida os dois lados por 1: x = 0. Confira esse valor na igualdade original."
+            "🍇 representa um número que deixa os dois lados da igualdade com o mesmo valor.",
+            "Faça as mesmas operações nos dois lados para reunir os termos. Uma equação equivalente é 1 × 🍇 = 0.",
+            "Divida os dois lados por 1: 🍇 = 0. Confira esse valor na igualdade original."
           ],
-          "explanation": "A equação equivale a 1 × x = 0. Dividindo os dois lados por 1, obtemos x = 0. Na igualdade original, os dois lados valem 8.",
+          "explanation": "A equação equivale a 1 × 🍇 = 0. Dividindo os dois lados por 1, obtemos 🍇 = 0. Na igualdade original, os dois lados valem 8.",
           "visual": {
             "groups": 1,
             "perGroup": 0,
@@ -1350,7 +1350,7 @@
           "title": "Equação · exercício 23",
           "objective": "Resolver equações com duas operações",
           "skill": "EF07MA18",
-          "prompt": "Dois kits têm x peças cada, e a oficina acrescenta 3 peças avulsas para completar 13. Quantas peças há em cada kit?",
+          "prompt": "Dois kits têm 🍑 peças cada, e a oficina acrescenta 3 peças avulsas para completar 13. Quantas peças há em cada kit?",
           "kind": "choice",
           "expression": {
             "type": "operation",
@@ -1372,7 +1372,7 @@
             }
           },
           "variable": 5,
-          "formula": "2x + 3 = 13",
+          "formula": "2 × 🍑 + 3 = 13",
           "choices": [
             {
               "label": "6",
@@ -1389,16 +1389,16 @@
           ],
           "correctChoice": "5",
           "hints": [
-            "x representa um número que deixa os dois lados da igualdade com o mesmo valor.",
-            "Faça as mesmas operações nos dois lados para reunir os termos. Uma equação equivalente é 2 × x = 10.",
-            "Divida os dois lados por 2: x = 5. Confira esse valor na igualdade original."
+            "🍑 representa um número que deixa os dois lados da igualdade com o mesmo valor.",
+            "Faça as mesmas operações nos dois lados para reunir os termos. Uma equação equivalente é 2 × 🍑 = 10.",
+            "Divida os dois lados por 2: 🍑 = 5. Confira esse valor na igualdade original."
           ],
-          "explanation": "A equação equivale a 2 × x = 10. Dividindo os dois lados por 2, obtemos x = 5. Na igualdade original, os dois lados valem 13.",
+          "explanation": "A equação equivale a 2 × 🍑 = 10. Dividindo os dois lados por 2, obtemos 🍑 = 5. Na igualdade original, os dois lados valem 13.",
           "visual": {
             "groups": 1,
             "perGroup": 5,
             "extra": 0,
-            "label": "unidades do valor de x"
+            "label": "unidades do valor de 🍑"
           }
         },
         {
@@ -1407,7 +1407,7 @@
           "title": "Equação · exercício 24",
           "objective": "Resolver equações com duas operações",
           "skill": "EF07MA18",
-          "prompt": "A oficina abre 3 caixas com x peças cada e usa 4 peças, restando 17. Quantas peças havia em cada caixa?",
+          "prompt": "A oficina abre 3 caixas com 🍒 peças cada e usa 4 peças, restando 17. Quantas peças havia em cada caixa?",
           "kind": "choice",
           "expression": {
             "type": "operation",
@@ -1429,7 +1429,7 @@
             }
           },
           "variable": 7,
-          "formula": "3x − 4 = 17",
+          "formula": "3 × 🍒 − 4 = 17",
           "choices": [
             {
               "label": "6",
@@ -1446,16 +1446,16 @@
           ],
           "correctChoice": "7",
           "hints": [
-            "x representa um número que deixa os dois lados da igualdade com o mesmo valor.",
-            "Faça as mesmas operações nos dois lados para reunir os termos. Uma equação equivalente é 3 × x = 21.",
-            "Divida os dois lados por 3: x = 7. Confira esse valor na igualdade original."
+            "🍒 representa um número que deixa os dois lados da igualdade com o mesmo valor.",
+            "Faça as mesmas operações nos dois lados para reunir os termos. Uma equação equivalente é 3 × 🍒 = 21.",
+            "Divida os dois lados por 3: 🍒 = 7. Confira esse valor na igualdade original."
           ],
-          "explanation": "A equação equivale a 3 × x = 21. Dividindo os dois lados por 3, obtemos x = 7. Na igualdade original, os dois lados valem 17.",
+          "explanation": "A equação equivale a 3 × 🍒 = 21. Dividindo os dois lados por 3, obtemos 🍒 = 7. Na igualdade original, os dois lados valem 17.",
           "visual": {
             "groups": 1,
             "perGroup": 7,
             "extra": 0,
-            "label": "unidades do valor de x"
+            "label": "unidades do valor de 🍒"
           }
         },
         {
@@ -1464,7 +1464,7 @@
           "title": "Equação · exercício 25",
           "objective": "Resolver equações com duas operações",
           "skill": "EF07MA18",
-          "prompt": "Cinco antenas usam x cristais cada, e a oficina separa mais 2 de reserva, totalizando 32. Quantos cristais cada antena usa?",
+          "prompt": "Cinco antenas usam 🍊 cristais cada, e a oficina separa mais 2 de reserva, totalizando 32. Quantos cristais cada antena usa?",
           "kind": "choice",
           "expression": {
             "type": "operation",
@@ -1486,7 +1486,7 @@
             }
           },
           "variable": 6,
-          "formula": "5x + 2 = 32",
+          "formula": "5 × 🍊 + 2 = 32",
           "choices": [
             {
               "label": "6",
@@ -1503,16 +1503,16 @@
           ],
           "correctChoice": "6",
           "hints": [
-            "x representa um número que deixa os dois lados da igualdade com o mesmo valor.",
-            "Faça as mesmas operações nos dois lados para reunir os termos. Uma equação equivalente é 5 × x = 30.",
-            "Divida os dois lados por 5: x = 6. Confira esse valor na igualdade original."
+            "🍊 representa um número que deixa os dois lados da igualdade com o mesmo valor.",
+            "Faça as mesmas operações nos dois lados para reunir os termos. Uma equação equivalente é 5 × 🍊 = 30.",
+            "Divida os dois lados por 5: 🍊 = 6. Confira esse valor na igualdade original."
           ],
-          "explanation": "A equação equivale a 5 × x = 30. Dividindo os dois lados por 5, obtemos x = 6. Na igualdade original, os dois lados valem 32.",
+          "explanation": "A equação equivale a 5 × 🍊 = 30. Dividindo os dois lados por 5, obtemos 🍊 = 6. Na igualdade original, os dois lados valem 32.",
           "visual": {
             "groups": 1,
             "perGroup": 6,
             "extra": 0,
-            "label": "unidades do valor de x"
+            "label": "unidades do valor de 🍊"
           }
         },
         {

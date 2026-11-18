@@ -8,7 +8,11 @@ O jogo oferece apoios sem inferir diagnóstico ou prometer resultados de aprendi
 
 ## Sequência
 
-O percurso jogável é carregado de `src/content/problems.json`, na ordem das seções e dos respectivos problemas: 22 missões na Estação de lançamento, 15 na Oficina orbital e 15 na Base de exploração. Os 37 exercícios importados precedem as cinco missões originais de cada setor. Eles acrescentam operações e números que faltam ao lançamento, equações com x à oficina e equações com incógnitas nos dois lados, parênteses e frações à base. O trabalho de equações usa a EF07MA18 como referência.
+O percurso jogável é carregado de `src/content/problems.json`, na ordem das seções e dos respectivos problemas: 22 missões na Estação de lançamento, 15 na Oficina orbital e 15 na Base de exploração. Os 37 exercícios importados precedem as cinco missões originais de cada setor. Eles acrescentam operações e números que faltam ao lançamento, equações à oficina e equações com incógnitas nos dois lados, parênteses e frações à base. O trabalho de equações usa a EF07MA18 como referência.
+
+Nas cinco missões “Número que falta” do lançamento (`equations-13` a `equations-17`), um emoji de comida representa a incógnita. As soluções foram conferidas por operações inversas, na ordem: 5, 10, 5, 14 e 4. Na revisão com a professora, observar se os alunos entendem que o emoji representa um número.
+
+A maçã representa a quantidade de robôs em `launch-3` a `launch-5`. Na Oficina orbital, as oito primeiras equações (`equations-18` a `equations-25`) usam emojis de comida. As soluções conferidas por operações inversas são 7, 15, 5, 18, 0, 5, 7 e 6, nessa ordem. A letra x aparece a partir da nona missão da oficina.
 
 A tabela abaixo descreve as 15 missões originais por identificador estável; a posição exibida no jogo depende da ordem do JSON.
 
@@ -16,7 +20,7 @@ A tabela abaixo descreve as 15 missões originais por identificador estável; a 
 | ---------- | ------------------------------- | ---------------------------------------------------- |
 | Lançamento | `launch-1` Energia para decolar | Contar grupos iguais; pré-requisito                  |
 | Lançamento | `launch-2` Mais um tripulante   | Perceber variação do total; apoio EF07MA13           |
-| Lançamento | `launch-3` Uma letra na equipe  | Identificar uma variável; EF07MA13                   |
+| Lançamento | `launch-3` Um emoji na equipe   | Identificar uma variável; EF07MA13                   |
 | Lançamento | `launch-4` Monte o plano        | Representar multiplicação por uma variável; EF07MA13 |
 | Lançamento | `launch-5` Prontos para partir  | Substituir x e calcular; EF08MA06                    |
 | Oficina    | `workshop-1` Reserva de energia | Substituição em adição; EF08MA06                     |

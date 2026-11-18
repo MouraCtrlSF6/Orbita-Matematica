@@ -37,7 +37,7 @@ const responses: Record<string, Response> = {
   'launch-1': { radio: '6 baterias' },
   'launch-2': { number: '9' },
   'launch-3': { radio: 'A quantidade de robôs' },
-  'launch-4': { tokens: ['x', 'Multiplicação', '3'] },
+  'launch-4': { tokens: ['🍎', 'Multiplicação', '3'] },
   'launch-5': { number: '12' },
   'workshop-1': { radio: '7 cristais' },
   'workshop-2': { number: '8' },

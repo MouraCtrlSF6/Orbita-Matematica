@@ -72,10 +72,10 @@ describe('mathematical rules', () => {
   it('checks choice and assembly answers without evaluating input code', () => {
     expect(isCorrect(mission('launch-3'), 'robots')).toBe(true);
     expect(isCorrect(mission('launch-3'), 'batteries')).toBe(false);
-    expect(isCorrect(mission('launch-4'), '3 × x')).toBe(true);
-    expect(isCorrect(mission('launch-4'), 'x × 3')).toBe(true);
+    expect(isCorrect(mission('launch-4'), '3 × 🍎')).toBe(true);
+    expect(isCorrect(mission('launch-4'), '🍎 × 3')).toBe(true);
     expect(isCorrect(mission('base-4'), '4 + x × 2')).toBe(true);
-    expect(isCorrect(mission('launch-4'), '3 + x')).toBe(false);
+    expect(isCorrect(mission('launch-4'), '3 + 🍎')).toBe(false);
   });
   it('checks all creation values and distributivity with different variable values', () => {
     for (const value of [2, 3, 4]) {

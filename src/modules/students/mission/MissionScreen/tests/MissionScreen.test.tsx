@@ -158,7 +158,7 @@ describe('mission interactions', () => {
     await user.click(screen.getByRole('button', { name: 'Adição' }));
     await user.click(screen.getByRole('button', { name: 'Desfazer' }));
     await user.click(screen.getByRole('button', { name: 'Multiplicação' }));
-    await user.click(screen.getByRole('button', { name: 'x' }));
+    await user.click(screen.getByRole('button', { name: '🍎' }));
     await user.click(screen.getByRole('button', { name: /Conferir/ }));
     expect(onComplete).toHaveBeenCalledOnce();
   });
